@@ -1,0 +1,39 @@
+{
+  "name": "@provisioner/common",
+  "version": "0.0.0",
+  "description": "Common stuff for provisioners",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "tsc -w --preserveWatchOutput"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nsainaney/traxitt.git"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "private"
+  },
+  "keywords": [
+    "traxitt",
+    "provisioner"
+  ],
+  "author": "Narayan Sainaney",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nsainaney/traxitt/issues"
+  },
+  "homepage": "https://github.com/nsainaney/traxitt#readme",
+  "dependencies": {
+    "@kubernetes/client-node": "^0.8.1",
+    "@traxitt/common": "^0.0.2",
+    "callsite": "^1.0.0",
+    "generate-password": "^1.4.1",
+    "get-port": "^4.2.0",
+    "handlebars": "^4.1.1"
+  }
+}

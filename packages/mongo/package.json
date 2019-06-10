@@ -1,0 +1,40 @@
+{
+  "name": "@provisioner/mongo",
+  "version": "0.0.0",
+  "description": "Traxitt provisioner for mongodb",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "tsc -w --preserveWatchOutput"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nsainaney/traxitt.git"
+  },
+  "files": [
+    "lib",
+    "k8s"
+  ],
+  "publishConfig": {
+    "access": "private"
+  },
+  "keywords": [
+    "traxitt",
+    "provisioner",
+    "mongodb"
+  ],
+  "author": "Narayan Sainaney",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nsainaney/traxitt/issues"
+  },
+  "homepage": "https://github.com/nsainaney/traxitt#readme",
+  "dependencies": {
+    "@provisioner/common": "^0.0.0",
+    "@traxitt/common": "^0.0.2",
+    "@traxitt/kubeclient": "^0.0.1",
+    "js-yaml": "^3.12.1",
+    "mongodb": "^3.1.13"
+  }
+}
