@@ -1,8 +1,0 @@
-name: traxitt-system
-namespace: traxitt-system
-version: 0.0.1
-description: This is a description
-services:
-    - traxitt-system:
-        tag: 4
-    # - redis:

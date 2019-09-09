@@ -23,7 +23,7 @@ spec:
               - name: PORT
                 value: "10000"
               name: registry
-              image: traxitt/system-registry:canary
+              image: traxitt/system-registry:{{tag}}
               imagePullPolicy: Always
               ports:
                 - name: registry

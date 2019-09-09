@@ -6,18 +6,25 @@ metadata:
   labels:
     app: rabbitmq
 spec:
-  type: NodePort
+  sessionAffinity: None
+  type: ClusterIP
+  clusterIP: None
   ports:
+   - name: empd
+     protocol: TCP
+     port: 4369
+     targetPort: empd
    - name: http
      protocol: TCP
      port: 15672
-     targetPort: 15672
-     nodePort: 31672
+     targetPort: http
    - name: amqp
      protocol: TCP
      port: 5672
-     targetPort: 5672
-     nodePort: 30672
+     targetPort: amqp
+   - name: dist
+     port: 25672
+     targetPort: dist
   selector:
     app: rabbitmq
 ---
@@ -82,6 +89,12 @@ spec:
           - name: amqp
             protocol: TCP
             containerPort: 5672
+          - name: empd
+            protocol: TCP
+            containerPort: 4369
+          - name: dist
+            protocol: TCP
+            containerPort: 25672
         livenessProbe:
           exec:
             command: ["rabbitmqctl", "status"]

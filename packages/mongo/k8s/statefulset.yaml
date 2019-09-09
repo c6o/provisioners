@@ -30,8 +30,6 @@ spec:
         - mongod
         - "--bind_ip"
         - 0.0.0.0
-        - "--smallfiles"
-        - "--noprealloc"
         env:
         - name: MONGO_INITDB_ROOT_USERNAME
           value: root

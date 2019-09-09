@@ -29,7 +29,7 @@ spec:
               - name: LOGLEVEL
                 value: "0"
               name: publisher
-              image: traxitt/system-publisher:canary
+              image: traxitt/system-publisher:{{tag}}
               imagePullPolicy: Always
               ports:
                 - name: publisher

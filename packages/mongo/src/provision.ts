@@ -13,10 +13,9 @@ export async function provision(context: Context) {
 
     await context
         .object({
-            kind: 'Pod',
-            labelSelector: { name: 'mongo' }
+            kind: 'Pod'
         })
-        .list()
+        .list({ name: 'mongo' })
         .check(
             (pods) => context.log('PODS', pods.result),
             provisionNewService
@@ -35,7 +34,7 @@ async function provisionNewService(pods) {
         .watch()
         .when(({ condition }) => condition.Ready == 'True',() => {
 
-            // 
+            //
             pods
                 .log(`${pods} is ready`)
                 .doneWatch()
@@ -62,7 +61,7 @@ async function provisionNewService(pods) {
 
 async function connectMongoDb(pod, attempt) {
     pod.log(`Attempt ${attempt + 1} to connect to mongo on local port ${pod.forwardLocalPort}`)
-    return pod.context.params.mongoClient = await MongoClient.connect(`mongodb://root:${pod.context.params.rootPassword}@localhost:${pod.forwardLocalPort}`, { useNewUrlParser: true })
+    return pod.context.params.mongoClient = await MongoClient.connect(`mongodb://root:${pod.context.params.rootPassword}@localhost:${pod.forwardLocalPort}`, { useNewUrlParser: true,  useUnifiedTopology: true })
 }
 
 async function disconnectMongoDb(pod) {
