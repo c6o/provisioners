@@ -1,22 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: subscriber-dep
+    name: subscriber
     namespace: traxitt-system
     labels:
         role: system
-        name: subscriber
+        app: subscriber
+        version: v1
 spec:
     selector:
         matchLabels:
           role: system
-          name: subscriber
+          app: subscriber
+          version: v1
     replicas: 1
     template:
         metadata:
             labels:
               role: system
-              name: subscriber
+              app: subscriber
+              version: v1
         spec:
             containers:
             - env:
@@ -24,31 +27,28 @@ spec:
                 value: "10001"
               - name: QUEUE_ADDRESS
                 value: "amqp://rabbitmq:5672/"
-              - name: REG_ADDRESS
-                value: "registry-svc:10000"
+              - name: ETCD_CONNECTION
+                value: "etcd-client:2379"
               - name: LOGLEVEL
                 value: "0"
               name: subscriber
               image: traxitt/system-subscriber:{{tag}}
               imagePullPolicy: Always
               ports:
-                - name: subscriber
-                  containerPort: 10001
-                  hostPort: 10001
+                - containerPort: 10001
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: traxitt-system
-  name: subscriber-svc
+  name: subscriber
   labels:
     role: system
-    name: subscriber
+    app: subscriber
 spec:
   selector:
     role: system
-    name: subscriber
+    app: subscriber
   ports:
-    - protocol: TCP
-      port: 10001
-      targetPort: 10001
+    - port: 10001
+      name: http2

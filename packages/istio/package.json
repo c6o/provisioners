@@ -1,7 +1,7 @@
 {
-    "name": "@provisioner/traxitt-system",
+    "name": "@provisioner/istio",
     "version": "0.0.0",
-    "description": "Traxitt provisioner for traxitt-system",
+    "description": "Traxitt provisioner for istio",
     "main": "lib/index.js",
     "scripts": {
       "build": "tsc",
@@ -22,7 +22,7 @@
     "keywords": [
       "traxitt",
       "provisioner",
-      "traxitt-system"
+      "istio"
     ],
     "author": "Narayan Sainaney",
     "license": "UNLICENSED",

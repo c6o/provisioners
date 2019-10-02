@@ -9,7 +9,7 @@ export const loadYaml = (file, context = {}, depth = 1) => {
     const requester = path.dirname(stack[depth].getFileName())
 
     const source = fs.readFileSync(path.join(requester, file), 'utf8')
-    const template = Handlebars.compile(source)
+    const template = Handlebars.compile(source, {noEscape: true})
     const content = template(context)
     return yaml.safeLoad(content)
 }

@@ -1,7 +1,7 @@
 {
-    "name": "@provisioner/traxitt-system",
+    "name": "@provisioner/etcd-operator",
     "version": "0.0.0",
-    "description": "Traxitt provisioner for traxitt-system",
+    "description": "Traxitt provisioner for etcd-operator",
     "main": "lib/index.js",
     "scripts": {
       "build": "tsc",
@@ -22,7 +22,7 @@
     "keywords": [
       "traxitt",
       "provisioner",
-      "traxitt-system"
+      "etcd-operator"
     ],
     "author": "Narayan Sainaney",
     "license": "UNLICENSED",
