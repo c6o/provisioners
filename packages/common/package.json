@@ -4,9 +4,9 @@
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "develop": "tsc -w --preserveWatchOutput"
+    "develop": "tsc -b -w --preserveWatchOutput"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,6 @@
     "callsite": "^1.0.0",
     "generate-password": "^1.4.1",
     "get-port": "^4.2.0",
-    "handlebars": "^4.1.1"
+    "handlebars": "^4.1.2"
   }
 }

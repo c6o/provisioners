@@ -1,9 +1,14 @@
 {
-    "extends": "@traxitt/common/tsconfig.json",
+    "extends": "../../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./lib"
     },
+    "references": [
+        { "path":  "../../common" },
+        { "path":  "../../kubeclient" },
+        { "path":  "../common" }
+    ],
     "include": [
         "src"
     ],    
