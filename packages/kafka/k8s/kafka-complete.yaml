@@ -206,7 +206,7 @@ spec:
     port: 9092
     targetPort: kafka
   selector:
-    component: kafka-broker
+    app.kubernetes.io/component: kafka-broker
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
 ---

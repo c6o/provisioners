@@ -12,7 +12,7 @@ export async function provision(context: Context) {
     .object({
         kind: 'Pod'
     })
-    .list({ 'component':'kafka-broker'})
+    .list({ 'app.kubernetes.io/component':'kafka-broker'})
     .check(
         () => context.log('Nothing to do here'),
         provisionKafka
