@@ -1,88 +1,98 @@
 import { createDebug, asyncForEach } from '@traxitt/common'
-import { Context } from '@traxitt/kubeclient'
+import { Cluster } from '@traxitt/kubeclient'
 
 const debug = createDebug()
 
-export async function provision(context: Context) {
-    debug('provision called', context)
+let namespace
+let etcdOperatorPods
+let etcdPods
 
-    // TODO: Currently just checks to see if etcd-operator is installed
-    // We need a better test to see if the system is already installed
-    await context
-        .object({
-            kind: 'Pod'
-        })
-        .list({ name: 'etcd-operator' })
-        .check(
-            () => context.log('Nothing to do here'),
-            provisionOperator
-        )
-        .run()
+export async function provision(cluster: Cluster, spec) {
+    init(spec)
+
+    await ensureEtcdOperatorIsInstalled(cluster, spec)
+    await ensurePodIsRunning(cluster, etcdOperatorPods, 'ensure etcd operator is running')
+    await ensureEtcdIsInstalled(cluster, spec)
+    await ensurePodIsRunning(cluster, etcdPods, 'ensure etcd is running')
 }
 
-async function provisionOperator(pods) {
-    const { context } = pods
+function init(spec) {
+    namespace = spec.namespace.metadata.name
 
-    context.log(`\n###=> Setting up etcd operator\n`)
-
-    await pods
-        .watch()
-        .when(
-            ({ obj, condition }) => obj.metadata.labels.name == 'etcd-operator' && condition.Ready == 'True',
-            async () => await provisionEtcd(context)
-        )
-        .when(
-            ({ obj, condition }) => obj.metadata.labels.app == 'etcd' && condition.Ready == 'True',
-            () => pods.doneWatch()
-        )
-        .run()
-
-    const settings = {
-        role_binding_name: 'etcd-cluster',
-        role_name: 'etcd-cluster',
-        namespace: context.namespace
+    etcdPods = {
+        kind: 'Pod',
+        metadata: {
+            namespace,
+            labels: { name: 'etcd' }
+        }
     }
 
-    await context
-        .fromFile('../k8s/rbac/clusterrole.yaml', settings)
-        .apply()
-        .fromFile('../k8s/rbac/clusterrolebinding.yaml', settings)
-        .apply()
-        // .fromFile('../k8s/rbac/rolebinding.yaml', settings)
-        // .apply()
-        // .fromFile('../k8s/rbac/role.yaml', settings)
-        // .apply()
-        .fromFile('../k8s/deployment.yaml', settings)
-        .apply()
-        .run()
-
-    context.log('Waiting for etcd operator to start...')
-    await pods.watchCompletion()
-    context.log('Done waiting for etcd to start...')
-
-    // kubectl delete -f example/deployment.yaml
-    // kubectl delete endpoints etcd-operator
-    // kubectl delete crd etcdclusters.etcd.database.coreos.com
-    // kubectl delete clusterrole etcd-operator
-    // kubectl delete clusterrolebinding etcd-operator
+    etcdOperatorPods = {
+        kind: 'Pod',
+        metadata: {
+            namespace,
+            labels: { name: 'etcd-operator' }
+        }
+    }
 }
 
-async function provisionEtcd(context) {
+async function ensureEtcdOperatorIsInstalled(cluster: Cluster, spec) {
+    await cluster
+            .begin(`Install etcd operator services`)
+                .list(etcdOperatorPods)
+                .do((result, processor) => {
 
-    context.log('Done waiting for etcd operator to start...')
+                    if (result?.object?.items?.length == 0) {
+                            // There are no etcd operator pods
 
-    context.log(`\n###=> Setting up etcd \n`)
+                            const settings = {
+                                role_binding_name: 'etcd-cluster',
+                                role_name: 'etcd-cluster',
+                                namespace
+                            }
 
-    const settings = {
-        role_binding_name: 'etcd-cluster',
-        role_name: 'etcd-cluster',
-        namespace: context.namespace
-    }
+                            // Install etcd
+                            processor
+                                .apply('../k8s/rbac/clusterrole.yaml', settings)
+                                .apply('../k8s/rbac/clusterrolebinding.yaml', settings)
+                                .apply('../k8s/deployment.yaml', settings)
 
-    await context
-        .fromFile('../k8s/etcd-cluster.yaml', settings)
-        .apply()
-        .run()
+                        }
+                })
+            .end()
+}
 
-    context.log('Waiting for etcd to start...')
+async function ensureEtcdIsInstalled(cluster: Cluster, spec) {
+    await cluster
+            .begin(`Install etcd services`)
+                .list(etcdPods)
+                .do( (result, processor) => {
+
+                    if (result?.object?.items?.length == 0) {
+                            // There are no etcd pods
+
+                            const settings = {
+                                role_binding_name: 'etcd-cluster',
+                                role_name: 'etcd-cluster',
+                                namespace
+                            }
+                            // Install etcd
+                            processor
+                                .apply('../k8s/etcd-cluster.yaml', settings)
+
+                        }
+                })
+            .end()
+}
+
+/** Watches pods and ensures that a pod is running */
+async function ensurePodIsRunning(cluster: Cluster, podSpec, message) {
+    // obj.metadata.name == 'etcd-0'
+    await cluster.
+            begin(message)
+                .beginWatch(podSpec)
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
+                    processor.endWatch()
+                })
+            .end()
 }

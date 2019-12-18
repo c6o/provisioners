@@ -1,55 +1,60 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
- name: mongo
- labels:
-  role: server
+  namespace: "{{namespace}}"
   name: mongo
-spec:
- serviceName: mongo
- replicas: 3
- template:
-  metadata:
-   labels:
+  labels:
     role: server
     name: mongo
-  spec:
-    terminationGracePeriodSeconds: 10
-    volumes:
-      - name: mongo-pv-storage
-        persistentVolumeClaim:
-        claimName: mongo-pvc
-    containers:
-      - name: mongo
-        image: mongo
-        command:
-        # The reason the environment variables don't work is that the MONGO_INITDB environment variables 
-        # are used by the docker-entrypoint.sh script within the image
-        # however when you define a 'command:' in your kubernetes file you override that entrypoint
-        - "docker-entrypoint.sh"
-        - mongod
-        - "--bind_ip"
-        - 0.0.0.0
-        env:
-        - name: MONGO_INITDB_ROOT_USERNAME
-          value: root
-        - name: MONGO_INITDB_ROOT_PASSWORD
-          value: '{{rootPassword}}'
-        ports:
-        - name: mongo
-          containerPort: 27017
-          hostPort: 27017
-        volumeMounts:
+spec:
+  serviceName: mongo
+  replicas: 3
+  selector:
+    matchLabels:
+      role: server
+      name: mongo
+  template:
+    metadata:
+      labels:
+        role: server
+        name: mongo
+    spec:
+      terminationGracePeriodSeconds: 10
+      volumes:
         - name: mongo-pv-storage
-          mountPath: /data/db
-        readinessProbe:
-          exec:
-            command:
-            - mongo
-            - --eval
-            - "db.adminCommand('ping')"
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 6
+          persistentVolumeClaim:
+          claimName: mongo-pvc
+      containers:
+        - name: mongo
+          image: mongo
+          command:
+            # The reason the environment variables don't work is that the MONGO_INITDB environment variables
+            # are used by the docker-entrypoint.sh script within the image
+            # however when you define a 'command:' in your kubernetes file you override that entrypoint
+            - "docker-entrypoint.sh"
+            - mongod
+            - "--bind_ip"
+            - 0.0.0.0
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: "{{rootPassword}}"
+          ports:
+            - name: mongo
+              containerPort: 27017
+              hostPort: 27017
+          volumeMounts:
+            - name: mongo-pv-storage
+              mountPath: /data/db
+          readinessProbe:
+            exec:
+              command:
+                - mongo
+                - --eval
+                - "db.adminCommand('ping')"
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6

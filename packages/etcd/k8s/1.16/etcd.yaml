@@ -28,7 +28,7 @@ spec:
   selector:
     app: etcd
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: etcd
@@ -38,6 +38,9 @@ metadata:
 spec:
   serviceName: etcd
   replicas: {{replicas}}
+  selector:
+    matchLabels:
+      app: etcd
   template:
     metadata:
       name: etcd

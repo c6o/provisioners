@@ -1,47 +1,80 @@
 import { createDebug, asyncForEach } from '@traxitt/common'
-import { Context } from '@traxitt/kubeclient'
+import { Cluster } from '@traxitt/kubeclient'
 
 const debug = createDebug()
 
-export async function provision(context: Context) {
-    debug('provision kafka called', context)
+let namespace
+let kafkaBrokerPods
+let kafkaZookeeperPods
+let runningPod
 
-    context.log('provision kafka called!');
-
-    await context
-    .object({
-        kind: 'Pod'
-    })
-    .list({ 'app.kubernetes.io/component':'kafka-broker'})
-    .check(
-        () => context.log('Nothing to do here'),
-        provisionKafka
-    )
-    .run()
+export async function provision(cluster: Cluster, spec) {
+    init(spec)
+    await ensureKafkaIsInstalled(cluster, spec)
+    await ensureKafkaIsRunning(cluster)
 
 }
 
-async function provisionKafka(pods) {
-    const { context } = pods
+function init(spec) {
+    namespace = spec.namespace.metadata.name
 
-    context.log('\n###=> Setting up kafka\n')
-    pods
-        .watch()
-        .when(
-            ({ obj, condition }) => obj.metadata.name == 'kafka-0' && condition.Ready == 'True',
-            () => pods.doneWatch()
-        )
-
-    const settings = {
+    kafkaBrokerPods = {
+        kind: 'Pod',
+        metadata: {
+            namespace,
+            labels: {
+                'app.kubernetes.io/component':'kafka-broker'
+            }
+        }
     }
 
-    await context
-        .fromFile('../k8s/kafka-complete.yaml', settings)
-        .apply()
-        .run()
+    kafkaZookeeperPods = {
+        kind: 'Pod',
+        metadata: {
+            namespace,
+            labels: {
+                app: 'zookeeper'
+            }
+        }
+    }
+}
 
-    context.log('Waiting for kafka to start...')
-    await pods.watchCompletion()
-    context.log('Kafka started...')
+async function ensureKafkaIsInstalled(cluster: Cluster, spec) {
+    await cluster
+            .begin(`Install kafka services`)
+                .list(kafkaBrokerPods)
+                .do( (result, processor) => {
 
+                    debugger
+                    if (result?.object?.items?.length == 0) {
+                            // There are no kafka brokers
+                            // Install kafka
+                            processor
+                                .apply('../k8s/kafka-complete.yaml', { namespace })
+
+                        }
+                })
+            .end()
+}
+
+/** Watches pods and ensures that a pod is running and sets runningPod */
+async function ensureKafkaIsRunning(cluster: Cluster) {
+
+    const zookeeper = cluster.
+            begin(`Ensure a kafka zookeeper is running`)
+                .beginWatch(kafkaZookeeperPods)
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                    processor.endWatch()
+                })
+            .end()
+
+    const broker = cluster.
+            begin(`Ensure a kafka broker is running`)
+                .beginWatch(kafkaBrokerPods)
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                    processor.endWatch()
+                })
+            .end()
+
+    await Promise.all([zookeeper, broker])
 }

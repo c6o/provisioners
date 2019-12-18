@@ -4,6 +4,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: kafka-zookeeper
+  namespace: '{{namespace}}'
   labels:
     app: zookeeper
     chart: zookeeper-2.0.0
@@ -26,6 +27,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kafka-zookeeper
+  namespace: '{{namespace}}'
   labels:
     app: zookeeper
     chart: zookeeper-2.0.0
@@ -140,6 +142,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka-zookeeper-headless
+  namespace: '{{namespace}}'
   labels:
     app: zookeeper
     chart: zookeeper-2.0.0
@@ -170,6 +173,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka-zookeeper
+  namespace: '{{namespace}}'
   labels:
     app: zookeeper
     chart: zookeeper-2.0.0
@@ -194,10 +198,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka
+  namespace: '{{namespace}}'
   labels:
     helm.sh/chart: kafka-0.20.1
     app.kubernetes.io/managed-by: Tiller
-    component: kafka-broker
+    app.kubernetes.io/component: kafka-broker
+    component: bar
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
 spec:
@@ -217,10 +223,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kafka-headless
+  namespace: '{{namespace}}'
   labels:
     helm.sh/chart: kafka-0.20.1
     app.kubernetes.io/managed-by: Tiller
-    component: kafka-broker
+    app.kubernetes.io/component: kafka-broker
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
   annotations:
@@ -231,7 +238,7 @@ spec:
     port: 9092
   clusterIP: None
   selector:
-    component: kafka-broker
+    app.kubernetes.io/component: kafka-broker
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
     
@@ -241,6 +248,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: kafka-zookeeper
+  namespace: '{{namespace}}'
   labels:
     app: zookeeper
     chart: zookeeper-2.0.0
@@ -367,16 +375,17 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: kafka
+  namespace: '{{namespace}}'
   labels:
     helm.sh/chart: kafka-0.20.1
     app.kubernetes.io/managed-by: Tiller
-    component: kafka-broker
+    app.kubernetes.io/component: kafka-broker
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
 spec:
   selector:
     matchLabels:
-      component: kafka-broker
+      app.kubernetes.io/component: kafka-broker
       app.kubernetes.io/name: kafka
       app.kubernetes.io/instance: kafka
   serviceName: kafka-headless
@@ -390,7 +399,7 @@ spec:
       labels:
         helm.sh/chart: kafka-0.20.1
         app.kubernetes.io/managed-by: Tiller
-        component: kafka-broker
+        app.kubernetes.io/component: kafka-broker
         app.kubernetes.io/name: kafka
         app.kubernetes.io/instance: kafka
     spec:

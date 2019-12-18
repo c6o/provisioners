@@ -1,53 +1,68 @@
-import { createDebug, asyncForEach } from '@traxitt/common'
-import { Context } from '@traxitt/kubeclient'
+import { createDebug } from '@traxitt/common'
+import { Cluster } from '@traxitt/kubeclient'
 
 const debug = createDebug()
 
-export async function provision(context: Context) {
-    debug('provision called', context)
+let namespace
+let etcdPods
+let runningPod
 
-    // TODO: Currently just checks to see if etcd-operator is installed
-    // We need a better test to see if the system is already installed
-    await context
-        .object({
-            kind: 'Pod'
-        })
-        .list({ app: 'etcd' })
-        .check(
-            () => context.log('Nothing to do here'),
-            provisionEtcd
-        )
-        .run()
+export async function provision(cluster: Cluster, spec) {
+    init(spec)
+    await ensureEtcdIsInstalled(cluster, spec)
+    await ensureEtcdIsRunning(cluster)
+
 }
 
-async function provisionEtcd(pods) {
-    const { context } = pods
+function init(spec) {
+    namespace = spec.namespace.metadata.name
 
-    context.log(`\n###=> Setting up etcd \n`)
-
-    pods
-        .watch()
-        .when(
-            ({ obj, condition }) => obj.metadata.name == 'etcd-0' && condition.Ready == 'True',
-            () => pods.doneWatch()
-        )
-
-    const replicas = context.params.spec.replicas || 3
-    const storageClass = context.params.spec.storageClass || "do-block-storage"
-
-    const settings = {
-        replicas,
-        storageClass,
-        peers: "etcd-0=http://etcd-0.etcd:2380,etcd-1=http://etcd-1.etcd:2380,etcd-2=http://etcd-2.etcd:2380",
+    etcdPods = {
+        kind: 'Pod',
+        metadata: {
+            namespace,
+            labels: {
+                app: 'etcd'
+            }
+        }
     }
+}
 
-    await context
-        .fromFile('../k8s/etcd.yaml', settings)
-        .apply()
-        .run()
+async function ensureEtcdIsInstalled(cluster: Cluster, spec) {
+    await cluster
+            .begin(`Install etcd services`)
+                .list(etcdPods)
+                .do( (result, processor) => {
 
-        context.log('Waiting for etcd to start...')
-    await pods.watchCompletion()
-    context.log('Done waiting for etcd to start...')
+                    if (result?.object?.items?.length == 0) {
+                            // There are no etcd pods
 
+                            const replicas = spec.replicas || 3
+                            const storageClass = spec.storageClass || "do-block-storage"
+                        
+                            const settings = {
+                                namespace,
+                                replicas,
+                                storageClass,
+                                peers: "etcd-0=http://etcd-0.etcd:2380,etcd-1=http://etcd-1.etcd:2380,etcd-2=http://etcd-2.etcd:2380",
+                            }
+
+                            // Install etcd
+                            processor
+                                .apply('../k8s/{version}/etcd.yaml', settings)
+                        }
+                })
+            .end()
+}
+
+/** Watches pods and ensures that a pod is running and sets runningPod */
+async function ensureEtcdIsRunning(cluster: Cluster) {
+    await cluster.
+            begin(`Ensure etcd services are running`)
+                .beginWatch(etcdPods)
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                    runningPod = pod
+                    processor.endWatch()
+                })
+            .end()
 }

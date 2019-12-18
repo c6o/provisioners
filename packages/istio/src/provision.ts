@@ -1,41 +1,70 @@
-import { createDebug, asyncForEach } from '@traxitt/common'
-import { Context } from '@traxitt/kubeclient'
+import { createDebug } from '@traxitt/common'
+import { Cluster, Processor } from '@traxitt/kubeclient'
 
 const debug = createDebug()
 const expectedCRDCount = 22
 
-export async function provision(context: Context) {
-    debug('provision called', context)
+let namespace
+let crdDocument
 
-    const istioContext = new Context('istio-system', context.options)
-    istioContext.log('\n###=> Setting up istio\n')
+export async function provision(cluster: Cluster, spec) {
+    debug('provision called', spec)
 
-    await istioContext
-        .namespaceObject
-        .apply()
-        .fromFile('../k8s/crds.yaml')
-        .apply()
-        .attempt(10, 10000, countCRDs)
-        .fromFile('../k8s/istio-demo.yaml')
-        .apply()
-        .run()
+    init(spec)
+    await installCrds(cluster)
+    await ensureCrdsApplied(cluster)
+    await installIstioServices(cluster)
 }
 
-async function countCRDs(context) {
-    const namelessContext = new Context('istio-system', context.options)
+function init(spec) {
+    namespace = spec.namespace.metadata.name
 
-    const crds =
-        namelessContext
-            .object({
-                kind: 'CustomResourceDefinition',
-                apiVersion: 'apiextensions.k8s.io/v1beta1'
-            })
-            .list({ release: "istio" })
+    crdDocument = {
+        apiVersion: 'apiextensions.k8s.io/v1beta1',
+        kind: 'CustomResourceDefinition',
+        metadata: {
+            namespace,
+            labels: {
+                release: 'istio'
+            }
+        }
+    }
+}
 
-    await namelessContext.run()
+async function installCrds(cluster: Cluster) {
+    await cluster
+            .begin(`Install istio resource definitions`)
+                .apply('../k8s/crds.yaml')
+            .end()
+}
 
-    const count = crds.result.items.length
-    // crds.result.items.forEach(crd => namelessContext.log(`CRD: ${crd.metadata.name}`))
-    namelessContext.log(`CustomResourceDefinitions applied ${count} of ${expectedCRDCount}`)
-    return count >= expectedCRDCount
+async function installIstioServices(cluster: Cluster) {
+    await cluster
+            .begin(`Install istio services`)
+                .apply('../k8s/istio-demo.yaml')
+            .end()
+}
+
+
+async function ensureCrdsApplied(cluster: Cluster) {
+    await cluster
+            .begin(`Insure istio resource definitions applied`)
+                .attempt(10, 1000, countCRDs)
+            .end()
+
+}
+
+async function countCRDs(processor: Processor, attempt) {
+    const cluster = new Cluster(processor.cluster.options)
+    let count = 0
+    await cluster
+            .begin()
+                .list(crdDocument)
+                .do( result =>
+                    count = result?.object?.items?.length
+                )
+            .end()
+
+    cluster.status.log(`Retrieved ${count} out of ${expectedCRDCount} CRDs attempt ${attempt}`)
+    return count > expectedCRDCount
 }

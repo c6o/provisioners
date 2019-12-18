@@ -1,18 +1,16 @@
-import { createDebug, asyncForEach } from '@traxitt/common'
-import { Context } from '@traxitt/kubeclient'
+import { createDebug } from '@traxitt/common'
+import { Cluster } from '@traxitt/kubeclient'
 
 const debug = createDebug()
 
-export async function provision(context: Context) {
-    debug('provision called', context)
+export async function provision(cluster: Cluster, spec) {
+    debug('provision called', spec)
 
-    const tag = context.options.tag || 'canary'
-    context.log(`\n###=> Setting up traxitt-system with tag ${tag}\n`)
+    const tag = cluster.options.tag || 'canary'
 
-    await context
-        .fromFile('../k8s/publisher.yaml', { tag })
-        .apply()
-        .fromFile('../k8s/subscriber.yaml', { tag })
-        .apply()
-        .run()
+    await cluster
+            .begin(`Install pub/sub system`)
+            .apply('../k8s/publisher.yaml', { tag })
+            .apply('../k8s/subscriber.yaml', { tag })
+        .end()
 }

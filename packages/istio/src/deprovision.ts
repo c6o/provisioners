@@ -1,9 +1,9 @@
 import { createDebug } from '@traxitt/common'
-import { Context } from '@traxitt/kubeclient'
+import { Cluster } from '@traxitt/kubeclient'
 
 const debug = createDebug()
 
-export async function deprovision(context: Context) {
-    debug('deprovision called', context)
+export async function deprovision(cluster: Cluster, spec) {
+    debug('deprovision called', cluster)
     // Nothing really to do here
 }
