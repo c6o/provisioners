@@ -1,2 +1,2 @@
-export * from './loadYaml'
+export * from './namespace'
 export * from './password'

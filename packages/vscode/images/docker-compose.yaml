@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  base-dev:
+    image: traxitt/base-dev
+    build:
+      context: base
+  node-dev:
+    image: traxitt/node-dev
+    build:
+      context: node
+  # go-dev:
+  #   image: traxitt/go-dev
+  #   build:
+  #     context: go

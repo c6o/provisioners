@@ -1,5 +1,6 @@
 import { createDebug } from '@traxitt/common'
 import { Cluster } from '@traxitt/kubeclient'
+import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 
@@ -8,7 +9,11 @@ let rabbitMQPods
 let runningPod
 
 export async function provision(cluster: Cluster, spec) {
+
+    await ensureNamespaceExists(cluster, spec)
+
     init(spec)
+    
     await ensureRabbitMQIsInstalled(cluster, spec)
     await ensureRabbitMQIsRunning(cluster)
 
@@ -38,8 +43,8 @@ async function ensureRabbitMQIsInstalled(cluster: Cluster, spec) {
                             // There are no rabbitMQ pods running
                             // Install rabbitMQ
                             processor
-                                .apply('../k8s/rabbitmq_rbac.yaml', { namespace })
-                                .apply('../k8s/{version}/rabbitmq.yaml', { namespace })
+                                .upsertFile('../k8s/rabbitmq_rbac.yaml', { namespace })
+                                .upsertFile('../k8s/{version}/rabbitmq.yaml', { namespace })
 
                         }
                 })

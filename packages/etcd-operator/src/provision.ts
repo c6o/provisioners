@@ -1,5 +1,6 @@
 import { createDebug, asyncForEach } from '@traxitt/common'
 import { Cluster } from '@traxitt/kubeclient'
+import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 
@@ -8,6 +9,9 @@ let etcdOperatorPods
 let etcdPods
 
 export async function provision(cluster: Cluster, spec) {
+
+    await ensureNamespaceExists(cluster, spec)
+    
     init(spec)
 
     await ensureEtcdOperatorIsInstalled(cluster, spec)
@@ -53,9 +57,9 @@ async function ensureEtcdOperatorIsInstalled(cluster: Cluster, spec) {
 
                             // Install etcd
                             processor
-                                .apply('../k8s/rbac/clusterrole.yaml', settings)
-                                .apply('../k8s/rbac/clusterrolebinding.yaml', settings)
-                                .apply('../k8s/deployment.yaml', settings)
+                                .upsertFile('../k8s/rbac/clusterrole.yaml', settings)
+                                .upsertFile('../k8s/rbac/clusterrolebinding.yaml', settings)
+                                .upsertFile('../k8s/deployment.yaml', settings)
 
                         }
                 })
@@ -78,7 +82,7 @@ async function ensureEtcdIsInstalled(cluster: Cluster, spec) {
                             }
                             // Install etcd
                             processor
-                                .apply('../k8s/etcd-cluster.yaml', settings)
+                                .upsertFile('../k8s/etcd-cluster.yaml', settings)
 
                         }
                 })

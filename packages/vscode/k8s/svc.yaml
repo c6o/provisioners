@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dev-pod-svc
+  namespace: '{{namespace}}'
+  labels:
+    app: vscode
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 22
+      targetPort: 22
+  selector:
+    app: vscode

@@ -1,5 +1,6 @@
 import { createDebug } from '@traxitt/common'
 import { Cluster, Processor } from '@traxitt/kubeclient'
+import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 const expectedCRDCount = 22
@@ -10,7 +11,10 @@ let crdDocument
 export async function provision(cluster: Cluster, spec) {
     debug('provision called', spec)
 
+    await ensureNamespaceExists(cluster, spec)
+
     init(spec)
+
     await installCrds(cluster)
     await ensureCrdsApplied(cluster)
     await installIstioServices(cluster)
@@ -34,14 +38,14 @@ function init(spec) {
 async function installCrds(cluster: Cluster) {
     await cluster
             .begin(`Install istio resource definitions`)
-                .apply('../k8s/crds.yaml')
+                .upsertFile('../k8s/crds.yaml')
             .end()
 }
 
 async function installIstioServices(cluster: Cluster) {
     await cluster
             .begin(`Install istio services`)
-                .apply('../k8s/istio-demo.yaml')
+                .upsertFile('../k8s/istio-demo.yaml')
             .end()
 }
 
@@ -49,7 +53,7 @@ async function installIstioServices(cluster: Cluster) {
 async function ensureCrdsApplied(cluster: Cluster) {
     await cluster
             .begin(`Insure istio resource definitions applied`)
-                .attempt(10, 1000, countCRDs)
+                .upsertFile(10, 1000, countCRDs)
             .end()
 
 }

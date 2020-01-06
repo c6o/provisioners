@@ -1,5 +1,6 @@
 import { createDebug } from '@traxitt/common'
 import { Cluster } from '@traxitt/kubeclient'
+import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 
@@ -8,6 +9,9 @@ let etcdPods
 let runningPod
 
 export async function provision(cluster: Cluster, spec) {
+
+    await ensureNamespaceExists(cluster, spec)
+
     init(spec)
     await ensureEtcdIsInstalled(cluster, spec)
     await ensureEtcdIsRunning(cluster)
@@ -49,7 +53,7 @@ async function ensureEtcdIsInstalled(cluster: Cluster, spec) {
 
                             // Install etcd
                             processor
-                                .apply('../k8s/{version}/etcd.yaml', settings)
+                                .upsertFile('../k8s/{version}/etcd.yaml', settings)
                         }
                 })
             .end()

@@ -1,5 +1,6 @@
 import { createDebug, asyncForEach } from '@traxitt/common'
 import { Cluster } from '@traxitt/kubeclient'
+import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 
@@ -9,10 +10,13 @@ let kafkaZookeeperPods
 let runningPod
 
 export async function provision(cluster: Cluster, spec) {
+
+    await ensureNamespaceExists(cluster, spec)
+
     init(spec)
+
     await ensureKafkaIsInstalled(cluster, spec)
     await ensureKafkaIsRunning(cluster)
-
 }
 
 function init(spec) {
@@ -50,7 +54,7 @@ async function ensureKafkaIsInstalled(cluster: Cluster, spec) {
                             // There are no kafka brokers
                             // Install kafka
                             processor
-                                .apply('../k8s/kafka-complete.yaml', { namespace })
+                                .upsertFile('../k8s/kafka-complete.yaml', { namespace })
 
                         }
                 })

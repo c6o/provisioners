@@ -3,6 +3,7 @@ import { MongoClient } from 'mongodb'
 import { createDebug, asyncForEach } from '@traxitt/common'
 import { Cluster, Processor } from '@traxitt/kubeclient'
 import { processPassword } from '@provisioner/common'
+import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 
@@ -21,7 +22,10 @@ let configMap
 export async function provision(cluster: Cluster, spec) {
     debug('provision called', cluster)
 
+    await ensureNamespaceExists(cluster, spec)
+
     init(spec)
+
     await ensureMongoDbIsInstalled(cluster, spec)
     await ensureMongoDbIsRunning(cluster)
     await ensureMongoDbIsProvisioned(cluster, spec)
@@ -64,10 +68,10 @@ async function ensureMongoDbIsInstalled(cluster: Cluster, spec) {
 
                             // Install mongodb
                             processor
-                                .apply('../k8s/pvc.yaml', { namespace })
-                                .apply('../k8s/statefulset.yaml', { namespace, rootPassword })
-                                .apply('../k8s/service.yaml', { namespace })
-                                .apply('../k8s/root-secret.yaml', { namespace, rootPassword : Buffer.from(rootPassword).toString('base64') })
+                                .upsertFile('../k8s/pvc.yaml', { namespace })
+                                .upsertFile('../k8s/statefulset.yaml', { namespace, rootPassword })
+                                .upsertFile('../k8s/service.yaml', { namespace })
+                                .upsertFile('../k8s/root-secret.yaml', { namespace, rootPassword : Buffer.from(rootPassword).toString('base64') })
 
                         } else {
                             // Mongodb is already installed. Fetch the rootPassword

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dev-pod
+  namespace: '{{namespace}}'
+  labels:
+    app: vscode
+spec:
+  containers:
+  - name: dev-pod-container
+    image: '{{image}}'
+    ports:
+      - containerPort: 22
+    volumeMounts:
+      - mountPath: "/data"
+        name: dev-do-volume
+  volumes:
+    - name: dev-do-volume
+      persistentVolumeClaim:
+        claimName: dev-pvc

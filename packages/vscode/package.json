@@ -1,26 +1,29 @@
 {
-  "name": "@provisioner/common",
+  "name": "@provisioner/vscode",
   "version": "0.0.0",
-  "description": "Common stuff for provisioners",
+  "description": "Traxitt provisioner for vscode",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -b",
+    "develop": "tsc -b -w --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "develop": "tsc -b -w --preserveWatchOutput"
+    "dev-images": "cd images && docker-compose build && docker-compose push"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nsainaney/traxitt.git"
   },
   "files": [
-    "lib"
+    "lib",
+    "k8s"
   ],
   "publishConfig": {
     "access": "private"
   },
   "keywords": [
     "traxitt",
-    "provisioner"
+    "provisioner",
+    "traxitt-system"
   ],
   "author": "Narayan Sainaney",
   "license": "UNLICENSED",
@@ -29,8 +32,8 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
+    "@provisioner/common": "^0.0.0",
     "@traxitt/common": "^0.0.2",
-    "@traxitt/kubeclient": "^0.0.1",
-    "generate-password": "^1.4.1"
+    "@traxitt/kubeclient": "^0.0.1"
   }
 }
