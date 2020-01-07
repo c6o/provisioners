@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: '{{namespace}}'
+    name: node-red
+    labels:
+        name: node-red
+        role: server
+spec:
+    ports:
+    - port: 1880
+    targetPort: 1880
+    type: NodePort
+    selector:
+        name: node-red

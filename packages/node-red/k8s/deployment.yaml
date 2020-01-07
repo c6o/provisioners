@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: '{{namespace}}'
+  name: node-red
+  labels:
+    role: server
+    name: node-red
+spec:
+  selector:
+    matchLabels:
+      name: node-red
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: server
+        name: node-red
+    spec:
+      containers:
+      - name: node-red
+        image: nodered/node-red
+        ports:
+          - name: node-red
+            containerPort: 1880
+            hostPort: 1880
