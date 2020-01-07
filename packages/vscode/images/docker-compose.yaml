@@ -8,7 +8,7 @@ services:
     image: traxitt/node-dev
     build:
       context: node
-  # go-dev:
-  #   image: traxitt/go-dev
-  #   build:
-  #     context: go
+  go-dev:
+    image: traxitt/go-dev
+    build:
+      context: go
