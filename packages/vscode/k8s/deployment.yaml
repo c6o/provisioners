@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dev-dep
+    namespace: '{{namespace}}'
+    labels:
+        app: vscode
+spec:
+    selector:
+        matchLabels:
+            app: vscode
+    replicas: 1
+    template:
+        metadata:
+            labels:
+                app: vscode
+        spec:
+            containers:
+            - name: dev-pod
+              image: '{{image}}'
+              ports:
+                - name: ssh
+                  containerPort: 22
+                - name: dev-3030
+                  containerPort: 3030
+              volumeMounts:
+                - mountPath: "/data"
+                  name: dev-do-volume
+            volumes:
+              - name: dev-do-volume
+                persistentVolumeClaim:
+                  claimName: dev-pvc

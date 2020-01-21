@@ -12,7 +12,8 @@ export async function deprovision(cluster: Cluster, spec) {
 
     await cluster
         .begin(`Uninstall dev services`)
-            .deleteFile('../k8s/pod.yaml', { namespace, image: '' })
+            .deleteFile('../k8s/deployment.yaml', { namespace })
+            .deleteFile('../k8s/devSvc.yaml', { namespace })
             .if(!spec.options['keep-ip'], (processor) => processor.deleteFile('../k8s/svc.yaml', { namespace }))
             .if(!spec.options['keep-vol'], (processor) => processor.deleteFile('../k8s/pvc.yaml', { namespace }))
         .end()

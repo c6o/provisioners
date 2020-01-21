@@ -7,6 +7,7 @@ const debug = createDebug()
 
 let namespace
 let devPods
+let runningPod
 let devService
 let externalIP
 
@@ -18,8 +19,9 @@ export async function provision(cluster: Cluster, spec) {
 
     await ensureDevPodIsInstalled(cluster, spec)
     await ensurePodIsRunning(cluster)
+    await copyAuthorizationKeys(cluster)
     await ensureLoadBlanacerIP(cluster)
-    
+
     launchVSCode()
 }
 
@@ -62,8 +64,9 @@ async function ensureDevPodIsInstalled(cluster: Cluster, spec) {
                             // There are no vscode pods running
                             processor
                                 .upsertFile('../k8s/pvc.yaml', { namespace })
-                                .upsertFile('../k8s/pod.yaml', { namespace, image })
+                                .upsertFile('../k8s/deployment.yaml', { namespace, image })
                                 .upsertFile('../k8s/svc.yaml', { namespace })
+                                .upsertFile('../k8s/devSvc.yaml', { namespace })
 
                         }
                 })
@@ -75,7 +78,8 @@ async function ensurePodIsRunning(cluster: Cluster) {
     await cluster.
             begin(`Ensure pod is running`)
                 .beginWatch(devPods)
-                .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                    runningPod = pod
                     processor.endWatch()
                 })
             .end()
@@ -90,6 +94,19 @@ async function ensureLoadBlanacerIP(cluster: Cluster) {
                     externalIP = service.status.loadBalancer.ingress[0].ip
                     processor.endWatch()
                 })
+            .end()
+}
+
+async function copyAuthorizationKeys(cluster: Cluster) {
+
+    const idrsa = cluster.options.key || '~/.ssh/id_rsa.pub'
+
+    await cluster.
+            begin(`Copy authorization_keys`)
+                .exec(runningPod, ['mkdir', '-p', '/data/.ssh'])
+                .copy(runningPod, idrsa, '/data/.ssh/authorized_keys')
+                // The following doesn't seem to be required
+                //.exec(runningPod, ['chown', 'root:root','/root/.ssh/authorized_keys'])
             .end()
 }
 

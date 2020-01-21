@@ -13,6 +13,13 @@ RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/a
 RUN apt-get update
 RUN apt-get install -y kubectl
 
+# Set path to ssh keys to the data folder
+RUN echo "AuthorizedKeysFile /data/.ssh/authorized_keys" >> /etc/ssh/sshd_config
+RUN echo "IdentityFile /data/.ssh/id_rsa" >> /etc/ssh/ssh_config
+
+# Remove root password
+RUN passwd -d root
+
 FROM scratch
 COPY --from=needs-squashing / /
 EXPOSE 22
