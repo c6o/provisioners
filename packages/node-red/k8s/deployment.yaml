@@ -17,10 +17,24 @@ spec:
         role: server
         name: node-red
     spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
       containers:
       - name: node-red
         image: nodered/node-red
+        env:
+          - name: NODE_RED_ENABLE_PROJECTS
+            value: '{{projects}}'
         ports:
           - name: node-red
             containerPort: 1880
             hostPort: 1880
+        volumeMounts:
+          - mountPath: "/data"
+            name: node-red-volume
+      volumes:
+        - name: node-red-volume
+          persistentVolumeClaim:
+            claimName: node-red-pvc
+            
