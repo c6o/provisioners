@@ -53,7 +53,7 @@ async function installIstioServices(cluster: Cluster) {
 async function ensureCrdsApplied(cluster: Cluster) {
     await cluster
             .begin(`Ensure istio resource definitions applied`)
-                .attempt(10, 1000, countCRDs)
+                .attempt(20, 2000, countCRDs)
             .end()
 
 }
