@@ -2,7 +2,7 @@ import { LitElement, html, customElement, property } from 'lit-element'
 
 @customElement('nodered-capacity')
 export class NodeRedCapacity extends LitElement {
-    values = ['500Mi','1Gi','2Gi','4Gi']
+    values = ['1Gi','2Gi','4Gi']
 
     applicationSpec
 

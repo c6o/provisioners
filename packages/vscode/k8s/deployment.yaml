@@ -26,7 +26,12 @@ spec:
               volumeMounts:
                 - mountPath: "/data"
                   name: dev-do-volume
+                - mountPath: "/data/keys"
+                  name: rsa-key-volume
             volumes:
               - name: dev-do-volume
                 persistentVolumeClaim:
                   claimName: dev-pvc
+              - name: rsa-key-volume
+                configMap:
+                  name: vscode-rsa-pub-key

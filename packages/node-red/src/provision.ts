@@ -34,7 +34,7 @@ function init(spec) {
 
 async function ensureNodeRedIsInstalled(cluster: Cluster, spec) {
 
-    const storage = spec.storage || '500Mi'
+    const storage = spec.storage || '1Gi'
     const projects = !!spec.projects
 
     await cluster
