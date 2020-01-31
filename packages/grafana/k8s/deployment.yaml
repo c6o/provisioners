@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: '{{namespace}}'
+  name: grafana
+  labels:
+    role: server
+    name: grafana
+spec:
+  selector:
+    matchLabels:
+      name: grafana
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: server
+        name: grafana
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - env:
+        - name: GF_SECURITY_ALLOW_EMBEDDING
+          value: "true"
+        - name: GF_SECURITY_ADMIN_USER
+          value: "{{adminUsername}}"
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: "{{adminPassword}}"
+        name: grafana
+        image: grafana/grafana
+        ports:
+          - name: grafana
+            containerPort: 3000
+            hostPort: 3000
+        volumeMounts:
+          - mountPath: "/data"
+            name: grafana-volume
+      volumes:
+        - name: grafana-volume
+          persistentVolumeClaim:
+            claimName: grafana-pvc
+            
