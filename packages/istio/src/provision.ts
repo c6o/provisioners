@@ -69,6 +69,6 @@ async function countCRDs(processor: Processor, attempt) {
                 )
             .end()
 
-    cluster.status.log(`Retrieved ${count} out of ${expectedCRDCount} CRDs attempt ${attempt}`)
+    cluster.status?.log(`Retrieved ${count} out of ${expectedCRDCount} CRDs attempt ${attempt}`)
     return count > expectedCRDCount
 }
