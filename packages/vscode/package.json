@@ -4,7 +4,7 @@
   "description": "Traxitt provisioner for vscode",
   "main": "lib/index.js",
   "scripts": {
-    "bundle": "parcel build ./src/store/index.ts --no-cache --out-dir ./lib/store",
+    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
     "build": "tsc -b && yarn run bundle",
     "develop": "tsc -b -w --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1",

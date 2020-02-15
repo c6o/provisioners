@@ -1,9 +1,17 @@
 import { LitElement, html, customElement, property } from 'lit-element'
 
-@customElement('grafana-credentials')
+@customElement('grafana-install-main')
 export class GrafanaCredentials extends LitElement {
 
-    applicationSpec
+    serviceSpec
+    installer
+
+    set applicationSpec(spec) {
+        this.serviceSpec = spec.services.find( (service) => {
+            const serviceName = Object.keys(service)[0]
+            return serviceName == "grafana"
+        })
+    }
 
     render() {
         return html`
@@ -17,15 +25,15 @@ export class GrafanaCredentials extends LitElement {
 
     usernameChanged = (e) => {
         if (e.target.value.length)
-            this.applicationSpec.services['grafana'].adminUsername = e.target.value
+            this.serviceSpec['grafana'].adminUsername = e.target.value
         else
-            this.applicationSpec.services['grafana'].adminUsername.reset()
+            this.serviceSpec['grafana'].adminUsername.reset()
     }
 
     passwordChanged = (e) => {
         if (e.target.value.length)
-            this.applicationSpec.services['grafana'].adminPassword = e.target.value
+            this.serviceSpec['grafana'].adminPassword = e.target.value
         else
-            this.applicationSpec.services['grafana'].adminPassword.reset()
+            this.serviceSpec['grafana'].adminPassword.reset()
     }
 }

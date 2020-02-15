@@ -1,20 +1,21 @@
+import { baseProvisionerType } from './index'
 import { createDebug } from '@traxitt/common'
-import { Cluster } from '@traxitt/kubeclient'
-import { ensureNamespaceExists } from '@provisioner/common'
 
 const debug = createDebug()
 
-export async function provision(cluster: Cluster, spec) {
+export const provisionMixin = (base: baseProvisionerType) => class extends base {
 
-    await ensureNamespaceExists(cluster, spec)
+    async provision() {
+        debug('provision called', this.spec)
 
-    debug('provision called', spec)
+        await this.ensureServiceNamespacesExist()
 
-    const tag = cluster.options.tag || 'canary'
+        const tag = this.options.tag || 'canary'
 
-    await cluster
-            .begin(`Install pub/sub system`)
+        await this.manager.cluster
+        .begin(`Install pub/sub system`)
             .upsertFile('../k8s/publisher.yaml', { tag })
             .upsertFile('../k8s/subscriber.yaml', { tag })
         .end()
+    }
 }

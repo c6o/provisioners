@@ -1,9 +1,7 @@
-import { createDebug } from '@traxitt/common'
-import { Cluster } from '@traxitt/kubeclient'
+import { baseProvisionerType } from './index'
 
-const debug = createDebug()
-
-export async function deprovision(cluster: Cluster, spec) {
-    debug('deprovision called', spec)
-    // Nothing really to do here
+export const deprovisionMixin = (base: baseProvisionerType) => class extends base {
+    async deprovision() {
+        // TODO: Implement deprovision
+    }
 }

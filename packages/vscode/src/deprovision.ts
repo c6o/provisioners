@@ -1,21 +1,19 @@
-import { createDebug } from '@traxitt/common'
-import { Cluster } from '@traxitt/kubeclient'
-import { ensureNamespaceObject } from '@provisioner/common'
+import { baseProvisionerType } from './index'
 
-const debug = createDebug()
+export const deprovisionMixin = (base: baseProvisionerType) => class extends base {
+    async deprovision() {
+        this.ensureServiceNamespacesExist()
 
-export async function deprovision(cluster: Cluster, spec) {
-
-    ensureNamespaceObject(spec)
-
-    const namespace = spec.namespace.metadata.name
-
-    await cluster
-        .begin(`Uninstall dev services`)
-            .deleteFile('../k8s/deployment.yaml', { namespace })
-            .deleteFile('../k8s/devSvc.yaml', { namespace })
-            .if(!spec.options['keep-ip'], (processor) => processor.deleteFile('../k8s/svc.yaml', { namespace }))
-            .if(!spec.options['keep-vol'], (processor) => processor.deleteFile('../k8s/pvc.yaml', { namespace }))
-        .end()
+        const namespace = this.serviceNamespace
+        const keepIp = this.options['keep-ip']
+        const keepVol = this.options['keep-vol']
+    
+        await this.manager.cluster
+            .begin(`Uninstall dev services`)
+                .deleteFile('../k8s/deployment.yaml', { namespace })
+                .deleteFile('../k8s/devSvc.yaml', { namespace })
+                .if(!keepIp, (processor) => processor.deleteFile('../k8s/svc.yaml', { namespace }))
+                .if(!keepVol, (processor) => processor.deleteFile('../k8s/pvc.yaml', { namespace }))
+            .end()
+    }
 }
-

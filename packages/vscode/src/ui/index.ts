@@ -1,11 +1,18 @@
 import { LitElement, html, customElement } from 'lit-element'
 
-@customElement('vscode-capacity')
+@customElement('vscode-install-main')
 export class VSCodeCapacity extends LitElement {
     values = ['1Gi','2Gi','4Gi','8Gi']
 
-    applicationSpec
     publicKey
+    serviceSpec
+
+    set applicationSpec(spec) {
+        this.serviceSpec = spec.services.find( (service) => {
+            const serviceName = Object.keys(service)[0]
+            return serviceName == "vscode"
+        })
+    }
 
     render() {
         return html`
@@ -19,8 +26,7 @@ export class VSCodeCapacity extends LitElement {
     }
 
     storageSelected = (e) => {
-        // TODO: just provide the service, not the entire spec?
-        this.applicationSpec.services['vscode'].storage = e.detail.value
+        this.serviceSpec['vscode'].storage = e.detail.value
     }
 
     upload(event) {
@@ -28,7 +34,7 @@ export class VSCodeCapacity extends LitElement {
         const reader = new FileReader()
         reader.onload = (e) => {
             this.publicKey = e.target.result
-            this.applicationSpec.services['vscode'].publicKey = this.publicKey
+            this.serviceSpec['vscode'].publicKey = this.publicKey
         }
         reader.readAsText(event.detail.file)
         event.detail.file.complete = true

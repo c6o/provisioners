@@ -1,65 +1,54 @@
-import { createDebug } from '@traxitt/common'
-import { Cluster } from '@traxitt/kubeclient'
-import { ensureNamespaceExists } from '@provisioner/common'
+import { baseProvisionerType } from './index'
 
-const debug = createDebug()
+export const provisionMixin = (base: baseProvisionerType) => class extends base {
 
-let namespace
-let rabbitMQPods
-let runningPod
+    async provision() {
+        await this.ensureServiceNamespacesExist()
+        await this.ensureRabbitMQIsInstalled()
+        await this.ensureRabbitMQIsRunning()
+    }
 
-export async function provision(cluster: Cluster, spec) {
-
-    await ensureNamespaceExists(cluster, spec)
-
-    init(spec)
-    
-    await ensureRabbitMQIsInstalled(cluster, spec)
-    await ensureRabbitMQIsRunning(cluster)
-
-}
-
-function init(spec) {
-    namespace = spec.namespace.metadata.name
-
-    rabbitMQPods = {
-        kind: 'Pod',
-        metadata: {
-            namespace,
-            labels: {
-                app: 'rabbitmq'
+    get rabbitMQPods() {
+        return {
+            kind: 'Pod',
+            metadata: {
+                namespace: this.serviceNamespace,
+                labels: {
+                    app: 'rabbitmq'
+                }
             }
         }
     }
-}
 
-async function ensureRabbitMQIsInstalled(cluster: Cluster, spec) {
-    await cluster
+    async ensureRabbitMQIsInstalled() {
+        const namespace = this.serviceNamespace
+
+        await this.manager.cluster
             .begin(`Install rabbitMQ services`)
-                .list(rabbitMQPods)
-                .do( (result, processor) => {
+            .list(this.rabbitMQPods)
+            .do((result, processor) => {
 
-                    if (result?.object?.items?.length == 0) {
-                            // There are no rabbitMQ pods running
-                            // Install rabbitMQ
-                            processor
-                                .upsertFile('../k8s/rabbitmq_rbac.yaml', { namespace })
-                                .upsertFile('../k8s/{version}/rabbitmq.yaml', { namespace })
+                if (result?.object?.items?.length == 0) {
+                    // There are no rabbitMQ pods running
+                    // Install rabbitMQ
+                    processor
+                        .upsertFile('../k8s/rabbitmq_rbac.yaml', { namespace })
+                        .upsertFile('../k8s/{version}/rabbitmq.yaml', { namespace })
 
-                        }
-                })
+                }
+            })
             .end()
-}
+    }
 
-/** Watches pods and ensures that a pod is running and sets runningPod */
-async function ensureRabbitMQIsRunning(cluster: Cluster) {
-    await cluster.
+    /** Watches pods and ensures that a pod is running and sets runningPod */
+    async ensureRabbitMQIsRunning() {
+        await this.manager.cluster.
             begin(`Ensure a rabbitMQ replica is running`)
-                .beginWatch(rabbitMQPods)
-                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
-                    runningPod = pod
-                    processor.endWatch()
-                })
+            .beginWatch(this.rabbitMQPods)
+            .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                processor.endWatch()
+            })
             .end()
+    }
 }
 

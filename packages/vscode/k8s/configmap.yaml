@@ -5,4 +5,4 @@ data:
 kind: ConfigMap
 metadata:
   name: vscode-rsa-pub-key
-  namespace: vscode
+  namespace: {{namespace}}

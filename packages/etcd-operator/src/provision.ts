@@ -1,102 +1,97 @@
-import { createDebug, asyncForEach } from '@traxitt/common'
-import { Cluster } from '@traxitt/kubeclient'
-import { ensureNamespaceExists } from '@provisioner/common'
+import { baseProvisionerType } from './index'
+import { createDebug } from '@traxitt/common'
 
-const debug = createDebug()
+export const provisionMixin = (base: baseProvisionerType) => class extends base {
 
-let namespace
-let etcdOperatorPods
-let etcdPods
-
-export async function provision(cluster: Cluster, spec) {
-
-    await ensureNamespaceExists(cluster, spec)
-    
-    init(spec)
-
-    await ensureEtcdOperatorIsInstalled(cluster, spec)
-    await ensurePodIsRunning(cluster, etcdOperatorPods, 'ensure etcd operator is running')
-    await ensureEtcdIsInstalled(cluster, spec)
-    await ensurePodIsRunning(cluster, etcdPods, 'ensure etcd is running')
-}
-
-function init(spec) {
-    namespace = spec.namespace.metadata.name
-
-    etcdPods = {
-        kind: 'Pod',
-        metadata: {
-            namespace,
-            labels: { name: 'etcd' }
+    get etcdPods() {
+        return {
+            kind: 'Pod',
+            metadata: {
+                namespace: this.serviceNamespace,
+                labels: { name: 'etcd' }
+            }
         }
     }
 
-    etcdOperatorPods = {
-        kind: 'Pod',
-        metadata: {
-            namespace,
-            labels: { name: 'etcd-operator' }
+    get etcdOperatorPods() {
+        return {
+            kind: 'Pod',
+            metadata: {
+                namespace: this.serviceNamespace,
+                labels: { name: 'etcd-operator' }
+            }
         }
     }
-}
 
-async function ensureEtcdOperatorIsInstalled(cluster: Cluster, spec) {
-    await cluster
+    async provision() {
+        await this.ensureServiceNamespacesExist()
+        await this.ensureEtcdOperatorIsInstalled()
+        await this.ensurePodIsRunning(this.etcdOperatorPods, 'ensure etcd operator is running')
+        await this.ensureEtcdIsInstalled()
+        await this.ensurePodIsRunning(this.etcdPods, 'ensure etcd is running')
+    }
+
+    async ensureEtcdOperatorIsInstalled() {
+
+        const namespace = this.serviceNamespace
+
+        await this.manager.cluster
             .begin(`Install etcd operator services`)
-                .list(etcdOperatorPods)
-                .do((result, processor) => {
+            .list(this.etcdOperatorPods)
+            .do((result, processor) => {
 
-                    if (result?.object?.items?.length == 0) {
-                            // There are no etcd operator pods
+                if (result?.object?.items?.length == 0) {
+                    // There are no etcd operator pods
 
-                            const settings = {
-                                role_binding_name: 'etcd-cluster',
-                                role_name: 'etcd-cluster',
-                                namespace
-                            }
+                    const settings = {
+                        role_binding_name: 'etcd-cluster',
+                        role_name: 'etcd-cluster',
+                        namespace
+                    }
 
-                            // Install etcd
-                            processor
-                                .upsertFile('../k8s/rbac/clusterrole.yaml', settings)
-                                .upsertFile('../k8s/rbac/clusterrolebinding.yaml', settings)
-                                .upsertFile('../k8s/deployment.yaml', settings)
+                    // Install etcd
+                    processor
+                        .upsertFile('../k8s/rbac/clusterrole.yaml', settings)
+                        .upsertFile('../k8s/rbac/clusterrolebinding.yaml', settings)
+                        .upsertFile('../k8s/deployment.yaml', settings)
 
-                        }
-                })
+                }
+            })
             .end()
-}
+    }
 
-async function ensureEtcdIsInstalled(cluster: Cluster, spec) {
-    await cluster
+    async ensureEtcdIsInstalled() {
+        const namespace = this.serviceNamespace
+
+        await this.manager.cluster
             .begin(`Install etcd services`)
-                .list(etcdPods)
-                .do( (result, processor) => {
+            .list(this.etcdPods)
+            .do((result, processor) => {
 
-                    if (result?.object?.items?.length == 0) {
-                            // There are no etcd pods
+                if (result?.object?.items?.length == 0) {
+                    // There are no etcd pods
+                    const settings = {
+                        role_binding_name: 'etcd-cluster',
+                        role_name: 'etcd-cluster',
+                        namespace
+                    }
+                    // Install etcd
+                    processor
+                        .upsertFile('../k8s/etcd-cluster.yaml', settings)
 
-                            const settings = {
-                                role_binding_name: 'etcd-cluster',
-                                role_name: 'etcd-cluster',
-                                namespace
-                            }
-                            // Install etcd
-                            processor
-                                .upsertFile('../k8s/etcd-cluster.yaml', settings)
-
-                        }
-                })
+                }
+            })
             .end()
-}
-
-/** Watches pods and ensures that a pod is running */
-async function ensurePodIsRunning(cluster: Cluster, podSpec, message) {
-    // obj.metadata.name == 'etcd-0'
-    await cluster.
+    }
+    /** Watches pods and ensures that a pod is running */
+    async ensurePodIsRunning(podSpec, message) {
+        // obj.metadata.name == 'etcd-0'
+        await this.manager.cluster.
             begin(message)
                 .beginWatch(podSpec)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()
                 })
             .end()
+    }
 }
