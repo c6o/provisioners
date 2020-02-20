@@ -7,6 +7,9 @@ This is a simple Grafana provisioner.  Once you've created an app called "grafan
 To test out Grafana once it's running in a cluster, browse to:
 http://localhost:3000/ and enter your administrator credentials.  If you didn't supply any, use admin / admin.
 
+Grafana configuration options:
+https://grafana.com/docs/grafana/latest/installation/configuration/
+
 ## Known issues:
 
 ### Port forwarding (manual step for now)
