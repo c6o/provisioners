@@ -49,49 +49,49 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
 
         debug('Installing Istio base')
         await this.manager.cluster
-            .begin(`Install istio services`)
+            .begin(`Install istio minimal`)
                 .upsertFile('../k8s/istio-minimal.yaml')
             .end()
 
         if (ingressEnabled) {
             debug('Installing Istio Ingress')
             await this.manager.cluster
-                .begin(`Install istio services`)
+                .begin(`Install istio ingress`)
                     .upsertFile('../k8s/ingress.yaml')
                 .end()
         }
         if (citadelEnabled) {
             debug('Installing Istio Citadel')
             await this.manager.cluster
-                .begin(`Install istio services`)
+                .begin(`Install citadel`)
                     .upsertFile('../k8s/citadel.yaml')
                 .end()
         }
         if (telemetryEnabled) {
             debug('Installing Istio Telemetry')
             await this.manager.cluster
-                .begin(`Install istio services`)
+                .begin(`Install telemetry`)
                     .upsertFile('../k8s/telemetry.yaml')
                 .end()
         }
         if (grafanaEnabled) {
             debug('Installing Istio Grafana')
             await this.manager.cluster
-                .begin(`Install istio services`)
+                .begin(`Install grafana`)
                     .upsertFile('../k8s/grafana.yaml')
                 .end()
         }
         if (kialiEnabled) {
             debug('Installing Istio Kiali')
             await this.manager.cluster
-                .begin(`Install istio services`)
+                .begin(`Install kiali`)
                     .upsertFile('../k8s/kiali.yaml')
                 .end()
         }
         if (prometheusEnabled) {
             debug('Installing Istio Prometheus')
             await this.manager.cluster
-                .begin(`Install istio services`)
+                .begin(`Install prometheus`)
                     .upsertFile('../k8s/prometheus.yaml')
                 .end()
         }
