@@ -1,16 +1,12 @@
 import { LitElement, html, customElement, property } from 'lit-element'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('grafana-install-main')
-export class GrafanaCredentials extends LitElement {
+export class GrafanaCredentials extends LitElement implements StoreFlowStep {
 
-    serviceSpec
-    installer
-
-    set applicationSpec(spec) {
-        this.serviceSpec = spec.services.find( (service) => {
-            const serviceName = Object.keys(service)[0]
-            return serviceName == "grafana"
-        })
+    mediator: StoreFlowMediator
+    get serviceSpec() {
+        return this.mediator.getServiceSpec('grafana')
     }
 
     render() {
@@ -24,16 +20,10 @@ export class GrafanaCredentials extends LitElement {
     }
 
     usernameChanged = (e) => {
-        if (e.target.value.length)
-            this.serviceSpec['grafana'].adminUsername = e.target.value
-        else
-            this.serviceSpec['grafana'].adminUsername.reset()
+        this.serviceSpec.adminUsername = e.target.value
     }
 
     passwordChanged = (e) => {
-        if (e.target.value.length)
-            this.serviceSpec['grafana'].adminPassword = e.target.value
-        else
-            this.serviceSpec['grafana'].adminPassword.reset()
+        this.serviceSpec.adminPassword = e.target.value
     }
 }

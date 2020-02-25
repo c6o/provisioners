@@ -40,7 +40,6 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                     .list(this.kafkaBrokerPods)
                     .do( (result, processor) => {
     
-                        debugger
                         if (result?.object?.items?.length == 0) {
                                 // There are no kafka brokers
                                 // Install kafka

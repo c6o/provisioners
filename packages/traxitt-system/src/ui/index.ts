@@ -1,11 +1,13 @@
-import { LitElement, html, customElement, property } from 'lit-element'
+import { LitElement, html, customElement } from 'lit-element'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('traxitt-system-setup')
-export class TraxittSystemSetup extends LitElement {
+export class TraxittSystemSetup extends LitElement implements StoreFlowStep {
 
-    applicationSpec
-
-    service = 'traxitt-system'
+    mediator: StoreFlowMediator
+    get serviceSpec() {
+        return this.mediator.getServiceSpec('traxitt-system')
+    }
 
     render() {
         return html`
@@ -18,16 +20,10 @@ export class TraxittSystemSetup extends LitElement {
     }
 
     companyNameChanged = (e) => {
-        if (e.target.value.length)
-            this.applicationSpec.services[this.service].companyName = e.target.value
-        else
-            this.applicationSpec.services[this.service].companyName.reset()
+        this.serviceSpec.companyName = e.target.value
     }
 
     clusterNameChanged = (e) => {
-        if (e.target.value.length)
-            this.applicationSpec.services[this.service].clusterName = e.target.value
-        else
-            this.applicationSpec.services[this.service].clusterName.reset()
+        this.serviceSpec.clusterName = e.target.value
     }
 }

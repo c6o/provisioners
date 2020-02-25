@@ -1,17 +1,15 @@
 import { LitElement, html, customElement } from 'lit-element'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('vscode-install-main')
-export class VSCodeCapacity extends LitElement {
+export class VSCodeCapacity extends LitElement implements StoreFlowStep {
     values = ['1Gi','2Gi','4Gi','8Gi']
 
     publicKey
-    serviceSpec
 
-    set applicationSpec(spec) {
-        this.serviceSpec = spec.services.find( (service) => {
-            const serviceName = Object.keys(service)[0]
-            return serviceName == "vscode"
-        })
+    mediator: StoreFlowMediator
+    get serviceSpec() {
+        return this.mediator.getServiceSpec('vscode')
     }
 
     render() {
@@ -26,7 +24,7 @@ export class VSCodeCapacity extends LitElement {
     }
 
     storageSelected = (e) => {
-        this.serviceSpec['vscode'].storage = e.detail.value
+        this.serviceSpec.storage = e.detail.value
     }
 
     upload(event) {
@@ -34,7 +32,7 @@ export class VSCodeCapacity extends LitElement {
         const reader = new FileReader()
         reader.onload = (e) => {
             this.publicKey = e.target.result
-            this.serviceSpec['vscode'].publicKey = this.publicKey
+            this.serviceSpec.publicKey = this.publicKey
         }
         reader.readAsText(event.detail.file)
         event.detail.file.complete = true

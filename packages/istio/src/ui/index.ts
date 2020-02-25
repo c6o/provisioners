@@ -1,32 +1,28 @@
-import { LitElement, html, customElement, property } from 'lit-element'
+import { LitElement, html, customElement } from 'lit-element'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('istio-install-main')
-export class IstioSetup extends LitElement {
+export class IstioSetup extends LitElement implements StoreFlowStep {
 
-    serviceSpec
-    installer
-
-    set applicationSpec(spec) {
-        this.serviceSpec = spec.services.find( (service) => {
-            const serviceName = Object.keys(service)[0]
-            return serviceName == "istio"
-        })
+    mediator: StoreFlowMediator
+    get serviceSpec() {
+        return this.mediator.getServiceSpec('istio')
     }
 
     render() {
         return html`
             <traxitt-form-layout>
-                <traxitt-checkbox @checked-changed=${this.ingressCheckChanged} ?checked=${this.serviceSpec["istio"].ingressEnabled == true}>Enable Ingress</traxitt-checkbox>
+                <traxitt-checkbox @checked-changed=${this.ingressCheckChanged} ?checked=${this.serviceSpec.ingressEnabled == true}>Enable Ingress</traxitt-checkbox>
                 <br />
-                <traxitt-checkbox @checked-changed=${this.citadelCheckChanged} ?checked=${this.serviceSpec["istio"].citadelEnabled == true}>Enable Citadel</traxitt-checkbox>
+                <traxitt-checkbox @checked-changed=${this.citadelCheckChanged} ?checked=${this.serviceSpec.citadelEnabled == true}>Enable Citadel</traxitt-checkbox>
                 <br />
-                <traxitt-checkbox @checked-changed=${this.telemetryCheckChanged} ?checked=${this.serviceSpec["istio"].telemetryEnabled == true}>Enable Telemetry</traxitt-checkbox>
+                <traxitt-checkbox @checked-changed=${this.telemetryCheckChanged} ?checked=${this.serviceSpec.telemetryEnabled == true}>Enable Telemetry</traxitt-checkbox>
                 <br />
-                <traxitt-checkbox @checked-changed=${this.grafanaCheckChanged} ?checked=${this.serviceSpec["istio"].grafanaEnabled == true}>Enable Grafana</traxitt-checkbox>
+                <traxitt-checkbox @checked-changed=${this.grafanaCheckChanged} ?checked=${this.serviceSpec.grafanaEnabled == true}>Enable Grafana</traxitt-checkbox>
                 <br />
-                <traxitt-checkbox @checked-changed=${this.kialiCheckChanged} ?checked=${this.serviceSpec["istio"].kialiEnabled == true}>Enable Kiali</traxitt-checkbox>
+                <traxitt-checkbox @checked-changed=${this.kialiCheckChanged} ?checked=${this.serviceSpec.kialiEnabled == true}>Enable Kiali</traxitt-checkbox>
                 <br />
-                <traxitt-checkbox @checked-changed=${this.prometheusCheckChanged} ?checked=${this.serviceSpec["istio"].prometheusEnabled == true}>Enable Prometheus</traxitt-checkbox>
+                <traxitt-checkbox @checked-changed=${this.prometheusCheckChanged} ?checked=${this.serviceSpec.prometheusEnabled == true}>Enable Prometheus</traxitt-checkbox>
                 <br />
                 <traxitt-text-field @input=${this.usernameChanged} label="Grafana administrator username" path="adminUsername" autoselect required></traxitt-text-field>
                 <br />
@@ -36,40 +32,34 @@ export class IstioSetup extends LitElement {
     }
 
     usernameChanged = (e) => {
-        if (e.target.value.length)
-            this.serviceSpec["istio"].grafanaAdminUsername = e.target.value
-        else
-            this.serviceSpec["istio"].grafanaAdminUsername.reset()
+        this.serviceSpec.grafanaAdminUsername = e.target.value
     }
 
     passwordChanged = (e) => {
-        if (e.target.value.length)
-            this.serviceSpec["istio"].grafanaAdminPassword = e.target.value
-        else
-            this.serviceSpec["istio"].grafanaAdminPassword.reset()
+        this.serviceSpec.grafanaAdminPassword = e.target.value
     }
 
     ingressCheckChanged = (e) => {
-        this.serviceSpec["istio"].ingressEnabled = e.detail.value
+        this.serviceSpec.ingressEnabled = e.detail.value
     }
 
     citadelCheckChanged = (e) => {
-        this.serviceSpec["istio"].citadelEnabled = e.detail.value
+        this.serviceSpec.citadelEnabled = e.detail.value
     }
 
     telemetryCheckChanged = (e) => {
-        this.serviceSpec["istio"].telemetryEnabled = e.detail.value
+        this.serviceSpec.telemetryEnabled = e.detail.value
     }
 
     grafanaCheckChanged = (e) => {
-        this.serviceSpec["istio"].grafanaEnabled = e.detail.value
+        this.serviceSpec.grafanaEnabled = e.detail.value
     }
 
     kialiCheckChanged = (e) => {
-        this.serviceSpec["istio"].kialiEnabled = e.detail.value
+        this.serviceSpec.kialiEnabled = e.detail.value
     }
 
     prometheusCheckChanged = (e) => {
-        this.serviceSpec["istio"].prometheusEnabled = e.detail.value
+        this.serviceSpec.prometheusEnabled = e.detail.value
     }
 }
