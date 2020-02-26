@@ -3,9 +3,9 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('node-red-install-main')
 export class NodeRedSettings extends LitElement implements StoreFlowStep {
+    mediator: StoreFlowMediator
     values = ['1Gi','2Gi','4Gi']
 
-    mediator: StoreFlowMediator
     get serviceSpec() {
         return this.mediator.getServiceSpec('node-red')
     }
