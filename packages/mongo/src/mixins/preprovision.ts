@@ -13,7 +13,7 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
         // 3) The options
         // 4) defaults to 'mongo-connections'
         return this.spec.secretKeyRef ||
-               this.applicationSpec.provision?.secretKeyRef ||
+               this.applicationSpec.provisioner?.secretKeyRef ||
                this.options['secret-key']
     }
 

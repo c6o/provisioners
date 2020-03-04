@@ -1,4 +1,4 @@
-export type StoreFlowItem = StoreFlowStep | StoreFlowScreen | StoreFlowService
+export type StoreFlowItem = StoreFlowStep | StoreFlowScreen
 export type StoreFlowEntry = string | StoreFlowItem
 
 export interface StoreFlowMediator {
@@ -13,11 +13,6 @@ export interface StoreFlowStep {
 
     begin?(): Promise<void>
     end?(): Promise<boolean>
-}
-
-export interface StoreFlowService extends StoreFlowStep {
-    service: string
-    config?: any
 }
 
 export interface StoreFlowScreen extends StoreFlowStep {

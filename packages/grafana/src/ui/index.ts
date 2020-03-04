@@ -12,9 +12,9 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <traxitt-form-layout>
-                <traxitt-text-field @input=${this.usernameChanged} label="Administrator username" path="adminUsername" autoselect required></traxitt-text-field>
+                <traxitt-text-field @input=${this.usernameChanged} label="Administrator username" value=${this.serviceSpec.adminUsername} autoselect required></traxitt-text-field>
                 <br />
-                <traxitt-text-field @input=${this.passwordChanged} label="Administrator password" path="adminPassword" autoselect required></traxitt-text-field>
+                <traxitt-text-field @input=${this.passwordChanged} label="Administrator password" value=${this.serviceSpec.adminPassword} autoselect required></traxitt-text-field>
             </traxitt-form-layout>
         `
     }
