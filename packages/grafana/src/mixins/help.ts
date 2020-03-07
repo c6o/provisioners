@@ -1,4 +1,4 @@
-import { baseProvisionerType } from './index'
+import { baseProvisionerType } from '../index'
 import { optionFunctionType } from '@provisioner/common'
 
 export const helpMixin = (base: baseProvisionerType) => class extends base {

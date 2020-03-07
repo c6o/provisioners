@@ -1,5 +1,7 @@
-import path from 'path'
 import { mix } from '@traxitt/common'
+import * as path from 'path'
+import { promises as fs } from 'fs'
+
 import {
     namespaceMixin,
     passwordMixin
@@ -19,6 +21,9 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     spec: any
     applicationSpec: any
 
+    // Has other API functions
+    [key: string]: any
+
     help (command: string, options: optionFunctionType, messages: string[]) {}
 
     preprovision() {}
@@ -36,5 +41,48 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     serve(req, res, moduleLocation, serverRoot = 'lib/ui') {
         const root = path.resolve(moduleLocation, serverRoot)
         res.sendFile(req.url, {root})
+    }
+
+    async serveApi(req, res) {
+        const routes = this.routes?.()
+        const resource = routes[req.url.toLowerCase()]
+
+        let routeFunction
+        switch (req.method) {
+            case 'GET':
+                routeFunction = resource?.get
+                break
+            case 'POST':
+                routeFunction = resource?.post
+                break
+            case 'PUT':
+                routeFunction = resource?.put
+                break
+            case 'DELETE':
+                routeFunction = resource?.delete
+                break
+        }
+
+        if (routeFunction) {
+            const response = await routeFunction.func?.apply(this, routeFunction?.params(req.query, req.body))
+            if (response)
+                res.json(response)
+        }
+
+        throw Error('Function not found')
+    }
+
+    async getInstalledApp(appName) {
+        const result = await this.manager.cluster.list({
+            apiVersion: 'system.traxitt.com/v1',
+            kind: 'App'}, `metadata.name=${appName}`)
+        if (result.error)
+            throw result.error
+        return result.object.items
+    }
+
+    async readFile(...args: string[]): Promise<string> {
+        const buffer = await fs.readFile(path.resolve(...args))
+        return buffer.toString('utf-8')
     }
 }

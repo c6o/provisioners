@@ -18,7 +18,8 @@
     },
     "files": [
       "lib",
-      "k8s"
+      "k8s",
+      "grafana"
     ],
     "publishConfig": {
       "access": "private"

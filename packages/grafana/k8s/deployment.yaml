@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-provider-dashboards
+  namespace: '{{namespace}}'
+  labels:
+    role: server
+    name: grafana
+data:
+  dashboardproviders.yaml: |
+    apiVersion: 1
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,8 +30,8 @@ spec:
         name: grafana
     spec:
       securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
+        runAsUser: 472
+        fsGroup: 472
       containers:
       - env:
         - name: GF_SECURITY_ALLOW_EMBEDDING
@@ -33,12 +45,17 @@ spec:
         ports:
           - name: grafana
             containerPort: 3000
-            hostPort: 3000
         volumeMounts:
-          - mountPath: "/data"
-            name: grafana-volume
+          - name: grafana-volume
+            mountPath: "/data"
+          - name: grafana-provider-dashboards
+            mountPath: "/etc/grafana/provisioning/dashboards/dashboardproviders.yaml"
+            subPath: dashboardproviders.yaml
       volumes:
         - name: grafana-volume
           persistentVolumeClaim:
             claimName: grafana-pvc
-            
+        - name: grafana-provider-dashboards
+          configMap:
+            name: grafana-provider-dashboards
+

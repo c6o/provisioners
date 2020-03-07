@@ -1,4 +1,4 @@
-import { baseProvisionerType } from './index'
+import { baseProvisionerType } from '../index'
 import { createDebug } from '@traxitt/common'
 
 const debug = createDebug()
@@ -31,7 +31,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
 
         await this.manager.cluster
             .begin(`Install istio resource definitions`)
-                .upsertFile('../k8s/crds.yaml')
+                .upsertFile('../../k8s/crds.yaml')
             .end()
     }
 
@@ -50,49 +50,49 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
         debug('Installing Istio base')
         await this.manager.cluster
             .begin(`Install istio minimal`)
-                .upsertFile('../k8s/istio-minimal.yaml')
+                .upsertFile('../../k8s/istio-minimal.yaml')
             .end()
 
         if (ingressEnabled) {
             debug('Installing Istio Ingress')
             await this.manager.cluster
                 .begin(`Install istio ingress`)
-                    .upsertFile('../k8s/ingress.yaml')
+                    .upsertFile('../../k8s/ingress.yaml')
                 .end()
         }
         if (citadelEnabled) {
             debug('Installing Istio Citadel')
             await this.manager.cluster
                 .begin(`Install citadel`)
-                    .upsertFile('../k8s/citadel.yaml')
+                    .upsertFile('../../k8s/citadel.yaml')
                 .end()
         }
         if (telemetryEnabled) {
             debug('Installing Istio Telemetry')
             await this.manager.cluster
                 .begin(`Install telemetry`)
-                    .upsertFile('../k8s/telemetry.yaml')
+                    .upsertFile('../../k8s/telemetry.yaml')
                 .end()
         }
         if (grafanaEnabled) {
             debug('Installing Istio Grafana')
             await this.manager.cluster
                 .begin(`Install grafana`)
-                    .upsertFile('../k8s/grafana.yaml')
+                    .upsertFile('../../k8s/grafana.yaml')
                 .end()
         }
         if (kialiEnabled) {
             debug('Installing Istio Kiali')
             await this.manager.cluster
                 .begin(`Install kiali`)
-                    .upsertFile('../k8s/kiali.yaml')
+                    .upsertFile('../../k8s/kiali.yaml')
                 .end()
         }
         if (prometheusEnabled) {
             debug('Installing Istio Prometheus')
             await this.manager.cluster
                 .begin(`Install prometheus`)
-                    .upsertFile('../k8s/prometheus.yaml')
+                    .upsertFile('../../k8s/prometheus.yaml')
                 .end()
         }
     }

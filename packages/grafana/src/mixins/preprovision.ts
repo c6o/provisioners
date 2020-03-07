@@ -1,4 +1,4 @@
-import { baseProvisionerType } from './index'
+import { baseProvisionerType } from '../index'
 
 export const preprovisionMixin = (base: baseProvisionerType) => class extends base {
 

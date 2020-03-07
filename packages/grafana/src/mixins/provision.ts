@@ -1,4 +1,4 @@
-import { baseProvisionerType } from './index'
+import { baseProvisionerType } from '../index'
 
 export const provisionMixin = (base: baseProvisionerType) => class extends base {
     
@@ -36,9 +36,9 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                     // There are no Grafana pods running
                     // Install Grafana
                     processor
-                        .upsertFile('../k8s/pvc.yaml', { namespace, storage })
-                        .upsertFile('../k8s/deployment.yaml', { namespace, adminUsername, adminPassword })
-                        .upsertFile('../k8s/service.yaml', { namespace })
+                        .upsertFile('../../k8s/pvc.yaml', { namespace, storage })
+                        .upsertFile('../../k8s/deployment.yaml', { namespace, adminUsername, adminPassword })
+                        .upsertFile('../../k8s/service.yaml', { namespace })
                 }
             })
             .end()
