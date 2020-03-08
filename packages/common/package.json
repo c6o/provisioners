@@ -4,6 +4,8 @@
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
   "scripts": {
+    "obfuscate": "javascript-obfuscator ./lib --output ./dist --config ../../../obfuscate.json",
+    "postobfuscate": "rm -rf lib && mv ./dist/lib . && rmdir dist",
     "build": "tsc -b",
     "test": "echo \"Error: no test specified\" && exit 1",
     "develop": "tsc -b -w --preserveWatchOutput"
