@@ -1,3 +1,17 @@
+# CertManager component is disabled.
+
+# Citadel component is disabled.
+
+# Cni component is disabled.
+
+# CoreDNS component is disabled.
+
+# EgressGateway component is disabled.
+
+# Galley component is disabled.
+
+# Grafana component is disabled.
+
 # Resources for IngressGateway component
 
 apiVersion: autoscaling/v2beta1
@@ -8,7 +22,7 @@ metadata:
     istio: ingressgateway
     release: istio
   name: istio-ingressgateway
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
 spec:
   maxReplicas: 5
   metrics:
@@ -33,7 +47,7 @@ metadata:
     istio: ingressgateway
     release: istio
   name: istio-ingressgateway
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
 spec:
   selector:
     matchLabels:
@@ -49,10 +63,7 @@ spec:
         sidecar.istio.io/inject: "false"
       labels:
         app: istio-ingressgateway
-        chart: gateways
-        heritage: Tiller
         istio: ingressgateway
-        release: istio
     spec:
       affinity:
         nodeAffinity:
@@ -88,6 +99,29 @@ spec:
                 - ppc64le
                 - s390x
       containers:
+      - env:
+        - name: ENABLE_WORKLOAD_SDS
+          value: "false"
+        - name: ENABLE_INGRESS_GATEWAY_SDS
+          value: "true"
+        - name: INGRESS_GATEWAY_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        image: docker.io/istio/node-agent-k8s:1.4.5
+        imagePullPolicy: IfNotPresent
+        name: ingress-sds
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /var/run/ingress_gateway
+          name: ingressgatewaysdsudspath
       - args:
         - proxy
         - router
@@ -105,7 +139,7 @@ spec:
         - --serviceCluster
         - istio-ingressgateway
         - --zipkinAddress
-        - zipkin.istio-system:9411
+        - zipkin.{{istioNamespace}}:9411
         - --proxyAdminPort
         - "15000"
         - --statusPort
@@ -113,7 +147,7 @@ spec:
         - --controlPlaneAuthPolicy
         - NONE
         - --discoveryAddress
-        - istio-pilot.istio-system:15010
+        - istio-pilot.{{istioNamespace}}:15010
         - --trust-domain=cluster.local
         env:
         - name: NODE_NAME
@@ -148,7 +182,7 @@ spec:
         - name: ISTIO_META_WORKLOAD_NAME
           value: istio-ingressgateway
         - name: ISTIO_META_OWNER
-          value: kubernetes://apis/apps/v1/namespaces/istio-system/deployments/istio-ingressgateway
+          value: kubernetes://apis/apps/v1/namespaces/{{istioGatewayNamespace}}/deployments/istio-ingressgateway
         - name: ISTIO_META_MESH_ID
           value: cluster.local
         - name: ISTIO_META_POD_NAME
@@ -160,6 +194,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: ISTIO_META_USER_SDS
+          value: "true"
         - name: ISTIO_META_ROUTER_MODE
           value: sni-dnat
         - name: ISTIO_METAJSON_LABELS
@@ -169,7 +205,7 @@ spec:
           value: Kubernetes
         - name: SDS_ENABLED
           value: "false"
-        image: docker.io/istio/proxyv2:1.4.3
+        image: docker.io/istio/proxyv2:1.4.5
         imagePullPolicy: IfNotPresent
         name: istio-proxy
         ports:
@@ -208,6 +244,8 @@ spec:
         - mountPath: /etc/certs
           name: istio-certs
           readOnly: true
+        - mountPath: /var/run/ingress_gateway
+          name: ingressgatewaysdsudspath
         - mountPath: /etc/istio/ingressgateway-certs
           name: ingressgateway-certs
           readOnly: true
@@ -216,6 +254,8 @@ spec:
           readOnly: true
       serviceAccountName: istio-ingressgateway-service-account
       volumes:
+      - emptyDir: {}
+        name: ingressgatewaysdsudspath
       - name: istio-certs
         secret:
           optional: true
@@ -236,7 +276,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: ingressgateway
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
   labels:
     release: istio
 spec:
@@ -257,7 +297,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: ingressgateway
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
   labels:
     app: istio-ingressgateway
     release: istio
@@ -272,11 +312,42 @@ spec:
 ---
 
 
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: istio-ingressgateway-sds
+  namespace: {{istioGatewayNamespace}}
+  labels:
+    release: istio
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "watch", "list"]
+---
+
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: istio-ingressgateway-sds
+  namespace: {{istioGatewayNamespace}}
+  labels:
+    release: istio
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: istio-ingressgateway-sds
+subjects:
+- kind: ServiceAccount
+  name: istio-ingressgateway-service-account
+---
+
+
 apiVersion: v1
 kind: Service
 metadata:
   name: istio-ingressgateway
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
   annotations:
   labels:
     app: istio-ingressgateway
@@ -325,7 +396,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-ingressgateway-service-account
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
   labels:
     app: istio-ingressgateway
     release: istio
@@ -336,7 +407,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Sidecar
 metadata:
   name: default
-  namespace: istio-system
+  namespace: {{istioGatewayNamespace}}
   labels:
     release: istio
 spec:
@@ -344,3 +415,22 @@ spec:
     - hosts:
         - "*/*"
 ---
+
+# Injector component is disabled.
+
+# Kiali component is disabled.
+
+# NodeAgent component is disabled.
+
+# Pilot component is disabled.
+
+# Policy component is disabled.
+
+# Prometheus component is disabled.
+
+# PrometheusOperator component is disabled.
+
+# Telemetry component is disabled.
+
+# Tracing component is disabled.
+

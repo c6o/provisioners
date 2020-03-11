@@ -11,55 +11,93 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
 
     render() {
         return html`
+            <style>
+                .form-group {
+                    display: block;
+                    padding-bottom: var(--lumo-space-m);
+                }
+            </style>
+
             <traxitt-form-layout>
-                <traxitt-checkbox @checked-changed=${this.ingressCheckChanged} ?checked=${this.serviceSpec.ingressEnabled == true}>Enable Ingress</traxitt-checkbox>
-                <br />
-                <traxitt-checkbox @checked-changed=${this.citadelCheckChanged} ?checked=${this.serviceSpec.citadelEnabled == true}>Enable Citadel</traxitt-checkbox>
-                <br />
-                <traxitt-checkbox @checked-changed=${this.telemetryCheckChanged} ?checked=${this.serviceSpec.telemetryEnabled == true}>Enable Telemetry</traxitt-checkbox>
-                <br />
-                <traxitt-checkbox @checked-changed=${this.grafanaCheckChanged} ?checked=${this.serviceSpec.grafanaEnabled == true}>Enable Grafana</traxitt-checkbox>
-                <br />
-                <traxitt-checkbox @checked-changed=${this.kialiCheckChanged} ?checked=${this.serviceSpec.kialiEnabled == true}>Enable Kiali</traxitt-checkbox>
-                <br />
-                <traxitt-checkbox @checked-changed=${this.prometheusCheckChanged} ?checked=${this.serviceSpec.prometheusEnabled == true}>Enable Prometheus</traxitt-checkbox>
-                <br />
-                <traxitt-text-field @input=${this.usernameChanged} label="Grafana administrator username" path="adminUsername" autoselect required></traxitt-text-field>
-                <br />
-                <traxitt-text-field @input=${this.passwordChanged} label="Grafana administrator password" path="adminPassword" autoselect required></traxitt-text-field>
+                <div class="container">
+                    <h4>Required Components:</h3>
+
+                    <div class="form-group">
+                        <traxitt-checkbox checked disabled>
+                            Istio Base (CRDs)
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox checked disabled>
+                            Gateway (Ingress)
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox checked disabled>
+                            Pilot (Traffic Management)
+                        </traxitt-checkbox>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <h4>Optional Components:</h3>
+
+                    <div class="form-group">
+                        <traxitt-checkbox @checked-changed=${this.autoInjectCheckChanged} ?checked=${this.serviceSpec.autoInjectEnabled}>
+                            Auto Injection
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox @checked-changed=${this.citadelCheckChanged} ?checked=${this.serviceSpec.citadelEnabled}>
+                            Citadel (Authentication and Identity)
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox @checked-changed=${this.coreDnsCheckChanged} ?checked=${this.serviceSpec.coreDnsEnabled}>
+                            Core DNS
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox @checked-changed=${this.galleyCheckChanged} ?checked=${this.serviceSpec.galleyEnabled}>
+                            Galley (Configuration)
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox @checked-changed=${this.policyCheckChanged} ?checked=${this.serviceSpec.policyEnabled}>
+                            Policy
+                        </traxitt-checkbox>
+                    </div>
+                    <div class="form-group">
+                        <traxitt-checkbox @checked-changed=${this.telemetryCheckChanged} ?checked=${this.serviceSpec.telemetryEnabled}>
+                            Telemetry (Analytics)
+                        </traxitt-checkbox>
+                    </div>
+                </div>
             </traxitt-form-layout>
         `
     }
 
-    usernameChanged = (e) => {
-        this.serviceSpec.grafanaAdminUsername = e.target.value
-    }
-
-    passwordChanged = (e) => {
-        this.serviceSpec.grafanaAdminPassword = e.target.value
-    }
-
-    ingressCheckChanged = (e) => {
-        this.serviceSpec.ingressEnabled = e.detail.value
+    autoInjectCheckChanged = (e) => {
+        this.serviceSpec.autoInjectEnabled = e.detail.value
     }
 
     citadelCheckChanged = (e) => {
         this.serviceSpec.citadelEnabled = e.detail.value
     }
 
+    coreDnsCheckChanged = (e) => {
+        this.serviceSpec.coreDnsEnabled = e.detail.value
+    }
+
+    galleyCheckChanged = (e) => {
+        this.serviceSpec.galleyEnabled = e.detail.value
+    }
+
+    policyCheckChanged = (e) => {
+        this.serviceSpec.policyEnabled = e.detail.value
+    }
+
     telemetryCheckChanged = (e) => {
         this.serviceSpec.telemetryEnabled = e.detail.value
-    }
-
-    grafanaCheckChanged = (e) => {
-        this.serviceSpec.grafanaEnabled = e.detail.value
-    }
-
-    kialiCheckChanged = (e) => {
-        this.serviceSpec.kialiEnabled = e.detail.value
-    }
-
-    prometheusCheckChanged = (e) => {
-        this.serviceSpec.prometheusEnabled = e.detail.value
     }
 }

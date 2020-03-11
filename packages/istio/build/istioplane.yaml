@@ -1,0 +1,12 @@
+apiVersion: install.istio.io/v1alpha2
+kind: IstioControlPlane
+spec:
+  profile: minimal
+  defaultNamespace: istio-default-namespace
+  trafficManagement:
+    enabled: false
+  values:
+    gateways:
+      istio-ingressgateway:
+        sds:
+          enabled: false

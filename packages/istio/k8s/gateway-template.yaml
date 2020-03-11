@@ -1,0 +1,45 @@
+# setup certificate
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: grant-traxitt-org
+  namespace: istio-system
+spec:
+  secretName: grant-traxitt-org-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  commonName: traxitt.org
+  dnsNames:
+  - traxitt.org
+  - {{hostname}}.traxitt.org
+---
+
+# setup gateway
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: traxitt-system-marina-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      name: http
+      number: 80
+      protocol: HTTP
+    hosts:
+    - '{{hostname}}'
+    tls:
+      httpRedirect: true
+  - port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    hosts:
+    - '{{hostname}}'
+    tls:
+      mode: SIMPLE
+      credentialName: grant-traxitt-org-tls
+---

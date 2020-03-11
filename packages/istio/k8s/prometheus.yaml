@@ -1,9 +1,35 @@
+# CertManager component is disabled.
+
+# Citadel component is disabled.
+
+# Cni component is disabled.
+
+# CoreDNS component is disabled.
+
+# EgressGateway component is disabled.
+
+# Galley component is disabled.
+
+# Grafana component is disabled.
+
+# IngressGateway component is disabled.
+
+# Injector component is disabled.
+
+# Kiali component is disabled.
+
+# NodeAgent component is disabled.
+
+# Pilot component is disabled.
+
+# Policy component is disabled.
+
 # Resources for Prometheus component
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: prometheus-istio-system
+  name: prometheus-{{istioNamespace}}
   labels:
     app: prometheus
     release: istio
@@ -28,18 +54,18 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: prometheus-istio-system
+  name: prometheus-{{istioNamespace}}
   labels:
     app: prometheus
     release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: prometheus-istio-system
+  name: prometheus-{{istioNamespace}}
 subjects:
 - kind: ServiceAccount
   name: prometheus
-  namespace: istio-system
+  namespace: {{istioNamespace}}
 ---
 
 
@@ -47,7 +73,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prometheus
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: prometheus
     release: istio
@@ -64,7 +90,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - istio-system
+          - {{istioNamespace}}
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
         action: keep
@@ -99,7 +125,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - istio-system
+          - {{istioNamespace}}
 
 
       relabel_configs:
@@ -112,7 +138,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - istio-system
+          - {{istioNamespace}}
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -124,7 +150,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - istio-system
+          - {{istioNamespace}}
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -136,7 +162,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - istio-system
+          - {{istioNamespace}}
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -148,7 +174,7 @@ data:
       - role: endpoints
         namespaces:
           names:
-          - istio-system
+          - {{istioNamespace}}
 
       relabel_configs:
       - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
@@ -325,7 +351,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: prometheus
     release: istio
@@ -418,7 +444,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   annotations:
     prometheus.io/scrape: 'true'
   labels:
@@ -438,8 +464,15 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: prometheus
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: prometheus
     release: istio
 ---
+
+# PrometheusOperator component is disabled.
+
+# Telemetry component is disabled.
+
+# Tracing component is disabled.
+

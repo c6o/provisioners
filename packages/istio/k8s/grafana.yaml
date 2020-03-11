@@ -1,10 +1,22 @@
+# CertManager component is disabled.
+
+# Citadel component is disabled.
+
+# Cni component is disabled.
+
+# CoreDNS component is disabled.
+
+# EgressGateway component is disabled.
+
+# Galley component is disabled.
+
 # Resources for Grafana component
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-citadel-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -1106,7 +1118,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-galley-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -1608,14 +1620,14 @@ data:
           "refId": "A"
         },
         {
-          "expr": "galley_mcp_source_clients_total",
+          "expr": "istio_mcp_clients_total{component=\"galley\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "clients_total",
           "refId": "B"
         },
         {
-          "expr": "go_goroutines{job=\"galley\"}/galley_mcp_source_clients_total",
+          "expr": "go_goroutines{job=\"galley\"}/sum(istio_mcp_clients_total{component=\"galley\"}) without (component)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "avg_goroutines_per_client",
@@ -2587,7 +2599,7 @@ data:
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(galley_mcp_source_clients_total)",
+          "expr": "sum(istio_mcp_clients_total{component=\"galley\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Clients",
@@ -2672,7 +2684,7 @@ data:
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by(collection)(irate(galley_mcp_source_request_acks_total[1m]) * 60)",
+          "expr": "sum by(collection)(irate(istio_mcp_request_acks_total{component=\"galley\"}[1m]) * 60)",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -2757,7 +2769,7 @@ data:
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(galley_mcp_source_request_nacks_total[1m]) * 60",
+          "expr": "rate(istio_mcp_request_nacks_total{component=\"galley\"}[1m]) * 60",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2785,6 +2797,95 @@ data:
         {
           "format": "short",
           "label": "NACKs/min",
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 48
+      },
+      "id": 48,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(increase(istio_mcp_message_sizes_bytes_bucket[5m])) by (le)",
+          "format": "heatmap",
+          "instant": false,
+          "intervalFactor": 1,
+          "legendFormat": "{{le}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Response message sizes",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "none",
+          "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
@@ -2854,7 +2955,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-mesh-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -3821,7 +3922,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-performance-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -5657,7 +5758,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-service-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -8272,7 +8373,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-istio-workload-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -10589,7 +10690,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-mixer-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -12411,7 +12512,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana-configuration-dashboards-pilot-dashboard
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -14015,7 +14116,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio-grafana
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -14051,7 +14152,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -14209,7 +14310,7 @@ apiVersion: authentication.istio.io/v1alpha1
 kind: Policy
 metadata:
   name: grafana-ports-mtls-disabled
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: grafana
     release: istio
@@ -14225,7 +14326,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: grafana
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   annotations:
   labels:
     app: grafana
@@ -14240,3 +14341,24 @@ spec:
   selector:
     app: grafana
 ---
+
+# IngressGateway component is disabled.
+
+# Injector component is disabled.
+
+# Kiali component is disabled.
+
+# NodeAgent component is disabled.
+
+# Pilot component is disabled.
+
+# Policy component is disabled.
+
+# Prometheus component is disabled.
+
+# PrometheusOperator component is disabled.
+
+# Telemetry component is disabled.
+
+# Tracing component is disabled.
+

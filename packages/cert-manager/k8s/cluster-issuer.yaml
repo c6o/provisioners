@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token-secret
+  namespace: cert-manager
+type: Opaque
+stringData:
+  api-token: zJgqaqmDdLUqUXZzb8qMx3nmx4Yg-Jc1tUkGrFUT
+---
+
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt
+  #namespace: cert-manager
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme{{staging}}-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: {{notifyEmail}}
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt
+    # Enable the HTTP-01 challenge provider
+    solvers:
+    # An empty 'selector' means that this solver matches all domains
+    - dns01:
+        cloudflare:
+          email: admin@traxitt.com
+          apiTokenSecretRef:
+            name: cloudflare-api-token-secret
+            key: api-token
+      selector:
+        dnsZones:
+        - 'traxitt.org'
+---
+
+# apiVersion: cert-manager.io/v1alpha2
+# kind: ClusterIssuer
+# metadata:
+#     name: testissuer
+# spec:
+#   acme:
+#     server: https://acme-staging-v02.api.letsencrypt.org/directory
+#     privateKeySecretRef:
+#       name: example-issuer-account-key
+#     solvers:
+#     - http01:
+#         serviceType: LoadBalancer
+#         ingress:
+#           class: nginx
+# ---

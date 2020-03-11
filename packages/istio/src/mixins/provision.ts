@@ -28,78 +28,101 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
 
     async installCrds() {
         debug('Installing Istio CRDs')
+        const istioNamespace = this.spec.namespace || 'istio-system'
 
         await this.manager.cluster
             .begin(`Install istio resource definitions`)
-                .upsertFile('../../k8s/crds.yaml')
+                .upsertFile('../../k8s/crds.yaml', { istioNamespace })
             .end()
     }
 
     async installIstioServices() {
-        const ingressEnabled = !!this.spec.ingressEnabled
+        const istioNamespace = this.spec.namespace || 'istio-system'
+
+        const autoInjectEnabled = !!this.spec.autoInjectEnabled
         const citadelEnabled = !!this.spec.citadelEnabled
+        const coreDnsEnabled = !!this.spec.coreDnsEnabled
+        const galleyEnabled = !!this.spec.galleyEnabled
+        const policyEnabled = !!this.spec.policyEnabled
         const telemetryEnabled = !!this.spec.telemetryEnabled
         const grafanaEnabled = !!this.spec.grafanaEnabled
         const kialiEnabled = !!this.spec.kialiEnabled
         const prometheusEnabled = !!this.spec.prometheusEnabled
 
-        // TODO: use the grafana provisioner for grafana - just add to app
-        const grafanaAdminUsername = this.spec.grafanaAdminUsername || 'admin'
-        const grafanaAdminPassword = this.spec.grafanaAdminPassword || 'admin'
-
-        debug('Installing Istio base')
+        debug('Installing Istio ingress and traffic')
         await this.manager.cluster
-            .begin(`Install istio minimal`)
-                .upsertFile('../../k8s/istio-minimal.yaml')
+            .begin(`Install istio base and minimal`)
+                .upsertFile('../../k8s/gateway.yaml', { istioNamespace, istioGatewayNamespace: istioNamespace })
+                .upsertFile('../../k8s/traffic.yaml', { istioNamespace, istioTrafficNamespace: istioNamespace })
             .end()
-
-        if (ingressEnabled) {
-            debug('Installing Istio Ingress')
+        if (autoInjectEnabled) {
+            debug('Installing Istio Auto Injection')
             await this.manager.cluster
-                .begin(`Install istio ingress`)
-                    .upsertFile('../../k8s/ingress.yaml')
+                .begin(`Install Istio Auto Injection`)
+                    .upsertFile('../../k8s/autoinject.yaml', { istioNamespace, istioInjectNamespace: istioNamespace })
                 .end()
         }
         if (citadelEnabled) {
             debug('Installing Istio Citadel')
             await this.manager.cluster
-                .begin(`Install citadel`)
-                    .upsertFile('../../k8s/citadel.yaml')
+                .begin(`Install Istio Citadel`)
+                    .upsertFile('../../k8s/citadel.yaml', { istioNamespace, istioCitadelNamespace: istioNamespace })
+                .end()
+        }
+        if (coreDnsEnabled) {
+            debug('Installing Istio Core DNS')
+            await this.manager.cluster
+                .begin(`Install Istio Core DNS`)
+                    .upsertFile('../../k8s/coredns.yaml', { istioNamespace, istioCoreDnsNamespace: istioNamespace })
+                .end()
+        }
+        if (galleyEnabled) {
+            debug('Installing Istio Galley')
+            await this.manager.cluster
+                .begin(`Install Istio Galley`)
+                    .upsertFile('../../k8s/galley.yaml', { istioNamespace, istioGalleyNamespace: istioNamespace })
+                .end()
+        }
+        if (policyEnabled) {
+            debug('Installing Istio Policy')
+            await this.manager.cluster
+                .begin(`Install Istio Policy`)
+                    .upsertFile('../../k8s/policy.yaml', { istioNamespace, istioPolicyNamespace: istioNamespace })
                 .end()
         }
         if (telemetryEnabled) {
             debug('Installing Istio Telemetry')
             await this.manager.cluster
-                .begin(`Install telemetry`)
-                    .upsertFile('../../k8s/telemetry.yaml')
+                .begin(`Install Istio Telemetry`)
+                    .upsertFile('../../k8s/telemetry.yaml', { istioNamespace, istioTelemetryNamespace: istioNamespace })
                 .end()
         }
         if (grafanaEnabled) {
-            debug('Installing Istio Grafana')
+            debug('Installing 3rd Party Grafana')
             await this.manager.cluster
                 .begin(`Install grafana`)
-                    .upsertFile('../../k8s/grafana.yaml')
+                    .upsertFile('../../k8s/grafana.yaml', { istioNamespace, istioGrafanaNamespace: istioNamespace })
                 .end()
         }
         if (kialiEnabled) {
-            debug('Installing Istio Kiali')
+            debug('Installing 3rd Party Kiali')
             await this.manager.cluster
                 .begin(`Install kiali`)
-                    .upsertFile('../../k8s/kiali.yaml')
+                    .upsertFile('../../k8s/kiali.yaml', { istioNamespace, istioPrometheusNamespace: istioNamespace })
                 .end()
         }
         if (prometheusEnabled) {
-            debug('Installing Istio Prometheus')
+            debug('Installing 3rd Party Prometheus')
             await this.manager.cluster
                 .begin(`Install prometheus`)
-                    .upsertFile('../../k8s/prometheus.yaml')
+                    .upsertFile('../../k8s/prometheus.yaml', { istioNamespace, istioKialiNamespace: istioNamespace })
                 .end()
         }
     }
 
     async ensureCrdsApplied() {
         await this.manager.cluster
-            .begin(`Ensure istio resource definitions applied`)
+            .begin(`Ensure istio CRDs applied`)
                 .attempt(20, 2000, this.countCRDs.bind(this))
             .end()
     }

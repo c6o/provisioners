@@ -1,3 +1,33 @@
+# CertManager component is disabled.
+
+# Citadel component is disabled.
+
+# Cni component is disabled.
+
+# CoreDNS component is disabled.
+
+# EgressGateway component is disabled.
+
+# Galley component is disabled.
+
+# Grafana component is disabled.
+
+# IngressGateway component is disabled.
+
+# Injector component is disabled.
+
+# Kiali component is disabled.
+
+# NodeAgent component is disabled.
+
+# Pilot component is disabled.
+
+# Policy component is disabled.
+
+# Prometheus component is disabled.
+
+# PrometheusOperator component is disabled.
+
 # Resources for Telemetry component
 
 apiVersion: autoscaling/v2beta1
@@ -7,7 +37,7 @@ metadata:
     app: mixer
     release: istio
   name: istio-telemetry
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
 spec:
   maxReplicas: 5
   metrics:
@@ -27,7 +57,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-mixer-istio-system
+  name: istio-mixer-{{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -50,18 +80,18 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-mixer-admin-role-binding-istio-system
+  name: istio-mixer-admin-role-binding-{{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-mixer-istio-system
+  name: istio-mixer-{{istioTelemetryNamespace}}
 subjects:
   - kind: ServiceAccount
     name: istio-mixer-service-account
-    namespace: istio-system
+    namespace: {{istioTelemetryNamespace}}
 ---
 
 
@@ -69,7 +99,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: attributemanifest
 metadata:
   name: istioproxy
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -211,7 +241,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: attributemanifest
 metadata:
   name: kubernetes
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -276,7 +306,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: requestcount
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -313,7 +343,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: requestduration
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -350,7 +380,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: requestsize
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -387,7 +417,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: responsesize
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -424,7 +454,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpbytesent
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -457,7 +487,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpbytereceived
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -490,7 +520,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpconnectionsopened
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -523,7 +553,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: tcpconnectionsclosed
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -556,7 +586,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: handler
 metadata:
   name: prometheus
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -567,7 +597,7 @@ spec:
       metricsExpiryDuration: "10m"
     metrics:
     - name: requests_total
-      instance_name: requestcount.instance.istio-system
+      instance_name: requestcount.instance.{{istioTelemetryNamespace}}
       kind: COUNTER
       label_names:
       - reporter
@@ -591,7 +621,7 @@ spec:
       - permissive_response_policyid
       - connection_security_policy
     - name: request_duration_seconds
-      instance_name: requestduration.instance.istio-system
+      instance_name: requestduration.instance.{{istioTelemetryNamespace}}
       kind: DISTRIBUTION
       label_names:
       - reporter
@@ -618,7 +648,7 @@ spec:
         explicit_buckets:
           bounds: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10]
     - name: request_bytes
-      instance_name: requestsize.instance.istio-system
+      instance_name: requestsize.instance.{{istioTelemetryNamespace}}
       kind: DISTRIBUTION
       label_names:
       - reporter
@@ -647,7 +677,7 @@ spec:
           scale: 1
           growthFactor: 10
     - name: response_bytes
-      instance_name: responsesize.instance.istio-system
+      instance_name: responsesize.instance.{{istioTelemetryNamespace}}
       kind: DISTRIBUTION
       label_names:
       - reporter
@@ -676,7 +706,7 @@ spec:
           scale: 1
           growthFactor: 10
     - name: tcp_sent_bytes_total
-      instance_name: tcpbytesent.instance.istio-system
+      instance_name: tcpbytesent.instance.{{istioTelemetryNamespace}}
       kind: COUNTER
       label_names:
       - reporter
@@ -696,7 +726,7 @@ spec:
       - connection_security_policy
       - response_flags
     - name: tcp_received_bytes_total
-      instance_name: tcpbytereceived.instance.istio-system
+      instance_name: tcpbytereceived.instance.{{istioTelemetryNamespace}}
       kind: COUNTER
       label_names:
       - reporter
@@ -716,7 +746,7 @@ spec:
       - connection_security_policy
       - response_flags
     - name: tcp_connections_opened_total
-      instance_name: tcpconnectionsopened.instance.istio-system
+      instance_name: tcpconnectionsopened.instance.{{istioTelemetryNamespace}}
       kind: COUNTER
       label_names:
       - reporter
@@ -736,7 +766,7 @@ spec:
       - connection_security_policy
       - response_flags
     - name: tcp_connections_closed_total
-      instance_name: tcpconnectionsclosed.instance.istio-system
+      instance_name: tcpconnectionsclosed.instance.{{istioTelemetryNamespace}}
       kind: COUNTER
       label_names:
       - reporter
@@ -762,7 +792,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promhttp
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -782,7 +812,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promtcp
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -800,7 +830,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promtcpconnectionopen
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -817,7 +847,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: promtcpconnectionclosed
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -834,7 +864,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: handler
 metadata:
   name: kubernetesenv
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -854,7 +884,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: kubeattrgenrulerule
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -870,7 +900,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: rule
 metadata:
   name: tcpkubeattrgenrulerule
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -887,7 +917,7 @@ apiVersion: "config.istio.io/v1alpha2"
 kind: instance
 metadata:
   name: attributes
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
@@ -930,12 +960,12 @@ apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
   name: istio-telemetry
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
 spec:
-  host: istio-telemetry.istio-system.svc.cluster.local
+  host: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
   trafficPolicy:
     portLevelSettings:
     - port:
@@ -956,7 +986,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   name: telemetry-envoy-config
   labels:
     release: istio
@@ -1025,7 +1055,7 @@ data:
               max_retries: 3
         hosts:
           - socket_address:
-              address: istio-galley.istio-system
+              address: istio-galley.{{istioNamespace}}
               port_value: 15019
 
       listeners:
@@ -1068,9 +1098,9 @@ data:
               generate_request_id: true
               http_filters:
               - config:
-                  default_destination_service: istio-telemetry.istio-system.svc.cluster.local
+                  default_destination_service: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
                   service_configs:
-                    istio-telemetry.istio-system.svc.cluster.local:
+                    istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local:
                       disable_check_calls: true
     {{- if .DisableReportCalls }}
                       disable_report_calls: true
@@ -1078,17 +1108,17 @@ data:
                       mixer_attributes:
                         attributes:
                           destination.service.host:
-                            string_value: istio-telemetry.istio-system.svc.cluster.local
+                            string_value: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
                           destination.service.uid:
-                            string_value: istio://istio-system/services/istio-telemetry
+                            string_value: istio://{{istioTelemetryNamespace}}/services/istio-telemetry
                           destination.service.name:
                             string_value: istio-telemetry
                           destination.service.namespace:
-                            string_value: istio-system
+                            string_value: {{istioTelemetryNamespace}}
                           destination.uid:
-                            string_value: kubernetes://{{ .PodName }}.istio-system
+                            string_value: kubernetes://{{ .PodName }}.{{istioTelemetryNamespace}}
                           destination.namespace:
-                            string_value: istio-system
+                            string_value: {{istioTelemetryNamespace}}
                           destination.ip:
                             bytes_value: {{ .PodIP }}
                           destination.port:
@@ -1096,7 +1126,7 @@ data:
                           context.reporter.kind:
                             string_value: inbound
                           context.reporter.uid:
-                            string_value: kubernetes://{{ .PodName }}.istio-system
+                            string_value: kubernetes://{{ .PodName }}.{{istioTelemetryNamespace}}
                   transport:
                     check_cluster: mixer_check_server
                     report_cluster: inbound_9092
@@ -1107,7 +1137,7 @@ data:
                 virtual_hosts:
                 - domains:
                   - '*'
-                  name: istio-telemetry.istio-system.svc.cluster.local
+                  name: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
                   routes:
                   - decorator:
                       operation: Report
@@ -1133,9 +1163,9 @@ data:
               generate_request_id: true
               http_filters:
               - config:
-                  default_destination_service: istio-telemetry.istio-system.svc.cluster.local
+                  default_destination_service: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
                   service_configs:
-                    istio-telemetry.istio-system.svc.cluster.local:
+                    istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local:
                       disable_check_calls: true
     {{- if .DisableReportCalls }}
                       disable_report_calls: true
@@ -1143,17 +1173,17 @@ data:
                       mixer_attributes:
                         attributes:
                           destination.service.host:
-                            string_value: istio-telemetry.istio-system.svc.cluster.local
+                            string_value: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
                           destination.service.uid:
-                            string_value: istio://istio-system/services/istio-telemetry
+                            string_value: istio://{{istioTelemetryNamespace}}/services/istio-telemetry
                           destination.service.name:
                             string_value: istio-telemetry
                           destination.service.namespace:
-                            string_value: istio-system
+                            string_value: {{istioTelemetryNamespace}}
                           destination.uid:
-                            string_value: kubernetes://{{ .PodName }}.istio-system
+                            string_value: kubernetes://{{ .PodName }}.{{istioTelemetryNamespace}}
                           destination.namespace:
-                            string_value: istio-system
+                            string_value: {{istioTelemetryNamespace}}
                           destination.ip:
                             bytes_value: {{ .PodIP }}
                           destination.port:
@@ -1161,7 +1191,7 @@ data:
                           context.reporter.kind:
                             string_value: inbound
                           context.reporter.uid:
-                            string_value: kubernetes://{{ .PodName }}.istio-system
+                            string_value: kubernetes://{{ .PodName }}.{{istioTelemetryNamespace}}
                   transport:
                     check_cluster: mixer_check_server
                     report_cluster: inbound_9092
@@ -1172,7 +1202,7 @@ data:
                 virtual_hosts:
                 - domains:
                   - '*'
-                  name: istio-telemetry.istio-system.svc.cluster.local
+                  name: istio-telemetry.{{istioTelemetryNamespace}}.svc.cluster.local
                   routes:
                   - decorator:
                       operation: Report
@@ -1232,7 +1262,7 @@ metadata:
     istio: mixer
     release: istio
   name: istio-telemetry
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
 spec:
   replicas: 1
   selector:
@@ -1291,11 +1321,11 @@ spec:
         - --address
         - tcp://0.0.0.0:9091
         - --log_output_level=default:info
-        - --configStoreURL=mcp://istio-galley.istio-system.svc:9901
-        - --configDefaultNamespace=istio-system
+        - --configStoreURL=mcp://istio-galley.{{istioNamespace}}.svc:9901
+        - --configDefaultNamespace={{istioTelemetryNamespace}}
         - --useAdapterCRDs=false
         - --useTemplateCRDs=false
-        - --trace_zipkin_url=http://zipkin.istio-system:9411/api/v1/spans
+        - --trace_zipkin_url=http://zipkin.{{istioTelemetryNamespace}}:9411/api/v1/spans
         env:
         - name: POD_NAMESPACE
           valueFrom:
@@ -1304,7 +1334,7 @@ spec:
               fieldPath: metadata.namespace
         - name: GOMAXPROCS
           value: "6"
-        image: docker.io/istio/mixer:1.4.3
+        image: docker.io/istio/mixer:1.4.5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -1356,7 +1386,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-telemetry
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: telemetry
     release: istio
@@ -1376,7 +1406,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-telemetry
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: mixer
     istio: mixer
@@ -1401,8 +1431,11 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-mixer-service-account
-  namespace: istio-system
+  namespace: {{istioTelemetryNamespace}}
   labels:
     app: istio-telemetry
     release: istio
 ---
+
+# Tracing component is disabled.
+

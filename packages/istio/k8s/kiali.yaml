@@ -1,3 +1,21 @@
+# CertManager component is disabled.
+
+# Citadel component is disabled.
+
+# Cni component is disabled.
+
+# CoreDNS component is disabled.
+
+# EgressGateway component is disabled.
+
+# Galley component is disabled.
+
+# Grafana component is disabled.
+
+# IngressGateway component is disabled.
+
+# Injector component is disabled.
+
 # Resources for Kiali component
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -149,7 +167,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kiali-service-account
-    namespace: istio-system
+    namespace: {{istioNamespace}}
 ---
 
 
@@ -157,18 +175,18 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kiali
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: kiali
     release: istio
 data:
   config.yaml: |
     istio_component_namespaces:
-      grafana: istio-system
-      tracing: istio-system
-      pilot: istio-system
-      prometheus: istio-system
-    istio_namespace: istio-system
+      grafana: {{istioNamespace}}
+      tracing: {{istioNamespace}}
+      pilot: {{istioNamespace}}
+      prometheus: {{istioNamespace}}
+    istio_namespace: {{istioNamespace}}
     deployment:
       accessible_namespaces: ['**']
     server:
@@ -176,13 +194,13 @@ data:
       web_root: /kiali
     external_services:
       istio:
-        url_service_version: http://istio-pilot.istio-system:8080/version
+        url_service_version: http://istio-pilot.{{istioNamespace}}:8080/version
       tracing:
         url: 
       grafana:
         url: 
       prometheus:
-        url: http://prometheus.istio-system:9090
+        url: http://prometheus.{{istioNamespace}}:9090
 ---
 
 
@@ -190,7 +208,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kiali
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: kiali
     release: istio
@@ -305,7 +323,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kiali
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: kiali
     release: istio
@@ -323,8 +341,23 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: kiali-service-account
-  namespace: istio-system
+  namespace: {{istioNamespace}}
   labels:
     app: kiali
     release: istio
 ---
+
+# NodeAgent component is disabled.
+
+# Pilot component is disabled.
+
+# Policy component is disabled.
+
+# Prometheus component is disabled.
+
+# PrometheusOperator component is disabled.
+
+# Telemetry component is disabled.
+
+# Tracing component is disabled.
+

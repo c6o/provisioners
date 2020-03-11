@@ -1,9 +1,11 @@
+# CertManager component is disabled.
+
 # Resources for Citadel component
 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-citadel-istio-system
+  name: istio-citadel-{{istioCitadelNamespace}}
   labels:
     app: citadel
     release: istio
@@ -26,17 +28,17 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-citadel-istio-system
+  name: istio-citadel-{{istioCitadelNamespace}}
   labels:
     release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-citadel-istio-system
+  name: istio-citadel-{{istioCitadelNamespace}}
 subjects:
   - kind: ServiceAccount
     name: istio-citadel-service-account
-    namespace: istio-system
+    namespace: {{istioCitadelNamespace}}
 ---
 
 
@@ -48,7 +50,7 @@ metadata:
     istio: citadel
     release: istio
   name: istio-citadel
-  namespace: istio-system
+  namespace: {{istioCitadelNamespace}}
 spec:
   replicas: 1
   selector:
@@ -103,7 +105,7 @@ spec:
       - args:
         - --append-dns-names=true
         - --grpc-port=8060
-        - --citadel-storage-namespace=istio-system
+        - --citadel-storage-namespace={{istioCitadelNamespace}}
         - --custom-dns-names=istio-galley-service-account.istio-config:istio-galley.istio-config.svc,istio-galley-service-account.istio-control:istio-galley.istio-control.svc,istio-galley-service-account.istio-control-master:istio-galley.istio-control-master.svc,istio-galley-service-account.istio-master:istio-galley.istio-master.svc,istio-galley-service-account.istio-pilot11:istio-galley.istio-pilot11.svc,istio-pilot-service-account.istio-control:istio-pilot.istio-control,istio-pilot-service-account.istio-pilot11:istio-pilot.istio-system,istio-sidecar-injector-service-account.istio-control:istio-sidecar-injector.istio-control.svc,istio-sidecar-injector-service-account.istio-control-master:istio-sidecar-injector.istio-control-master.svc,istio-sidecar-injector-service-account.istio-master:istio-sidecar-injector.istio-master.svc,istio-sidecar-injector-service-account.istio-pilot11:istio-sidecar-injector.istio-pilot11.svc,istio-sidecar-injector-service-account.istio-remote:istio-sidecar-injector.istio-remote.svc,
         - --self-signed-ca=true
         - --trust-domain=cluster.local
@@ -111,7 +113,7 @@ spec:
         env:
         - name: CITADEL_ENABLE_NAMESPACES_BY_DEFAULT
           value: "true"
-        image: docker.io/istio/citadel:1.4.3
+        image: docker.io/istio/citadel:1.4.5
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -132,7 +134,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-citadel
-  namespace: istio-system
+  namespace: {{istioCitadelNamespace}}
   labels:
     app: security
     istio: citadel
@@ -151,7 +153,7 @@ kind: Service
 metadata:
   # Must match the certificate, this is used in the node agent in same namespace.
   name: istio-citadel
-  namespace: istio-system
+  namespace: {{istioCitadelNamespace}}
   labels:
     app: security
     istio: citadel
@@ -174,8 +176,39 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-citadel-service-account
-  namespace: istio-system
+  namespace: {{istioCitadelNamespace}}
   labels:
     app: security
     release: istio
 ---
+
+# Cni component is disabled.
+
+# CoreDNS component is disabled.
+
+# EgressGateway component is disabled.
+
+# Galley component is disabled.
+
+# Grafana component is disabled.
+
+# IngressGateway component is disabled.
+
+# Injector component is disabled.
+
+# Kiali component is disabled.
+
+# NodeAgent component is disabled.
+
+# Pilot component is disabled.
+
+# Policy component is disabled.
+
+# Prometheus component is disabled.
+
+# PrometheusOperator component is disabled.
+
+# Telemetry component is disabled.
+
+# Tracing component is disabled.
+

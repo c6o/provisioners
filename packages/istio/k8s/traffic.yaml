@@ -1,23 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: istio-system
-  labels:
-    istio-operator-managed: Reconcile
-    istio-injection: disabled
----
-
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: istio-reader-service-account
-  namespace: istio-system
-  labels:
-    app: istio-reader
-    release: istio
----
-
 # CertManager component is disabled.
 
 # Citadel component is disabled.
@@ -49,7 +29,7 @@ metadata:
     app: pilot
     release: istio
   name: istio-pilot
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
 spec:
   maxReplicas: 5
   metrics:
@@ -69,7 +49,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: istio-pilot-istio-system
+  name: istio-pilot-{{istioTrafficNamespace}}
   labels:
     app: pilot
     release: istio
@@ -116,25 +96,25 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: istio-pilot-istio-system
+  name: istio-pilot-{{istioTrafficNamespace}}
   labels:
     app: pilot
     release: istio
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: istio-pilot-istio-system
+  name: istio-pilot-{{istioTrafficNamespace}}
 subjects:
   - kind: ServiceAccount
     name: istio-pilot-service-account
-    namespace: istio-system
+    namespace: {{istioTrafficNamespace}}
 ---
 
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
   name: pilot-envoy-config
   labels:
     release: istio
@@ -182,7 +162,7 @@ data:
               max_retries: 3
         hosts:
           - socket_address:
-              address: istio-galley.istio-system
+              address: istio-galley.{{istioNamespace}}
               port_value: 15019
 
       listeners:
@@ -287,7 +267,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: istio
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
   labels:
     release: istio
 data:
@@ -317,7 +297,7 @@ data:
     keepaliveMaxServerConnectionAge: 30m
     meshNetworks:
       networks: {}
-    namespace: istio-system
+    namespace: {{istioTrafficNamespace}}
     nodeSelector: {}
     plugins: []
     podAnnotations: {}
@@ -344,8 +324,12 @@ data:
     # Set accessLogFile to empty string to disable access log.
     accessLogFile: ""
 
+    accessLogFormat: ""
+
+    accessLogEncoding: 'TEXT'
+
     enableEnvoyAccessLogService: false
-    mixerReportServer: istio-telemetry.istio-system.svc.cluster.local:9091
+    mixerReportServer: istio-telemetry.{{istioNamespace}}.svc.cluster.local:9091
     # reportBatchMaxEntries is the number of requests that are batched before telemetry data is sent to the mixer server
     reportBatchMaxEntries: 100
     # reportBatchMaxTime is the max waiting time before the telemetry data of a request is sent to the mixer server
@@ -354,6 +338,16 @@ data:
 
     disablePolicyChecks: true
 
+    # Automatic protocol detection uses a set of heuristics to
+    # determine whether the connection is using TLS or not (on the
+    # server side), as well as the application protocol being used
+    # (e.g., http vs tcp). These heuristics rely on the client sending
+    # the first bits of data. For server first protocols like MySQL,
+    # MongoDB, etc., Envoy will timeout on the protocol detection after
+    # the specified period, defaulting to non mTLS plain TCP
+    # traffic. Set this field to tweak the period that Envoy will wait
+    # for the client to send the first bits of data. (MUST BE >=1ms)
+    protocolDetectionTimeout: 100ms
 
     # This is the k8s ingress service name, update if you used a different name
     ingressService: "istio-ingressgateway"
@@ -437,13 +431,13 @@ data:
       tracing:
         zipkin:
           # Address of the Zipkin collector
-          address: zipkin.istio-system:9411
+          address: zipkin.{{istioNamespace}}:9411
       #
       # Mutual TLS authentication between sidecars and istio control plane.
       controlPlaneAuthPolicy: NONE
       #
       # Address where istio Pilot service is running
-      discoveryAddress: istio-pilot.istio-system:15010
+      discoveryAddress: istio-pilot.{{istioTrafficNamespace}}:15010
 ---
 
 
@@ -455,7 +449,7 @@ metadata:
     istio: pilot
     release: istio
   name: istio-pilot
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
 spec:
   selector:
     matchLabels:
@@ -470,10 +464,7 @@ spec:
         sidecar.istio.io/inject: "false"
       labels:
         app: pilot
-        chart: pilot
-        heritage: Tiller
         istio: pilot
-        release: istio
     spec:
       affinity:
         nodeAffinity:
@@ -539,7 +530,7 @@ spec:
           value: "true"
         - name: PILOT_ENABLE_PROTOCOL_SNIFFING_FOR_INBOUND
           value: "false"
-        image: docker.io/istio/pilot:1.4.3
+        image: docker.io/istio/pilot:1.4.5
         imagePullPolicy: IfNotPresent
         name: discovery
         ports:
@@ -592,7 +583,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: istio-pilot
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
   labels:
     app: pilot
     release: istio
@@ -611,7 +602,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: istio-pilot
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
   labels:
     app: pilot
     release: istio
@@ -635,7 +626,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-pilot-service-account
-  namespace: istio-system
+  namespace: {{istioTrafficNamespace}}
   labels:
     app: pilot
     release: istio

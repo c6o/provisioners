@@ -1,0 +1,20 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./lib"
+    },
+    "references": [
+        { "path":  "../../common" },
+        { "path":  "../../kubeclient" },
+        { "path":  "../common" }
+    ],
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "src/store",
+        "node_modules",
+        "test"
+    ]
+}
