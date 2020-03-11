@@ -1,0 +1,370 @@
+---
+# Source: prometheus/templates/alertmanager-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+data:
+  alertmanager.yml: |
+    global: {}
+    receivers:
+    - name: default-receiver
+    route:
+      group_interval: 5m
+      group_wait: 10s
+      receiver: default-receiver
+      repeat_interval: 3h
+    
+---
+# Source: prometheus/templates/alertmanager-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+spec:
+  accessModes:
+    - ReadWriteOnce
+    
+  resources:
+    requests:
+      storage: "2Gi"
+---
+# Source: prometheus/templates/alertmanager-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+---
+# Source: prometheus/templates/alertmanager-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+rules:
+  []
+
+---
+# Source: prometheus/templates/alertmanager-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-alertmanager
+    namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-alertmanager
+
+---
+# Source: prometheus/templates/alertmanager-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 9093
+  selector:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+  sessionAffinity: None
+  type: "ClusterIP"
+
+---
+# Source: prometheus/templates/alertmanager-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: "alertmanager"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-alertmanager
+  namespace: '{{namespace}}'
+spec:
+  selector:
+    matchLabels:
+      component: "alertmanager"
+      app: prometheus
+      release: traxitt
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "alertmanager"
+        app: prometheus
+        release: traxitt
+        chart: prometheus-10.4.0
+        heritage: Tiller
+    spec:
+      serviceAccountName: prometheus-alertmanager
+      containers:
+        - name: prometheus-alertmanager
+          image: "prom/alertmanager:v0.20.0"
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          args:
+            - --config.file=/etc/config/alertmanager.yml
+            - --storage.path=/data
+            - --cluster.advertise-address=$(POD_IP):6783
+            - --web.external-url=http://localhost:9093
+
+          ports:
+            - containerPort: 9093
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9093
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          resources:
+            {}
+            
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            - name: storage-volume
+              mountPath: "/data"
+              subPath: ""
+
+        - name: prometheus-alertmanager-configmap-reload
+          image: "jimmidyson/configmap-reload:v0.3.0"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - --volume-dir=/etc/config
+            - --webhook-url=http://127.0.0.1:9093/-/reload
+          resources:
+            {}
+            
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+              readOnly: true
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+        
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-alertmanager
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: prometheus-alertmanager
+
+---
+# Source: prometheus/templates/alertmanager-ingress.yaml
+
+---
+# Source: prometheus/templates/alertmanager-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/alertmanager-pdb.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-service-headless.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrolebinding.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-deployment.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-pdb.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-svc.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-daemonset.yaml
+
+---
+# Source: prometheus/templates/node-exporter-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-role.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-rolebinding.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-service.yaml
+
+---
+# Source: prometheus/templates/node-exporter-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/pushgateway-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-deployment.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-ingress.yaml
+
+---
+# Source: prometheus/templates/pushgateway-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/pushgateway-pdb.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-pvc.yaml
+
+---
+# Source: prometheus/templates/pushgateway-service.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/server-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/server-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/server-configmap.yaml
+
+---
+# Source: prometheus/templates/server-deployment.yaml
+
+---
+# Source: prometheus/templates/server-ingress.yaml
+
+---
+# Source: prometheus/templates/server-networkpolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pdb.yaml
+
+
+---
+# Source: prometheus/templates/server-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pvc.yaml
+
+---
+# Source: prometheus/templates/server-service-headless.yaml
+
+---
+# Source: prometheus/templates/server-service.yaml
+
+---
+# Source: prometheus/templates/server-serviceaccount.yaml
+
+
+---
+# Source: prometheus/templates/server-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/server-vpa.yaml
+
+

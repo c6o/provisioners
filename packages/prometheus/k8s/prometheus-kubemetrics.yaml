@@ -1,0 +1,386 @@
+---
+# Source: prometheus/templates/kube-state-metrics-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    component: "kube-state-metrics"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-kube-state-metrics
+  namespace: '{{namespace}}'
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "kube-state-metrics"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-kube-state-metrics
+  namespace: '{{namespace}}'
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - nodes
+      - persistentvolumeclaims
+      - pods
+      - services
+      - resourcequotas
+      - replicationcontrollers
+      - limitranges
+      - persistentvolumeclaims
+      - persistentvolumes
+      - endpoints
+      - secrets
+      - configmaps
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources:
+      - daemonsets
+      - deployments
+      - ingresses
+      - replicasets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - daemonsets
+      - deployments
+      - statefulsets
+      - replicasets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - cronjobs
+      - jobs
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - autoscaling
+    resources:
+      - horizontalpodautoscalers
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - policy
+    resources:
+      - poddisruptionbudgets
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+    - storage.k8s.io
+    resources:
+      - storageclasses
+      - volumeattachments
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - certificates.k8s.io
+    resources:
+      - certificatesigningrequests
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - networkpolicies
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - validatingwebhookconfigurations
+      - mutatingwebhookconfigurations
+    verbs:
+      - list
+      - watch
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "kube-state-metrics"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-kube-state-metrics
+  namespace: '{{namespace}}'
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-kube-state-metrics
+    namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-kube-state-metrics
+---
+# Source: prometheus/templates/kube-state-metrics-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    
+  labels:
+    component: "kube-state-metrics"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-kube-state-metrics
+  namespace: '{{namespace}}'
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: telemetry
+      port: 81
+      protocol: TCP
+      targetPort: 8081
+  selector:
+    component: "kube-state-metrics"
+    app: prometheus
+    release: traxitt
+  type: "ClusterIP"
+
+---
+# Source: prometheus/templates/kube-state-metrics-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: "kube-state-metrics"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-kube-state-metrics
+  namespace: '{{namespace}}'
+spec:
+  selector:
+    matchLabels:
+      component: "kube-state-metrics"
+      app: prometheus
+      release: traxitt
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "kube-state-metrics"
+        app: prometheus
+        release: traxitt
+        chart: prometheus-10.4.0
+        heritage: Tiller
+    spec:
+      serviceAccountName: prometheus-kube-state-metrics
+      containers:
+        - name: prometheus-kube-state-metrics
+          image: "quay.io/coreos/kube-state-metrics:v1.9.1"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: metrics
+              containerPort: 8080
+            - name: telemetry
+              containerPort: 8081
+          resources:
+            {}
+            
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        
+
+---
+# Source: prometheus/templates/alertmanager-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-configmap.yaml
+
+---
+# Source: prometheus/templates/alertmanager-deployment.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-ingress.yaml
+
+---
+# Source: prometheus/templates/alertmanager-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/alertmanager-pdb.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-pvc.yaml
+
+---
+# Source: prometheus/templates/alertmanager-service-headless.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-service.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/alertmanager-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-pdb.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-daemonset.yaml
+
+---
+# Source: prometheus/templates/node-exporter-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-role.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-rolebinding.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-service.yaml
+
+---
+# Source: prometheus/templates/node-exporter-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/pushgateway-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-deployment.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-ingress.yaml
+
+---
+# Source: prometheus/templates/pushgateway-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/pushgateway-pdb.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-pvc.yaml
+
+---
+# Source: prometheus/templates/pushgateway-service.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/server-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/server-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/server-configmap.yaml
+
+---
+# Source: prometheus/templates/server-deployment.yaml
+
+---
+# Source: prometheus/templates/server-ingress.yaml
+
+---
+# Source: prometheus/templates/server-networkpolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pdb.yaml
+
+
+---
+# Source: prometheus/templates/server-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pvc.yaml
+
+---
+# Source: prometheus/templates/server-service-headless.yaml
+
+---
+# Source: prometheus/templates/server-service.yaml
+
+---
+# Source: prometheus/templates/server-serviceaccount.yaml
+
+
+---
+# Source: prometheus/templates/server-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/server-vpa.yaml
+
+

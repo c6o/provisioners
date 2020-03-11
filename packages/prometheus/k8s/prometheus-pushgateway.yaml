@@ -1,0 +1,300 @@
+---
+# Source: prometheus/templates/pushgateway-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-pushgateway
+  namespace: '{{namespace}}'
+---
+# Source: prometheus/templates/pushgateway-clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-pushgateway
+  namespace: '{{namespace}}'
+rules:
+  []
+
+---
+# Source: prometheus/templates/pushgateway-clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-pushgateway
+  namespace: '{{namespace}}'
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-pushgateway
+    namespace: monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-pushgateway
+
+---
+# Source: prometheus/templates/pushgateway-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/probe: pushgateway
+    
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-pushgateway
+  namespace: '{{namespace}}'
+spec:
+  ports:
+    - name: http
+      port: 9091
+      protocol: TCP
+      targetPort: 9091
+  selector:
+    component: "pushgateway"
+    app: prometheus
+    release: traxitt
+  type: "ClusterIP"
+
+---
+# Source: prometheus/templates/pushgateway-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: "pushgateway"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-pushgateway
+  namespace: '{{namespace}}'
+spec:
+  selector:
+    matchLabels:
+      component: "pushgateway"
+      app: prometheus
+      release: traxitt
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "pushgateway"
+        app: prometheus
+        release: traxitt
+        chart: prometheus-10.4.0
+        heritage: Tiller
+    spec:
+      serviceAccountName: prometheus-pushgateway
+      containers:
+        - name: prometheus-pushgateway
+          image: "prom/pushgateway:v1.0.1"
+          imagePullPolicy: "IfNotPresent"
+          args:
+          ports:
+            - containerPort: 9091
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9091
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9091
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+          resources:
+            {}
+            
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        
+
+---
+# Source: prometheus/templates/alertmanager-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-configmap.yaml
+
+---
+# Source: prometheus/templates/alertmanager-deployment.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-ingress.yaml
+
+---
+# Source: prometheus/templates/alertmanager-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/alertmanager-pdb.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-pvc.yaml
+
+---
+# Source: prometheus/templates/alertmanager-service-headless.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-service.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/alertmanager-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrolebinding.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-deployment.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-pdb.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-svc.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-daemonset.yaml
+
+---
+# Source: prometheus/templates/node-exporter-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-role.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-rolebinding.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-service.yaml
+
+---
+# Source: prometheus/templates/node-exporter-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/pushgateway-ingress.yaml
+
+---
+# Source: prometheus/templates/pushgateway-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/pushgateway-pdb.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-pvc.yaml
+
+---
+# Source: prometheus/templates/server-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/server-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/server-configmap.yaml
+
+---
+# Source: prometheus/templates/server-deployment.yaml
+
+---
+# Source: prometheus/templates/server-ingress.yaml
+
+---
+# Source: prometheus/templates/server-networkpolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pdb.yaml
+
+
+---
+# Source: prometheus/templates/server-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pvc.yaml
+
+---
+# Source: prometheus/templates/server-service-headless.yaml
+
+---
+# Source: prometheus/templates/server-service.yaml
+
+---
+# Source: prometheus/templates/server-serviceaccount.yaml
+
+
+---
+# Source: prometheus/templates/server-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/server-vpa.yaml
+
+

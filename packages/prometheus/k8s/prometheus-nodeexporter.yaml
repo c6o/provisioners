@@ -1,0 +1,277 @@
+---
+# Source: prometheus/templates/node-exporter-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    component: "node-exporter"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-node-exporter
+  namespace: '{{namespace}}'
+---
+# Source: prometheus/templates/node-exporter-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: "true"
+    
+  labels:
+    component: "node-exporter"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-node-exporter
+  namespace: '{{namespace}}'
+spec:
+  clusterIP: None
+  ports:
+    - name: metrics
+      port: 9100
+      protocol: TCP
+      targetPort: 9100
+  selector:
+    component: "node-exporter"
+    app: prometheus
+    release: traxitt
+  type: "ClusterIP"
+---
+# Source: prometheus/templates/node-exporter-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    component: "node-exporter"
+    app: prometheus
+    release: traxitt
+    chart: prometheus-10.4.0
+    heritage: Tiller
+  name: prometheus-node-exporter
+  namespace: '{{namespace}}'
+spec:
+  selector:
+    matchLabels:
+      component: "node-exporter"
+      app: prometheus
+      release: traxitt
+  updateStrategy:
+    type: RollingUpdate
+    
+  template:
+    metadata:
+      labels:
+        component: "node-exporter"
+        app: prometheus
+        release: traxitt
+        chart: prometheus-10.4.0
+        heritage: Tiller
+    spec:
+      serviceAccountName: prometheus-node-exporter
+      containers:
+        - name: prometheus-node-exporter
+          image: "prom/node-exporter:v0.18.1"
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+          ports:
+            - name: metrics
+              containerPort: 9100
+              hostPort: 9100
+          resources:
+            {}
+            
+          volumeMounts:
+            - name: proc
+              mountPath: /host/proc
+              readOnly:  true
+            - name: sys
+              mountPath: /host/sys
+              readOnly: true
+      hostNetwork: true
+      hostPID: true
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+---
+# Source: prometheus/templates/alertmanager-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-configmap.yaml
+
+---
+# Source: prometheus/templates/alertmanager-deployment.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-ingress.yaml
+
+---
+# Source: prometheus/templates/alertmanager-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/alertmanager-pdb.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-pvc.yaml
+
+---
+# Source: prometheus/templates/alertmanager-service-headless.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-service.yaml
+
+
+---
+# Source: prometheus/templates/alertmanager-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/alertmanager-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-clusterrolebinding.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-deployment.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-pdb.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/kube-state-metrics-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/kube-state-metrics-svc.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-role.yaml
+
+
+---
+# Source: prometheus/templates/node-exporter-rolebinding.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-deployment.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-ingress.yaml
+
+---
+# Source: prometheus/templates/pushgateway-networkpolicy.yaml
+
+---
+# Source: prometheus/templates/pushgateway-pdb.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-pvc.yaml
+
+---
+# Source: prometheus/templates/pushgateway-service.yaml
+
+
+---
+# Source: prometheus/templates/pushgateway-serviceaccount.yaml
+
+---
+# Source: prometheus/templates/server-clusterrole.yaml
+
+
+---
+# Source: prometheus/templates/server-clusterrolebinding.yaml
+
+
+---
+# Source: prometheus/templates/server-configmap.yaml
+
+---
+# Source: prometheus/templates/server-deployment.yaml
+
+---
+# Source: prometheus/templates/server-ingress.yaml
+
+---
+# Source: prometheus/templates/server-networkpolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pdb.yaml
+
+
+---
+# Source: prometheus/templates/server-podsecuritypolicy.yaml
+
+
+---
+# Source: prometheus/templates/server-pvc.yaml
+
+---
+# Source: prometheus/templates/server-service-headless.yaml
+
+---
+# Source: prometheus/templates/server-service.yaml
+
+---
+# Source: prometheus/templates/server-serviceaccount.yaml
+
+
+---
+# Source: prometheus/templates/server-statefulset.yaml
+
+
+---
+# Source: prometheus/templates/server-vpa.yaml
+
+
