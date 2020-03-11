@@ -102,8 +102,8 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                 .beginForward(27017, this.runningPod)
                 .attempt(10, 1000, async (processor, attempt) => await this.connectMongoDbClient(processor, attempt))
                 .do(async (_, processor) => await this.provisionMongoDb(processor))
+                .do(async _ => await this.disconnectMongoDbClient())
                 .endForward()
-                .do(() => this.disconnectMongoDbClient())
             .end()
     }
     
@@ -117,7 +117,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
     /** Closes the mongoDbClient connection */
     async disconnectMongoDbClient() {
         this.manager.status?.log(`Closing connection to mongodb`)
-        this.mongoDbClient.close()
+        await this.mongoDbClient.close()
     }
 
     /**
