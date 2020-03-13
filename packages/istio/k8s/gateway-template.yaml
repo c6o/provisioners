@@ -2,17 +2,17 @@
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
-  name: grant-traxitt-org
+  name: traxitt-system-certificate
   namespace: istio-system
 spec:
-  secretName: grant-traxitt-org-tls
+  secretName: traxitt-system-certificate-tls
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
-  commonName: traxitt.org
+  commonName: {{domainName}}
   dnsNames:
-  - traxitt.org
-  - {{hostname}}.traxitt.org
+  - {{domainName}}
+  {{hostName}}
 ---
 
 # setup gateway
@@ -23,23 +23,23 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    istio: ingressgateway
+    istio: ingressgateway # default ingress istio gateway
   servers:
   - port:
-      name: http
+      name: http-istio-gateway
       number: 80
       protocol: HTTP
     hosts:
-    - '{{hostname}}'
+    - '*'
     tls:
-      httpRedirect: true
+      httpsRedirect: {{ httpsRedirect }}
   - port:
-      name: https
+      name: https-istio-gateway
       number: 443
       protocol: HTTPS
     hosts:
-    - '{{hostname}}'
+    - '*'
     tls:
       mode: SIMPLE
-      credentialName: grant-traxitt-org-tls
+      credentialName: traxitt-system-certificate-tls
 ---

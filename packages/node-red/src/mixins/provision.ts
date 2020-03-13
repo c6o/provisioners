@@ -1,6 +1,10 @@
-import { baseProvisionerType } from '..'
+import { baseProvisionerType } from '../index'
+import { createDebug } from '@traxitt/common'
+
+const debug = createDebug()
 
 export const provisionMixin = (base: baseProvisionerType) => class extends base {
+    istioProvisioner
     
     async provision() {
         await this.ensureServiceNamespacesExist()
@@ -31,6 +35,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                 .list(this.nodeRedPods)
                 .do((result, processor) => {
                     if (result?.object?.items?.length == 0) {
+                        debug('Installing Node-Red')
                         // There are no node-red pods running
                         // Install node-red
                         processor
@@ -41,7 +46,9 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                 })
             .end()
     }
+
     async ensureNodeRedIsRunning() {
+        debug('Ensuring Node-Red is running')
         await this.manager.cluster.
             begin(`Ensure a Node-RED replica is running`)
                 .beginWatch(this.nodeRedPods)

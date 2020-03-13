@@ -9,7 +9,8 @@ metadata:
 spec:
     ports:
     - port: 1880
-    targetPort: 1880
+      name: http
+      targetPort: 1880
     type: NodePort
     selector:
         name: node-red

@@ -45,7 +45,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                     if (result?.object?.items?.length == 0) {
                         debug('cert-manager installing.')
                         processor
-                            .upsertFile('../../k8s/deployment.yaml', { namespace })                            
+                            .upsertFile('../../k8s/cert-manager.yaml', { namespace })
                     }
                 })
             .end()
@@ -54,6 +54,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
     }
 
     async ensureReady() {
+        debug('Waiting on cert-manager to be ready.')
         await this.manager.cluster.
             begin(`Ensure a replica is running`)
                 .beginWatch(this.pods)
@@ -61,14 +62,13 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                     processor.endWatch()
                 })
             .end()
-
-        debug('cert-manager now ready.')
+        debug('Cert-manager now ready.')
     }
 
     async ensureCertificate() {
         debug('About to issue certificate.')
-        const staging = this.spec.staging || '-staging'
-        const notifyEmail = this.spec.notifyEmail || 'grant@burnard.com'
+        const environment = this.spec.environment
+        const notifyEmail = this.spec.notifyEmail
         const namespace = this.serviceNamespace
 
         await this.manager.cluster
@@ -78,7 +78,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                     if (result?.object?.items?.length == 0) {
                         debug('Certificate issuer installing.')
                         processor
-                            .upsertFile('../../k8s/cluster-issuer.yaml', { namespace, staging, notifyEmail })                            
+                            .upsertFile('../../k8s/cluster-issuer.yaml', { namespace, staging: environment == 'production' ? '' : '-staging', notifyEmail })
                     }
                 })
             .end()

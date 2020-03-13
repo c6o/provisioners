@@ -13,22 +13,15 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <traxitt-form-layout>
-                <traxitt-combo-box @selected-item-changed=${this.enviroSelected} label='Environment' value=${this.serviceSpec.evironment} required .items=${this.enviroValues}></traxitt-combo-box>
+                <traxitt-combo-box @selected-item-changed=${this.enviroSelected} label='Environment' value=${this.serviceSpec.environment || 'staging'} required .items=${this.enviroValues}></traxitt-combo-box>
                 <br />
-                <traxitt-text-field @input=${this.emailChanged} label="Notify email address" value=${this.serviceSpec.notifyEmail} autoselect required></traxitt-text-field>
+                <traxitt-text-field @input=${this.emailChanged} label="Notify email address" value=${this.serviceSpec.notifyEmail || ''} autoselect required></traxitt-text-field>
             </traxitt-form-layout>
         `
     }
 
     enviroSelected = (e) => {
-        switch(e.detail.value) {
-            case 'production' :
-                this.serviceSpec.staging = '' // empty for production
-            case 'development' :
-            case 'staging' :
-            default :
-                this.serviceSpec.staging = '-staging' // appends -staging to cert-manager
-        }
+        this.serviceSpec.environment = e.detail.value
     }
 
     emailChanged = (e) => {

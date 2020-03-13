@@ -1,5 +1,6 @@
 export * from './ask'
 export * from './deprovision'
 export * from './preask'
+export * from './preprovision'
 export * from './provision'
-export * from './grafana'
+export * from './api'

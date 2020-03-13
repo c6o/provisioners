@@ -12,7 +12,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: letsencrypt
-  #namespace: cert-manager
 spec:
   acme:
     # The ACME server URL
@@ -35,19 +34,3 @@ spec:
         dnsZones:
         - 'traxitt.org'
 ---
-
-# apiVersion: cert-manager.io/v1alpha2
-# kind: ClusterIssuer
-# metadata:
-#     name: testissuer
-# spec:
-#   acme:
-#     server: https://acme-staging-v02.api.letsencrypt.org/directory
-#     privateKeySecretRef:
-#       name: example-issuer-account-key
-#     solvers:
-#     - http01:
-#         serviceType: LoadBalancer
-#         ingress:
-#           class: nginx
-# ---

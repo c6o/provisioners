@@ -3,7 +3,7 @@ import { baseProvisionerType } from '..'
 export const preprovisionMixin = (base: baseProvisionerType) => class extends base {
 
     get providedEnvironmentSetting() {
-        return this.spec.staging || this.options['staging']
+        return this.spec.environment || this.options['environment']
     }
 
     get providedNotifyEmailSetting() {
@@ -29,14 +29,7 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
                 message: 'What is your environment?'
             })
 
-            switch(response.environment) {
-                case 'production' :
-                    this.spec.staging = '' // empty for production
-                case 'development' :
-                case 'staging' :
-                default :
-                    this.spec.staging = '-staging' // appends -staging to cert-manager
-            }
+            this.spec.environment = response.environment
         }
 
         if (!this.providedNotifyEmailSetting) {

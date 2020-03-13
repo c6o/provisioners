@@ -1,4 +1,4 @@
-import { baseProvisionerType } from '../index'
+import { baseProvisionerType } from '../../'
 
 export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     grafanaNamespace
@@ -77,7 +77,7 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     // TODO: Get the istio-system namespace from getInstalledApp
 
     async addDashboard(name) {
-        const data = await super.readFile(__dirname, `../../grafana/${name}.json`)
+        const data = await super.readFile(__dirname, `../../../grafana/${name}.json`)
         await this.grafanaProvisioner.addDashboard(name, data)
     }
 }

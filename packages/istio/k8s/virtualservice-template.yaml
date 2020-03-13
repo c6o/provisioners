@@ -2,7 +2,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{appName}}-virtualservice
+  name: {{svcName}}-virtualservice
   namespace: {{namespace}}
 spec:
   hosts:
@@ -12,25 +12,25 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /{{namespace}}/{{appName}}/
+        prefix: /{{namespace}}/{{svcName}}/
     rewrite:
         uri: /
     route:
     - destination:
         port:
           number: {{port}}
-        host: {{appName}}.{{namespace}}.svc.cluster.local
+        host: {{svcName}}.{{namespace}}.svc.cluster.local
   https:
   - match:
     - uri:
-        prefix: /{{namespace}}/{{appName}}/
+        prefix: /{{namespace}}/{{svcName}}/
     rewrite:
         uri: /
     route:
     - destination:
         port:
           number: {{port}}
-        host: {{appName}}.{{namespace}}.svc.cluster.local
+        host: {{svcName}}.{{namespace}}.svc.cluster.local
         trafficPolicy:
           tls:
             mode: DISABLE
