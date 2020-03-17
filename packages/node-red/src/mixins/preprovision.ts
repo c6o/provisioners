@@ -14,14 +14,13 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
 
         if (!this.providedStorageSetting) {
 
-            const choices: any[] = [{
-                name: "Specify Storage",
-                value: "**Storage**"
-    
-            }, new this.manager.inquirer.Separator(), '1Gi', '2Gi', '4Gi', '8Gi']
-            
             // TODO: selector
-        
+            // const choices: any[] = [{
+            //     name: "Specify Storage",
+            //     value: "**Storage**"
+
+            // }, new this.manager.inquirer.Separator(), '1Gi', '2Gi', '4Gi', '8Gi']
+
             const response = await this.manager.inquirer?.prompt({
                 type: 'input',
                 name: 'storage',

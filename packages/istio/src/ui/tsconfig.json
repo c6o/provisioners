@@ -20,8 +20,11 @@
     },
     "references": [
         { "path":  "../../common" },
-        { "path":  "../../ui/web" },
+        { "path":  "../../kubeclient" },
         { "path":  "../common" }
+    ],
+    "include": [
+        "src"
     ],
     "exclude": [
         "node_modules",
