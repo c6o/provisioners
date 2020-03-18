@@ -71,16 +71,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
         throw Error('Function not found')
     }
-
-    async getInstalledApp(appName) {
-        const result = await this.manager.cluster.list({
-            apiVersion: 'system.traxitt.com/v1',
-            kind: 'App'}, `metadata.name=${appName}`)
-        if (result.error)
-            throw result.error
-        return result.object.items
-    }
-
+    
     async readFile(...args: string[]): Promise<string> {
         const buffer = await fs.readFile(path.resolve(...args))
         return buffer.toString('utf-8')

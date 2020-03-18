@@ -12,7 +12,7 @@ export const preConfigureMixin = (base: baseProvisionerType) => class extends ba
         if (grafanaLink.errorCode != 404)
             throw Error('Grafana is already linked. Please unlink it first.')
 
-        const apps = await super.getInstalledApp('grafana')
+        const apps = await this.manager.getInstalledApps('grafana')
         const choices = apps.map(app => app.metadata.namespace)
 
         if (choices.length == 1) {

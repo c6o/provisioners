@@ -9,7 +9,7 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
             const result = await this.findGrafanaLinkConfigMap()
             if (result.error) {
                 // We aren't linked
-                const apps = await super.getInstalledApp('grafana')
+                const apps = await this.manager.getInstalledApps('grafana')
                 const choices = apps.map(app => app.metadata.namespace) || []
                 return { choices }
             }

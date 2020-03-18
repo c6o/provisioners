@@ -12,6 +12,8 @@ export const namespaceMixin = (base: baseProvisionerMixinType) => class namespac
 
     get applicationNamespace() { return this.applicationSpec?.namespaceObject?.metadata?.name }
     get serviceNamespace() { return this.spec?.namespaceObject?.metadata?.name }
+    // for deprovisioning we don't have/want a namespaceObject
+    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || this.applicationSpec?.metadata?.namespace }
 
     async ensureServiceNamespacesExist() {
         if (this.spec.namespaceObject)

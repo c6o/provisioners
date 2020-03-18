@@ -28,7 +28,7 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
         return this.spec.keyFile || this.options['pubKeyPath'] || '~/.ssh/id_rsa.pub'
     }
 
-    async preprovision() {        
+    async preprovision() {
 
         if (!this.providedStorageSetting) {
             const response = await this.manager.inquirer?.prompt({
