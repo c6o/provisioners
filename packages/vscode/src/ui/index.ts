@@ -15,10 +15,19 @@ export class VSCodeCapacity extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <traxitt-form-layout>
-                <traxitt-combo-box @selected-item-changed=${this.storageSelected} label='Data Volume Size' required allow-custom-value .items=${this.values}></traxitt-combo-box>
-                <vaadin-upload max-files="1" @upload-request=${this.upload}>
-                    <span slot="drop-label">Drop your public key file here</span>
-                </vaadin-upload>
+                <traxitt-combo-box
+                    @selected-item-changed=${this.storageSelected}
+                    label='Data Volume Size'
+                    required
+                    allow-custom-value
+                    .items=${this.values}>
+                </traxitt-combo-box>
+                <traxitt-form-item label-position="top" colspan="2">
+                    <label slot="label">Public Key</label>
+                    <vaadin-upload max-files="1" @upload-request=${this.upload}>
+                        <span slot="drop-label">Drop your public key file here</span>
+                    </vaadin-upload>
+                </traxitt-form-item>
             </traxitt-form-layout>
         `
     }
