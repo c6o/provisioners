@@ -1,5 +1,5 @@
 import { Status } from '@traxitt/common'
-import {  Cluster, KubeObject } from '@traxitt/kubeclient'
+import {  Cluster, KubeObject, KubeDocument } from '@traxitt/kubeclient'
 import { ProvisionerBase } from './provisioner'
 
 export type optionFunctionType = (string, description: string, autocomplete?: ReadonlyArray<string>) => void
@@ -15,4 +15,6 @@ export interface ProvisionerManager {
     toNamespaceObject(namespace) : KubeObject
 
     getProvisioner(serviceName: string): Promise<ProvisionerBase>
+
+    getInstalledApps(appName: string): Promise<Array<KubeDocument>>
 }
