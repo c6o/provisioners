@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: traxitt-system-gateway
+  namespace: traxitt-system # '{{namespace}}'
+spec:
+  selector:
+    istio: ingressgateway # default ingress istio gateway
+  servers:
+  - port:
+      name: http-istio-gateway
+      number: 80
+      protocol: HTTP
+    hosts:
+    - '*'
+  - port:
+      name: ws-istio-gateway
+      number: 3050
+      protocol: TCP
+    hosts:
+    - '*'
+---

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: 'traxitt-system' # '{{namespace}}'
+  name: system-server
+  labels:
+    role: server
+    name: system-server
+spec:
+  selector:
+    matchLabels:
+      name: system-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: server
+        name: system-server
+    spec:
+      containers:
+      - name: system-server
+        image: traxitt/system-server:latest
+        env:
+          - name: NODE_ENV
+            value: 'development'
+        ports:
+          - name: system-server
+            containerPort: 3050
+            protocol: TCP
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: 'traxitt-system' # '{{namespace}}'
+    name: system-server
+    labels:
+        name: system-server
+        role: server
+spec:
+    ports:
+    - port: 3050
+      protocol: TCP
+      targetPort: 3050
+    type: NodePort
+    selector:
+        name: system-server
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+    name: system-server-virtualservice
+    namespace: traxitt-system # '{{namespace}}'
+spec:
+    hosts:
+      - '*'
+    gateways:
+      - traxitt-system-gateway
+    tcp:
+      - match:
+        - port: 3050
+        route:
+        - destination:            
+            port:
+              number: 3050
+            host: system-server
+---
