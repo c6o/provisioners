@@ -2,18 +2,25 @@ import { baseProvisionerType } from './index'
 
 export const predeprovisionMixin = (base: baseProvisionerType) => class extends base {
 
-    get providedKeepIp() {
-        return this.options['keep-ip'] !== undefined
+    deprovisionSpec
+
+    providedOption(option) {
+        return (this.deprovisionSpec[option] !== undefined) || (this.options[option] !== undefined)
     }
 
-    get providedKeepVolume() {
-        return this.options['keep-vol'] !== undefined
+    getOption(option, defaultValue) {
+        if (this.deprovisionSpec[option] !== undefined)
+            return this.deprovisionSpec[option]
+
+        this.options[option] !== undefined ? this.options[option] : defaultValue
     }
 
     async predeprovision() {
-        
-        if (this.manager.inquirer && !this.providedKeepIp) {
-            const response = await this.manager.inquirer.prompt({
+
+        this.deprovisionSpec = this.spec.deprovision || {}
+
+        if (!this.providedOption('keep-ip')) {
+            const response = await this.manager.inquirer?.prompt({
                 type: 'confirm',
                 name: 'keepIp',
                 default: false,
@@ -22,10 +29,10 @@ export const predeprovisionMixin = (base: baseProvisionerType) => class extends 
             if (response)
                 this.keepIp = response.keepIp
         } else
-            this.keepIp = this.options['keep-ip'] || false
+            this.keepIp = this.getOption('keep-ip', false)
 
-        if (this.manager.inquirer && !this.providedKeepVolume) {
-            const response = await this.manager.inquirer.prompt({
+        if (!this.providedOption('keep-vol')) {
+            const response = await this.manager.inquirer?.prompt({
                 type: 'confirm',
                 name: 'keepVolume',
                 default: true,
@@ -34,7 +41,7 @@ export const predeprovisionMixin = (base: baseProvisionerType) => class extends 
             if (response)
                 this.keepVolume = response.keepVolume
         } else
-            this.keepVolume = this.options['keep-vol'] || true
+            this.keepVolume = this.getOption('keep-vol', true)
     }
 }
 
