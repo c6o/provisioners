@@ -34,7 +34,7 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
 
         if (!this.providedNotifyEmailSetting) {
             const response = await this.manager.inquirer?.prompt({
-                type: 'confirm',
+                type: 'input',
                 name: 'notifyEmail',
                 default: '',
                 message: 'What email address would you like to use for notifications?',

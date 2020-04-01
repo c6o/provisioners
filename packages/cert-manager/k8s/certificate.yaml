@@ -1,0 +1,15 @@
+# setup certificate
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: traxitt-system
+  namespace: cert-manager
+spec:
+  secretName: traxitt-system-certificate-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  commonName: traxitt.org
+  dnsNames:
+  - traxitt.org
+  - cluster.org.dev.traxitt.org

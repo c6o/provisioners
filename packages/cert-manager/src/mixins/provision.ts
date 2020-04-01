@@ -79,6 +79,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                         debug('Certificate issuer installing.')
                         processor
                             .upsertFile('../../k8s/cluster-issuer.yaml', { namespace, staging: environment == 'production' ? '' : '-staging', notifyEmail })
+                            .upsertFile('../../k8s/certificate.yaml', { namespace })
                     }
                 })
             .end()
