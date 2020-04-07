@@ -1,4 +1,4 @@
-import { baseProvisionerType } from './index'
+import { baseProvisionerType } from '../'
 
 export const deprovisionMixin = (base: baseProvisionerType) => class extends base {
     async deprovision() {

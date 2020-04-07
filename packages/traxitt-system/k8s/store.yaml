@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: system-store
-        image: traxitt/system-store:canary
+        image: traxitt/system-store:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -54,7 +54,7 @@ spec:
   hosts:
   - '*'
   gateways:
-  - traxitt-system
+  - system-gateway
   http:
   - match:
     - uri:

@@ -26,7 +26,7 @@ Once you've created an app called "grafana", be sure to modify the app's databas
 { 
     ...
     "name" : "grafana", 
-    "namespace" : "grafana", 
+    "namespace" : "grafana",
     ...    
     "spec" : {
         "services" : {

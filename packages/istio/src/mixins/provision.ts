@@ -19,6 +19,16 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
         }
     }
 
+    get ingressPods() {
+        return {
+            kind: 'Pod',
+            metadata: {
+                namespace: this.serviceNamespace,
+                labels: { app: 'istio-ingressgateway' }
+            }
+        }
+    }
+
     get expectedTlsCertificate() {
         return {
             apiVersion: 'v1',
@@ -35,20 +45,24 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
         await this.ensureServiceNamespacesExist()
         await this.installCrds()
         await this.ensureCrdsApplied()
-        const sslPossible = await this.findTlsCertificate()
-        await this.installIstioServices(sslPossible)
+        await this.installIstioServices()
+        await this.ensureIngressGatewayIsRunning()
+
+        await this.getExternalIPAddress()
     }
 
     async installCrds() {
         const istioNamespace = this.spec.namespace || 'istio-system'
 
         await this.manager.cluster
-            .begin(`Install istio resource definitions`)
+            .begin(`Install resource definitions`)
                 .upsertFile('../../k8s/crds.yaml', { istioNamespace })
             .end()
     }
 
-    async installIstioServices(sslPossible: boolean) {
+    async installIstioServices() {
+        // const sslPossible = await this.findTlsCertificate()
+
         const istioNamespace = this.spec.namespace || 'istio-system'
 
         const { autoInjectEnabled,
@@ -65,92 +79,98 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
         const gatewayParams:any = {domainName: this.spec.domainName, httpsRedirect: this.spec.httpsRedirect }
         if (this.spec.hostName)
             gatewayParams.hostName = `- ${this.spec.hostName}.${this.spec.domainName}`
-        const ingressFilename = sslPossible ?
-            'ingress-template-secure.yaml' : // use the template with HTTPS
-            'ingress-template-insecure.yaml' // use the template with HTTP only
 
         await this.manager.cluster
-            .begin('Install istio base and minimal')
+            .begin('Install Base Components')
                 .upsertFile('../../k8s/gateway.yaml', { istioNamespace, istioGatewayNamespace: istioNamespace })
                 .upsertFile('../../k8s/traffic.yaml', { istioNamespace, istioTrafficNamespace: istioNamespace })
-                .upsertFile(`../../k8s/${ingressFilename}`, { istioNamespace, gatewayParams })
             .end()
 
         if (autoInjectEnabled)
             await this.manager.cluster
-                .begin('Install Istio Auto Injection')
+                .begin('Install Auto Injection')
                     .upsertFile('../../k8s/autoinject.yaml', { istioNamespace, istioInjectNamespace: istioNamespace })
                 .end()
 
         if (citadelEnabled)
             await this.manager.cluster
-                .begin('Install Istio Citadel')
+                .begin('Install Citadel')
                     .upsertFile('../../k8s/citadel.yaml', { istioNamespace, istioCitadelNamespace: istioNamespace })
                 .end()
 
         if (coreDnsEnabled)
             await this.manager.cluster
-                .begin('Install Istio Core DNS')
+                .begin('Install Core DNS')
                     .upsertFile('../../k8s/coredns.yaml', { istioNamespace, istioCoreDnsNamespace: istioNamespace })
                 .end()
 
         if (galleyEnabled)
             await this.manager.cluster
-                .begin('Install Istio Galley')
+                .begin('Install Galley')
                     .upsertFile('../../k8s/galley.yaml', { istioNamespace, istioGalleyNamespace: istioNamespace })
                 .end()
 
         if (policyEnabled)
             await this.manager.cluster
-                .begin('Install Istio Policy')
+                .begin('Install Policy')
                     .upsertFile('../../k8s/policy.yaml', { istioNamespace, istioPolicyNamespace: istioNamespace })
                 .end()
 
         if (telemetryEnabled)
             await this.manager.cluster
-                .begin('Install Istio Telemetry')
+                .begin('Install Telemetry')
                     .upsertFile('../../k8s/telemetry.yaml', { istioNamespace, istioTelemetryNamespace: istioNamespace })
                 .end()
 
         if (grafanaEnabled)
             await this.manager.cluster
-                .begin('Install grafana')
+                .begin('Install Grafana')
                     .upsertFile('../../k8s/grafana.yaml', { istioNamespace, istioGrafanaNamespace: istioNamespace })
                 .end()
 
         if (kialiEnabled)
             await this.manager.cluster
-                .begin('Install kiali')
+                .begin('Install Kiali')
                     .upsertFile('../../k8s/kiali.yaml', { istioNamespace, istioPrometheusNamespace: istioNamespace })
                 .end()
 
         if (prometheusEnabled)
             await this.manager.cluster
-                .begin('Install prometheus')
+                .begin('Install Prometheus')
                     .upsertFile('../../k8s/prometheus.yaml', { istioNamespace, istioKialiNamespace: istioNamespace })
                 .end()
     }
 
     async ensureCrdsApplied() {
         await this.manager.cluster
-            .begin('Ensure istio CRDs applied')
+            .begin('Ensure resource definitions applied')
                 .attempt(20, 2000, this.countCRDs.bind(this))
             .end()
     }
 
-    async countCRDs(processor, attempt) {
+    async countCRDs(_, attempt) {
         let count = 0
         const cluster = this.manager.cluster
         await cluster
             .begin()
                 .list(this.crdDocument)
-                .do((result, processor) => {
+                .do((result) => {
                     count = result?.object?.items?.length
                 })
             .end()
 
         cluster.status?.log(`Retrieved ${count} out of ${expectedCRDCount} CRDs attempt ${attempt}`)
         return count >= expectedCRDCount
+    }
+
+    async ensureIngressGatewayIsRunning() {
+        await this.manager.cluster
+            .begin(`Ensure ingress gateway is running`)
+                .beginWatch(this.ingressPods)
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                    processor.endWatch()
+                })
+            .end()
     }
 
     async findTlsCertificate() {

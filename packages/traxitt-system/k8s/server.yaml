@@ -1,7 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: system-server-config
+  namespace: traxitt-system
+data:
+  CLUSTER_ID: '{{clusterId}}'
+  HUB_SERVER_URL: '{{hubServer}}'
+  HUB_TOKEN: '{{hubToken}}'
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: 'traxitt-system' # '{{namespace}}'
+  namespace: 'traxitt-system'
   name: system-server
   labels:
     role: system
@@ -21,19 +31,22 @@ spec:
       containers:
       - name: system-server
         imagePullPolicy: Always
-        image: traxitt/system-server:canary
+        image: traxitt/system-server:{{tag}}
         env:
           - name: DEBUG
             value: '*,-engine*,-nodemon*,-*expo*,-babel*'
           - name: PORT
             value: '3050'
+        envFrom:
+          - configMapRef:
+              name: system-server-config
         ports:
           - containerPort: 3050
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: 'traxitt-system' # '{{namespace}}'
+  namespace: 'traxitt-system'
   name: system-server
   labels:
     role: system
@@ -61,7 +74,7 @@ spec:
   hosts:
   - '*'
   gateways:
-  - traxitt-system
+  - system-gateway
   http:
   - match:
     - uri:

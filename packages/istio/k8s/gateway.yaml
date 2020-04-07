@@ -271,24 +271,24 @@ spec:
 
 ---
 
-
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: ingressgateway
-  namespace: {{istioGatewayNamespace}}
-  labels:
-    release: istio
-spec:
-  selector:
-    istio: ingressgateway
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-      - "*"
+# Be sure not to include the default gateway
+# apiVersion: networking.istio.io/v1alpha3
+# kind: Gateway
+# metadata:
+#   name: ingressgateway
+#   namespace: {{istioGatewayNamespace}}
+#   labels:
+#     release: istio
+# spec:
+#   selector:
+#     istio: ingressgateway
+#   servers:
+#   - port:
+#       number: 8080
+#       name: http
+#       protocol: HTTP
+#     hosts:
+#       - "*"
     # Additional ports in gateaway for the ingressPorts - apps using dedicated port instead of hostname
 ---
 

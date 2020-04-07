@@ -7,8 +7,9 @@ import {
     preConfigureMixin,
     preprovisionMixin,
     provisionMixin,
+    gatewayApiMixin,
     grafanaMixin,
-    ingressApiMixin,
+    virtualServiceApiMixin,
     httpsRedirectApiMixin
 } from "./mixins"
 
@@ -16,5 +17,5 @@ import {
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export class Provisioner extends mix(ProvisionerBase).with(askMixin, deprovisionMixin, preConfigureMixin, preprovisionMixin, provisionMixin, grafanaMixin, httpsRedirectApiMixin, ingressApiMixin) {
+export class Provisioner extends mix(ProvisionerBase).with(askMixin, deprovisionMixin, preConfigureMixin, preprovisionMixin, provisionMixin, gatewayApiMixin, grafanaMixin, httpsRedirectApiMixin, virtualServiceApiMixin) {
 }

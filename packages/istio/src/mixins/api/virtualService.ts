@@ -3,11 +3,11 @@ import { createDebug } from '@traxitt/common'
 
 const debug = createDebug()
 
-export const ingressApiMixin = (base: baseProvisionerType) => class extends base {
+export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
 
     runningDeployment
 
-    async openIngressPort(namespace: string, svcName: string, port: number): Promise<string> {
+    async createVirtualService(namespace: string, svcName: string, port: number): Promise<string> {
         debug(`Installing Virtual Service for ${namespace}/${svcName}:${port}`)
         if (!namespace || !svcName || !port) {
             debug(`Missing one or more parameters to setup virtual Service for ${namespace}/${svcName}:${port}`)
@@ -22,7 +22,7 @@ export const ingressApiMixin = (base: baseProvisionerType) => class extends base
         return `http://demo.traxitt.org:${port}/${namespace}/${svcName}/` // TODO - need to return object instead of string
     }
 
-    async closeIngressPort(namespace: string, svcName: string) {
+    async removeVirtualService(namespace: string, svcName: string) {
         debug(`Removing Virtual Service for ${namespace}/${svcName}`)
         if (!namespace || !svcName) {
             debug(`Missing one or more parameters to teardown virtual Service for ${namespace}/${svcName}`)

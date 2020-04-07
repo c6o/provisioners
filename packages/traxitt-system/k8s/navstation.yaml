@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: system-navstation
-        image: traxitt/system-navstation:canary
+        image: traxitt/system-navstation:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -54,7 +54,7 @@ spec:
   hosts:
   - '*'
   gateways:
-  - traxitt-system
+  - system-gateway
   http:
     - match:
       - uri:
