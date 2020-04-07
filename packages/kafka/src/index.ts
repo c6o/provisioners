@@ -1,8 +1,8 @@
 import { mix } from "@traxitt/common"
 import { ProvisionerBase } from "@provisioner/common"
 
-import { deprovisionMixin} from "./deprovision"
-import { provisionMixin} from "./provision"
+import { deprovisionMixin} from "./mixins/deprovision"
+import { provisionMixin} from "./mixins/provision"
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 

@@ -31,7 +31,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
         const namespace = this.serviceNamespace
 
         await this.manager.cluster
-            .begin(`Install Node-RED services`)
+            .begin('Install Node-RED services')
                 .list(this.nodeRedPods)
                 .do((result, processor) => {
                     if (result?.object?.items?.length == 0) {
@@ -50,7 +50,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
     async ensureNodeRedIsRunning() {
         debug('Ensuring Node-Red is running')
         await this.manager.cluster.
-            begin(`Ensure a Node-RED replica is running`)
+            begin('Ensure a Node-RED replica is running')
                 .beginWatch(this.nodeRedPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                     processor.endWatch()

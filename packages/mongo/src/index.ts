@@ -5,10 +5,11 @@ import {
     deprovisionMixin,
     helpMixin,
     preprovisionMixin,
-    provisionMixin
+    provisionMixin,
+    predeprovisionMixin
 } from './mixins'
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export class Provisioner extends mix(ProvisionerBase).with(deprovisionMixin, helpMixin, preprovisionMixin, provisionMixin,) {
+export class Provisioner extends mix(ProvisionerBase).with(predeprovisionMixin, deprovisionMixin, helpMixin, preprovisionMixin, provisionMixin,) {
 }

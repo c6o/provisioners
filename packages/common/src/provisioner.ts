@@ -4,7 +4,8 @@ import { promises as fs } from 'fs'
 
 import {
     namespaceMixin,
-    passwordMixin
+    passwordMixin,
+    optionsMixin
 } from './mixins'
 import { ProvisionerManager, optionFunctionType } from './manager'
 
@@ -14,7 +15,7 @@ export type baseProvisionerMixinType = new (...a) => ProvisionerBase
 export class provisionerBasePrivate {
 }
 
-export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, passwordMixin) {
+export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, passwordMixin, optionsMixin) {
     options: any
     manager: ProvisionerManager
     serviceName: string

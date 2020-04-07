@@ -4,6 +4,7 @@ import { ProvisionerBase } from "@provisioner/common"
 import {
     apiMixin,
     dashboardApiMixin,
+    predeprovisionMixin,
     deprovisionMixin,
     helpMixin,
     preprovisionMixin,
@@ -12,5 +13,5 @@ import {
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export class Provisioner extends mix(ProvisionerBase).with(apiMixin, helpMixin, dashboardApiMixin, deprovisionMixin, preprovisionMixin, provisionMixin,) {
+export class Provisioner extends mix(ProvisionerBase).with(apiMixin, helpMixin, dashboardApiMixin, predeprovisionMixin, deprovisionMixin, preprovisionMixin, provisionMixin,) {
 }

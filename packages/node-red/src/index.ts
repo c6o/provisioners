@@ -3,9 +3,10 @@ import { ProvisionerBase } from "@provisioner/common"
 
 import {
     deprovisionMixin,
-    preprovisionMixin,
     provisionMixin,
-    helpMixin
+    helpMixin,
+    predeprovisionMixin,
+    preprovisionMixin
 } from './mixins'
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase

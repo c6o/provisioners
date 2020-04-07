@@ -1,5 +1,6 @@
 export * from './api'
 export * from './dashboards'
+export * from './predeprovision'
 export * from './deprovision'
 export * from './help'
 export * from './preprovision'

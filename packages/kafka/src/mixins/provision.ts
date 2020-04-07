@@ -1,4 +1,4 @@
-import { baseProvisionerType } from './index'
+import { baseProvisionerType } from '../index'
 
 export const provisionMixin = (base: baseProvisionerType) => class extends base {
 
@@ -36,7 +36,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
     async ensureKafkaIsInstalled() {
         const namespace = this.serviceNamespace
         await this.manager.cluster
-                .begin(`Install kafka services`)
+                .begin('Install kafka services')
                     .list(this.kafkaBrokerPods)
                     .do( (result, processor) => {
     
@@ -44,7 +44,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                                 // There are no kafka brokers
                                 // Install kafka
                                 processor
-                                    .upsertFile('../k8s/kafka-complete.yaml', { namespace })
+                                    .upsertFile('../../k8s/kafka-complete.yaml', { namespace })
                             }
                     })
                 .end()
@@ -53,7 +53,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
     async ensureKafkaIsRunning() {
     
         const zookeeper = this.manager.cluster.
-                begin(`Ensure a kafka zookeeper is running`)
+                begin('Ensure a kafka zookeeper is running')
                     .beginWatch(this.kafkaZookeeperPods)
                     .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                         processor.endWatch()
@@ -61,7 +61,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
                 .end()
     
         const broker = this.manager.cluster.
-                begin(`Ensure a kafka broker is running`)
+                begin('Ensure a kafka broker is running')
                     .beginWatch(this.kafkaBrokerPods)
                     .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                         processor.endWatch()

@@ -73,7 +73,10 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             kind: 'ConfigMap',
             metadata: {
                 namespace: this.runningDeployment.metadata.namespace,
-                name: dashboardName
+                name: dashboardName,
+                labels: {
+                    'system.traxitt.com/managed-by':'grafana'
+                }
             },
             data: {
                 [dashboardName + '.json']: dashBoardSpec

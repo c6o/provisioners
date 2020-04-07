@@ -13,27 +13,18 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
     async preprovision() {
 
         if (!this.providedStorageSetting) {
-
-            // TODO: selector
-            // const choices: any[] = [{
-            //     name: "Specify Storage",
-            //     value: "**Storage**"
-
-            // }, new this.manager.inquirer.Separator(), '1Gi', '2Gi', '4Gi', '8Gi']
-
             const response = await this.manager.inquirer?.prompt({
                 type: 'input',
                 name: 'storage',
                 default: '2Gi',
-                message: 'How much storage do you need for Node-RED?'
+                message: 'What size data volume would you like for your Node-RED flows?'
             })
 
             if (response)
                 this.spec.storage = response.storage
             else
                 this.spec.storage = '2Gi'
-
-        }
+        } else this.spec.storage = '2Gi'
 
         if (!this.providedProjectSetting) {
             const response = await this.manager.inquirer?.prompt({
@@ -46,6 +37,6 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
                 this.spec.projects = response.projects
             else
                 this.spec.projects = false
-        }
+        } else this.spec.storage = false
     }
 }

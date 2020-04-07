@@ -1,4 +1,5 @@
 export * from './deprovision'
+export * from './predeprovision'
 export * from './provision'
 export * from './preprovision'
 export * from './help'
