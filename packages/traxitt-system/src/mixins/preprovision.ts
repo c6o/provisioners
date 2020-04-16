@@ -12,6 +12,7 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
 
     clusterIdWhen = async (answers) => {
         this.clusters = await this.options.hubClient.getClusters()
+        this.accounts = await this.options.hubClient.getAccounts()
         if (this.clusters.length === 0) {
             // There are no clusters to choose. Force the user to create a new one
             answers.clusterId = this.newClusterId
@@ -28,10 +29,7 @@ export const preprovisionMixin = (base: baseProvisionerType) => class extends ba
     }
 
     newClusterWhen = async (answers) => {
-        const createNeCluster = answers.clusterId === this.newClusterId
-        if (createNeCluster)
-            this.accounts = await this.options.hubClient.getAccounts()
-        return createNeCluster
+        return answers.clusterId === this.newClusterId
     }
     accountIdChoices = _ => this.accounts.map(account => ({ name: account.name, value: account._id }))
 
