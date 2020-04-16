@@ -1,15 +1,22 @@
 import { baseProvisionerType } from '../index'
 import * as yaml from 'js-yaml'
-import { asyncForEach } from '@traxitt/common'
 
 export const dashboardApiMixin = (base: baseProvisionerType) => class extends base {
 
     dashboardFolder
     runningDeployment
 
-    dashboardConfigMaps = []
-    dashboardOps = []
+    // dashboards to add
+    addConfigMaps = []
+    // to remove
+    removeConfigMaps = []
 
+    /**
+     * Start to add dashboards to Grafana
+     *
+     * @param {string} namespace Namespace where the grafana instance lives
+     * @param {string} folder Folder to mount new dashboards
+     */
     async beginDashboard(namespace: string, folder: string) {
         if (this.runningDeployment)
             throw Error('There is already a running dashboard transaction')
@@ -38,11 +45,12 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         if (result.error)
             throw result.error
 
-        // Add the folder to the configMap if it doesn't already exist
+        // Add the app folder to the configMap if it doesn't already exist
+        // TODO: we leave this folder in place even when dashboards are removed
         const doc = yaml.safeLoad(result.object.data['dashboardproviders.yaml'])
         doc.providers = doc.providers || []
         const index = doc.providers.findIndex(entry => entry.folder == folder)
-        if (index == -1) {
+        if (index === -1) {
             doc.providers.push({
                 folder,
                 name: folder,
@@ -67,9 +75,8 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         this.dashboardFolder = folder
     }
 
-    async addDashboard(dashboardName: string, dashBoardSpec: string): Promise<void> {
-
-        this.dashboardConfigMaps.push({
+    apiDashboardConfigMap(dashboardName: string, dashboardSpec?: string) {
+        const configMap: any = {
             kind: 'ConfigMap',
             metadata: {
                 namespace: this.runningDeployment.metadata.namespace,
@@ -77,12 +84,21 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
                 labels: {
                     'system.traxitt.com/managed-by':'grafana'
                 }
-            },
-            data: {
-                [dashboardName + '.json']: dashBoardSpec
             }
-        })
+        }
+        if (dashboardSpec) {
+            configMap.data = {
+                [dashboardName + '.json']: dashboardSpec
+            }
+        }
+        return configMap
+    }
 
+    async addDashboard(dashboardName: string, dashBoardSpec: string): Promise<void> {
+
+        this.addConfigMaps.push(this.apiDashboardConfigMap(dashboardName, dashBoardSpec))
+
+        // patches to deployment
         const volume = {
             name: `dashboards-${dashboardName}`,
             configMap: {
@@ -97,36 +113,61 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             readOnly: true
         }
 
-        let index = this.runningDeployment.spec.template.spec.volumes.findIndex(vol => vol.name == volume.name)
-        if (index == -1)
-            this.dashboardOps.push({ 'op': 'add', 'path': '/spec/template/spec/volumes/-', 'value': volume })
+        const volumeArray = this.runningDeployment.spec.template.spec.volumes
+        let index = volumeArray.findIndex(vol => vol.name == volume.name)
+        if (index === -1)
+            volumeArray.push(volume)
 
-        index = this.runningDeployment.spec.template.spec.containers[0].volumeMounts.findIndex(vol => vol.name == volumeMount.name)
-        if (index == -1)
-            this.dashboardOps.push({ 'op': 'add', 'path': '/spec/template/spec/containers/0/volumeMounts/-', 'value': volumeMount })
+        const volumeMountArray = this.runningDeployment.spec.template.spec.containers[0].volumeMounts
+        index = volumeMountArray.findIndex(vol => vol.name == volumeMount.name)
+        if (index === -1)
+            volumeMountArray.push(volumeMount)
+    }
+
+    async removeDashboard(dashboardName: string): Promise<void> {
+        // remove the dashboard configmap
+        this.removeConfigMaps.push(this.apiDashboardConfigMap(dashboardName))
+
+        const volumeName = `dashboards-${dashboardName}`
+
+        // remove the dashboard volume and volume mount from the deployment
+        const volumeArray = this.runningDeployment.spec.template.spec.volumes
+        let index = volumeArray.findIndex(vol => vol.name == volumeName)
+        if (index !== -1)
+            volumeArray.splice(index,1)
+        
+        const volumeMountArray = this.runningDeployment.spec.template.spec.containers[0].volumeMounts
+        index = volumeMountArray.findIndex(vol => vol.name == volumeName)
+        if (index !== -1)
+            volumeMountArray.splice(index,1)
     }
 
     async endDashboard() {
         let restart = false
 
         // Add all the config maps
-        await asyncForEach(this.dashboardConfigMaps, async (configMap) => {
+        for (const configMap of this.addConfigMaps) {
             const result = await this.manager.cluster.upsert(configMap)
             if (result.error)
                 throw result.error
-        })
-
-        // Apply the ops
-        if (this.dashboardOps.length) {
-            const result = await this.manager.cluster.patch(this.runningDeployment, this.dashboardOps)
-            if (result.error)
-                throw result.error
-
             restart = true
         }
 
-        if (restart)
+        // remove configmaps
+        for (const configMap of this.removeConfigMaps) {
+            const result = await this.manager.cluster.delete(configMap)
+            if (result.error)
+                throw result.error
+            restart = true
+        }
+
+        // Apply the ops (adding and removing volumes and mounts for maps)
+        if (restart) {
+            const result = await this.manager.cluster.upsert(this.runningDeployment)
+            if (result.error)
+                throw result.error
             await this.restartGrafana()
+        }
     }
 
     async restartGrafana() {

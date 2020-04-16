@@ -10,6 +10,12 @@ export class IstioSettings extends LitElement {
     @property({type: Object})
     grafanaOptions
 
+    @property({type: Object})
+    prometheusNamespace
+
+    @property({type: Object})
+    prometheusOptions
+
     @property({type: Boolean})
     httpRedirect
 
@@ -20,7 +26,9 @@ export class IstioSettings extends LitElement {
     loaded = false
 
     grafanaService
+    prometheusService
     httpsRedirectService
+    istioNamespace
 
     get grafanaComboBox() { return this.shadowRoot.querySelector('traxitt-combo-box') as unknown as any }
 
@@ -30,6 +38,8 @@ export class IstioSettings extends LitElement {
 
         return html `
             ${this.renderGrafanaLink()}
+            <hr />
+            ${this.renderPrometheusLink()}
             <hr />
             ${this.renderHttpsRefirect()}
         `
@@ -48,6 +58,19 @@ export class IstioSettings extends LitElement {
         `
     }
 
+    renderPrometheusLink() {
+        if (this.prometheusOptions) {
+            return html`
+                <traxitt-combo-box @selected-item-changed=${this.prometheusSelected} label='Select Prometheus Installation' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
+                <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
+            `
+        }
+
+        return html`
+            <traxitt-button @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusNamespace}</traxitt-button>
+        `
+    }
+
     renderHttpsRefirect() {
         return html`
             <traxitt-checkbox @checked-changed=${this.httpsRedirectChanged} ?disabled=${this.busy} ?checked=${this.httpRedirect}>Enable https redirect</traxitt-checkbox>
@@ -61,25 +84,18 @@ export class IstioSettings extends LitElement {
     unlinkGrafana = async (e) => {
         this.busy = true
         await this.grafanaService.remove(this.grafanaNamespace)
-        await this.refreshLinkStatus()
+        await this.refreshGrafanaLinkStatus()
         this.busy = false
     }
 
     linkGrafana = async (e) => {
         this.busy = true
-        await this.grafanaService.create({namespace: this.grafanaNamespace})
-        await this.refreshLinkStatus()
+        await this.grafanaService.create({istioNamespace: this.istioNamespace, namespace: this.grafanaNamespace})
+        await this.refreshGrafanaLinkStatus()
         this.busy = false
     }
 
-    httpsRedirectChanged = async (e) => {
-        this.busy = true
-        await this.httpsRedirectService.create({enable: e.detail.value})
-        await this.refreshHttpRedirectStatus()
-        this.busy = false
-    }
-
-    async refreshLinkStatus() {
+    async refreshGrafanaLinkStatus() {
         const result = await this.grafanaService.find({})
         if (result.choices) {
             this.grafanaOptions = result.choices
@@ -88,10 +104,52 @@ export class IstioSettings extends LitElement {
         else
             this.grafanaOptions = null
 
-        if (result['grafana-namespace'])
-            this.grafanaNamespace = result['grafana-namespace']
+        if (result.namespace)
+            this.grafanaNamespace = result.namespace
         else
             this.grafanaNamespace = null
+    }
+
+
+    prometheusSelected = (e) => {
+        this.prometheusNamespace = e.detail.value
+    }
+
+    unlinkPrometheus = async (e) => {
+        this.busy = true
+        await this.prometheusService.remove(this.prometheusNamespace)
+        await this.refreshPrometheusLinkStatus()
+        this.busy = false
+    }
+
+    linkPrometheus = async (e) => {
+        this.busy = true
+        await this.prometheusService.create({istioNamespace: this.istioNamespace, namespace: this.prometheusNamespace})
+        await this.refreshPrometheusLinkStatus()
+        this.busy = false
+    }
+
+    async refreshPrometheusLinkStatus() {
+        const result = await this.prometheusService.find({})
+        if (result.choices) {
+            this.prometheusOptions = result.choices
+            this.prometheusNamespace = this.prometheusOptions[0]
+        }
+        else
+            this.prometheusOptions = null
+
+        if (result.namespace)
+            this.prometheusNamespace = result.namespace
+        else
+            this.prometheusNamespace = null
+    }
+
+
+    httpsRedirectChanged = async (e) => {
+        this.busy = true
+        await this.httpsRedirectService.create({enable: e.detail.value})
+        await this.refreshHttpRedirectStatus()
+        this.busy = false
     }
 
     async refreshHttpRedirectStatus() {
@@ -102,14 +160,21 @@ export class IstioSettings extends LitElement {
     async connectedCallback() {
         super.connectedCallback()
 
+        this.istioNamespace = this.api.manifest.metadata.namespace
         this.grafanaService = this.api.createService('istio', 'grafana-link')
+        this.prometheusService = this.api.createService('istio', 'prometheus-link')
         this.httpsRedirectService = this.api.createService('istio','https-redirect')
 
         this.grafanaService.on('grafana-link', async (data) => {
-            await this.refreshLinkStatus()
+            await this.refreshGrafanaLinkStatus()
         })
 
-        await this.refreshLinkStatus()
+        this.prometheusService.on('prometheus-link', async (data) => {
+            await this.refreshPrometheusLinkStatus()
+        })
+
+        await this.refreshGrafanaLinkStatus()
+        await this.refreshPrometheusLinkStatus()
         await this.refreshHttpRedirectStatus()
         this.loaded = true
     }

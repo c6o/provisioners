@@ -1,6 +1,6 @@
 import { baseProvisionerType } from '../'
 
-export const provisionMixin = (base: baseProvisionerType) => class extends base {
+export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     // protected members
     runningPod
@@ -16,7 +16,7 @@ export const provisionMixin = (base: baseProvisionerType) => class extends base 
         }
     }
 
-    async provision() {
+    async createApply() {
         await this.ensureServiceNamespacesExist()
         await this.ensureVerdaccioInstalled()
         await this.ensureVerdaccioIsRunning()

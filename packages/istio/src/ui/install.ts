@@ -1,14 +1,11 @@
 import { LitElement, html, customElement, css } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
-import { themeStyles } from '@traxitt/ui-theme'
 
 @customElement('istio-install-main')
 export class IstioSetup extends LitElement implements StoreFlowStep {
 
     static get styles() {
-        return [
-            themeStyles,
-            css`
+        return css`
                 traxitt-horizontal-layout > traxitt-form-layout {
                     flex-grow: 1;
                     flex-basis: 0;
@@ -24,7 +21,6 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     border-top: 1px solid var(--lumo-shade-10pct);
                 }
             `
-        ]
     }
 
     mediator: StoreFlowMediator

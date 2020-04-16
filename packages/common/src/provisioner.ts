@@ -1,4 +1,5 @@
-import { mix } from '@traxitt/common'
+import { ulid } from 'ulid'
+import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
 
@@ -16,28 +17,17 @@ export class provisionerBasePrivate {
 }
 
 export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, passwordMixin, optionsMixin) {
-    options: any
     manager: ProvisionerManager
     serviceName: string
-    spec: any
-    applicationSpec: any
+
+    taskSpec: any
 
     // Has other API functions
     [key: string]: any
 
+    spec: any
+    
     help (command: string, options: optionFunctionType, messages: string[]) {}
-
-    preprovision() {}
-
-    provision() {
-        throw new Error('Function provision must be implemented')
-    }
-
-    predeprovision() {}
-
-    deprovision() {
-        throw new Error('Function deprovision must be implemented')
-    }
 
     serve(req, res, moduleLocation, serverRoot = 'lib/ui') {
         const root = path.resolve(moduleLocation, serverRoot)
@@ -76,5 +66,24 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     async readFile(...args: string[]): Promise<string> {
         const buffer = await fs.readFile(path.resolve(...args))
         return buffer.toString('utf-8')
+    }
+
+    toTask = (namespace, ask: string, spec: any) => ({
+        apiVersion: 'system.traxitt.com/v1',
+        kind: 'Task',
+        metadata: {
+            namespace,
+            name: `${this.serviceName}-${ulid().toLowerCase()}`,
+            labels: {
+                app: `${this.serviceName}`,
+                ask
+            }
+        },
+        spec
+    })
+
+    async createTask(namespace, ask: string, spec: any) {
+        const taskDocument = this.toTask(namespace, ask, spec)
+        return await this.manager.cluster.create(taskDocument)
     }
 }

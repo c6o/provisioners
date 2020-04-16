@@ -1,38 +1,38 @@
 {
-    "name": "@provisioner/etcd-operator",
-    "version": "0.0.0",
-    "description": "Traxitt provisioner for etcd-operator",
-    "main": "lib/index.js",
-    "scripts": {
-      "build": "tsc -b",
-      "develop": "tsc -b -w --preserveWatchOutput",
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/nsainaney/traxitt.git"
-    },
-    "files": [
-      "lib",
-      "k8s"
-    ],
-    "publishConfig": {
-      "access": "private"
-    },
-    "keywords": [
-      "traxitt",
-      "provisioner",
-      "etcd-operator"
-    ],
-    "author": "Narayan Sainaney",
-    "license": "UNLICENSED",
-    "bugs": {
-      "url": "https://github.com/nsainaney/traxitt/issues"
-    },
-    "homepage": "https://github.com/nsainaney/traxitt#readme",
-    "dependencies": {
-      "@provisioner/common": "^0.0.0",
-      "@traxitt/common": "^0.0.2",
-      "@traxitt/kubeclient": "^0.0.1"
-    }
+  "name": "@provisioner/etcd-operator",
+  "version": "0.0.0",
+  "description": "Traxitt provisioner for etcd-operator",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc -b",
+    "develop": "tsc -b -w --preserveWatchOutput",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nsainaney/traxitt.git"
+  },
+  "files": [
+    "lib",
+    "k8s"
+  ],
+  "publishConfig": {
+    "access": "private"
+  },
+  "keywords": [
+    "traxitt",
+    "provisioner",
+    "etcd-operator"
+  ],
+  "author": "Narayan Sainaney",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nsainaney/traxitt/issues"
+  },
+  "homepage": "https://github.com/nsainaney/traxitt#readme",
+  "dependencies": {
+    "@provisioner/common": "^0.0.0",
+    "@traxitt/kubeclient": "^0.0.1",
+    "mixwith": "^0.1.1"
   }
+}

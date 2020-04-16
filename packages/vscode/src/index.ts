@@ -1,13 +1,21 @@
-import { mix } from '@traxitt/common'
+import { mix } from 'mixwith'
 import { ProvisionerBase } from '@provisioner/common'
-import { predeprovisionMixin} from './predeprovision'
-import { deprovisionMixin} from './deprovision'
-import { preprovisionMixin} from './preprovision'
-import { provisionMixin} from './provision'
+import { removeInquireMixin} from './removeInquire'
+import { removeApplyMixin} from './removeApply'
+import { createInquireMixin} from './createInquire'
+import { createValidateMixin} from './createValidate'
+import { createApplyMixin} from './createApply'
 import { execMixin} from './exec'
 import { helpMixin} from './help'
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export class Provisioner extends mix(ProvisionerBase).with( preprovisionMixin, predeprovisionMixin, deprovisionMixin, provisionMixin, execMixin, helpMixin) {
+export class Provisioner extends mix(ProvisionerBase).with(
+  removeInquireMixin,
+  removeApplyMixin,
+  createInquireMixin,
+  createValidateMixin,
+  createApplyMixin,
+  execMixin,
+  helpMixin) {
 }

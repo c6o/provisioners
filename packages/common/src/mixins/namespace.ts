@@ -10,10 +10,10 @@ declare module '../provisioner' {
 
 export const namespaceMixin = (base: baseProvisionerMixinType) => class namespaceImp extends base {
 
-    get applicationNamespace() { return this.applicationSpec?.namespaceObject?.metadata?.name }
+    get applicationNamespace() { return this.manager.state.namespaceObject?.metadata?.name }
     get serviceNamespace() { return this.spec?.namespaceObject?.metadata?.name }
     // for deprovisioning we don't have/want a namespaceObject
-    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || this.applicationSpec?.metadata?.namespace }
+    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || this.document?.metadata?.namespace }
 
     async ensureServiceNamespacesExist() {
         if (this.spec.namespaceObject)
@@ -35,7 +35,7 @@ export const namespaceMixin = (base: baseProvisionerMixinType) => class namespac
                 throw result.error
         }
         else
-            this.spec.namespaceObject = this.applicationSpec.namespaceObject
+            this.spec.namespaceObject = this.manager.state.namespaceObject
 
         if (!this.spec.namespaceObject)
             throw new Error(`Unable to determine namespace for service ${this.serviceName}`)

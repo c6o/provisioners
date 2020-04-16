@@ -1,21 +1,34 @@
-import { mix } from "@traxitt/common"
+import { mix } from "mixwith"
 import { ProvisionerBase } from "@provisioner/common"
 
 import {
-    askMixin,
-    deprovisionMixin,
-    preConfigureMixin,
-    preprovisionMixin,
-    provisionMixin,
-    gatewayApiMixin,
+    removeApplyMixin,
+    createTaskInquireMixin,
+    createTaskApplyMixin,
+    createInquireMixin,
+    createApplyMixin,
     grafanaMixin,
+    gatewayApiMixin,
     virtualServiceApiMixin,
+    prometheusApiMixin,
+    linkMapMixin,
     httpsRedirectApiMixin
-} from "./mixins"
+} from './mixins'
 
 // TODO: import { helpMixin} from "./help"
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export class Provisioner extends mix(ProvisionerBase).with(askMixin, deprovisionMixin, preConfigureMixin, preprovisionMixin, provisionMixin, gatewayApiMixin, grafanaMixin, httpsRedirectApiMixin, virtualServiceApiMixin) {
+export class Provisioner extends mix(ProvisionerBase).with(
+    removeApplyMixin,
+    createTaskInquireMixin,
+    createTaskApplyMixin,
+    createInquireMixin,
+    createApplyMixin,
+    grafanaMixin,
+    gatewayApiMixin,
+    prometheusApiMixin,
+    linkMapMixin,
+    httpsRedirectApiMixin,
+    virtualServiceApiMixin) {
 }

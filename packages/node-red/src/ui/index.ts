@@ -21,6 +21,12 @@ export class NodeRedSettings extends LitElement implements StoreFlowStep {
         `
     }
 
+    async begin() {
+        // set defaults
+        this.serviceSpec.storage = this.serviceSpec.storage || '2Gi'
+        this.serviceSpec.projects = this.serviceSpec.projects !== undefined ? this.serviceSpec.projects : false
+    }
+
     storageSelected = (e) => {
         this.serviceSpec.storage = e.detail.value
     }

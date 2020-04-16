@@ -1,7 +1,6 @@
 // Extends is not supported at this time by parcel-cli
 {
     "compilerOptions": {
-        "composite": true,
         "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
@@ -18,11 +17,6 @@
         "sourceMap": true,
         "lib": ["es2018", "dom"],
     },
-    "references": [
-        { "path":  "../../common" },
-        { "path":  "../../ui/web" },
-        { "path":  "../common" }
-    ],
     "exclude": [
         "node_modules",
         "test"

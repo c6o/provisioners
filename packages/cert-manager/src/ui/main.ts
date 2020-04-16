@@ -29,6 +29,7 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
-        //this.mediator.appendFlow('node-red-projects')
+        this.serviceSpec.environment = 'development'
+        this.serviceSpec.notifyEmail = 'admin@traxitt.com'
     }
 }
