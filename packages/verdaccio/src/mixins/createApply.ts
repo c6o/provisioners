@@ -28,7 +28,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin('Install verdaccio services')
             .list(this.verdaccioPods)
             .do((result, processor) => {
-                if (result?.object?.items?.length) {
+                if (!result?.object?.items?.length) {
                     const namespace = this.serviceNamespace
 
                     processor
