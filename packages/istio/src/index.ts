@@ -3,15 +3,14 @@ import { ProvisionerBase } from "@provisioner/common"
 
 import {
     removeApplyMixin,
-    createTaskInquireMixin,
-    createTaskApplyMixin,
     createInquireMixin,
     createApplyMixin,
+    updateApplyMixin,
     grafanaMixin,
     gatewayApiMixin,
     virtualServiceApiMixin,
     prometheusApiMixin,
-    linkMapMixin,
+    choicesApiMixin,
     httpsRedirectApiMixin
 } from './mixins'
 
@@ -21,14 +20,13 @@ export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
 export class Provisioner extends mix(ProvisionerBase).with(
     removeApplyMixin,
-    createTaskInquireMixin,
-    createTaskApplyMixin,
     createInquireMixin,
     createApplyMixin,
+    updateApplyMixin,
     grafanaMixin,
     gatewayApiMixin,
     prometheusApiMixin,
-    linkMapMixin,
+    choicesApiMixin,
     httpsRedirectApiMixin,
     virtualServiceApiMixin) {
 }

@@ -4,178 +4,124 @@ import { LitElement, html, customElement, property } from 'lit-element'
 export class IstioSettings extends LitElement {
     api
 
-    @property({type: Object})
+    @property({ type: Object })
     grafanaNamespace
 
-    @property({type: Object})
+    @property({ type: Object })
     grafanaOptions
 
-    @property({type: Object})
+    @property({ type: Object })
     prometheusNamespace
 
-    @property({type: Object})
+    @property({ type: Object })
     prometheusOptions
 
-    @property({type: Boolean})
-    httpRedirect
+    @property({ type: Boolean })
+    httpsRedirect: boolean
 
-    @property({type: Boolean})
+    @property({ type: Boolean })
     busy
 
-    @property({type: Boolean})
+    @property({ type: Boolean })
     loaded = false
 
-    grafanaService
-    prometheusService
-    httpsRedirectService
-    istioNamespace
+    choicesService
+    disposer
 
-    get grafanaComboBox() { return this.shadowRoot.querySelector('traxitt-combo-box') as unknown as any }
+    get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as unknown as any }
+    get prometheusComboBox() { return this.shadowRoot.querySelector('#prometheus-combo-box') as unknown as any }
 
     render() {
         if (!this.loaded)
-            return html `Loading...`
+            return html`Loading...`
 
-        return html `
+        return html`
             ${this.renderGrafanaLink()}
             <hr />
             ${this.renderPrometheusLink()}
             <hr />
-            ${this.renderHttpsRefirect()}
-        `
+            <traxitt-checkbox @checked-changed=${this.httpsRedirectChanged} ?disabled=${this.busy} ?checked=${this.httpsRedirect}>Enable https redirect</traxitt-checkbox>
+            <traxitt-button @click=${this.resetChanges} ?disabled=${this.busy}>Reset Changes</traxitt-button>
+            <traxitt-button @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
+            `
     }
 
     renderGrafanaLink() {
-        if (this.grafanaOptions) {
+        if (this.grafanaNamespace)
             return html`
-                <traxitt-combo-box @selected-item-changed=${this.grafanaSelected} label='Select Grafana Installation' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
-                <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
-            `
-        }
-
-        return html`
             <traxitt-button @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaNamespace}</traxitt-button>
+          `
+        return html`
+            <traxitt-combo-box id='grafana-combo-box' @selected-item-changed=${this.grafanaSelected} label='Select Grafana Installation' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
+            <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
         `
     }
 
     renderPrometheusLink() {
-        if (this.prometheusOptions) {
+        if (this.prometheusNamespace)
             return html`
-                <traxitt-combo-box @selected-item-changed=${this.prometheusSelected} label='Select Prometheus Installation' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
-                <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
-            `
-        }
+            <traxitt-button id='grafana-combo-box' @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusNamespace}</traxitt-button>
+          `
 
         return html`
-            <traxitt-button @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusNamespace}</traxitt-button>
+          <traxitt-combo-box id='prometheus-combo-box' label='Select Prometheus Installation' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
+          <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
         `
     }
-
-    renderHttpsRefirect() {
-        return html`
-            <traxitt-checkbox @checked-changed=${this.httpsRedirectChanged} ?disabled=${this.busy} ?checked=${this.httpRedirect}>Enable https redirect</traxitt-checkbox>
-        `
-    }
-
-    grafanaSelected = (e) => {
-        this.grafanaNamespace = e.detail.value
-    }
-
-    unlinkGrafana = async (e) => {
-        this.busy = true
-        await this.grafanaService.remove(this.grafanaNamespace)
-        await this.refreshGrafanaLinkStatus()
-        this.busy = false
-    }
-
-    linkGrafana = async (e) => {
-        this.busy = true
-        await this.grafanaService.create({istioNamespace: this.istioNamespace, namespace: this.grafanaNamespace})
-        await this.refreshGrafanaLinkStatus()
-        this.busy = false
-    }
-
-    async refreshGrafanaLinkStatus() {
-        const result = await this.grafanaService.find({})
-        if (result.choices) {
-            this.grafanaOptions = result.choices
-            this.grafanaNamespace = this.grafanaOptions[0]
-        }
-        else
-            this.grafanaOptions = null
-
-        if (result.namespace)
-            this.grafanaNamespace = result.namespace
-        else
-            this.grafanaNamespace = null
-    }
-
-
-    prometheusSelected = (e) => {
-        this.prometheusNamespace = e.detail.value
-    }
-
-    unlinkPrometheus = async (e) => {
-        this.busy = true
-        await this.prometheusService.remove(this.prometheusNamespace)
-        await this.refreshPrometheusLinkStatus()
-        this.busy = false
-    }
-
-    linkPrometheus = async (e) => {
-        this.busy = true
-        await this.prometheusService.create({istioNamespace: this.istioNamespace, namespace: this.prometheusNamespace})
-        await this.refreshPrometheusLinkStatus()
-        this.busy = false
-    }
-
-    async refreshPrometheusLinkStatus() {
-        const result = await this.prometheusService.find({})
-        if (result.choices) {
-            this.prometheusOptions = result.choices
-            this.prometheusNamespace = this.prometheusOptions[0]
-        }
-        else
-            this.prometheusOptions = null
-
-        if (result.namespace)
-            this.prometheusNamespace = result.namespace
-        else
-            this.prometheusNamespace = null
-    }
-
 
     httpsRedirectChanged = async (e) => {
+        this.httpsRedirect = e.detail.value
+    }
+
+    linkGrafana = async () => {
+        this.grafanaNamespace = this.grafanaComboBox.value
+    }
+
+    linkPrometheus = async () => {
+        this.prometheusNamespace = this.prometheusComboBox.value
+    }
+
+    unlinkGrafana = async () => {
+        this.grafanaNamespace = ''
+    }
+
+    unlinkPrometheus = async () => {
+        this.prometheusNamespace = ''
+    }
+
+    resetChanges = () => {
+        this.grafanaNamespace = this.api.manifest?.provisioner?.['grafana-link'] || null
+        this.prometheusNamespace = this.api.manifest?.provisioner?.['prometheus-link'] || null
+        this.httpsRedirect = !!this.api.manifest?.provisioner?.httpsRedirect
+    }
+
+    applyChanges = async (e) => {
+        // copy state to manifest, remove status
+        const manifest = this.api.manifest
+            
+        manifest.provisioner['grafana-link'] = this.grafanaNamespace || ''
+        manifest.provisioner['prometheus-link'] = this.prometheusNamespace || ''
+        manifest.provisioner.httpsRedirect = this.httpsRedirect
+
         this.busy = true
-        await this.httpsRedirectService.create({enable: e.detail.value})
-        await this.refreshHttpRedirectStatus()
+        await this.api.updateManifest()
         this.busy = false
     }
 
-    async refreshHttpRedirectStatus() {
-        const result = await this.httpsRedirectService.find({})
-        this.httpRedirect = result.enable
+    async refreshChoices() {
+        const result = await this.choicesService.find({})
+        this.prometheusOptions = result.prometheusOptions
+        this.grafanaOptions = result.grafanaOptions
     }
 
     async connectedCallback() {
         super.connectedCallback()
 
-        this.istioNamespace = this.api.manifest.metadata.namespace
-        this.grafanaService = this.api.createService('istio', 'grafana-link')
-        this.prometheusService = this.api.createService('istio', 'prometheus-link')
-        this.httpsRedirectService = this.api.createService('istio','https-redirect')
+        this.choicesService = this.api.createService('istio', 'choices')
 
-        this.grafanaService.on('grafana-link', async (data) => {
-            await this.refreshGrafanaLinkStatus()
-        })
+        this.resetChanges()
 
-        this.prometheusService.on('prometheus-link', async (data) => {
-            await this.refreshPrometheusLinkStatus()
-        })
-
-        await this.refreshGrafanaLinkStatus()
-        await this.refreshPrometheusLinkStatus()
-        await this.refreshHttpRedirectStatus()
+        await this.refreshChoices()
         this.loaded = true
     }
 }

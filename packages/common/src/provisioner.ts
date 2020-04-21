@@ -22,10 +22,11 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
     taskSpec: any
 
+    lastSpec: any
+    spec: any
+
     // Has other API functions
     [key: string]: any
-
-    spec: any
     
     help (command: string, options: optionFunctionType, messages: string[]) {}
 
