@@ -15,24 +15,21 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     grafanaProvisioner
 
     async linkGrafana(grafanaNamespace) {
+        await this.unlinkGrafana(false)
+
         this.grafanaProvisioner = await this.manager.getProvisioner('grafana')
-
-        await this.grafanaProvisioner.beginDashboard(grafanaNamespace, 'istio')
-
+        await this.grafanaProvisioner.beginConfig(grafanaNamespace, 'istio-system', 'istio')
         for (const dashboard of dashboards)
             await this.addDashboard(dashboard)
 
-        await this.grafanaProvisioner.endDashboard()
+        await this.grafanaProvisioner.endConfig()
     }
 
-    async unlinkGrafana(grafanaNamespace) {
+    async unlinkGrafana(clearLinkField = true) {
         this.grafanaProvisioner = await this.manager.getProvisioner('grafana')
-        await this.grafanaProvisioner.beginDashboard(grafanaNamespace, 'istio')
-
-        for (const dashboard of dashboards)
-            await this.grafanaProvisioner.removeDashboard(dashboard)
-        
-        await this.grafanaProvisioner.endDashboard()
+        await this.grafanaProvisioner.clearConfig('istio-system', 'istio')
+        if (clearLinkField)
+            delete this.manager.document.provisioner['grafana-link']
     }
 
     async addDashboard(name) {

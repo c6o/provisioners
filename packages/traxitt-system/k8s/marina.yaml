@@ -61,28 +61,3 @@ spec:
     selector:
       role: system
       app: marina
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: system-marina
-  namespace: traxitt-system
-  labels:
-    role: system
-    app: marina
-spec:
-  hosts:
-  - '*'
-  gateways:
-  - system-gateway
-  http:
-    - match:
-      - uri:
-          prefix: /
-      rewrite:
-        uri: /
-      route:
-      - destination:
-          port:
-            number: 80
-          host: system-marina

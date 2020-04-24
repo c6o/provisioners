@@ -11,8 +11,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     findAccount = (id) => this.accounts.find(account => account._id === id)
 
     clusterIdWhen = async (answers) => {
-        this.clusters = await this.options.hubClient.getClusters()
-        this.accounts = await this.options.hubClient.getAccounts()
+        this.clusters = await this.manager.hubClient.getClusters()
+        this.accounts = await this.manager.hubClient.getAccounts()
         if (this.clusters.length === 0) {
             // There are no clusters to choose. Force the user to create a new one
             answers.clusterId = this.newClusterId
@@ -39,7 +39,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             accountName: args['account'],
             clusterName: args['name'],
             clusterNamespace: args['namespace'],
-            hubToken: args['token'] || this.manager.hubClient?.token
+            hubToken: args['token'] || this.manager.hubClient?.token,
+            tag: args['tag'] || 'latest'
         }
 
         if (!this.manager.hubClient || !this.manager.inquirer)
@@ -71,6 +72,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             default: process.env.USER,
             message: 'What is the cluster namespace?',
             when: this.newClusterWhen
+        }, {
+            type: 'list',
+            name: 'tag',
+            default: 0,
+            when: process.env.NODE_ENV === 'development',
+            askAnswered: process.env.NODE_ENV === 'development',
+            choices: [process.env.USER, 'canary', 'latest'],
+            message: 'What image tags would you like to use?',
         }, {
             type: 'list',
             name: 'env',
@@ -105,6 +114,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.accountName = account.namespace
         this.spec.clusterName = cluster.name
         this.spec.clusterNamespace = cluster.namespace
+        this.spec.tag = answers.tag
 
         if (answers.env == 'staging') {
             this.spec.hubServer = 'https://staging.hub.traxitt.com'

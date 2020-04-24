@@ -2,14 +2,16 @@ import { baseProvisionerType } from '../'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
     externalIPAddress
+    SYSTEM_GATEWAY_NAME = 'system-gateway'
 
     async createApply() {
         this.spec.tag = this.spec.tag || 'canary'
 
         await this.ensureServiceNamespacesExist()
-        await this.provisionGateway()
         await this.provisionSystem()
         await this.provisionApps()
+        await this.provisionGateway()
+        await this.provisionRoutes()
     }
 
     gatewayServers = [{
@@ -76,17 +78,31 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .upsertFile('../../k8s/store.yaml', options)
                 .upsertFile('../../k8s/navstation.yaml', options)
                 .upsertFile('../../k8s/apps.yaml', options)
+                .eachFile(async (appDoc) => {
+                    // The apps above are not going through the provisioner
+                    // TODO: Remove this hack - have them be properly provisioned
+                    // at some point perhaps
+                    await this.createAppPost(appDoc)
+                }, '../../k8s/apps.yaml', options)
             .end()
     }
 
 
     async provisionGateway() {
         await this.manager.status.push('Provision system gateway')
+
         const istioProvisioner: any = await this.manager.getProvisioner('istio')
-        const result = await istioProvisioner.createGateway('traxitt-system', 'system-gateway', this.gatewayServers)
-        if (result.error)
-            throw result.error
+        const result = await istioProvisioner.createGateway('traxitt-system', this.SYSTEM_GATEWAY_NAME, this.gatewayServers)
+        if (result.error) throw result.error
+
         await this.manager.status.pop()
+    }
+
+    async provisionRoutes() {
+        await this.manager.cluster
+            .begin(`Provision messaging sub-system`)
+                .upsertFile('../../k8s/virtualServices.yaml')
+            .end()
     }
 
     async provisionMessaging() {

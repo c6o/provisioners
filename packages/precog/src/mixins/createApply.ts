@@ -5,12 +5,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     // protected members
     runningPod
 
-    get verdaccioPods() { return {
+    get precogPods() { return {
             kind: 'Pod',
             metadata: {
                 namespace: this.serviceNamespace,
                 labels: {
-                    app: 'verdaccio'
+                    app: 'precog'
                 }
             }
         }
@@ -18,33 +18,31 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async createApply() {
         await this.ensureServiceNamespacesExist()
-        await this.ensureVerdaccioInstalled()
-        await this.ensureVerdaccioIsRunning()
+        await this.ensurePreCogInstalled()
+        await this.ensurePreCogIsRunning()
     }
 
-    async ensureVerdaccioInstalled() {
+    async ensurePreCogInstalled() {
 
         await this.manager.cluster
-            .begin('Install verdaccio services')
-            .list(this.verdaccioPods)
+            .begin('Install PreCog services')
+            .list(this.precogPods)
             .do((result, processor) => {
                 if (!result?.object?.items?.length) {
                     const namespace = this.serviceNamespace
 
                     processor
-                        .addOwner(this.manager.document)
-                        .upsertFile('../../k8s/helm.yaml', { namespace })
-                        .clearOwners()
-                        .upsertFile('../../k8s/pvc.yaml', { namespace })
+                        .upsertFile('../../k8s/secret.yaml', { namespace, credentials: this.spec.credentials })
+                        .upsertFile('../../k8s/basic.yaml', { namespace, storage: this.spec.storage, image: `precog/${this.spec.edition}` })
                 }
             })
             .end()
     }
 
-    async ensureVerdaccioIsRunning() {
+    async ensurePreCogIsRunning() {
         await this.manager.cluster.
-            begin('Ensure verdaccio services are running')
-                .beginWatch(this.verdaccioPods)
+            begin('Ensure PreCog services are running')
+                .beginWatch(this.precogPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                     processor.endWatch()
                 })

@@ -41,28 +41,3 @@ spec:
     selector:
       role: system
       app: navstation
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: system-navstation
-  namespace: traxitt-system
-  labels:
-    role: system
-    app: navstation
-spec:
-  hosts:
-  - '*'
-  gateways:
-  - system-gateway
-  http:
-    - match:
-      - uri:
-          prefix: /traxitt-system/navstation/
-      rewrite:
-        uri: /
-      route:
-      - destination:
-          port:
-            number: 80
-          host: system-navstation

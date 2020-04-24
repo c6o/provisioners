@@ -7,6 +7,9 @@ metadata:
     annotations:
       system.traxitt.com/display: Marina
       system.traxitt.com/iconUrl: '{{hubServer}}/api/assets/apps/marina/icon'
+marina:
+  launch:
+    service: system-marina
 provisioner: ignore
 status: Running
 ---
@@ -21,9 +24,9 @@ metadata:
 marina:
   launch:
     type: inline
-    port: 1236
     tag: traxitt-store
-    path: /index.html
+    api: true
+    path: /store/
   menus:
     - type: apps
       display: Uninstall...
@@ -42,27 +45,12 @@ metadata:
 marina:
   launch:
     type: inline
-    port: 1237
     tag: traxitt-navstation
-    path: /index.html
+    api: true
+    path: /navstation/
   menus:
     - type: apps
       display: Settings...
       action: settings
-provisioner: ignore
-status: Running
----
-apiVersion: system.traxitt.com/v1
-kind: App
-metadata:
-  name: verdaccio
-  namespace: traxitt-system
-  annotations:
-    system.traxitt.com/display: Verdaccio
-    system.traxitt.com/iconUrl: '{{hubServer}}/api/assets/apps/default/icon'
-marina:
-  launch:
-    type: inline
-    path: /
 provisioner: ignore
 status: Running

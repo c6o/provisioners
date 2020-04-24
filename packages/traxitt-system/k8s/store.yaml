@@ -41,28 +41,3 @@ spec:
     selector:
       role: system
       app: store
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: system-store
-  namespace: traxitt-system
-  labels:
-    role: system
-    app: store
-spec:
-  hosts:
-  - '*'
-  gateways:
-  - system-gateway
-  http:
-  - match:
-    - uri:
-        prefix: /traxitt-system/store/
-    rewrite:
-        uri: /
-    route:
-    - destination:
-        port:
-          number: 80
-        host: system-store

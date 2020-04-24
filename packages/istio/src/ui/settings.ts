@@ -1,4 +1,5 @@
 import { LitElement, html, customElement, property } from 'lit-element'
+import { unlinkToken } from '../constants'
 
 @customElement('istio-settings-main')
 export class IstioSettings extends LitElement {
@@ -41,7 +42,7 @@ export class IstioSettings extends LitElement {
             ${this.renderPrometheusLink()}
             <hr />
             <traxitt-checkbox @checked-changed=${this.httpsRedirectChanged} ?disabled=${this.busy} ?checked=${this.httpsRedirect}>Enable https redirect</traxitt-checkbox>
-            <traxitt-button @click=${this.resetChanges} ?disabled=${this.busy}>Reset Changes</traxitt-button>
+            <traxitt-button @click=${this.renderSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
             <traxitt-button @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
             `
     }
@@ -52,7 +53,7 @@ export class IstioSettings extends LitElement {
             <traxitt-button @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaNamespace}</traxitt-button>
           `
         return html`
-            <traxitt-combo-box id='grafana-combo-box' @selected-item-changed=${this.grafanaSelected} label='Select Grafana Installation' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
+            <traxitt-combo-box id='grafana-combo-box' @selected-item-changed=${this.linkGrafana} label='Select Grafana Installation' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
             <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
         `
     }
@@ -82,46 +83,51 @@ export class IstioSettings extends LitElement {
     }
 
     unlinkGrafana = async () => {
-        this.grafanaNamespace = ''
+        this.grafanaNamespace = unlinkToken
     }
 
     unlinkPrometheus = async () => {
-        this.prometheusNamespace = ''
+        this.prometheusNamespace = unlinkToken
     }
 
-    resetChanges = () => {
-        this.grafanaNamespace = this.api.manifest?.provisioner?.['grafana-link'] || null
-        this.prometheusNamespace = this.api.manifest?.provisioner?.['prometheus-link'] || null
-        this.httpsRedirect = !!this.api.manifest?.provisioner?.httpsRedirect
-    }
+    renderSettings = async (manifest) => {
+        // TODO: Do something else if error
+        if (manifest) {
+            this.busy = manifest.status !== 'Running' && manifest.status !== 'Error'
+            this.grafanaNamespace = manifest.provisioner?.['grafana-link'] !== unlinkToken ? manifest.provisioner?.['grafana-link'] : null
+            this.prometheusNamespace = manifest.provisioner?.['prometheus-link'] !== unlinkToken ? manifest.provisioner?.['prometheus-link'] : null
+            this.httpsRedirect = !!manifest.provisioner?.httpsRedirect
+        }
 
-    applyChanges = async (e) => {
-        // copy state to manifest, remove status
-        const manifest = this.api.manifest
-            
-        manifest.provisioner['grafana-link'] = this.grafanaNamespace || ''
-        manifest.provisioner['prometheus-link'] = this.prometheusNamespace || ''
-        manifest.provisioner.httpsRedirect = this.httpsRedirect
-
-        this.busy = true
-        await this.api.updateManifest()
-        this.busy = false
-    }
-
-    async refreshChoices() {
         const result = await this.choicesService.find({})
         this.prometheusOptions = result.prometheusOptions
         this.grafanaOptions = result.grafanaOptions
     }
+
+    applyChanges = async (e) => {
+
+        this.busy = true
+        //await this.api.updateManifest()
+        await this.api.patchManifest({
+            provisioner: {
+                ...{['grafana-link']: this.grafanaNamespace},
+                ...{['prometheus-link']: this.prometheusNamespace},
+                ...{httpsRedirect: this.httpsRedirect}
+            }
+        })
+        this.busy = false
+    }
+
 
     async connectedCallback() {
         super.connectedCallback()
 
         this.choicesService = this.api.createService('istio', 'choices')
 
-        this.resetChanges()
+        this.api.watchManifest(this.renderSettings)
 
-        await this.refreshChoices()
+        await this.renderSettings(this.api.manifest)
+
         this.loaded = true
     }
 }

@@ -26,8 +26,6 @@ data:
       #enable: false
       title: Verdaccio
 
-    url_prefix: /{{namespace}}/verdaccio
-
     auth:
       htpasswd:
         file: /verdaccio/storage/htpasswd
@@ -70,21 +68,6 @@ data:
     # log settings
     logs:
       - {type: stdout, format: pretty, level: http}
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  namespace: '{{namespace}}'
-  name: verdaccio-pvc
-  labels:
-    app: verdaccio
-spec:
-  accessModes:
-    - "ReadWriteOnce"
-  resources:
-    requests:
-      storage: "2Gi"
-  storageClassName: do-block-storage
 ---
 apiVersion: apps/v1
 kind: Deployment

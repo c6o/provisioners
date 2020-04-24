@@ -1,4 +1,5 @@
 import { baseProvisionerType } from '../index'
+import { unlinkToken } from '../constants'
 
 export const updateApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -8,20 +9,17 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         // const lastDoc = JSON.parse(this.manager.document.metadata.annotations['kubectl.kubernetes.io/last-applied-configuration'])
         const serviceNamespace = this.manager.document.metadata.namespace
 
-        const oldGrafanaLink = this.lastSpec?.['grafana-link']
         const newGrafanaLink = this.spec['grafana-link']
 
-        if (oldGrafanaLink !== newGrafanaLink) {
-            if (oldGrafanaLink) {
-                this.manager.status?.push(`Unlinking istio from Grafana in namespace ${oldGrafanaLink}`)
-                await this.unlinkGrafana(oldGrafanaLink)
-                this.manager.status?.pop()
-            }
-            if (newGrafanaLink) {
-                this.manager.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
-                await this.linkGrafana(newGrafanaLink)
-                this.manager.status?.pop()
-            }
+        if (newGrafanaLink === unlinkToken) {
+            this.manager.status?.push(`Unlinking istio from Grafana`)
+            await this.unlinkGrafana()
+            this.manager.status?.pop()
+        }
+        else {
+            this.manager.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
+            await this.linkGrafana(newGrafanaLink)
+            this.manager.status?.pop()
         }
 
         const oldPrometheusLink = this.lastSpec?.['prometheus-link']
