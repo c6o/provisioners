@@ -19,9 +19,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             // const choices: any[] = [{
             //     name: 'Specify Environment',
             //     value: '**Environment**'
-    
+
             // }, new this.manager.inquirer.Separator(), 'development', 'staging', 'production']
-                    
+
             const response = await this.manager.inquirer.prompt({
                 type: 'input',
                 name: 'environment',
