@@ -1,0 +1,87 @@
+# Assumes:
+# kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username="<USERNAME>" --docker-password="<PASSWORD>" --docker-email=<EMAIL>
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: precog-pv-claim
+  namespace: demo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: do-block-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: precog
+  namespace: demo
+spec:
+  selector:
+    matchLabels:
+      app: precog
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: precog
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - image: precog/evaluation
+        name: precog
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: precog-persistent-storage
+          mountPath: /var/lib/precog/data
+        imagePullPolicy: Always
+      volumes:
+      - name: precog-persistent-storage
+        persistentVolumeClaim:
+          claimName: precog-pv-claim
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: precog
+  namespace: demo
+  labels:
+    app: precog
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    app: precog
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: precog
+#   namespace: demo
+# spec:
+#   gateways:
+#   - traxitt-system/system-gateway
+#   hosts:
+#   - '*'
+#   http:
+#   - match:
+#     - uri:
+#         prefix: /
+#       headers:
+#         :authority:
+#           regex: ^precog.demo\..*
+#     route:
+#     - destination:
+#         host: precog
+#         port:
+#           number: 80
