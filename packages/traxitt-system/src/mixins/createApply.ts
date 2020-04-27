@@ -56,9 +56,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
 
         await this.manager.cluster
-            .begin(`Provision messaging sub-system`)
-                .addOwner(this.manage.document)
+            .begin(`Provision system server`)
                 .upsertFile('../../k8s/clusterrole.yaml')
+                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/server.yaml', options)
                 .patch(this.traxittNamespace, this.traxittNamespacePatch)
             .end()
@@ -75,11 +75,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.manager.cluster
             .begin(`Provision Apps`)
-                .addOwner(this.manage.document)
+                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/marina.yaml', options)
                 .upsertFile('../../k8s/store.yaml', options)
                 .upsertFile('../../k8s/navstation.yaml', options)
                 .upsertFile('../../k8s/apps.yaml', options)
+                .clearOwners()
+                .upsertFile('../../k8s/istio.yaml', options)
                 .eachFile(async (appDoc) => {
                     // The apps above are not going through the provisioner
                     // TODO: Remove this hack - have them be properly provisioned
@@ -103,7 +105,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async provisionRoutes() {
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
-                .addOwner(this.manage.document)
+                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/virtualServices.yaml')
             .end()
     }
@@ -111,7 +113,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async provisionMessaging() {
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
-                .addOwner(this.manage.document)
+                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/publisher.yaml', { tag: this.spec.tag })
                 .upsertFile('../../k8s/subscriber.yaml', { tag: this.spec.tag })
             .end()

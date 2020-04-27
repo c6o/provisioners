@@ -38,7 +38,7 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
         if (servers)
             template.spec.servers = servers
 
-        result = await this.manager.cluster.create(template)
+        result = await this.manager.cluster.upsert(template)
         if (result.object) {
             // The following hack causes istio to refresh all gateways
             const refresher = this.gatewayTemplate('istio-system', 'bogus-gateway')
