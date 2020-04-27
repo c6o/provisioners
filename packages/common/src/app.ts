@@ -38,6 +38,24 @@ export interface AppDocument extends KubeDocument {
     routes?: RoutesType
 }
 
+export const AppStatuses = {
+    create: {
+        Pending: 'Installing',
+        Completed: 'Running',
+        Error: 'Error'
+    },
+    update: {
+        Pending: 'Configuring',
+        Completed: 'Running',
+        Error: 'Degraded'
+    },
+    remove: {
+        Pending: 'Terminating',
+        Completed: 'Terminated',
+        Error: 'Degraded'
+    }
+}
+
 // TODO add status: ...(list) and use this for validation
 
 export class AppObject {

@@ -57,6 +57,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
+                .addOwner(this.manage.document)
                 .upsertFile('../../k8s/clusterrole.yaml')
                 .upsertFile('../../k8s/server.yaml', options)
                 .patch(this.traxittNamespace, this.traxittNamespacePatch)
@@ -74,6 +75,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.manager.cluster
             .begin(`Provision Apps`)
+                .addOwner(this.manage.document)
                 .upsertFile('../../k8s/marina.yaml', options)
                 .upsertFile('../../k8s/store.yaml', options)
                 .upsertFile('../../k8s/navstation.yaml', options)
@@ -101,6 +103,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async provisionRoutes() {
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
+                .addOwner(this.manage.document)
                 .upsertFile('../../k8s/virtualServices.yaml')
             .end()
     }
@@ -108,6 +111,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async provisionMessaging() {
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
+                .addOwner(this.manage.document)
                 .upsertFile('../../k8s/publisher.yaml', { tag: this.spec.tag })
                 .upsertFile('../../k8s/subscriber.yaml', { tag: this.spec.tag })
             .end()

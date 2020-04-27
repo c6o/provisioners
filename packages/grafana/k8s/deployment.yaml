@@ -9,6 +9,8 @@ metadata:
 data:
   dashboardproviders.yaml: |
     apiVersion: 1
+  datasources.yaml: |
+    apiVersion: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -51,6 +53,9 @@ spec:
           - name: grafana-provider-dashboards
             mountPath: "/etc/grafana/provisioning/dashboards/dashboardproviders.yaml"
             subPath: dashboardproviders.yaml
+          - name: grafana-provider-dashboards
+            mountPath: "/etc/grafana/provisioning/datasources/datasources.yaml"
+            subPath: datasources.yaml
       volumes:
         - name: grafana-volume
           persistentVolumeClaim:

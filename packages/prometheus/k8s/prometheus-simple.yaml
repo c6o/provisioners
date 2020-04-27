@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: prometheus
+  name: prometheus-server
   namespace: {{namespace}}
   labels:
     app: prometheus
@@ -28,7 +28,7 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-           name: prometheus-example-cm
+           name: prometheus-server
 ---
 kind: Service
 apiVersion: v1

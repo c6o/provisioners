@@ -7,23 +7,28 @@ import { baseProvisionerType } from '../../'
 
 export const prometheusApiMixin = (base: baseProvisionerType) => class extends base {
 
+    prometheusProvisioner
 
+    async getPrometheusProvisioner() {
+        if (!this.prometheusProvisioner)
+            this.prometheusProvisioner = await this.manager.getProvisioner('prometheus')
+        return this.prometheusProvisioner
+    }
+    
     async linkPrometheus(prometheusNamespace, istioNamespace) {
-        const prometheusProvisioner = await this.manager.getProvisioner('prometheus')
+        this.unlinkPrometheus(istioNamespace, false)
+        const prometheusProvisioner = await this.getPrometheusProvisioner()
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
-
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../prometheus/jobs.yaml'), { istioNamespace })
         await prometheusProvisioner.addJobs(jobs)
-
         await prometheusProvisioner.endConfig()
     }
 
-    async unlinkPrometheus(prometheusNamespace, istioNamespace) {
-        const prometheusProvisioner = await this.manager.getProvisioner('prometheus')
-
-        await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
-        await prometheusProvisioner.removeAllJobs()
-        await prometheusProvisioner.endConfig()
+    async unlinkPrometheus(istioNamespace, clearLinkField = true) {
+        const prometheusProvisioner = await this.getPrometheusProvisioner()
+        await prometheusProvisioner.clearAll(istioNamespace, 'istio')
+        if (clearLinkField)
+            delete this.manager.document.provisioner['prometheus-link']
     }
 
     // TODO: move to base?

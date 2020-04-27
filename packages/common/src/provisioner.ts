@@ -22,7 +22,6 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
     taskSpec: any
 
-    lastSpec: any
     spec: any
 
     // Has other API functions

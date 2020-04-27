@@ -17,6 +17,37 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
     addedSecrets: any[]
     removedSecrets: any[]
 
+    getPrometheusDeployments = async (namespace = undefined) => {
+        const deployment = {
+            apiVersion: 'apps/v1',
+            kind: 'Deployment',
+            metadata: {
+                namespace,
+                name: 'prometheus-server',
+                labels: {
+                    app: 'prometheus',
+                    component: 'server'
+                }
+            }
+        }
+
+        return namespace ?
+            await this.manager.cluster.read(deployment) :
+            await this.manager.cluster.list(deployment)
+    }
+
+    async clearAll(clientNamespace: string, clientApp: string) {
+        // find all deployments
+        const result = await this.getPrometheusDeployments()
+
+        for(const deployment of result.object.items) {
+            await this.beginConfig(deployment.metadata.namespace, clientNamespace, clientApp)
+            await this.removeAllJobs()
+            //this.removeAllCerts()
+            await this.endConfig()
+        }
+    }
+
     /**
      * Begin changing configuration of Prometheus
      *
@@ -29,14 +60,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         if (this.runningDeployment)
             throw Error('There is already a running configuration transaction')
 
-        let result = await this.manager.cluster.read({
-            apiVersion: 'apps/v1',
-            kind: 'Deployment',
-            metadata: {
-                namespace:this.prometheusNamespace,
-                name: 'prometheus-server'
-            }
-        })
+        let result = await this.getPrometheusDeployments(this.prometheusNamespace)
 
         if (result.error)
             throw result.error
@@ -248,6 +272,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         }
         
         this.runningDeployment = null
-
     }
+
+
 }

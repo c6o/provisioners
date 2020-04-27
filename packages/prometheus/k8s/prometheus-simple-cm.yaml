@@ -35,7 +35,7 @@ items:
   kind: ConfigMap
   metadata:
     creationTimestamp: "2020-03-09T20:10:03Z"
-    name: prometheus-example-cm
+    name: prometheus-server
     namespace: {{namespace}}
     selfLink: /api/v1/namespaces/default/configmaps/prometheus-example-cm
 - apiVersion: v1

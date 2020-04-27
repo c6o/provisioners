@@ -1,13 +1,12 @@
 import { baseProvisionerType } from '../index'
 import * as yaml from 'js-yaml'
-import { KubeDocument } from '@traxitt/kubeclient/src'
 
 export const dashboardApiMixin = (base: baseProvisionerType) => class extends base {
 
+    // maintained between begin and endConfig
     appNamespace
     appName
     runningDeployment
-    grafanaConfig
 
     // dashboards to add/remove
     addConfigMaps = []
@@ -18,8 +17,8 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     removeDatasources = []
 
     apiConfigMapAppMetadata = (appNamespace: string, appName: string) => ({
-                'system.traxitt.com/app-name': appName,
-                'system.traxitt.com/app-namespace':appNamespace
+        'system.traxitt.com/app-name': appName,
+        'system.traxitt.com/app-namespace':appNamespace
     })
 
     apiDashboardConfigMap(dashboardName: string, dashboardSpec?: string) {
@@ -42,19 +41,37 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         return configMap
     }
 
-    async clearConfig(appNamespace: string, appName: string) {
-        // find configmaps with name `${appNamespace}-${appName}-*`
+    mainConfigMap(namespace) {
+        return {
+            kind: 'ConfigMap',
+            metadata: {
+                namespace,
+                name: 'grafana-provider-dashboards'
+            }
+        }
+    }
 
+    /**
+     * Clear configuration from all grafanas installed for specified
+     * application and namespace
+     * 
+     * @param appNamespace 
+     * @param appName 
+     */
+    async clearConfig(appNamespace: string, appName: string) {
+
+        // find Grafana configmaps across cluster labelled with appNamespace and appName
         let result = await this.manager.cluster.list({
             kind: 'ConfigMap',
             metadata: {
                 labels: {
-                    ...this.apiConfigMapAppMetadata(appNamespace, appName)
+                     ...this.apiConfigMapAppMetadata(appNamespace, appName)
                 }
             }
         })
         if (result.error) throw result.error
 
+        // delete them all
         for(const cm of result.object.items) {
             cm.apiVersion = 'v1'
             cm.kind = 'ConfigMap'
@@ -62,24 +79,67 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             if (result.error) throw result.error
         }
 
+        result = await this.getGrafanaDeployment()
         if (result.error) throw result.error
 
-        result = await this.getGrafanaDeployment()
-        if (result.error)throw result.error
-
-        for(const grafanaDeployment of result.object.items)
+        for(const grafanaDeployment of result.object.items) {
+            await this.removeFoldersDataSources(grafanaDeployment, appNamespace, appName)
             await this.removeVolumeMounts(grafanaDeployment, appNamespace, appName)
+        }
     }
 
+    /**
+     * Remove all dashboards and data sources added by an app
+     * 
+     * @param deploymentItem 
+     * @param appNamespace 
+     * @param appName 
+     */
+    async removeFoldersDataSources(deploymentItem, appNamespace, appName) {
+        // get namespace
+        const namespace = deploymentItem.metadata.namespace
+        let result = await this.manager.cluster.read(this.mainConfigMap(namespace))
+    
+        if (result.error)
+            throw result.error
+        const mainConfigMap = result.object
+
+        const ownerPrefix = `${appNamespace}-${appName}`
+        const dbProviders = yaml.safeLoad(result.object.data['dashboardproviders.yaml'])
+        dbProviders.providers = dbProviders.providers || []
+        dbProviders.providers = dbProviders.providers.filter(entry => entry.folder !== ownerPrefix)
+
+        const dbSources = yaml.safeLoad(result.object.data['datasources.yaml'])
+        dbSources.datasources = dbSources.datasources || []
+        dbSources.datasources = dbSources.datasources.filter(entry => !entry.name.startsWith(ownerPrefix))
+
+        result = await this.manager.cluster.patch(mainConfigMap, {
+            data: {
+                'dashboardproviders.yaml': yaml.safeDump(dbProviders),
+                'datasources.yaml': yaml.safeDump(dbSources)
+            }
+        })
+        if (result.error)
+            throw result.error
+    }
+
+    /**
+     * Remove all added volumes and mounts added by an app for dashboards
+     * from a deployment and restart
+     * 
+     * @param deploymentItem 
+     * @param appNamespace 
+     * @param appName 
+     */
     async removeVolumeMounts(deploymentItem, appNamespace, appName) {
         const volumeName = `dashboards-${appNamespace}-${appName}`
 
         let volumeArray = deploymentItem.spec.template.spec.volumes
-        volumeArray = volumeArray.filter(vol => vol.name !== volumeName)
+        volumeArray = volumeArray.filter(vol => !vol.name.startsWith(volumeName))
         deploymentItem.spec.template.spec.volumes = volumeArray
 
         let volumeMountArray = deploymentItem.spec.template.spec.containers[0].volumeMounts
-        volumeMountArray = volumeMountArray.filter(vol => vol.name !== volumeName)
+        volumeMountArray = volumeMountArray.filter(vol => !vol.name.startsWith(volumeName))
         deploymentItem.spec.template.spec.containers[0].volumeMounts = volumeMountArray
 
         deploymentItem.apiVersion = 'apps/v1'
@@ -125,7 +185,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         if (result.error)throw result.error
         this.runningDeployment = result.object
 
-        // in case version changes 
+        // in case version changes
         delete this.runningDeployment.metadata.resourceVersion
         delete this.runningDeployment.metadata.uid
         
@@ -134,13 +194,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     }
 
     async updateConfig(): Promise<boolean> {
-        let result = await this.manager.cluster.read({
-            kind: 'ConfigMap',
-            metadata: {
-                namespace: this.runningDeployment.metadata.namespace,
-                name: 'grafana-provider-dashboards'
-            }
-        })
+        let result = await this.manager.cluster.read(this.mainConfigMap(this.runningDeployment.metadata.namespace))
     
         if (result.error)
             throw result.error
@@ -167,36 +221,36 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             modified = true
         }
 
-        // add and remove datasources
-        // const dbSources = yaml.safeLoad(result.object.data['datasources.yaml'])
-        // dbSources.datasources = dbSources.datasources || []
+        // add and remove datasource
+        const dbSources = yaml.safeLoad(result.object.data['datasources.yaml'])
+        dbSources.datasources = dbSources.datasources || []
 
-        // for (const source of this.datasources) {
-        //     const index = dbSources.datasources.findIndex(entry => entry.name === source.name)
-        //     if (index === -1) {
-        //         dbSources.datasources.push(source)
-        //         modified = true
-        //     }
-        // }
+        for (const source of this.datasources) {
+            const index = dbSources.datasources.findIndex(entry => entry.name === source.name)
+            if (index === -1) {
+                dbSources.datasources.push(source)
+                modified = true
+            }
+        }
 
-        // for (const sourceName of this.removeDatasources) {
-        //     const index = dbSources.datasources.findIndex(entry => entry.name === sourceName)
-        //     if (index !== -1) {
-        //         dbSources.datasources.splice(index,1)
-        //         modified = true
-        //     }
-        // }
+        for (const sourceName of this.removeDatasources) {
+            const index = dbSources.datasources.findIndex(entry => entry.name === sourceName)
+            if (index !== -1) {
+                dbSources.datasources.splice(index,1)
+                modified = true
+            }
+        }
 
-        // if (modified) {
-        //     result = await this.manager.cluster.patch(result.object, {
-        //         data: {
-        //             'dashboardproviders.yaml': yaml.safeDump(dbProviders),
-        //             'datasources.yaml': yaml.safeDump(dbSources)
-        //         }
-        //     })
-        //     if (result.error)
-        //         throw result.error
-        // }
+        if (modified) {
+            result = await this.manager.cluster.patch(result.object, {
+                data: {
+                    'dashboardproviders.yaml': yaml.safeDump(dbProviders),
+                    'datasources.yaml': yaml.safeDump(dbSources)
+                }
+            })
+            if (result.error)
+                throw result.error
+        }
         
         return modified
     }

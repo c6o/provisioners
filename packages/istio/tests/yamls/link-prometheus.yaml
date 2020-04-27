@@ -1,0 +1,7 @@
+apiVersion: system.traxitt.com/v1
+kind: App
+metadata:
+  name: istio
+  namespace: istio-system
+provisioner:
+  prometheus-link: monitoring

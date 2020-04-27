@@ -1,4 +1,6 @@
 import { baseProvisionerType } from '../../'
+import * as Handlebars from 'handlebars'
+import { unlinkToken } from '../../constants'
 
 const dashboards = [
     'citadel-dashboard',
@@ -14,26 +16,56 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     appNamespace
     grafanaProvisioner
 
-    async linkGrafana(grafanaNamespace) {
-        await this.unlinkGrafana(false)
+    async linkGrafana(grafanaNamespace, serviceNamespace) {
+        await this.unlinkGrafana(serviceNamespace, false)
 
-        this.grafanaProvisioner = await this.manager.getProvisioner('grafana')
-        await this.grafanaProvisioner.beginConfig(grafanaNamespace, 'istio-system', 'istio')
-        for (const dashboard of dashboards)
-            await this.addDashboard(dashboard)
+        await this.grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'istio')
+
+        const prometheusLink = this.spec['prometheus-link']
+
+        let dataSourceName
+
+        if (prometheusLink && prometheusLink !== unlinkToken) {
+            dataSourceName = await this.grafanaProvisioner.addDataSource('prometheus', {
+                access: 'proxy',
+                editable: true,
+                isDefault: true,
+                jsonData:{
+                  timeInterval: '5s'
+                },
+                orgId: 1,
+                type: 'prometheus',
+                url: `http://prometheus.${prometheusLink}.svc.cluster.local:9090`
+            })
+        }
+
+        for (const dashboard of dashboards) {
+            const params = {
+                dataSource: dataSourceName,
+                istioNamespace: serviceNamespace
+            }
+            await this.addDashboard(dashboard, params)
+        }
 
         await this.grafanaProvisioner.endConfig()
     }
 
-    async unlinkGrafana(clearLinkField = true) {
+    async unlinkGrafana(serviceNamespace, clearLinkField = true) {
         this.grafanaProvisioner = await this.manager.getProvisioner('grafana')
-        await this.grafanaProvisioner.clearConfig('istio-system', 'istio')
+        await this.grafanaProvisioner.clearConfig(serviceNamespace, 'istio')
         if (clearLinkField)
             delete this.manager.document.provisioner['grafana-link']
     }
 
-    async addDashboard(name) {
-        const data = await super.readFile(__dirname, `../../../grafana/${name}.json`)
-        await this.grafanaProvisioner.addDashboard(name, data)
+    async addDashboard(name, params) {
+        const source = await super.readFile(__dirname, `../../../grafana/${name}.json`)
+        if (!params)
+            return await this.grafanaProvisioner.addDashboard(name, source)
+
+        // fill in template with job names, data source
+        const template = Handlebars.compile(source, { noEscape: true })
+        const content = template(params)
+        return await this.grafanaProvisioner.addDashboard(name, content)
     }
+
 }

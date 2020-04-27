@@ -110,7 +110,7 @@ metadata:
     release: traxitt
     chart: prometheus-10.4.0
     heritage: Tiller
-  name: prometheus-server
+  name: prometheus
   namespace: '{{namespace}}'
 spec:
   ports:

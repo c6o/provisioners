@@ -32,8 +32,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     const namespace = this.serviceNamespace
 
                     processor
+                        .addOwner(this.manager.document)
                         .upsertFile('../../k8s/secret.yaml', { namespace, credentials: this.spec.credentials })
-                        .upsertFile('../../k8s/basic.yaml', { namespace, storage: this.spec.storage, image: `precog/${this.spec.edition}` })
+                        .upsertFile('../../k8s/basic.yaml', { namespace, image: `precog/${this.spec.edition}` })
+                        .clearOwners()
+                        .upsertFile('../../k8s/pvc.yaml', { namespace, storage: this.spec.storage})
                 }
             })
             .end()

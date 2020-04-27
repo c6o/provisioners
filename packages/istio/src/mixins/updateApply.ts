@@ -3,43 +3,44 @@ import { unlinkToken } from '../constants'
 
 export const updateApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    async updateApply() {
+    async updatePrometheus(serviceNamespace) {
+        const newPrometheusLink = this.spec['prometheus-link']
 
-        // TODO: add to helpers
-        // const lastDoc = JSON.parse(this.manager.document.metadata.annotations['kubectl.kubernetes.io/last-applied-configuration'])
-        const serviceNamespace = this.manager.document.metadata.namespace
+        if (newPrometheusLink === unlinkToken) {
+            this.manager.status?.push('Unlinking istio from Prometheus')
+            await this.unlinkPrometheus(serviceNamespace)
+            this.manager.status?.pop()
+        }
+        else if (newPrometheusLink) {
+            this.manager.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
+            await this.linkPrometheus(newPrometheusLink, serviceNamespace)
+            this.manager.status?.pop()
+        }
+    }
 
+    async updateGrafana(serviceNamespace) {
         const newGrafanaLink = this.spec['grafana-link']
 
         if (newGrafanaLink === unlinkToken) {
-            this.manager.status?.push(`Unlinking istio from Grafana`)
-            await this.unlinkGrafana()
+            this.manager.status?.push('Unlinking istio from Grafana')
+            await this.unlinkGrafana(serviceNamespace)
             this.manager.status?.pop()
         }
-        else {
+        else if (newGrafanaLink) {
             this.manager.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
-            await this.linkGrafana(newGrafanaLink)
+            await this.linkGrafana(newGrafanaLink, serviceNamespace)
             this.manager.status?.pop()
         }
+    }
 
-        const oldPrometheusLink = this.lastSpec?.['prometheus-link']
-        const newPrometheusLink = this.spec['prometheus-link']
-        if (oldPrometheusLink !== newPrometheusLink) {
-            if (oldPrometheusLink) {
-                this.manager.status?.push(`Unlinking istio from Prometheus in namespace ${oldPrometheusLink}`)
-                await this.unlinkPrometheus(oldPrometheusLink, serviceNamespace)
-                this.manager.status?.pop()
-            }
-            if (newPrometheusLink) {
-                this.manager.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
-                await this.linkPrometheus(newPrometheusLink, serviceNamespace)
-                this.manager.status?.pop()
-            }
-        }
-    
-        const oldHttpsRedirect = this.lastSpec?.httpsRedirect
-        const newHttpsRedirect = this.spec.httpsRedirect
-        if (oldHttpsRedirect !== newHttpsRedirect)
-            await this.setHttpsRedirect(newHttpsRedirect)
+    async updateApply() {
+
+        const serviceNamespace = this.manager.document.metadata.namespace
+
+        await this.updatePrometheus(serviceNamespace)
+        await this.updateGrafana(serviceNamespace)
+
+        const newHttpsRedirect = !!this.spec.httpsRedirect
+        await this.setHttpsRedirect(newHttpsRedirect)
     }
 }
