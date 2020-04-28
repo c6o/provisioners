@@ -30,6 +30,6 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
     }
 
     k8sLogIndexPrefixChanged = (e) => {
-        this.serviceSpec.clusterName = e.target.value
+        this.serviceSpec.k8sLogIndexPrefix = e.target.value
     }
 }
