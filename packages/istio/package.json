@@ -19,6 +19,7 @@
   "files": [
     "lib",
     "k8s",
+    "prometheus",
     "grafana"
   ],
   "publishConfig": {
