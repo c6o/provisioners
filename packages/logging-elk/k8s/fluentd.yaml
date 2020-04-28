@@ -72,8 +72,8 @@ spec:
             value: "http"
           - name: FLUENTD_SYSTEMD_CONF
             value: disable # We set this to disable to suppress output related to systemd not being set up in the container.
-          - name: FLUENT_ELASTICSEARCH_LOGSTASH_INDEX_NAME
-            value: "k8s"
+          - name: FLUENT_ELASTICSEARCH_LOGSTASH_PREFIX
+            value: "{{k8sLogIndexPrefix}}"
         resources:
           limits:
             memory: 512Mi
