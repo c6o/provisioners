@@ -29,7 +29,6 @@ spec:
         ports:
           - name: node-red
             containerPort: 1880
-            hostPort: 1880
         volumeMounts:
           - mountPath: "/data"
             name: node-red-volume

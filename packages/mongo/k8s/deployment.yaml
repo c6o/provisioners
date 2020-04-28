@@ -27,4 +27,3 @@ spec:
               ports:
                 - name: mongo
                   containerPort: 27017
-                  hostPort: 27017

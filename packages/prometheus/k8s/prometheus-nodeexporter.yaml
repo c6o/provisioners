@@ -81,7 +81,6 @@ spec:
           ports:
             - name: metrics
               containerPort: 9100
-              hostPort: 9100
           resources:
             {}
             
