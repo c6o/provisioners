@@ -27,6 +27,16 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
+    get politPod() {
+        return {
+            kind: 'Pod',
+            metadata: {
+                namespace: this.serviceNamespace,
+                labels: { app: 'pilot' }
+            }
+        }
+    }
+
     get expectedTlsCertificate() {
         return {
             apiVersion: 'v1',
@@ -79,9 +89,16 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             gatewayParams.hostName = `- ${this.spec.hostName}.${this.spec.domainName}`
 
         await this.manager.cluster
-            .begin('Install Base Components')
-                .upsertFile('../../k8s/gateway.yaml', { istioNamespace, istioGatewayNamespace: istioNamespace })
+            .begin('Install Pilot')
                 .upsertFile('../../k8s/traffic.yaml', { istioNamespace, istioTrafficNamespace: istioNamespace })
+            .end()
+
+        // ensure pilot is running before install ingress gateway to reduce installation delays
+        await this.ensurePilotIsRunning()
+
+        await this.manager.cluster
+            .begin('Install Ingress Gateway')
+                .upsertFile('../../k8s/gateway.yaml', { istioNamespace, istioGatewayNamespace: istioNamespace })
             .end()
 
         if (autoInjectEnabled)
@@ -165,6 +182,16 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin(`Ensure ingress gateway is running`)
                 .beginWatch(this.ingressPods)
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                    processor.endWatch()
+                })
+            .end()
+    }
+
+    async ensurePilotIsRunning() {
+        await this.manager.cluster
+            .begin(`Ensure pilot is running`)
+                .beginWatch(this.politPod)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                     processor.endWatch()
                 })
