@@ -14,7 +14,7 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <traxitt-form-layout>
-                <traxitt-combo-box @selected-item-changed=${this.storageSelected} label='Grafana Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></traxitt-combo-box>
+                <traxitt-combo-box @selected-item-changed=${this.storageSelected} label="Grafana Storage" value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></traxitt-combo-box>
             </traxitt-form-layout>
             <traxitt-form-layout>
                 <traxitt-text-field @input=${this.usernameChanged} label="Administrator username" value=${this.serviceSpec.adminUsername} autoselect required></traxitt-text-field>
@@ -29,6 +29,7 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
         this.serviceSpec.adminUsername = this.serviceSpec.adminUsername || 'admin'
         this.serviceSpec.adminPassword = this.serviceSpec.adminPassword || 'admin'
     }
+
     storageSelected = (e) => {
         this.serviceSpec.storage = e.detail.value
     }
