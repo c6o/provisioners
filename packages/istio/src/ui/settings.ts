@@ -103,9 +103,9 @@ export class IstioSettings extends LitElement {
         // TODO: Do something else if error
         if (manifest) {
             this.busy = this.isBusy(manifest)
-            this.grafanaNamespace = manifest.provisioner?.['grafana-link'] || unlinkToken
-            this.prometheusNamespace = manifest.provisioner?.['prometheus-link'] || unlinkToken
-            this.httpsRedirect = !!manifest.provisioner?.httpsRedirect
+            this.grafanaNamespace = manifest.spec.provisioner?.['grafana-link'] || unlinkToken
+            this.prometheusNamespace = manifest.spec.provisioner?.['prometheus-link'] || unlinkToken
+            this.httpsRedirect = !!manifest.spec.provisioner?.httpsRedirect
         }
 
         const result = await this.choicesService.find({})
@@ -116,10 +116,12 @@ export class IstioSettings extends LitElement {
     applyChanges = async (e) => {
         this.busy = true
         await this.api.patchManifest({
-            provisioner: {
-                ...{['grafana-link']: this.grafanaNamespace},
-                ...{['prometheus-link']: this.prometheusNamespace},
-                ...{httpsRedirect: this.httpsRedirect}
+            spec:{
+                provisioner: {
+                    ...{['grafana-link']: this.grafanaNamespace},
+                    ...{['prometheus-link']: this.prometheusNamespace},
+                    ...{httpsRedirect: this.httpsRedirect}
+                }
             }
         })
     }

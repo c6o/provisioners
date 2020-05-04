@@ -42,18 +42,18 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
                 route: [
                     {
                         destination: {
-                            host: app.routes.simple.http.service
+                            host: app.spec.routes.simple.http.service
                         }
                     }
                 ]
             }
 
-        if (app.routes.simple.http?.prefix)
-            http.match.push({uri: {prefix : app.routes.simple.http.prefix}})
-        if (app.routes.simple.http?.rewrite)
-            http.rewrite = {uri : app.routes.simple.http.rewrite}
-        if (app.routes.simple.http?.port)
-            http.route[0].destination.port = app.routes.simple.http.port
+        if (app.spec.routes.simple.http?.prefix)
+            http.match.push({uri: {prefix : app.spec.routes.simple.http.prefix}})
+        if (app.spec.routes.simple.http?.rewrite)
+            http.rewrite = {uri : app.spec.routes.simple.http.rewrite}
+        if (app.spec.routes.simple.http?.port)
+            http.route[0].destination.port = app.spec.routes.simple.http.port
         return http
     }
 
@@ -68,7 +68,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         spec: {
             hosts: ['*'],
             gateways: [gateway],
-            http: [app.routes.simple ? this.simpleHttpSection(app) : undefined]
+            http: [app.spec.routes.simple ? this.simpleHttpSection(app) : undefined]
         }
     })
 }

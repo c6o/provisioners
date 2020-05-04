@@ -7,10 +7,11 @@ metadata:
     annotations:
       system.traxitt.com/display: Marina
       system.traxitt.com/iconUrl: '{{hubServer}}/api/assets/apps/marina/icon'
-marina:
-  launch:
-    service: system-marina
-provisioner: ignore
+spec:
+  marina:
+    launch:
+      service: system-marina
+  provisioner: ignore
 status: Running
 ---
 apiVersion: system.traxitt.com/v1
@@ -21,17 +22,18 @@ metadata:
   annotations:
     system.traxitt.com/display: Store
     system.traxitt.com/iconUrl: '{{hubServer}}/api/assets/apps/store/icon'
-marina:
-  launch:
-    type: inline
-    tag: traxitt-store
-    api: true
-    path: /store/
-  menus:
-    - type: apps
-      display: Uninstall...
-      action: uninstall
-provisioner: ignore
+spec:
+  marina:
+    launch:
+      type: inline
+      tag: traxitt-store
+      api: true
+      path: /store/
+    menus:
+      - type: apps
+        display: Uninstall...
+        action: uninstall
+  provisioner: ignore
 status: Running
 ---
 apiVersion: system.traxitt.com/v1
@@ -42,15 +44,16 @@ metadata:
   annotations:
     system.traxitt.com/display: Nav Station
     system.traxitt.com/iconUrl: '{{hubServer}}/api/assets/apps/navstation/icon'
-marina:
-  launch:
-    type: inline
-    tag: traxitt-navstation
-    api: true
-    path: /navstation/
-  menus:
-    - type: apps
-      display: Settings...
-      action: settings
-provisioner: ignore
+spec:
+  marina:
+    launch:
+      type: inline
+      tag: traxitt-navstation
+      api: true
+      path: /navstation/
+    menus:
+      - type: apps
+        display: Settings...
+        action: settings
+  provisioner: ignore
 status: Running

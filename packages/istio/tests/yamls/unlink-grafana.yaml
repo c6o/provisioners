@@ -3,5 +3,6 @@ kind: App
 metadata:
   name: istio
   namespace: istio-system
-provisioner:
-  grafana-link: '$unset'
+spec:
+  provisioner:
+    grafana-link: '$unset'

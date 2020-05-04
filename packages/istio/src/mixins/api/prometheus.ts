@@ -53,7 +53,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         const prometheusProvisioner = await this.getPrometheusProvisioner()
         await prometheusProvisioner.clearAll(istioNamespace, 'istio')
         if (clearLinkField)
-            delete this.manager.document.provisioner['prometheus-link']
+            delete this.manager.document.spec.provisioner['prometheus-link']
     }
 
     // TODO: move to base?

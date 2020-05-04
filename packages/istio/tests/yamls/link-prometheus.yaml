@@ -3,5 +3,6 @@ kind: App
 metadata:
   name: istio
   namespace: istio-system
-provisioner:
-  prometheus-link: monitoring
+spec:
+  provisioner:
+    prometheus-link: monitoring

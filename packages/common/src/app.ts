@@ -29,13 +29,15 @@ export interface RoutesType {
 }
 
 export interface AppDocument extends KubeDocument {
-    navstation?: boolean
-    marina?: {
-        launch?: LaunchType
+    spec: {
+        navstation?: boolean
+        marina?: {
+            launch?: LaunchType
+            menus?: Array<MenuItems>
+        }
+        provisioner?: any | 'ignore'
+        routes?: RoutesType
     }
-    menus?: Array<MenuItems>
-    provisioner?: any | 'ignore'
-    routes?: RoutesType
 }
 
 export const AppStatuses = {
@@ -70,15 +72,15 @@ export class AppObject {
 
         // ensure we always have a provisioner section, otherwise provisioners will not save changes
         // when remote provisioning
-        this.document.provisioner = this.document.provisioner || {}
+        this.document.spec.provisioner = this.document.spec.provisioner || {}
 
         // do not copy - provisioners -- modify the document service spec directly
-        const appProvisioner: string = this.document.provisioner.name || this.document.metadata.name
-        const services = this.document.provisioner?.services || []
+        const appProvisioner: string = this.document.spec.provisioner.name || this.document.metadata.name
+        const services = this.document.spec.provisioner?.services || []
 
         return this._services = [
             ...services,
-            { [appProvisioner]: this.document.provisioner }
+            { [appProvisioner]: this.document.spec.provisioner }
         ]
     }
 

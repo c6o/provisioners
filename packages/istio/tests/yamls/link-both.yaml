@@ -3,6 +3,7 @@ kind: App
 metadata:
   name: istio
   namespace: istio-system
-provisioner:
-  grafana-link: 'testing'
-  prometheus-link: 'monitoring'
+spec:
+  provisioner:
+    grafana-link: 'testing'
+    prometheus-link: 'monitoring'

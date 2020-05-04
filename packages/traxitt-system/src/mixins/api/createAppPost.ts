@@ -5,7 +5,7 @@ export const createAppPostMixin = (base: baseProvisionerType) => class extends b
 
     async createAppPost(app: AppDocument) {
 
-        if (app.routes?.simple) {
+        if (app.spec.routes?.simple) {
             this.manager.status?.push(`Setting up app ${app.metadata.namespace} routes`)
             // When an app is created, we have to open ports for this app
             const istioProvisioner = await this.manager.getProvisioner('istio')

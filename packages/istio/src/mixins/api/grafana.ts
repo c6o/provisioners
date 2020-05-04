@@ -54,7 +54,7 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
         this.grafanaProvisioner = await this.manager.getProvisioner('grafana')
         await this.grafanaProvisioner.clearConfig(serviceNamespace, 'istio')
         if (clearLinkField)
-            delete this.manager.document.provisioner['grafana-link']
+            delete this.manager.document.spec.provisioner['grafana-link']
     }
 
     async addDashboard(name, params) {
