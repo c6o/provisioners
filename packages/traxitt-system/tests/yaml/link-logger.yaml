@@ -1,0 +1,7 @@
+apiVersion: system.traxitt.com/v1
+kind: App
+metadata:
+  name: traxitt-system
+  namespace: traxitt-system
+provisioner:
+  logging-link: 'mylogger:logging-elk'

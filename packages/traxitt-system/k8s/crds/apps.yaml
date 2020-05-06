@@ -68,6 +68,8 @@ spec:
                             type: string
                 provisioner:
                   x-kubernetes-preserve-unknown-fields: true
+                services:
+                  x-kubernetes-preserve-unknown-fields: true
                 routes:
                   type: object
                   properties:

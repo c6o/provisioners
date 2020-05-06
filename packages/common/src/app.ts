@@ -27,6 +27,10 @@ export interface RoutesType {
         }
     }
 }
+export interface ServicesType {
+    // open
+    [key: string]: any
+}
 
 export interface AppDocument extends KubeDocument {
     spec: {
@@ -36,6 +40,7 @@ export interface AppDocument extends KubeDocument {
             menus?: Array<MenuItems>
         }
         provisioner?: any | 'ignore'
+        services?: ServicesType
         routes?: RoutesType
     }
 }
