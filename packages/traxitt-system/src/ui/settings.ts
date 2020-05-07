@@ -85,7 +85,7 @@ export class TraxittSystemSettings extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback()
-        this.choicesService = this.api.createService('traxitt-system', 'choices')
+        this.choicesService = this.api.createService('choices')
         this.api.watchManifest(this.renderSettings)
         await this.renderSettings(this.api.manifest)
         this.loaded = true

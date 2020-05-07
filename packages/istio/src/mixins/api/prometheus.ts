@@ -11,7 +11,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
 
     async getPrometheusProvisioner() {
         if (!this.prometheusProvisioner)
-            this.prometheusProvisioner = await this.manager.getProvisioner('prometheus')
+            this.prometheusProvisioner = await this.manager.getProvisionerModule('prometheus')
         return this.prometheusProvisioner
     }
     
@@ -50,6 +50,8 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         await this.manager.cluster.delete(clusterRoleBinding)
         this.manager.status?.pop()
 
+        // TODO: which provisioner module/version do we use when we want to target *all* apps in the system?
+        // (same as grafana unlink)
         const prometheusProvisioner = await this.getPrometheusProvisioner()
         await prometheusProvisioner.clearAll(istioNamespace, 'istio')
         if (clearLinkField)

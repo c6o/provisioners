@@ -8,6 +8,8 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
     values = ['1Gi','2Gi','4Gi']
 
     get serviceSpec() {
+        // TODO: need to know what service we're called from
+        // mediator should know
         return this.mediator.getServiceSpec('grafana')
     }
 

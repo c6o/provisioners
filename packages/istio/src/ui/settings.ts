@@ -107,7 +107,6 @@ export class IstioSettings extends LitElement {
             this.prometheusNamespace = manifest.spec.provisioner?.['prometheus-link'] || unlinkToken
             this.httpsRedirect = !!manifest.spec.provisioner?.httpsRedirect
         }
-
         const result = await this.choicesService.find({})
         this.prometheusOptions = result.prometheusOptions
         this.grafanaOptions = result.grafanaOptions
@@ -128,7 +127,7 @@ export class IstioSettings extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback()
-        this.choicesService = this.api.createService('istio', 'choices')
+        this.choicesService = this.api.createService('choices')
         this.api.watchManifest(this.renderSettings)
         await this.renderSettings(this.api.manifest)
         this.loaded = true

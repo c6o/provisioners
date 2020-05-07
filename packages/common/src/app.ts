@@ -93,9 +93,35 @@ export class AppObject {
         return this.services.map(serviceObject => this.getServiceName(serviceObject))
     }
 
+    get isNew() {
+        return !!this.document.metadata.uid
+    }
+
+    getAppEdition() {
+        return this.document.metadata.labels?.['system.traxitt.com/edition'] || 'latest'
+    }
+    
+    getAppName() {
+        return this.document.metadata.name
+    }
+
+    getAppNamespace() {
+        return this.document.metadata.namespace
+    }
+
     // spec is the contents of the service object
     getServiceSpec(serviceName: string) {
         return this.getServiceObject(serviceName)[serviceName]
+    }
+
+    getServicePackage(serviceName: string) {
+        const serviceSpec = this.getServiceSpec(serviceName)
+        return serviceSpec.package
+    }
+
+    getServiceTagPrefix(serviceName: string) {
+        const serviceSpec = this.getServiceSpec(serviceName)
+        return serviceSpec['tag-prefix'] || serviceName
     }
 
     // object is the object including the service name tag used by CLI to skip, etc.

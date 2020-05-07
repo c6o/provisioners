@@ -51,7 +51,11 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
-        this.grafanaProvisioner = await this.manager.getProvisioner('grafana')
+        // TODO: which provisioner module/version do we use when we want to target all apps in the system?
+        // Stateless: do we loop through all grafana apps here, and call each one individually, moving the code that loops
+        // through each grafana app here?
+        // Stateful: We can keep state, and unlink to specific grafana as an alternative.
+        this.grafanaProvisioner = await this.manager.getProvisionerModule('grafana')
         await this.grafanaProvisioner.clearConfig(serviceNamespace, 'istio')
         if (clearLinkField)
             delete this.manager.document.spec.provisioner['grafana-link']

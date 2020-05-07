@@ -31,26 +31,22 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
     }
 
     async linkLogger(serviceNamespace, appNamespace, appId) {
-        const apps = await this.manager.getInstalledApps(appId, appNamespace)
-        if (apps.length !== 1) {
-            debug(`Unable to find App ${appNamespace}.${appId}`)
-            this.logger?.warn(`Unable to find App ${appNamespace}.${appId}`)
-            return
-        }
+        const app = await this.manager.getInstalledApp(appId, appNamespace)
 
-        if (!apps[0].spec.services?.logstash) {
+        if (!app.spec.services?.logstash) {
             debug(`Unable to find logstash services for App ${appNamespace}.${appId}`)
             this.logger?.warn(`Unable to find logstash services for App ${appNamespace}.${appId}`)
             return
         }
-        const logstash = apps[0].spec.services.logstash
+        const logstash = app.spec.services.logstash
 
-        let result = await this.manager.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await this.manager.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
             throw result.error
-        }            
+        }
+
         const systemServerConfigMap = result.object
         systemServerConfigMap.data = {
             LOG_ELASTIC_CONNECTION: `${logstash.protocol}://${logstash.service}.${appNamespace}:${logstash.port}`,
@@ -62,7 +58,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
     }
 
     async unlinkLogger(serviceNamespace) {
-        let result = await this.manager.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await this.manager.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)

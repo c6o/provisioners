@@ -19,6 +19,7 @@ export class provisionerBasePrivate {
 export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, passwordMixin, optionsMixin) {
     manager: ProvisionerManager
     serviceName: string
+    moduleLocation: string
 
     taskSpec: any
 
@@ -29,8 +30,8 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     
     help (command: string, options: optionFunctionType, messages: string[]) {}
 
-    serve(req, res, moduleLocation, serverRoot = 'lib/ui') {
-        const root = path.resolve(moduleLocation, serverRoot)
+    serve(req, res, serverRoot = 'lib/ui') {
+        const root = path.resolve(this.moduleLocation, serverRoot)
         res.sendFile(req.url, {root})
     }
 
