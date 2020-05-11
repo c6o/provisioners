@@ -1,0 +1,13 @@
+apiVersion: system.traxitt.com/v1
+kind: App
+metadata:
+    name: traxitt-system
+    namespace: traxitt-system
+spec:
+    provisioner:
+        npm-link: $unset
+
+
+
+
+    

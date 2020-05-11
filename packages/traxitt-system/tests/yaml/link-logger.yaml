@@ -3,5 +3,6 @@ kind: App
 metadata:
   name: traxitt-system
   namespace: traxitt-system
-provisioner:
-  logging-link: 'mylogger:logging-elk'
+spec:
+  provisioner:
+    logging-link: 'mylogger:logging-elk'

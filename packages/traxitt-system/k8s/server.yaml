@@ -8,6 +8,13 @@ data:
   HUB_SERVER_URL: '{{hubServer}}'
   HUB_TOKEN: '{{hubToken}}'
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: system-server-secrets
+  namespace: traxitt-system
+data:
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,6 +47,8 @@ spec:
         envFrom:
           - configMapRef:
               name: system-server-config
+          - secretRef:
+              name: system-server-secrets
         ports:
           - containerPort: 3050
 ---

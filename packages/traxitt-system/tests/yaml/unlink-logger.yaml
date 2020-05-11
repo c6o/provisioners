@@ -3,5 +3,6 @@ kind: App
 metadata:
   name: traxitt-system
   namespace: traxitt-system
-provisioner:
-  logging-link: '$unset'
+spec:
+  provisioner:
+    logging-link: '$unset'
