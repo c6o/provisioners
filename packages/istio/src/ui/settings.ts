@@ -1,5 +1,6 @@
 import { LitElement, html, customElement, property } from 'lit-element'
 import { unlinkToken } from '../constants'
+import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 
 @customElement('istio-settings-main')
 export class IstioSettings extends LitElement {
@@ -29,8 +30,8 @@ export class IstioSettings extends LitElement {
     choicesService
     disposer
 
-    get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as unknown as any }
-    get prometheusComboBox() { return this.shadowRoot.querySelector('#prometheus-combo-box') as unknown as any }
+    get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as ComboBoxElement }
+    get prometheusComboBox() { return this.shadowRoot.querySelector('#prometheus-combo-box') as ComboBoxElement }
 
     render() {
         if (!this.loaded)

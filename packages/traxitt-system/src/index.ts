@@ -10,7 +10,8 @@ import {
     removeApplyMixin,
     choicesApiMixin,
     loggerApiMixin,
-    npmApiMixin
+    npmApiMixin,
+    metricsMixin
 } from './mixins'
 // TODO: import { helpMixin} from "./help"
 
@@ -25,5 +26,6 @@ export class Provisioner extends mix(ProvisionerBase).with(
     createInquireMixin,
     choicesApiMixin,
     loggerApiMixin,
-    npmApiMixin) {
+    npmApiMixin,
+    metricsMixin) {
 }

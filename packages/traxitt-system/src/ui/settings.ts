@@ -2,7 +2,7 @@ import { LitElement, html, customElement, property } from 'lit-element'
 import { unlinkToken } from '../constants'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
-import { AppObject, AppStatuses } from '@provisioner/common/src/app'
+import { AppStatuses } from '@provisioner/common/src/app'
 
 @customElement('traxitt-system-settings-main')
 export class TraxittSystemSettings extends LitElement {
@@ -20,6 +20,18 @@ export class TraxittSystemSettings extends LitElement {
     @property({ type: Object })
     npmOptions
 
+    @property({ type: Object })
+    prometheusLink
+
+    @property({ type: Object })
+    prometheusOptions
+
+    @property({ type: Object })
+    grafanaLink
+
+    @property({ type: Object })
+    grafanaOptions
+
     @property({ type: Boolean })
     busy
 
@@ -33,6 +45,8 @@ export class TraxittSystemSettings extends LitElement {
     get npmComboBox() { return this.shadowRoot.querySelector('#npm-combo-box') as ComboBoxElement }
     get npmUsername() { return this.shadowRoot.querySelector('#npm-username') as TextFieldElement }
     get npmPassword() { return this.shadowRoot.querySelector('#npm-password') as TextFieldElement }
+    get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as ComboBoxElement }
+    get prometheusComboBox() { return this.shadowRoot.querySelector('#prometheus-combo-box') as ComboBoxElement }
 
     render() {
         if (!this.loaded)
@@ -43,6 +57,10 @@ export class TraxittSystemSettings extends LitElement {
             <hr />
             ${this.renderLoggingLink()}
             <hr />
+            ${this.renderPrometheusLink()}
+            <hr />
+            ${this.renderGrafanaLink()}
+            <br />
             <traxitt-button class="pointer" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
             <traxitt-button class="pointer" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
             `
@@ -93,12 +111,54 @@ export class TraxittSystemSettings extends LitElement {
         `
     }
 
+    renderPrometheusLink() {
+        if (this.prometheusLink !== unlinkToken)
+            return html`
+            <traxitt-button @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusLink} for Metrics</traxitt-button>
+          `
+
+        return html`
+          <traxitt-combo-box id='prometheus-combo-box' label='Select Prometheus for Metrics' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
+          <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
+        `
+    }
+
+    renderGrafanaLink() {
+        if (this.grafanaLink !== unlinkToken)
+            return html`
+                <traxitt-button class="pointer" @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaLink} for Metrics</traxitt-button>
+            `
+
+        return html`
+          <traxitt-combo-box id='grafana-combo-box' label='Select Grafana for Metrics' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
+          <traxitt-button class="pointer" @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
+        `
+    }
+
     linkLogger = async () => {
         this.loggingLink = this.loggerComboBox.value
     }
 
     unlinkLogger = async () => {
         this.loggingLink = unlinkToken
+    }
+
+    linkPrometheus = async () => {
+        this.prometheusLink = this.prometheusComboBox.value
+    }
+    
+    unlinkPrometheus = async () => {
+        // we can't link grafana without prometheus
+        this.prometheusLink = unlinkToken
+        this.grafanaLink = unlinkToken
+    }
+
+    linkGrafana = async () => {
+        this.grafanaLink = this.grafanaComboBox.value
+    }
+
+    unlinkGrafana = async () => {
+        this.grafanaLink = unlinkToken
     }
 
     resetSettings = async () => {
@@ -114,11 +174,15 @@ export class TraxittSystemSettings extends LitElement {
             this.busy = this.isBusy(manifest)
             this.loggingLink = manifest.spec.provisioner?.['logging-link'] || unlinkToken
             this.npmLink = manifest.spec.provisioner?.['npm-link'] || unlinkToken
+            this.prometheusLink = manifest.spec.provisioner?.['prometheus-link'] || unlinkToken
+            this.grafanaLink = manifest.spec.provisioner?.['grafana-link'] || unlinkToken
         }
 
         const result = await this.choicesService.find({})
         this.loggerOptions = result.loggerOptions
         this.npmOptions = result.npmOptions
+        this.prometheusOptions = result.prometheusOptions
+        this.grafanaOptions = result.grafanaOptions
     }
 
     applyChanges = async (e) => {
@@ -138,7 +202,9 @@ export class TraxittSystemSettings extends LitElement {
             spec: {
                 provisioner: {
                     ...{['npm-link']: encodedLink},
-                    ...{['logging-link']: this.loggingLink}
+                    ...{['logging-link']: this.loggingLink},
+                    ...{['prometheus-link']: this.prometheusLink},
+                    ...{['grafana-link']: this.grafanaLink}
                 }
             }
         })
