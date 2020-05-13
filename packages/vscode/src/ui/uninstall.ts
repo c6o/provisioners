@@ -27,6 +27,6 @@ export class UninstallVSCode extends LitElement implements StoreFlowStep {
     }
 
     checkHandler = (field) => (e) => {
-      this.serviceSpec.deprovision[field] = e.detail.value
+        this.serviceSpec.deprovision[field] = e.detail.value
     }
 }
