@@ -61,8 +61,8 @@ export class TraxittSystemSettings extends LitElement {
             <hr />
             ${this.renderGrafanaLink()}
             <br />
-            <traxitt-button class="pointer" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
-            <traxitt-button class="pointer" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
+            <traxitt-button @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
+            <traxitt-button @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
             `
     }
 
@@ -87,7 +87,7 @@ export class TraxittSystemSettings extends LitElement {
     renderNpmLink() {
         if (this.npmLink !== unlinkToken)
             return html`
-                <traxitt-button class="pointer" @click=${this.unlinkNpm} ?disabled=${this.busy}>Unlink npm from ${this.npmLink.name}</traxitt-button>
+                <traxitt-button @click=${this.unlinkNpm} ?disabled=${this.busy}>Unlink npm from ${this.npmLink.name}</traxitt-button>
             `
 
         return html`
@@ -95,19 +95,19 @@ export class TraxittSystemSettings extends LitElement {
                 <traxitt-combo-box id='npm-combo-box' label='Select NPM Registry' required value=${this.npmOptionsList[0]} .items=${this.npmOptionsList} ?disabled=${this.busy}></traxitt-combo-box>
                 <traxitt-text-field id='npm-username' label="Registry username" autoselect required></traxitt-text-field>
                 <vaadin-password-field id='npm-password' label="Registry password" autoselect required></vaadin-password-field>
-                <traxitt-button class="pointer" @click=${this.linkNpm} ?disabled=${this.busy}>Link NPM Registry</traxitt-button>
+                <traxitt-button @click=${this.linkNpm} ?disabled=${this.busy}>Link NPM Registry</traxitt-button>
             </traxitt-vertical-layout>`
     }
 
     renderLoggingLink() {
         if (this.loggingLink !== unlinkToken)
             return html`
-                <traxitt-button class="pointer" @click=${this.unlinkLogger} ?disabled=${this.busy}>Unlink logger in ${this.loggingLink}</traxitt-button>
+                <traxitt-button @click=${this.unlinkLogger} ?disabled=${this.busy}>Unlink logger in ${this.loggingLink}</traxitt-button>
             `
 
         return html`
           <traxitt-combo-box id='logger-combo-box' label='Select Logger Installation' required value=${this.loggerOptions[0]} .items=${this.loggerOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button class="pointer" @click=${this.linkLogger} ?disabled=${this.busy}>Link Logger</traxitt-button>
+          <traxitt-button @click=${this.linkLogger} ?disabled=${this.busy}>Link Logger</traxitt-button>
         `
     }
 
@@ -126,12 +126,12 @@ export class TraxittSystemSettings extends LitElement {
     renderGrafanaLink() {
         if (this.grafanaLink !== unlinkToken)
             return html`
-                <traxitt-button class="pointer" @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaLink} for Metrics</traxitt-button>
+                <traxitt-button @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaLink} for Metrics</traxitt-button>
             `
 
         return html`
           <traxitt-combo-box id='grafana-combo-box' label='Select Grafana for Metrics' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button class="pointer" @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
+          <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
         `
     }
 
@@ -146,7 +146,7 @@ export class TraxittSystemSettings extends LitElement {
     linkPrometheus = async () => {
         this.prometheusLink = this.prometheusComboBox.value
     }
-    
+
     unlinkPrometheus = async () => {
         // we can't link grafana without prometheus
         this.prometheusLink = unlinkToken
