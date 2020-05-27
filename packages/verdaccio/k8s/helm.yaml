@@ -37,7 +37,7 @@ data:
     uplinks:
       npmjs:
         url: https://registry.npmjs.org/
-    
+
     packages:
       '@*/*':
         # scoped packages

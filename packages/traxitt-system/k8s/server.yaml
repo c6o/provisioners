@@ -5,7 +5,7 @@ metadata:
   namespace: traxitt-system
 data:
   CLUSTER_ID: '{{clusterId}}'
-  HUB_SERVER_URL: '{{hubServer}}'
+  HUB_SERVER_URL: '{{hubServerURL}}'
   HUB_TOKEN: '{{hubToken}}'
 ---
 apiVersion: v1

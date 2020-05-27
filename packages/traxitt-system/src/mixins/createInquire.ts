@@ -11,8 +11,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     findAccount = (id) => this.accounts.find(account => account._id === id)
 
     clusterIdWhen = async (answers) => {
-        this.clusters = await this.manager.hubClient.getClusters()
-        this.accounts = await this.manager.hubClient.getAccounts()
         if (this.clusters.length === 0) {
             // There are no clusters to choose. Force the user to create a new one
             answers.clusterId = this.newClusterId
@@ -32,6 +30,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     accountIdChoices = _ => this.accounts.map(account => ({ name: account.name, value: account._id }))
 
     async inquire(args) {
+        this.clusters = await this.manager.hubClient.getClusters()
+        this.accounts = await this.manager.hubClient.getAccounts()
+
         const answers = {
             env: args['staging'],
             clusterId: args['id'],
@@ -107,21 +108,22 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         else
             cluster = this.findCluster(answers.clusterId)
 
-        const account = this.findAccount(answers.accountId || cluster.accountId)
+        const account = this.findAccount(answers.accountId || cluster.orgId || cluster.admin[0])
 
         this.spec.hubToken = this.manager.hubClient.token
         this.spec.clusterId = cluster._id
         this.spec.accountName = account.namespace
-        this.spec.clusterName = cluster.name
+        // TODO: Remove this as it's not used
+        // this.spec.clusterName = cluster.name
         this.spec.clusterNamespace = cluster.namespace
         this.spec.tag = answers.tag
 
         if (answers.env == 'staging') {
-            this.spec.hubServer = 'https://staging.hub.traxitt.com'
+            this.spec.hubServerURL = 'https://staging.hub.traxitt.com'
             this.spec.clusterDomain = 'stg.traxitt.org'
         }
         else {
-            this.spec.hubServer = 'https://hub.traxitt.com'
+            this.spec.hubServerURL = 'https://hub.traxitt.com'
             this.spec.clusterDomain = 'traxitt.org'
         }
     }

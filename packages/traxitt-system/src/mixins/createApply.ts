@@ -51,7 +51,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const options = {
             tag: this.spec.tag,
             clusterId: this.spec.clusterId,
-            hubServer: this.spec.hubServer,
+            hubServerURL: this.spec.hubServerURL,
             hubToken: this.spec.hubToken
         }
 
@@ -70,7 +70,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterNamespace: this.spec.clusterNamespace,
             accountName: this.spec.accountName,
             clusterDomain: this.spec.clusterDomain,
-            hubServer: this.spec.hubServer
+            hubServerURL: this.spec.hubServerURL
         }
 
         await this.manager.cluster
@@ -93,13 +93,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
 
     async provisionGateway() {
-        await this.manager.status.push('Provision system gateway')
+        await this.manager.status?.push('Provision system gateway')
 
         const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
         const result = await istioProvisioner.createGateway('traxitt-system', this.SYSTEM_GATEWAY_NAME, this.gatewayServers)
         if (result.error) throw result.error
 
-        await this.manager.status.pop()
+        await this.manager.status?.pop()
     }
 
     async provisionRoutes() {
