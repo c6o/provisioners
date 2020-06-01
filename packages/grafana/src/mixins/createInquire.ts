@@ -1,65 +1,41 @@
 import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
+    async createInquire(args) {
 
-    providedStorageSetting(answers) {
-        return this.spec.storage || answers['storage']
-    }
-
-    providedAdminUsername(answers) {
-        return this.spec.adminUsername || answers['adminUsername']
-    }
-
-    providedAdminPassword(answers) {
-        return this.spec.adminUsername || answers['adminPassword']
-    }
-
-    async createInquire(answers) {
-
-        if (!this.providedStorageSetting(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'input',
-                name: 'storage',
-                default: '2Gi',
-                message: 'How much storage do you need for Grafana?'
-            })
-
-            if (response)
-                this.spec.storage = response.storage
-            else
-                this.spec.storage = '2Gi'
-        } else {
-            this.spec.storage = this.providedStorageSetting(answers)
+        const answers = {
+            storage: args.storage || this.spec.storage,
+            adminUsername: args.adminUsername || this.spec.adminUsername,
+            adminPassword: args.adminPassword || this.spec.adminPassword
         }
 
-        if (!this.providedAdminUsername(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'input',
-                name: 'adminUsername',
-                default: 'admin',
-                message: 'What is the admin username?'
-            })
+        const separator = new (this.manager.inquirer?.Separator)()
 
-            if (response)
-                this.spec.adminUsername = response.adminUsername
-            else
-                this.spec.adminUsername = 'admin'
-        } else
-            this.spec.adminUsername = this.providedAdminUsername(answers)
-        
-        if (!this.providedAdminPassword(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'input',
-                name: 'adminPassword',
-                default: 'admin',
-                message: 'What is the admin password?'
-            })
+        const responses = await this.manager.inquirer?.prompt([{
+            type: 'list',
+            name: 'storage',
+            message: 'What size data volume would you like for Grafana?',
+            choices: ['2Gi','4Gi','8Gi', separator, { name: 'Other size', value: undefined }],
+            default: '2Gi'
+        }, {
+            type: 'input',
+            name: 'storage',
+            default: '2Gi',
+            message: 'Specify size:'
+        },{
+            type: 'input',
+            name: 'adminUsername',
+            default: 'admin',
+            message: 'What is the admin username?'
+        },{
+            type: 'password',
+            name: 'adminPassword',
+            default: 'admin',
+            message: 'What is the admin password?'
+        }], answers)
 
-            if (response)
-                this.spec.adminPassword = response.adminPassword
-            else
-                this.spec.adminPassword = 'admin'
-        } else
-            this.spec.providedAdminPassword = this.providedAdminPassword(answers)
+        this.spec.storage = responses.storage
+        this.spec.adminUsername = responses.adminUsername
+        this.spec.adminPassword = responses.adminPassword
     }
 }
