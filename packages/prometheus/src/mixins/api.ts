@@ -17,7 +17,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
     addedSecrets: any[]
     removedSecrets: any[]
 
-    getPrometheusDeployments = async (namespace = undefined) => {
+    getPrometheusDeployment = async (namespace) => {
         const deployment = {
             apiVersion: 'apps/v1',
             kind: 'Deployment',
@@ -31,39 +31,30 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
             }
         }
 
-        return namespace ?
-            await this.manager.cluster.read(deployment) :
-            await this.manager.cluster.list(deployment)
+        return await this.manager.cluster.read(deployment)
     }
 
-    async clearAll(clientNamespace: string, clientApp: string) {
-        // find all deployments
-        const result = await this.getPrometheusDeployments()
-
-        for(const deployment of result.object.items) {
-            await this.beginConfig(deployment.metadata.namespace, clientNamespace, clientApp)
-            await this.removeAllJobs()
-            //this.removeAllCerts()
-            await this.endConfig()
-        }
+    async clearAll(namespace: string, clientNamespace: string, clientApp: string) {
+        await this.beginConfig(namespace, clientNamespace, clientApp)
+        await this.removeAllJobs()
+        //this.removeAllCerts()
+        await this.endConfig()
     }
 
     /**
      * Begin changing configuration of Prometheus
      *
-     * @param {string} namespace of the owner app
-     * @param {string} app app
+     * @param {string} clientNamespace of the owner app
+     * @param {string} clientApp app
      */
-    async beginConfig(prometheusNamespace:string, clientNamespace: string, clientApp: string) {
-        this.prometheusNamespace = prometheusNamespace
+    async beginConfig(namespace: string, clientNamespace: string, clientApp: string) {
 
         if (this.runningDeployment)
             throw Error('There is already a running configuration transaction')
 
-        let result = await this.getPrometheusDeployments(this.prometheusNamespace)
+        let result = await this.getPrometheusDeployment(namespace)
 
-        if (result.error)
-            throw result.error
+        if (result.error) throw result.error
         this.runningDeployment = result.object
 
         this.clientNamespace = clientNamespace
@@ -72,7 +63,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         result = await this.manager.cluster.read({
             kind: 'ConfigMap',
             metadata: {
-                namespace: this.prometheusNamespace,
+                namespace,
                 name: 'prometheus-server'
             }
         })
@@ -157,17 +148,17 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
      *      /etc/certs/{clientNamespace}-{clientApp}-{name}/key.pem
      */
     async addTlsCerts(name, certs) {
-
+        const namespace = this.runningDeployent.metadata.namespace
         const certName = `${this.clientNamespace}-${this.clientApp}-${name}`
 
         // create a new secret
-        const newSecret = this.certSecret(`prometheus-${certName}`)
+        const newSecret = this.certSecret(`prometheus-${certName}`, namespace)
         // add the new cert secret
         const secretsData = newSecret['data'] = {}
 
-        secretsData[`ca.pem`] = certs.ca_file ? Buffer.from(certs.ca_file).toString('base64'):''
-        secretsData[`cert.pem`] = certs.cert_file ? Buffer.from(certs.cert_file).toString('base64'):''
-        secretsData[`key.pem`] = certs.key_file ? Buffer.from(certs.key_file).toString('base64'):''
+        secretsData['ca.pem'] = certs.ca_file ? Buffer.from(certs.ca_file).toString('base64'):''
+        secretsData['cert.pem'] = certs.cert_file ? Buffer.from(certs.cert_file).toString('base64'):''
+        secretsData['key.pem'] = certs.key_file ? Buffer.from(certs.key_file).toString('base64'):''
         
         this.addedSecrets.push(newSecret)
 
@@ -186,13 +177,13 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         }
 
         const volumeArray = this.runningDeployment.spec.template.spec.volumes
-        let index = volumeArray.findIndex(vol => vol.name == volume.name)
+        let index = volumeArray.findIndex(vol => vol.name === volume.name)
         if (index === -1)
             volumeArray.push(volume)
         
         // container 1 is the prometheus server
         const volumeMountArray = this.runningDeployment.spec.template.spec.containers[1].volumeMounts
-        index = volumeMountArray.findIndex(vol => vol.name == volumeMount.name)
+        index = volumeMountArray.findIndex(vol => vol.name === volumeMount.name)
         if (index === -1)
             volumeMountArray.push(volumeMount)
     }
@@ -202,29 +193,31 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
      *
      */
     async removeTlsCerts(name) {
+        const namespace = this.runningDeployent.metadata.namespace
+
         const certName = `${this.clientNamespace}-${this.clientApp}-${name}`
-        const removeSecret = this.certSecret(name)
+        const removeSecret = this.certSecret(name, namespace)
         this.removedSecrets.push(removeSecret)
    
         const volumeName = `cert-${certName}`
         // remove the dashboard volume and volume mount from the deployment
         const volumeArray = this.runningDeployment.spec.template.spec.volumes
-        let index = volumeArray.findIndex(vol => vol.name == volumeName)
+        let index = volumeArray.findIndex(vol => vol.name === volumeName)
         if (index !== -1)
             volumeArray.splice(index,1)
         
         const volumeMountArray = this.runningDeployment.spec.template.spec.containers[1].volumeMounts
-        index = volumeMountArray.findIndex(vol => vol.name == volumeName)
+        index = volumeMountArray.findIndex(vol => vol.name === volumeName)
         if (index !== -1)
             volumeMountArray.splice(index,1)
     }
 
-    certSecret(name) {
+    certSecret(name, namespace) {
         return {
             kind: 'Secret',
             metadata: {
                 name,
-                namespace: this.prometheusNamespace,
+                namespace,
                 labels: {
                     name: 'prometheus-server'
                 }
@@ -265,14 +258,11 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         }
 
         if (restart) {
-            const result = await this.manager.cluster.upsert(this.runningDeployment)
+            await this.manager.cluster.upsert(this.runningDeployment)
             const previousCount = this.runningDeployment.spec?.replicas || 0
             await this.manager.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
             await this.manager.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
         }
-        
         this.runningDeployment = null
     }
-
-
 }

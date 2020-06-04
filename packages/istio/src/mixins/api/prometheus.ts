@@ -6,21 +6,14 @@ import { promises as fs } from 'fs'
 import { baseProvisionerType } from '../../'
 
 export const prometheusApiMixin = (base: baseProvisionerType) => class extends base {
-
-    prometheusProvisioner
-
-    async getPrometheusProvisioner() {
-        if (!this.prometheusProvisioner)
-            this.prometheusProvisioner = await this.manager.getProvisionerModule('prometheus')
-        return this.prometheusProvisioner
-    }
     
     async linkPrometheus(prometheusNamespace, istioNamespace) {
         await this.unlinkPrometheus(istioNamespace, false)
         await this.manager.cluster.begin('Adding access for Prometheus')
             .upsertFile('../../../k8s/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
         .end()
-        const prometheusProvisioner = await this.getPrometheusProvisioner()
+        const prometheusProvisioner = await this.manager.getAppProvisioner('prometheus', prometheusNamespace)
+
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../prometheus/jobs.yaml'), { istioNamespace })
         await prometheusProvisioner.addJobs(jobs)
@@ -50,10 +43,12 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         await this.manager.cluster.delete(clusterRoleBinding)
         this.manager.status?.pop()
 
-        // TODO: which provisioner module/version do we use when we want to target *all* apps in the system?
-        // (same as grafana unlink)
-        const prometheusProvisioner = await this.getPrometheusProvisioner()
-        await prometheusProvisioner.clearAll(istioNamespace, 'istio')
+        const prometheusApps = await this.manager.getInstalledApps('prometheus')
+        for (const prometheusApp of prometheusApps) {
+            const prometheusProvisioner = await this.manager.getProvisioner(prometheusApp)
+            const prometheusNamespace = prometheusApp.metadata.namespace
+            await prometheusProvisioner.clearAll(prometheusNamespace, istioNamespace, 'istio')
+        }
         if (clearLinkField)
             delete this.manager.document.spec.provisioner['prometheus-link']
     }

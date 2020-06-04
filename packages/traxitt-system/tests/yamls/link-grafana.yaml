@@ -5,4 +5,4 @@ metadata:
   namespace: traxitt-system
 spec:
   provisioner:
-    grafana-link: 'monitoring'
+    grafana-link: 'demo'

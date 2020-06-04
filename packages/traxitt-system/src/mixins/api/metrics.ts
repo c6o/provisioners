@@ -10,10 +10,12 @@ const dashboards = [
     'dashboard-nodejs']
 
 export const metricsMixin = (base: baseProvisionerType) => class extends base {
+
     grafanaProvisioner
 
     async linkGrafana(grafanaNamespace, serviceNamespace) {
         await this.unlinkGrafana(serviceNamespace, false)
+        this.grafanaProvisioner = await this.manager.getAppProvisioner('grafana', grafanaNamespace)
 
         await this.grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'traxitt-system')
 
@@ -46,8 +48,11 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
-        this.grafanaProvisioner = await this.manager.getProvisionerModule('grafana') // TODO - deprecated
-        await this.grafanaProvisioner.clearConfig(serviceNamespace, 'traxitt-system')
+        const grafanaApps = await this.manager.getInstalledApps('grafana')
+        for (const grafanaApp of grafanaApps) {
+            const grafanaProvisioner = await this.manager.getProvisioner(grafanaApp)
+            await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')
+        }
         if (clearLinkField)
             delete this.manager.document.spec.provisioner['grafana-link']
     }

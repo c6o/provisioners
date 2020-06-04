@@ -5,4 +5,4 @@ metadata:
   namespace: istio-system
 spec:
   provisioner:
-    prometheus-link: monitoring
+    prometheus-link: demo

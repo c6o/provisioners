@@ -10,7 +10,7 @@ export const choicesApiMixin = (base: baseProvisionerType) => class extends base
                     name: `${app.metadata.namespace}/${app.metadata.name}`,
                     ...app.spec.services['npm-registry']
                 }
-            }) || []            
+            }) || []
             apps = await this.manager.getInstalledApps('prometheus')
             const prometheusOptions = apps.map(app => app.metadata.namespace) || []
             apps = await this.manager.getInstalledApps('grafana')

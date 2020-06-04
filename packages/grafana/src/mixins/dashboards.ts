@@ -18,7 +18,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
     apiConfigMapAppMetadata = (appNamespace: string, appName: string) => ({
         'system.traxitt.com/app-name': appName,
-        'system.traxitt.com/app-namespace':appNamespace
+        'system.traxitt.com/app-namespace': appNamespace
     })
 
     apiDashboardConfigMap(dashboardName: string, dashboardSpec?: string) {
@@ -28,7 +28,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
                 namespace: this.runningDeployment.metadata.namespace,
                 name: `${this.appNamespace}-${this.appName}-${dashboardName}`,
                 labels: {
-                    'system.traxitt.com/managed-by':'grafana',
+                    'system.traxitt.com/managed-by': 'grafana',
                     ...this.apiConfigMapAppMetadata(this.appNamespace, this.appName)
                 }
             }
@@ -58,20 +58,19 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
      * @param appNamespace 
      * @param appName 
      */
-    async clearConfig(appNamespace: string, appName: string) {
+    async clearConfig(namespace: string, appNamespace: string, appName: string) {
 
-        // find Grafana configmaps across cluster labelled with appNamespace and appName
         let result = await this.manager.cluster.list({
             kind: 'ConfigMap',
             metadata: {
+                namespace,
                 labels: {
-                     ...this.apiConfigMapAppMetadata(appNamespace, appName)
+                    ...this.apiConfigMapAppMetadata(appNamespace, appName)
                 }
             }
         })
         if (result.error) throw result.error
 
-        // delete them all
         for(const cm of result.object.items) {
             cm.apiVersion = 'v1'
             cm.kind = 'ConfigMap'
@@ -79,13 +78,15 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             if (result.error) throw result.error
         }
 
-        result = await this.getGrafanaDeployment()
+        result = await this.getGrafanaDeployment(namespace)
         if (result.error) throw result.error
+        this.runningDeployment = result.object
 
-        for(const grafanaDeployment of result.object.items) {
-            await this.removeFoldersDataSources(grafanaDeployment, appNamespace, appName)
-            await this.removeVolumeMounts(grafanaDeployment, appNamespace, appName)
-        }
+        await this.removeFoldersDataSources(namespace, appNamespace, appName)
+        await this.removeVolumeMounts(appNamespace, appName)
+
+        await this.restartGrafana()
+        delete this.runningDeployment
     }
 
     /**
@@ -95,11 +96,10 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
      * @param appNamespace 
      * @param appName 
      */
-    async removeFoldersDataSources(deploymentItem, appNamespace, appName) {
-        // get namespace
-        const namespace = deploymentItem.metadata.namespace
+    async removeFoldersDataSources(namespace: string, appNamespace, appName) {
+
         let result = await this.manager.cluster.read(this.mainConfigMap(namespace))
-    
+
         if (result.error)
             throw result.error
         const mainConfigMap = result.object
@@ -126,33 +126,29 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     /**
      * Remove all added volumes and mounts added by an app for dashboards
      * from a deployment and restart
-     * 
-     * @param deploymentItem 
-     * @param appNamespace 
-     * @param appName 
+     *
+     * @param appNamespace owner app namespace
+     * @param appName owner app name
      */
-    async removeVolumeMounts(deploymentItem, appNamespace, appName) {
+    async removeVolumeMounts(appNamespace, appName) {
         const volumeName = `dashboards-${appNamespace}-${appName}`
 
-        let volumeArray = deploymentItem.spec.template.spec.volumes
+        let volumeArray = this.runningDeployment.spec.template.spec.volumes
         volumeArray = volumeArray.filter(vol => !vol.name.startsWith(volumeName))
-        deploymentItem.spec.template.spec.volumes = volumeArray
+        this.runningDeployment.spec.template.spec.volumes = volumeArray
 
-        let volumeMountArray = deploymentItem.spec.template.spec.containers[0].volumeMounts
+        let volumeMountArray = this.runningDeployment.spec.template.spec.containers[0].volumeMounts
         volumeMountArray = volumeMountArray.filter(vol => !vol.name.startsWith(volumeName))
-        deploymentItem.spec.template.spec.containers[0].volumeMounts = volumeMountArray
+        this.runningDeployment.spec.template.spec.containers[0].volumeMounts = volumeMountArray
 
-        deploymentItem.apiVersion = 'apps/v1'
-        deploymentItem.kind = 'Deployment'
-        this.runningDeployment = deploymentItem
+        this.runningDeployment.apiVersion = 'apps/v1'
+        this.runningDeployment.kind = 'Deployment'
 
-        const result = await this.manager.cluster.patch(deploymentItem, deploymentItem)
+        const result = await this.manager.cluster.patch(this.runningDeployment, this.runningDeployment)
         if (result.error) throw result.error
-        await this.restartGrafana()
-        delete this.runningDeployment
     }
 
-    getGrafanaDeployment = async (namespace = undefined) => {
+    getGrafanaDeployment = async (namespace) => {
         const deployment = {
             apiVersion: 'apps/v1',
             kind: 'Deployment',
@@ -164,10 +160,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
                 }
             }
         }
-
-        return namespace ?
-            await this.manager.cluster.read(deployment) :
-            await this.manager.cluster.list(deployment)
+        return await this.manager.cluster.read(deployment)
     }
 
     /**
@@ -182,23 +175,23 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             throw Error('There is already a running dashboard transaction')
 
         const result = await this.getGrafanaDeployment(namespace)
-        if (result.error)throw result.error
+        if (result.error) throw result.error
         this.runningDeployment = result.object
 
         // in case version changes
         delete this.runningDeployment.metadata.resourceVersion
         delete this.runningDeployment.metadata.uid
-        
+
         this.appNamespace = appNamespace
         this.appName = appName
     }
 
     async updateConfig(): Promise<boolean> {
         let result = await this.manager.cluster.read(this.mainConfigMap(this.runningDeployment.metadata.namespace))
-    
+
         if (result.error)
             throw result.error
-    
+
         const folder = `${this.appNamespace}-${this.appName}`
 
         let modified = false
@@ -236,7 +229,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         for (const sourceName of this.removeDatasources) {
             const index = dbSources.datasources.findIndex(entry => entry.name === sourceName)
             if (index !== -1) {
-                dbSources.datasources.splice(index,1)
+                dbSources.datasources.splice(index, 1)
                 modified = true
             }
         }
@@ -251,7 +244,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             if (result.error)
                 throw result.error
         }
-        
+
         return modified
     }
 
@@ -309,12 +302,12 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         const volumeArray = this.runningDeployment.spec.template.spec.volumes
         let index = volumeArray.findIndex(vol => vol.name == volumeName)
         if (index !== -1)
-            volumeArray.splice(index,1)
-        
+            volumeArray.splice(index, 1)
+
         const volumeMountArray = this.runningDeployment.spec.template.spec.containers[0].volumeMounts
         index = volumeMountArray.findIndex(vol => vol.name == volumeName)
         if (index !== -1)
-            volumeMountArray.splice(index,1)
+            volumeMountArray.splice(index, 1)
     }
 
     async endConfig() {
