@@ -42,16 +42,16 @@ export class VSCodeCapacity extends LitElement implements StoreFlowStep {
         this.serviceSpec.storage = e.detail.value
     }
 
-    upload(event) {
-        event.preventDefault()
+    upload(e) {
+        e.preventDefault()
         const reader = new FileReader()
         reader.onload = (e) => {
             this.publicKey = e.target.result
             this.serviceSpec.publicKey = this.publicKey
         }
-        reader.readAsText(event.detail.file)
-        event.detail.file.complete = true
-        event.detail.file.status = 'Uploaded'
+        reader.readAsText(e.detail.file)
+        e.detail.file.complete = true
+        e.detail.file.status = 'Uploaded'
     }
 }
 
