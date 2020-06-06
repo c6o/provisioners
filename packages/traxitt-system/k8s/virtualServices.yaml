@@ -14,7 +14,7 @@ spec:
         prefix: /store/
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.(stg.)?traxitt\.org$
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
     rewrite:
       uri: /
     route:
@@ -25,7 +25,7 @@ spec:
         prefix: /navstation/
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.(stg.)?traxitt\.org$
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
     rewrite:
       uri: /
     route:
@@ -36,7 +36,7 @@ spec:
         prefix: /api/
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.(stg.)?traxitt\.org$
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
     route:
     - destination:
         host: system-server
@@ -45,7 +45,48 @@ spec:
         prefix: /
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.(stg.)?traxitt\.org$
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+    route:
+    - destination:
+        host: system-marina
+  https:
+  - match:
+    - uri:
+        prefix: /store/
+      headers:
+        :authority:
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: system-store
+  - match:
+    - uri:
+        prefix: /navstation/
+      headers:
+        :authority:
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: system-navstation
+  - match:
+    - uri:
+        prefix: /api/
+      headers:
+        :authority:
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+    route:
+    - destination:
+        host: system-server
+  - match:
+    - uri:
+        prefix: /
+      headers:
+        :authority:
+          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
     route:
     - destination:
         host: system-marina

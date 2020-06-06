@@ -118,7 +118,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.clusterNamespace = cluster.namespace
         this.spec.tag = answers.tag
 
-        if (answers.env == 'staging') {
+        if (answers.env === 'development') {
+            this.spec.hubServerURL = `https://c6o-${process.env.USER}.serveo.net`
+            this.spec.clusterDomain = 'dev.traxitt.org'
+        }
+        else if (answers.env === 'staging') {
             this.spec.hubServerURL = 'https://staging.hub.traxitt.com'
             this.spec.clusterDomain = 'stg.traxitt.org'
         }

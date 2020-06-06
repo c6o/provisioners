@@ -12,6 +12,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.provisionApps()
         await this.provisionGateway()
         await this.provisionRoutes()
+        await this.provisionCertificate()
     }
 
     gatewayServers = [{
@@ -28,7 +29,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             number: 443,
             protocol: 'HTTPS'
         },
-        hosts: ['*']
+        hosts: ['*'],
+        tls: {
+            mode: 'SIMPLE',
+            credentialName: 'cluster-certificate-tls'
+        }
     }]
 
     traxittNamespace = {
@@ -103,10 +108,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionRoutes() {
+        const clusterDomain = this.spec.clusterDomain.replace(".", "\\.")
+
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
                 .addOwner(this.manager.document)
-                .upsertFile('../../k8s/virtualServices.yaml')
+                .upsertFile('../../k8s/virtualServices.yaml', { clusterDomain } )
             .end()
     }
 
@@ -116,6 +123,26 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .addOwner(this.manager.document)
                 .upsertFile('../../k8s/publisher.yaml', { tag: this.spec.tag })
                 .upsertFile('../../k8s/subscriber.yaml', { tag: this.spec.tag })
+            .end()
+    }
+
+    async provisionCertificate() {
+        const schedule = process.env.NODE_ENV === 'development'
+            ? '*/5 * * * *' // every 5 minutes on the 5
+            : `${Math.floor(Math.random() * 59)} ${Math.floor(Math.random() * 23)} * * 1` // weekly but random minute and hour on Mondays to ensure not to overload hub server
+
+        const options = {
+            accountName: this.spec.accountName,
+            hubServerURL: this.spec.hubServerURL,
+            clusterId: this.spec.clusterId,
+            hubToken: this.spec.hubToken,
+            backoffLimit: 5,
+            schedule
+        }
+        
+        await this.manager.cluster
+            .begin(`Provision certificate cron job`)
+                .upsertFile('../../k8s/certificate-job.yaml', options)
             .end()
     }
 }
