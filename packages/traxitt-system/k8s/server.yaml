@@ -6,7 +6,6 @@ metadata:
 data:
   CLUSTER_ID: '{{clusterId}}'
   HUB_SERVER_URL: '{{hubServerURL}}'
-  HUB_TOKEN: '{{hubToken}}'
 ---
 apiVersion: v1
 kind: Secret
@@ -14,6 +13,7 @@ metadata:
   name: system-server-secrets
   namespace: traxitt-system
 data:
+  CLUSTER_KEY: '{{clusterKey}}'
 ---
 apiVersion: apps/v1
 kind: Deployment

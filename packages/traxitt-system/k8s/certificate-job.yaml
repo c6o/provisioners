@@ -17,14 +17,14 @@ spec:
           restartPolicy: 'Never'
           containers:
           - name: certificate
-            image: traxitt/jobs-c6o-certificate:grantb
+            image: traxitt/jobs-c6o-certificate:{{tag}}
             imagePullPolicy: Always
             command: ["node",  "./lib/index.js"]
             env:
               - name: HUB_SERVER_URL
                 value: '{{hubServerURL}}'
-              - name: HUB_TOKEN
-                value: '{{hubToken}}'
+              - name: CLUSTER_KEY
+                value: '{{clusterKey}}'
               - name: CLUSTER_ID
                 value: '{{clusterId}}'
               - name: ACCOUNT_NAME

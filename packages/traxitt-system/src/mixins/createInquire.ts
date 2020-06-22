@@ -40,7 +40,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             accountName: args['account'],
             clusterName: args['name'],
             clusterNamespace: args['namespace'],
-            hubToken: args['token'] || this.manager.hubClient?.token,
+            clusterKey: args['key'],
             tag: args['tag'] || 'latest'
         }
 
@@ -85,7 +85,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             type: 'list',
             name: 'env',
             message: 'Which Hub environment would you like to use?',
-            choices: ['staging', 'production'],
+            choices: ['development', 'staging', 'production'],
             when: () => process.env.NODE_ENV === 'development'
         }], answers)
 
@@ -108,9 +108,15 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         else
             cluster = this.findCluster(answers.clusterId)
 
+        if (!answers.clusterKey) {
+            // We have to fetch a clusterKey
+            const credentials = await this.manager.hubClient.getClusterCredentials(cluster._id, true)
+            answers.clusterKey = credentials?.key
+        }
+
         const account = this.findAccount(answers.accountId || cluster.orgId || cluster.admin[0])
 
-        this.spec.hubToken = this.manager.hubClient.token
+        this.spec.clusterKey = answers.clusterKey
         this.spec.clusterId = cluster._id
         this.spec.accountName = account.namespace
         // TODO: Remove this as it's not used
@@ -119,7 +125,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.tag = answers.tag
 
         if (answers.env === 'development') {
-            this.spec.hubServerURL = `https://c6o-${process.env.USER}.serveo.net`
+            this.spec.hubServerURL = process.env.HUB_SERVER_URL || `https://c6o-${process.env.USER}.serveo.net`
             this.spec.clusterDomain = 'dev.traxitt.org'
         }
         else if (answers.env === 'staging') {

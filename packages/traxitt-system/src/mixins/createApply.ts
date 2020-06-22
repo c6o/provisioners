@@ -56,8 +56,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const options = {
             tag: this.spec.tag,
             clusterId: this.spec.clusterId,
-            hubServerURL: this.spec.hubServerURL,
-            hubToken: this.spec.hubToken
+            clusterKey: this.spec.clusterKey,
+            hubServerURL: this.spec.hubServerURL
         }
 
         await this.manager.cluster
@@ -132,10 +132,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             : `${Math.floor(Math.random() * 59)} ${Math.floor(Math.random() * 23)} * * 1` // weekly but random minute and hour on Mondays to ensure not to overload hub server
 
         const options = {
+            tag: this.spec.tag,
             accountName: this.spec.accountName,
             hubServerURL: this.spec.hubServerURL,
             clusterId: this.spec.clusterId,
-            hubToken: this.spec.hubToken,
+            clusterKey: this.spec.clusterKey,
             backoffLimit: 5,
             schedule
         }

@@ -7,9 +7,9 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         const {
             accountName,
             clusterId,
+            clusterKey,
             clusterNamespace,
-            hubServerURL,
-            hubToken } = this.spec
+            hubServerURL } = this.spec
 
         if (!accountName)
             throw new Error('Account name is required')
@@ -23,8 +23,8 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         if (!hubServerURL)
             throw new Error('Hub Server URL is required')
 
-        if (!hubToken)
-            throw new Error('Hub Token is required')
+        if (!clusterKey)
+            throw new Error('Cluster key is required')
 
         if (!this.spec.clusterDomain)
             this.spec.clusterDomain = this.spec.hubServerURL == 'https://staging.hub.traxitt.com' ?
@@ -39,12 +39,14 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
                 .begin(`Provision c6o CRDs for apiextensions.k8s.io/v1`)
                     .upsertFile('../../k8s/crds/apps.v1.yaml')
                     .upsertFile('../../k8s/crds/tasks.v1.yaml')
+                    .upsertFile('../../k8s/crds/users.v1.yaml')
                 .end()
         else
             await this.manager.cluster
                 .begin(`Provision c6o CRDs for apiextensions.k8s.io/v1beta1`)
                     .upsertFile('../../k8s/crds/apps.v1beta1.yaml')
                     .upsertFile('../../k8s/crds/tasks.v1beta1.yaml')
+                    .upsertFile('../../k8s/crds/users.v1beta1.yaml')
                 .end()
     }
 }
