@@ -4,8 +4,12 @@ metadata:
   name: system-server-config
   namespace: traxitt-system
 data:
+  DEBUG: '*,-engine*,-nodemon*,-*expo*,-babel*'
+  PORT: '3050'
+  HOST: '{{host}}'
   CLUSTER_ID: '{{clusterId}}'
   HUB_SERVER_URL: '{{hubServerURL}}'
+  SYSTEM_OAUTH_REDIRECT: '{{systemServerURL}}'
 ---
 apiVersion: v1
 kind: Secret
@@ -39,11 +43,6 @@ spec:
       - name: system-server
         imagePullPolicy: Always
         image: traxitt/system-server:{{tag}}
-        env:
-          - name: DEBUG
-            value: '*,-engine*,-nodemon*,-*expo*,-babel*'
-          - name: PORT
-            value: '3050'
         envFrom:
           - configMapRef:
               name: system-server-config

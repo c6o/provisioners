@@ -6,7 +6,7 @@ metadata:
 data:
     system-marina-js-config-file: |
       window.c6oEnv = {
-        'SYSTEM_SERVER_URL': 'http://{{clusterNamespace}}.{{accountName}}.{{clusterDomain}}',
+        'SYSTEM_SERVER_URL': '{{systemServerURL}}',
         'HUB_SERVER_URL': '{{hubServerURL}}'
       }
 ---

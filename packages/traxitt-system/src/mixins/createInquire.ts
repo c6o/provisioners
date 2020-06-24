@@ -34,6 +34,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.accounts = await this.manager.hubClient.getAccounts()
 
         const answers = {
+            protocol: args['proto'],
             env: args['staging'],
             clusterId: args['id'],
             clusterDomain: args['domain'],
@@ -87,6 +88,13 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             message: 'Which Hub environment would you like to use?',
             choices: ['development', 'staging', 'production'],
             when: () => process.env.NODE_ENV === 'development'
+        }, {
+            type: 'list',
+            name: 'protocol',
+            message: 'What protocol do you wish to use?',
+            choices: ['https', 'http'],
+            default: 0,
+            when: () => process.env.NODE_ENV === 'development'
         }], answers)
 
         return responses
@@ -114,11 +122,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             answers.clusterKey = credentials?.key
         }
 
-        const account = this.findAccount(answers.accountId || cluster.orgId || cluster.admin[0])
-
+        this.spec.protocol = answers.protocol
         this.spec.clusterKey = answers.clusterKey
         this.spec.clusterId = cluster._id
-        this.spec.accountName = account.namespace
+        this.spec.accountName = cluster.accountName
         // TODO: Remove this as it's not used
         // this.spec.clusterName = cluster.name
         this.spec.clusterNamespace = cluster.namespace

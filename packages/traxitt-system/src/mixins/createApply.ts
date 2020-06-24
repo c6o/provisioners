@@ -52,12 +52,27 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
+    get host() {
+        const {
+            clusterNamespace,
+            accountName,
+            clusterDomain
+        } = this.spec
+        return `${clusterNamespace}.${accountName}.${clusterDomain}`
+    }
+
+    get systemServerUrl() {
+        return `${this.spec.protocol}://${this.host}`
+    }
+
     async provisionSystem() {
         const options = {
             tag: this.spec.tag,
             clusterId: this.spec.clusterId,
             clusterKey: this.spec.clusterKey,
-            hubServerURL: this.spec.hubServerURL
+            hubServerURL: this.spec.hubServerURL,
+            systemServerURL: this.systemServerUrl,
+            host: this.host
         }
 
         await this.manager.cluster
@@ -75,7 +90,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterNamespace: this.spec.clusterNamespace,
             accountName: this.spec.accountName,
             clusterDomain: this.spec.clusterDomain,
-            hubServerURL: this.spec.hubServerURL
+            hubServerURL: this.spec.hubServerURL,
+            systemServerURL: this.systemServerUrl
         }
 
         await this.manager.cluster

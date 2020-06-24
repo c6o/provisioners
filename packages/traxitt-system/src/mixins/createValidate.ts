@@ -5,6 +5,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
     async createValidate() {
 
         const {
+            protocol,
             accountName,
             clusterId,
             clusterKey,
@@ -25,6 +26,9 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
 
         if (!clusterKey)
             throw new Error('Cluster key is required')
+
+        if (!protocol)
+            this.spec.protocol = 'https'
 
         if (!this.spec.clusterDomain)
             this.spec.clusterDomain = this.spec.hubServerURL == 'https://staging.hub.traxitt.com' ?
