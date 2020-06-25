@@ -42,7 +42,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             clusterName: args['name'],
             clusterNamespace: args['namespace'],
             clusterKey: args['key'],
-            tag: args['tag'] || 'latest'
+            tag: args['tag']
         }
 
         if (!this.manager.hubClient || !this.manager.inquirer)
@@ -79,7 +79,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             name: 'tag',
             default: 0,
             when: process.env.NODE_ENV === 'development',
-            askAnswered: process.env.NODE_ENV === 'development',
             choices: [process.env.USER, 'canary', 'latest'],
             message: 'What image tags would you like to use?',
         }, {

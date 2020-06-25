@@ -10,6 +10,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
             clusterId,
             clusterKey,
             clusterNamespace,
+            tag,
             hubServerURL } = this.spec
 
         if (!accountName)
@@ -29,6 +30,9 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
 
         if (!protocol)
             this.spec.protocol = 'https'
+
+        if (!tag)
+            this.spec.tag = 'latest'
 
         if (!this.spec.clusterDomain)
             this.spec.clusterDomain = this.spec.hubServerURL == 'https://staging.hub.traxitt.com' ?
