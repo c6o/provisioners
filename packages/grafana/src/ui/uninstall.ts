@@ -12,7 +12,12 @@ export class UninstallVSCode extends LitElement implements StoreFlowStep {
     render() {
         return html`
         <traxitt-form-layout>
-          <traxitt-checkbox @checked-changed=${this.checkHandler('force')} ?checked=${!!this.serviceSpec.deprovision['force']}>Force deprovision with added dashboards</traxitt-checkbox>
+          <traxitt-checkbox
+            @checked-changed=${this.checkHandler('force')}
+            ?checked=${!!this.serviceSpec.deprovision['force']}
+        >
+            Force deprovision with added dashboards
+        </traxitt-checkbox>
           <br />
         </traxitt-form-layout>
         `
