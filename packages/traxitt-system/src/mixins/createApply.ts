@@ -159,7 +159,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         
         await this.manager.cluster
             .begin(`Provision certificate cron job`)
-                .upsertFile('../../k8s/certificate-job.yaml', options)
+                .upsertFile('../../k8s/ssl-recurring-job.yaml', options)
+                .upsertFile('../../k8s/ssl-setup-job.yaml', options)
             .end()
     }
 }

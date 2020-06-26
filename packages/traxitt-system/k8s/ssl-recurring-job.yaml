@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: c6o-certifcate
+  name: c6o-ssl-recurring
   namespace: traxitt-system
 spec:
   schedule: '{{schedule}}'
@@ -17,7 +17,7 @@ spec:
           restartPolicy: 'Never'
           containers:
           - name: certificate
-            image: traxitt/jobs-c6o-certificate:{{tag}}
+            image: traxitt/jobs-c6o-ssl:{{tag}}
             imagePullPolicy: Always
             command: ["node",  "./lib/index.js"]
             env:
