@@ -10,6 +10,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.ensureServiceNamespacesExist()
         await this.provisionSystem()
         await this.provisionApps()
+        await this.provisionOAuth()
         await this.provisionGateway()
         await this.provisionRoutes()
         await this.provisionCertificate()
@@ -81,6 +82,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .addOwner(this.manager.document)
                 .upsertFile('../../k8s/server.yaml', options)
                 .patch(this.traxittNamespace, this.traxittNamespacePatch)
+            .end()
+    }
+
+    async provisionOAuth() {
+        await this.manager.cluster
+            .begin(`Provision CodeZero OAuth`)
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/oauth.yaml')
             .end()
     }
 
