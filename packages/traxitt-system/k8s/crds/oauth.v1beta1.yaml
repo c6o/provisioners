@@ -10,9 +10,6 @@ spec:
     - name: v1
       served: true
       storage: true
-  validation:
-    openAPIV3Schema:
-      x-kubernetes-preserve-unknown-fields: true
   scope: Cluster
   names:
     plural: oauth

@@ -64,6 +64,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
             NPM_REGISTRY_PASSWORD: npmLink.password
         }
         await this.manager.cluster.upsert(systemServerSecrets)
+        await this.restartSystemServer(serviceNamespace)
     }
 
     async unlinkNpm(serviceNamespace) {
@@ -93,5 +94,6 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
         }
         
         await this.manager.cluster.upsert(systemServerSecrets)
+        await this.restartSystemServer(serviceNamespace)
     }
 }

@@ -1,7 +1,7 @@
 // Extends is not supported at this time by parcel-cli
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "esnext",
         "moduleResolution": "node",
         "declaration": true,
         "noImplicitAny": false,
