@@ -6,11 +6,16 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquire(args) {
         const answers = {
+            storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
             storage: args['storage'],
             k8sLogIndexPrefix: args['k8sLogIndexPrefix']
         }
 
-        const responses = await this.manager.inquirer?.prompt([{
+        const responses = await this.manager.inquirer?.prompt([
+            this.inquireStorageClass({
+                name: 'storageClass'
+            })
+        ,{
             type: 'list',
             name: 'storage',
             message: 'What size data volume would you like for your log storage?',
@@ -27,9 +32,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     }
 
     async createInquire(args) {
-        const answers = await this.inquire(args)
+        const results = await this.inquire(args)
 
-        this.spec.storage = answers.storage
-        this.spec.k8sLogIndexPrefix = answers.k8sLogIndexPrefix
+        this.spec.storageClass = results.storageClass
+        this.spec.storage = results.storage
+        this.spec.k8sLogIndexPrefix = results.k8sLogIndexPrefix
     }
 }

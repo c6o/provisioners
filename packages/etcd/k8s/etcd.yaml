@@ -75,7 +75,7 @@ spec:
       name: data
       namespace: '{{namespace}}'
     spec:
-      storageClassName: '{{storageClass}}'
+      storageClassName: {{storageClass}}
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:

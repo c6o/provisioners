@@ -11,4 +11,4 @@ spec:
   resources:
     requests:
       storage: "2Gi"
-  storageClassName: do-block-storage
+  storageClassName: {{storageClass}}

@@ -45,22 +45,24 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureDevPodIsInstalled() {
 
-        const namespace = this.serviceNamespace
-        const image = this.spec.img
-        const storage = this.spec.storage
-        const publicKey = this.spec.publicKey
-
         await this.manager.cluster
             .begin('Install dev services')
             .list(this.devPods)
             .do((result, processor) => {
 
+                const namespace = this.serviceNamespace
+                const {
+                    storageClass,
+                    storage,
+                    img,
+                    publicKey } = this.spec
+
                 if (result?.object?.items?.length == 0) {
                     // There are no vscode pods running
                     processor
                         .upsertFile('../k8s/configMap.yaml', { namespace, publicKey })
-                        .upsertFile('../k8s/pvc.yaml', { namespace, storage })
-                        .upsertFile('../k8s/deployment.yaml', { namespace, image })
+                        .upsertFile('../k8s/pvc.yaml', { namespace, storage, storageClass })
+                        .upsertFile('../k8s/deployment.yaml', { namespace, img })
                         .upsertFile('../k8s/svc.yaml', { namespace })
                         .upsertFile('../k8s/devSvc.yaml', { namespace })
                 }

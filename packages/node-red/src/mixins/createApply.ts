@@ -22,9 +22,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureNodeRedIsInstalled() {
 
-        const storage = this.spec.storage
-        const projects = this.spec.projects
         const namespace = this.serviceNamespace
+        const {
+            storageClass,
+            storage,
+            projects } = this.spec
 
         await this.manager.cluster
             .begin('Install Node-RED services')
@@ -34,7 +36,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         // There are no node-red pods running
                         // Install node-red
                         processor
-                            .upsertFile('../../k8s/pvc.yaml', { namespace, storage })
+                            .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
                             .upsertFile('../../k8s/deployment.yaml', { namespace, projects })
                             .upsertFile('../../k8s/service.yaml', { namespace })
                     }

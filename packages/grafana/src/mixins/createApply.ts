@@ -22,10 +22,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureGrafanaIsInstalled() {
 
-        const storage = this.spec.storage
-        const adminUsername = this.spec.adminUsername
-        const adminPassword = this.spec.adminPassword
-        const namespace = this.serviceNamespace
+        const namespace = this.serviceNamespace        
+        const {
+            storageClass,
+            storage,
+            adminUsername,
+            adminPassword } = this.spec      
 
         await this.manager.cluster
             .begin('Install Grafana services')
@@ -36,7 +38,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // There are no Grafana pods running
                     // Install Grafana
                     processor
-                        .upsertFile('../../k8s/pvc.yaml', { namespace, storage })
+                        .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
                         .addOwner(this.manager.document)
                         .upsertFile('../../k8s/deployment.yaml', { namespace, adminUsername, adminPassword })
                         .upsertFile('../../k8s/service.yaml', { namespace })

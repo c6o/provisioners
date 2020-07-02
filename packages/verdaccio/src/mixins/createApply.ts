@@ -29,11 +29,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .list(this.verdaccioPods)
             .do((result, processor) => {
                 if (!result?.object?.items?.length) {
+                    
                     const namespace = this.serviceNamespace
+                    const {
+                        storageClass } = this.spec
 
                     processor
                         .addOwner(this.manager.document)
-                        .upsertFile('../../k8s/helm.yaml', { namespace })
+                        .upsertFile('../../k8s/helm.yaml', { namespace, storageClass })
                         .clearOwners()
                         .upsertFile('../../k8s/pvc.yaml', { namespace })
                 }

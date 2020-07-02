@@ -13,6 +13,12 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <traxitt-form-layout>
+                <traxitt-storage-class
+                    id='storageClass'
+                    @selected-item-changed=${this.storageClassSelected}
+                    required                    
+                    label='Storage Class'></traxitt-storage-class>
+                <br />
                 <traxitt-combo-box @selected-item-changed=${this.storageSelected} label='Log Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></traxitt-combo-box>
                 <br />
                 <traxitt-text-field @input=${this.k8sLogIndexPrefixChanged} label="Kubernetes log index prefix?" path="k8sLogIndexPrefix" autoselect required></traxitt-text-field>
@@ -23,6 +29,10 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
     async begin() {
         this.serviceSpec.storage = this.serviceSpec.storage || '1Gi'
         this.serviceSpec.k8sLogIndexPrefix = this.serviceSpec.k8sLogIndexPrefix || 'cloud'
+    }
+
+    storageClassSelected = (e) => {
+        this.serviceSpec.storageClass = e.detail.value
     }
 
     storageSelected = (e) => {

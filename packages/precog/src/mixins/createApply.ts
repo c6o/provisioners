@@ -24,19 +24,25 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensurePreCogInstalled() {
 
+        const namespace = this.serviceNamespace
+        const {
+            storageClass,
+            storage,
+            credentials,
+            edition } = this.spec
+
         await this.manager.cluster
             .begin('Install PreCog services')
             .list(this.precogPods)
             .do((result, processor) => {
                 if (!result?.object?.items?.length) {
-                    const namespace = this.serviceNamespace
-
+                    
                     processor
                         .addOwner(this.manager.document)
-                        .upsertFile('../../k8s/secret.yaml', { namespace, credentials: this.spec.credentials })
-                        .upsertFile('../../k8s/basic.yaml', { namespace, image: `precog/${this.spec.edition}` })
+                        .upsertFile('../../k8s/secret.yaml', { namespace, credentials })
+                        .upsertFile('../../k8s/basic.yaml', { namespace, image: `precog/${edition}` })
                         .clearOwners()
-                        .upsertFile('../../k8s/pvc.yaml', { namespace, storage: this.spec.storage})
+                        .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
                 }
             })
             .end()

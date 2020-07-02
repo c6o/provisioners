@@ -21,8 +21,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async installPrometheusComponents() {
-        const namespace = this.serviceNamespace
 
+        const namespace = this.serviceNamespace
         const {
             simpleService,
             alertManagerEnabled,

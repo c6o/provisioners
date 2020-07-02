@@ -32,7 +32,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // There are no etcd pods
 
                     const replicas = this.spec.replicas || 3
-                    const storageClass = this.spec.storageClass || 'do-block-storage'
+                    const storageClass = this.spec.storageClass
 
                     const settings = {
                         namespace,

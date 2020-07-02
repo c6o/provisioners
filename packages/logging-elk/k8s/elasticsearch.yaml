@@ -89,7 +89,7 @@ spec:
         app: elasticsearch
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: do-block-storage # DigitalOcean specfic
+      storageClassName: {{storageClass}}
       resources:
         requests:
           storage: {{storage}}

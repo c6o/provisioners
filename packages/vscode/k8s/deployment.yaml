@@ -17,7 +17,7 @@ spec:
         spec:
             containers:
             - name: dev-pod
-              image: '{{image}}'
+              image: '{{img}}'
               ports:
                 - name: ssh
                   containerPort: 22

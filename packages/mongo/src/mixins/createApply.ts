@@ -12,7 +12,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     configMap
     namespace
 
-
     mongoServiceName = 'mongo-svc'
     get mongoPods() { return {
             kind: 'Pod',
@@ -58,10 +57,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // Generate and stash the rootPassword
                     this.rootPassword = super.processPassword(this.spec.rootPassword)
                     const namespace = this.serviceNamespace
+                    const storageClass = this.spec.storageClass
 
                     // Install mongodb
                     processor
-                        .upsertFile('../../k8s/pvc.yaml', { namespace })
+                        .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
                         .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                         .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPassword: Buffer.from(this.rootPassword).toString('base64') })

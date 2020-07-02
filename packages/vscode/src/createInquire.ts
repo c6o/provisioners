@@ -16,38 +16,54 @@ function resolvePath(filePath: string) {
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    pubKeyPath(args) {
-        return this.spec.keyFile || args['pubKeyPath'] || '~/.ssh/id_rsa.pub'
-    }
+    storageChoices = ['1Gi','2Gi','5Gi','10Gi','20Gi','50Gi','100Gi']
+    envChoices = ['node','go']
 
-    async createInquire(args) {
-
+    async inquire(args) {
         const answers = {
-            storage: args.storage || this.spec.storage || '4Gi',
+            storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
+            storage: args['storage'],
+            env: args['env']            
         }
 
-        const response = await this.manager.inquirer.prompt([{
-            type: 'input',
+        const responses = await this.manager.inquirer?.prompt([
+            this.inquireStorageClass({
+                name: 'storageClass'
+            })
+        ,{
+            type: 'list',
             name: 'storage',
-            default: '4Gi',
-            message: 'What size data volume would you like for VSCode?',
-            askAnswered: true
+            message: 'What size data volume would you like for your log storage?',
+            choices: this.storageChoices,
+            default: this.spec.storage || '2Gi'
         }, {
             type: 'list',
             name: 'env',
             message: 'What environment do you want?',
-            choices: ['node', 'go'],
-            default: 0
+            choices: this.envChoices,
+            default: this.spec.env || 'node'
         }], answers)
 
-        this.spec.img = `traxitt/${response.env}-dev`
+        return responses
+    }
 
+    async createInquire(args) {
+        const results = await this.inquire(args)
+
+        this.spec.storageClass = results.storageClass
+        this.spec.storage = results.storage
+        this.spec.img =`traxitt/${results.env}-dev`
+        
         if (!this.spec.publicKey) {
-            this.spec.publicKey = await fs.readFile(resolvePath(this.pubKeyPath(args)), 'utf8')
+            this.spec.publicKey = await fs.readFile(resolvePath(this.pubKeyPath(results)), 'utf8')
             if (!this.spec.publicKey)
                 throw new Error('publicKey is required')
         }
 
         this.spec.launch = !!this.spec.launch
+    }
+
+    pubKeyPath(answers) {
+        return this.spec.keyFile || answers['pubKeyPath'] || '~/.ssh/id_rsa.pub'
     }
 }

@@ -8,5 +8,5 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: '{{storage}}'
-  storageClassName: do-block-storage
+      storage: {{storage}}
+  storageClassName: {{storageClass}}
