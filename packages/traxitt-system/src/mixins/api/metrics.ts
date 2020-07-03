@@ -1,9 +1,9 @@
 import { baseProvisionerType } from '../../'
 import * as Handlebars from 'handlebars'
 import { unlinkToken } from '../../constants'
-import { createDebug } from '@traxitt/common'
+import createDebug from 'debug'
 
-const debug = createDebug()
+const debug = createDebug('traxitt-system:metricsMixin:')
 
 const dashboards = [
     'dashboard-kubernetes',

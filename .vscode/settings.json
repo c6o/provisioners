@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        "**/node_modules/**": true,
+        "**/lib/**": true,
+        "**/.nyc_output/**": true,
+        "**/package-lock.json/**": true,
+        "**/yarn.lock/**": true
+    }
+}

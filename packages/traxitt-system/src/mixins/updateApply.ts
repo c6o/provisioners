@@ -1,8 +1,8 @@
 import { baseProvisionerType } from '../index'
 import { unlinkToken } from '../constants'
-import { createDebug } from '@traxitt/common'
+import createDebug from 'debug'
 
-const debug = createDebug()
+const debug = createDebug('traxitt-system:updateApply:')
 
 export const updateApplyMixin = (base: baseProvisionerType) => class extends base {
 

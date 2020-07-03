@@ -6,7 +6,6 @@
         "esModuleInterop": true
     },
     "references": [
-        { "path":  "../../common" },
         { "path":  "../../kubeclient" },
         { "path":  "../common" }
     ],

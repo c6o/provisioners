@@ -1,28 +1,24 @@
-// Extends is not supported at this time by parcel-cli
 {
     "compilerOptions": {
         "composite": true,
-        "module": "esnext",
+        "module": "commonjs",
         "moduleResolution": "node",
         "declaration": true,
         "noImplicitAny": false,
         "removeComments": true,
         "noLib": false,
         "outDir": "./lib",
-        "rootDir": "./",
+        "rootDir": "./src",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "target": "es2018",
         "sourceMap": true,
-        "lib": ["es2018", "dom"],
+        "lib": ["es2018", "dom"]
     },
-    "references": [
-        { "path":  "../common" }
-    ],
     "exclude": [
-        "node_modules",
-        "test"
+        "test",
+        "node_modules"
     ]
 }

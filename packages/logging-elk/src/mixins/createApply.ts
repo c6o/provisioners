@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../index'
-import { createDebug } from '@traxitt/common'
+import createDebug from 'debug'
 
-const debug = createDebug()
+const debug = createDebug('logging-elk:createApply:')
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
     
