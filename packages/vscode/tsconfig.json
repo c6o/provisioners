@@ -1,12 +1,11 @@
 {
-    "extends": "../../../tsconfig.json",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./lib",
         "esModuleInterop": true
     },
     "references": [
-        { "path":  "../../kubeclient" },
         { "path":  "../common" }
     ],
     "include": [

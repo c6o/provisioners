@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/vscode",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Traxitt provisioner for vscode",
   "main": "lib/index.js",
   "scripts": {
@@ -36,8 +36,8 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.0",
-    "@traxitt/kubeclient": "^0.0.0",
+    "@provisioner/common": "^0.0.1",
+    "@traxitt/kubeclient": "^0.0.2",
     "lit-element": "^2.2.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",

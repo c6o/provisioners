@@ -1,12 +1,9 @@
 {
-    "extends": "../../../tsconfig.json",
+    "extends": "../../tsconfig.json",
     "compilerOptions": {
         "rootDir": "./src",
         "outDir": "./lib"
     },
-    "references": [
-        { "path":  "../../kubeclient" }
-    ],
     "include": [
         "src"
     ],

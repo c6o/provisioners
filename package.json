@@ -1,40 +1,37 @@
 {
-    "name": "pub-root",
-    "private": true,
-    "workspaces": [
-      "packages/kubeclient/",
-      "packages/provisioners/istio/",
-      "packages/provisioners/etcd-operator/",
-      "packages/provisioners/traxitt-system/",
-      "packages/provisioners/rabbitmq/",
-      "packages/provisioners/vscode/",
-      "packages/provisioners/common/",
-      "packages/provisioners/etcd/",
-      "packages/provisioners/mongo/",
-      "packages/provisioners/mattermost/",
-      "packages/provisioners/kafka/",
-      "packages/provisioners/node-red/",
-      "packages/provisioners/grafana/",
-      "packages/provisioners/cert-manager/",
-      "packages/provisioners/prometheus/",
-      "packages/provisioners/verdaccio/",
-      "packages/provisioners/logging-elk/",
-      "packages/provisioners/precog/"
-    ],
-    "scripts": {
-      "test": "NODE_ENV=test jest -i --detectOpenHandles",
-      "clean": "del packages/**/lib && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean",
-      "build": "lerna run build --stream",
-      "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
-      "release": "lerna version",
-      "publish": "git checkout main && git merge --no-ff"
-    },
-    "devDependencies": {
-      "@types/node": "^10.12.18",
-      "del-cli": "^1.1.0",
-      "jest": "^26.0.1",
-      "lerna": "^3.20.2",
-      "source-map-support": "^0.5.16",
-      "typescript": "^3.9.5"
-    }
+  "name": "provisioners-root",
+  "private": true,
+  "workspaces": [
+    "packages/istio/",
+    "packages/etcd-operator/",
+    "packages/traxitt-system/",
+    "packages/rabbitmq/",
+    "packages/vscode/",
+    "packages/common/",
+    "packages/etcd/",
+    "packages/mongo/",
+    "packages/mattermost/",
+    "packages/kafka/",
+    "packages/node-red/",
+    "packages/grafana/",
+    "packages/cert-manager/",
+    "packages/prometheus/",
+    "packages/verdaccio/",
+    "packages/logging-elk/",
+    "packages/precog/"
+  ],
+  "scripts": {
+    "clean": "del packages/**/lib && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean",
+    "build": "lerna run build --stream",
+    "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
+    "release": "lerna version",
+    "publish": "git checkout main && git merge --no-ff"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "del-cli": "^1.1.0",
+    "lerna": "^3.20.2",
+    "source-map-support": "^0.5.16",
+    "typescript": "^3.9.5"
   }
+}

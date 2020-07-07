@@ -19,7 +19,6 @@
         "lib": ["es2018", "dom"],
     },
     "references": [
-        { "path":  "../../kubeclient" },
         { "path":  "../common" }
     ],
     "include": [
