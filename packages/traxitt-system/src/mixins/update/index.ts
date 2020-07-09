@@ -19,7 +19,7 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
     performUpdate = async (tag) => {
 
         // Update deployments
-        await this.performTypeUpdate(tag, {
+        await this.updateImageTag({
             apiVersion: 'apps/v1',
             kind: 'Deployment',
             metadata: {
@@ -27,10 +27,12 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
                 labels: { role: 'system' }
             }
         },
-        '/spec/template/spec/containers/0/image')
+            tag,
+            '/spec/template/spec/containers/0/image'
+        )
 
         // Update the cron jobs
-        await this.performTypeUpdate(tag, {
+        await this.updateImageTag({
             apiVersion: 'batch/v1beta1',
             kind: 'CronJob',
             metadata: {
@@ -38,45 +40,8 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
                 labels: { role: 'system' }
             }
         },
-        '/spec/jobTemplate/spec/template/spec/containers/0/image')
-    }
-    
-    performTypeUpdate = async (tag, document, path) => {
-        // Fetch all the system deployments
-        const result = await this.manager.cluster.list(document)
-
-        if (result.error) {
-            debug(`Failed to retrieve system ${document.kind}`, result.error)
-            return
-        }
-    
-        try {
-            for (const docItem of result.object.items) {
-                debug(`Updating ${document.kind}`, docItem.metadata.name)
-
-                const currentImage = pointer.get(docItem, path)
-                const sansTag = currentImage.substring(0, currentImage.indexOf(':'))
-                const newImage = `${sansTag}:${tag}`
-
-                debug(`Going from ${currentImage} to ${newImage}`)
-
-                const op = [{ op: 'replace', path, value: newImage }]
-    
-                const patchResult = await this.manager.cluster.patch({
-                        apiVersion: document.apiVersion,
-                        kind: document.kind,
-                        ...docItem
-                    }, op)
-
-                if (patchResult.error)
-                    debug('ERROR during update', patchResult.error)
-                else
-                    debug('Success')
-            }
-        }
-        catch (ex) {
-            debug('ERROR during update', ex)
-            throw ex
-        }
+            tag,
+            '/spec/jobTemplate/spec/template/spec/containers/0/image'
+        )
     }
 }

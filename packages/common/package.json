@@ -31,6 +31,8 @@
   "dependencies": {
     "@traxitt/kubeclient": "^0.0.2",
     "generate-password": "^1.4.1",
+    "debug": "^4.1.1",
+    "jsonpointer": "^4.1.0",
     "mixwith": "^0.1.1",
     "ulid": "^2.3.0"
   }
