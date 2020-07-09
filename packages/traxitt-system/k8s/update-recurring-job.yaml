@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: c6o-ssl-recurring
+  name: c6o-update-recurring
   namespace: traxitt-system
   labels:
     role: 'system'
@@ -18,8 +18,8 @@ spec:
         spec:
           restartPolicy: 'Never'
           containers:
-          - name: certificate
-            image: traxitt/jobs-c6o-ssl:{{tag}}
+          - name: update
+            image: traxitt/jobs-c6o-update:{{tag}}
             imagePullPolicy: Always
             command: ["node",  "./lib/index.js"]
             env:
@@ -29,7 +29,5 @@ spec:
                 value: '{{clusterKey}}'
               - name: CLUSTER_ID
                 value: '{{clusterId}}'
-              - name: ACCOUNT_NAME
-                value: '{{accountName}}'
               - name: DEBUG
                 value: '*,-engine*,-nodemon*,-*expo*,-babel*,-winston*'
