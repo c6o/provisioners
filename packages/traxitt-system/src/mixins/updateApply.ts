@@ -70,9 +70,9 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const serviceNamespace = this.manager.document.metadata.namespace
 
         let restartRequired = await this.updateNpm(serviceNamespace)
-        restartRequired = await this.updateLogger(serviceNamespace) || restartRequired
-        restartRequired = await this.updateGrafana(serviceNamespace) || restartRequired
-        restartRequired = await this.updateSystem(serviceNamespace) || restartRequired
+        restartRequired |= await this.updateLogger(serviceNamespace)
+        restartRequired |= await this.updateGrafana(serviceNamespace)
+        restartRequired |= await this.updateSystem(serviceNamespace)
 
         if (restartRequired)
             await this.restartSystemServer(serviceNamespace)

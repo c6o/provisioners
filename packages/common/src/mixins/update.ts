@@ -33,7 +33,7 @@ export const updateMixin = (base: baseProvisionerMixinType) => class extends bas
                     }, op)
 
                 if (patchResult.error)
-                    debug('ERROR during update', patchResult.error)
+                    throw patchResult.error
                 else
                     debug('Success')
             }
