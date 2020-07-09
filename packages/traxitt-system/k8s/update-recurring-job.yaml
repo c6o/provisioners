@@ -3,6 +3,8 @@ kind: CronJob
 metadata:
   name: c6o-update-recurring
   namespace: traxitt-system
+  labels:
+    role: 'system'
 spec:
   schedule: '{{schedule}}'
   concurrencyPolicy: 'Replace'
