@@ -14,6 +14,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.provisionGateway()
         await this.provisionRoutes()
         await this.provisionCertificate()
+        await this.provisionUpdate()
     }
 
     gatewayServers = [{
@@ -152,9 +153,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionCertificate() {
+        // weekly but random minute and hour on Mondays to ensure not to overload hub server
         const schedule = process.env.NODE_ENV === 'development'
             ? '*/5 * * * *' // every 5 minutes on the 5
-            : `${Math.floor(Math.random() * 59)} ${Math.floor(Math.random() * 23)} * * 1` // weekly but random minute and hour on Mondays to ensure not to overload hub server
+            : `${Math.floor(Math.random() * 59)} ${Math.floor(Math.random() * 23)} * * 1`
 
         const options = {
             tag: this.spec.tag,
@@ -170,6 +172,25 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin(`Provision certificate cron job`)
                 .upsertFile('../../k8s/ssl-recurring-job.yaml', options)
                 .upsertFile('../../k8s/ssl-setup-job.yaml', options)
+            .end()
+    }
+
+    async provisionUpdate() {
+        // weekly but random minute and hour on Mondays to ensure not to overload hub server
+        const schedule = `${Math.floor(Math.random() * 59)} ${Math.floor(Math.random() * 23)} * * 1`
+
+        const options = {
+            tag: this.spec.tag,
+            hubServerURL: this.spec.hubServerURL,
+            clusterId: this.spec.clusterId,
+            clusterKey: this.spec.clusterKey,
+            backoffLimit: 5,
+            schedule
+        }
+
+        await this.manager.cluster
+            .begin(`Provision update cron job`)
+                .upsertFile('../../k8s/update-recurring-job.yaml', options)
             .end()
     }
 }
