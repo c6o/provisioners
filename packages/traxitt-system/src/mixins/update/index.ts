@@ -10,8 +10,9 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
     async updateSystem(serviceNamespace: string) {
         if (this.spec.updateToTag) {
             await this.performUpdate(this.spec.updateToTag)
-            this.spec.updateToTag = unlinkToken
-            this.spec.tag = this.spec.updateToTag
+            // Write back the new updated tag and clear updateToTag
+            this.manager.document.spec.provisioner.tag = this.spec.updateToTag
+            this.manager.document.spec.provisioner.updateToTag = unlinkToken
         }
     }
 
