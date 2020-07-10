@@ -4,7 +4,7 @@ metadata:
   name: system-server-config
   namespace: traxitt-system
 data:
-  DEBUG: '*,-engine*,-nodemon*,-*expo*,-babel*'
+  DEBUG: '*,-engine*,-nodemon*,-*expo*,-babel*,-winston*,-elasticsearch*'
   PORT: '3050'
   HOST: '{{host}}'
   CLUSTER_ID: '{{clusterId}}'
