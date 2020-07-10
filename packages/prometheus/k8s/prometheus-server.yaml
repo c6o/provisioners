@@ -15,7 +15,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-    
+
   resources:
     requests:
       storage: "8Gi"
@@ -93,7 +93,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: prometheus-server
-    namespace: monitoring
+    namespace: {{namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -164,7 +164,7 @@ spec:
             - --webhook-url=http://127.0.0.1:9090/-/reload
           resources:
             {}
-            
+
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -200,7 +200,7 @@ spec:
             successThreshold: 1
           resources:
             {}
-            
+
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -212,7 +212,7 @@ spec:
         runAsGroup: 65534
         runAsNonRoot: true
         runAsUser: 65534
-        
+
       terminationGracePeriodSeconds: 300
       volumes:
         - name: config-volume

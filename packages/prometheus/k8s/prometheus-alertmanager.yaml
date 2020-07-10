@@ -21,7 +21,7 @@ data:
       group_wait: 10s
       receiver: default-receiver
       repeat_interval: 3h
-    
+
 ---
 # Source: prometheus/templates/alertmanager-pvc.yaml
 apiVersion: v1
@@ -38,7 +38,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-    
+
   resources:
     requests:
       storage: "2Gi"
@@ -87,7 +87,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: prometheus-alertmanager
-    namespace: monitoring
+    namespace: {{namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -175,7 +175,7 @@ spec:
             timeoutSeconds: 30
           resources:
             {}
-            
+
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -191,7 +191,7 @@ spec:
             - --webhook-url=http://127.0.0.1:9093/-/reload
           resources:
             {}
-            
+
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config
@@ -201,7 +201,7 @@ spec:
         runAsGroup: 65534
         runAsNonRoot: true
         runAsUser: 65534
-        
+
       volumes:
         - name: config-volume
           configMap:
