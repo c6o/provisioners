@@ -11,6 +11,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.provisionSystem()
         await this.provisionApps()
         await this.provisionOAuth()
+        await this.provisionDock()
         await this.provisionGateway()
         await this.provisionRoutes()
         await this.provisionCertificate()
@@ -91,6 +92,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin('Provision CodeZero OAuth')
                 .addOwner(this.manager.document)
                 .upsertFile('../../k8s/oauth.yaml')
+            .end()
+    }
+
+    async provisionDock() {
+        await this.manager.cluster
+            .begin('Provision default Dock')
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/dock.yaml')
             .end()
     }
 
