@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/rabbitmq",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Traxitt provisioner for rabbitmq",
   "main": "lib/index.js",
   "scripts": {
@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.1",
-    "@traxitt/kubeclient": "^0.0.2",
+    "@provisioner/common": "^0.0.2",
+    "@traxitt/kubeclient": "^0.0.4",
     "mixwith": "^0.1.1"
   }
 }

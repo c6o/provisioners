@@ -1793,10 +1793,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@traxitt/kubeclient@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@traxitt/kubeclient/-/kubeclient-0.0.2.tgz#8a85eb45cf75c197fd199fef30760232ffc1b927"
-  integrity sha512-j9bUb3Rmgzs6DBmn/zE5a4uMw4KE/+gNx3A4G1RhWKAtwbM4O9D6/+4rvvIgmqrU9glXl+cR9q9pike4jHIN2A==
+"@traxitt/kubeclient@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@traxitt/kubeclient/-/kubeclient-0.0.4.tgz#edc880bd36baaee0c0add9a4739297c874d47a6a"
+  integrity sha512-hsnNE7HzSeCQxdyTI+ilM66R1L+fVjUxePzm5ogRrfiKrV3604lUzzbfVVZeKjhLFI+K1Jwqh3bMqjF7zSj8zQ==
   dependencies:
     "@kubernetes/client-node" "^0.11.0"
     byline "^5.0.0"
@@ -5362,6 +5362,11 @@ jsonpath-plus@^0.19.0:
   version "0.19.0"
   resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-0.19.0.tgz#b901e57607055933dc9a8bef0cc25160ee9dd64c"
   integrity sha512-GSVwsrzW9LsA5lzsqe4CkuZ9wp+kxBb2GwNniaWzI2YFn5Ig42rSW8ZxVpWXaAfakXNrx5pgY5AbQq7kzX29kg==
+
+jsonpointer@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-4.1.0.tgz#501fb89986a2389765ba09e6053299ceb4f2c2cc"
+  integrity sha512-CXcRvMyTlnR53xMcKnuMzfCA5i/nfblTnnr74CZb6C4vG39eu6w51t7nKmU5MfLfbTgGItliNyjO/ciNPDqClg==
 
 jsprim@^1.2.2:
   version "1.4.1"

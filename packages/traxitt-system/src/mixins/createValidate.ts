@@ -2,6 +2,13 @@ import { baseProvisionerType } from '../'
 
 export const createValidateMixin = (base: baseProvisionerType) => class extends base {
 
+    hubToClusterMap = {
+        'https://staging.hub.traxitt.com': 'stg.traxitt.org',
+        'https://develop.hub.traxitt.com': 'dev.traxitt.org',
+        'https://staging.hub.codezero.io': 'stg.codezero.cloud',
+        'https://develop.hub.codezero.io': 'dev.codezero.cloud'
+    }
+
     async createValidate() {
 
         const {
@@ -35,9 +42,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
             this.spec.tag = 'latest'
 
         if (!this.spec.clusterDomain)
-            this.spec.clusterDomain = this.spec.hubServerURL == 'https://staging.hub.traxitt.com' ?
-                'stg.traxitt.org' :
-                'traxitt.org'
+            this.spec.clusterDomain = this.hubToClusterMap[this.spec.hubServerURL] || 'codezero.cloud'
 
         // TODO: This is a hack - we actually add the CRDs here
         // because it is required before apply is called!
@@ -49,6 +54,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
                     .upsertFile('../../k8s/crds/tasks.v1.yaml')
                     .upsertFile('../../k8s/crds/users.v1.yaml')
                     .upsertFile('../../k8s/crds/oauth.v1.yaml')
+                    .upsertFile('../../k8s/crds/dock.v1.yaml')
                 .end()
         else
             await this.manager.cluster
@@ -57,6 +63,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
                     .upsertFile('../../k8s/crds/tasks.v1beta1.yaml')
                     .upsertFile('../../k8s/crds/users.v1beta1.yaml')
                     .upsertFile('../../k8s/crds/oauth.v1beta1.yaml')
+                    .upsertFile('../../k8s/crds/dock.v1beta1.yaml')
                 .end()
     }
 }

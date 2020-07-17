@@ -43,7 +43,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: prometheus-pushgateway
-    namespace: monitoring
+    namespace: {{namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -56,7 +56,7 @@ kind: Service
 metadata:
   annotations:
     prometheus.io/probe: pushgateway
-    
+
   labels:
     component: "pushgateway"
     app: prometheus
@@ -128,11 +128,11 @@ spec:
             timeoutSeconds: 10
           resources:
             {}
-            
+
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
-        
+
 
 ---
 # Source: prometheus/templates/alertmanager-clusterrole.yaml

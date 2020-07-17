@@ -7,7 +7,8 @@ import {
     namespaceMixin,
     storageClassMixin,
     passwordMixin,
-    optionsMixin
+    optionsMixin,
+    updateMixin
 } from './mixins'
 import { ProvisionerManager, optionFunctionType } from './manager'
 
@@ -17,7 +18,7 @@ export type baseProvisionerMixinType = new (...a) => ProvisionerBase
 export class provisionerBasePrivate {
 }
 
-export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, storageClassMixin, passwordMixin, optionsMixin) {
+export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, storageClassMixin, passwordMixin, optionsMixin, updateMixin) {
     manager: ProvisionerManager
     serviceName: string
     moduleLocation: string
