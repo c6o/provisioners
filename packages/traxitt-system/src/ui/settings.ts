@@ -1,4 +1,4 @@
-import { LitElement, html, customElement, property } from 'lit-element'
+import { LitElement, html, customElement, property, css } from 'lit-element'
 import { unlinkToken } from '../constants'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
@@ -7,6 +7,8 @@ import { AppStatuses } from '@provisioner/common/src/app'
 @customElement('traxitt-system-settings-main')
 export class TraxittSystemSettings extends LitElement {
     api
+    choicesService
+    disposer
 
     @property({ type: String })
     loggingLink
@@ -38,8 +40,32 @@ export class TraxittSystemSettings extends LitElement {
     @property({ type: Boolean })
     loaded = false
 
-    choicesService
-    disposer
+    static get styles() {
+        return css`
+            .inline {
+                margin-left: 15px;
+            }
+
+            .btn-footer {
+                border-top: 1px solid var(--color-wind);
+                display: flex;
+                justify-content: space-between;
+                margin-top: var(--md-spacing);
+                padding-top: var(--md-spacing);
+            }
+
+            .form-row {
+                margin-bottom: var(--xl-spacing);
+                width: auto !important;
+            }
+
+            hr {
+                margin-bottom: var(--xl-spacing);
+                border: 0;
+                border-top: 1px solid var(--color-wind);
+            }
+        `
+    }
 
     get loggerComboBox() { return this.shadowRoot.querySelector('#logger-combo-box') as ComboBoxElement }
     get npmComboBox() { return this.shadowRoot.querySelector('#npm-combo-box') as ComboBoxElement }
@@ -50,20 +76,27 @@ export class TraxittSystemSettings extends LitElement {
 
     render() {
         if (!this.loaded)
-            return html`Loading...`
+            return html`<c6o-loading></c6o-loading>`
 
         return html`
-            ${this.renderNpmLink()}
+            <div id="npm">
+                ${this.renderNpmLink()}
+            </div>
             <hr />
-            ${this.renderLoggingLink()}
-            <hr />
-            ${this.renderPrometheusLink()}
-            <hr />
-            ${this.renderGrafanaLink()}
-            <br />
-            <traxitt-button @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
-            <traxitt-button @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
-            `
+            <div id="logging">
+                ${this.renderLoggingLink()}
+            </div>
+            <div id="prometheus">
+                ${this.renderPrometheusLink()}
+            </div>
+            <div id="grafana">
+                ${this.renderGrafanaLink()}
+            </div>
+            <div class="btn-footer">
+                <traxitt-button theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
+                <traxitt-button theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
+            </div>
+        `
     }
 
     get npmOptionsList() {
@@ -87,51 +120,120 @@ export class TraxittSystemSettings extends LitElement {
     renderNpmLink() {
         if (this.npmLink !== unlinkToken)
             return html`
-                <traxitt-button @click=${this.unlinkNpm} ?disabled=${this.busy}>Unlink npm from ${this.npmLink.name}</traxitt-button>
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.unlinkNpm}
+                    ?disabled=${this.busy}>
+                    Unlink npm from ${this.npmLink.name}
+                </traxitt-button>
             `
 
         return html`
-            <traxitt-vertical-layout>
-                <traxitt-combo-box id='npm-combo-box' label='Select NPM Registry' required value=${this.npmOptionsList[0]} .items=${this.npmOptionsList} ?disabled=${this.busy}></traxitt-combo-box>
+            <traxitt-form-layout>
+                <traxitt-combo-box
+                    id='npm-combo-box'
+                    label='Select NPM Registry'
+                    required
+                    value=${this.npmOptionsList[0]}
+                    .items=${this.npmOptionsList}
+                    ?disabled=${this.busy}
+                ></traxitt-combo-box>
                 <traxitt-text-field id='npm-username' label="Registry username" autoselect required></traxitt-text-field>
                 <vaadin-password-field id='npm-password' label="Registry password" autoselect required></vaadin-password-field>
-                <traxitt-button @click=${this.linkNpm} ?disabled=${this.busy}>Link NPM Registry</traxitt-button>
-            </traxitt-vertical-layout>`
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.linkNpm}
+                    ?disabled=${this.busy}>
+                    Link NPM Registry
+                </traxitt-button>
+            </traxitt-form-layout>
+
+        `
     }
 
     renderLoggingLink() {
         if (this.loggingLink !== unlinkToken)
             return html`
-                <traxitt-button @click=${this.unlinkLogger} ?disabled=${this.busy}>Unlink logger in ${this.loggingLink}</traxitt-button>
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.unlinkLogger}
+                    ?disabled=${this.busy}>Unlink logger in ${this.loggingLink}
+                </traxitt-button>
             `
 
         return html`
-          <traxitt-combo-box id='logger-combo-box' label='Select Logger Installation' required value=${this.loggerOptions[0]} .items=${this.loggerOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button @click=${this.linkLogger} ?disabled=${this.busy}>Link Logger</traxitt-button>
+            <traxitt-combo-box
+                id='logger-combo-box'
+                label='Select Logger Installation'
+                required
+                value=${this.loggerOptions[0]}
+                .items=${this.loggerOptions}
+                ?disabled=${this.busy}
+            ></traxitt-combo-box>
+            <traxitt-button
+                class="inline"
+                @click=${this.linkLogger}
+                ?disabled=${this.busy}>
+                Link Logger
+            </traxitt-button>
         `
     }
 
     renderPrometheusLink() {
         if (this.prometheusLink !== unlinkToken)
             return html`
-            <traxitt-button @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusLink} for Metrics</traxitt-button>
-          `
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.unlinkPrometheus}
+                    ?disabled=${this.busy}>
+                    Unlink Prometheus in ${this.prometheusLink} for Metrics
+                </traxitt-button>
+            `
 
         return html`
-          <traxitt-combo-box id='prometheus-combo-box' label='Select Prometheus for Metrics' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
+            <traxitt-combo-box
+                id='prometheus-combo-box'
+                label='Select Prometheus for Metrics'
+                required
+                value=${this.prometheusOptions[0]}
+                .items=${this.prometheusOptions}
+                ?disabled=${this.busy}
+            ></traxitt-combo-box>
+            <traxitt-button
+                class="inline"
+                @click=${this.linkPrometheus}
+                ?disabled=${this.busy}>
+                Link Prometheus
+            </traxitt-button>
         `
     }
 
     renderGrafanaLink() {
         if (this.grafanaLink !== unlinkToken)
             return html`
-                <traxitt-button @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaLink} for Metrics</traxitt-button>
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.unlinkGrafana}
+                    ?disabled=${this.busy}>
+                    Unlink Grafana in ${this.grafanaLink} for Metrics
+                </traxitt-button>
             `
 
         return html`
-          <traxitt-combo-box id='grafana-combo-box' label='Select Grafana for Metrics' required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy}>Link Grafana</traxitt-button>
+            <traxitt-combo-box
+                id='grafana-combo-box'
+                label='Select Grafana for Metrics'
+                required
+                value=${this.grafanaOptions[0]}
+                .items=${this.grafanaOptions}
+                ?disabled=${this.busy}
+            ></traxitt-combo-box>
+            <traxitt-button
+                class="inline"
+                @click=${this.linkGrafana}
+                ?disabled=${this.busy}>
+                Link Grafana
+            </traxitt-button>
         `
     }
 
@@ -188,7 +290,7 @@ export class TraxittSystemSettings extends LitElement {
     applyChanges = async (e) => {
         this.busy = true
 
-        let encodedLink:any  = unlinkToken
+        let encodedLink: any = unlinkToken
 
         if (this.npmLink !== unlinkToken) {
             encodedLink = {

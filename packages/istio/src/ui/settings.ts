@@ -1,10 +1,12 @@
-import { LitElement, html, customElement, property } from 'lit-element'
+import { LitElement, html, customElement, property, css } from 'lit-element'
 import { unlinkToken } from '../constants'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 
 @customElement('istio-settings-main')
 export class IstioSettings extends LitElement {
     api
+    choicesService
+    disposer
 
     @property({ type: Object })
     grafanaNamespace
@@ -27,48 +29,108 @@ export class IstioSettings extends LitElement {
     @property({ type: Boolean })
     loaded = false
 
-    choicesService
-    disposer
+    static get styles() {
+        return css`
+            .inline {
+                margin-left: 15px;
+            }
+
+            .btn-footer {
+                border-top: 1px solid var(--color-wind);
+                display: flex;
+                justify-content: space-between;
+                margin-top: var(--md-spacing);
+                padding-top: var(--md-spacing);
+            }
+
+            .form-row {
+                margin-bottom: var(--xl-spacing);
+            }
+        `
+    }
 
     get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as ComboBoxElement }
     get prometheusComboBox() { return this.shadowRoot.querySelector('#prometheus-combo-box') as ComboBoxElement }
 
     render() {
         if (!this.loaded)
-            return html`Loading...`
+            return html`<c6o-loading></c6o-loading>`
 
         return html`
-            ${this.renderPrometheusLink()}
-            <hr />
-            ${this.renderGrafanaLink()}
-            <hr />
-            <traxitt-checkbox @checked-changed=${this.httpsRedirectChanged} ?disabled=${this.busy} ?checked=${this.httpsRedirect}>Enable https redirect</traxitt-checkbox>
-            <traxitt-button @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
-            <traxitt-button @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
-            `
+            <div id="prometheus">
+                ${this.renderPrometheusLink()}
+            </div>
+            <div id="grafana">
+                ${this.renderGrafanaLink()}
+            </div>
+            <traxitt-checkbox
+                @checked-changed=${this.httpsRedirectChanged}
+                ?disabled=${this.busy}
+                ?checked=${this.httpsRedirect}>
+                Enable https redirect
+            </traxitt-checkbox>
+            <div class="btn-footer">
+                <traxitt-button theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
+                <traxitt-button theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
+            </div>
+        `
     }
 
     renderGrafanaLink() {
         if (this.grafanaNamespace !== unlinkToken)
             return html`
-            <traxitt-button @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaNamespace}</traxitt-button>
-          `
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.unlinkGrafana}
+                    ?disabled=${this.busy}>
+                    Unlink Grafana in ${this.grafanaNamespace}
+                </traxitt-button>
+            `
+
         return html`
-            <traxitt-combo-box id='grafana-combo-box' label='Select Grafana Installation'
-                required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }></traxitt-combo-box>
-            <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>Link Grafana</traxitt-button>
+            <traxitt-combo-box
+                id='grafana-combo-box'
+                label='Select Grafana Installation'
+                required
+                value=${this.grafanaOptions[0]}
+                .items=${this.grafanaOptions}
+                ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }
+            ></traxitt-combo-box>
+            <traxitt-button
+                class="inline"
+                @click=${this.linkGrafana}
+                ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>
+                Link Grafana
+            </traxitt-button>
         `
     }
 
     renderPrometheusLink() {
         if (this.prometheusNamespace !== unlinkToken)
             return html`
-            <traxitt-button @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusNamespace}</traxitt-button>
-          `
+                <traxitt-button
+                    class="form-row"
+                    @click=${this.unlinkPrometheus}
+                    ?disabled=${this.busy}>
+                    Unlink Prometheus in ${this.prometheusNamespace}
+                </traxitt-button>
+            `
 
         return html`
-          <traxitt-combo-box id='prometheus-combo-box' label='Select Prometheus Installation' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
+            <traxitt-combo-box
+                id='prometheus-combo-box'
+                label='Select Prometheus Installation'
+                required
+                value=${this.prometheusOptions[0]}
+                .items=${this.prometheusOptions}
+                ?disabled=${this.busy}
+            ></traxitt-combo-box>
+            <traxitt-button
+                class="inline"
+                @click=${this.linkPrometheus}
+                ?disabled=${this.busy}>
+                Link Prometheus
+            </traxitt-button>
         `
     }
 

@@ -48,7 +48,7 @@ spec:
   marina:
     launch:
       type: inline
-      tag: traxitt-navstation
+      tag: c6o-navstation-app
       api: true
       path: /navstation/
     menus:
