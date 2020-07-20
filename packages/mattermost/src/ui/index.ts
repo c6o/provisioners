@@ -12,9 +12,9 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
 
     render() {
         return html`
-            <traxitt-form-layout>
+            <c6o-form-layout>
             Hello from Mattermost
-            </traxitt-form-layout>
+            </c6o-form-layout>
         `
     }
 

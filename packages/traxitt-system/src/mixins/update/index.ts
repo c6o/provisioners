@@ -1,9 +1,8 @@
 import { baseProvisionerType } from '../../'
 import { unlinkToken } from '../../constants'
-import * as pointer from 'jsonpointer'
 import createDebug from 'debug'
 
-const debug = createDebug('provisioner:traxitt-system:updateSystem:')
+const debug = createDebug('provisioner:c6o-system:updateSystem:')
 
 export const updateSystemMixin = (base: baseProvisionerType) => class extends base {
 

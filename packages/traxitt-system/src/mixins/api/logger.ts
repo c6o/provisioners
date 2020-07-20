@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
-const debug = createDebug('traxitt-system:logger:')
+const debug = createDebug('c6o-system:logger:')
 
 export const loggerApiMixin = (base: baseProvisionerType) => class extends base {
 

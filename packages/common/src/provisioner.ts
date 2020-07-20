@@ -29,7 +29,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
     // Has other API functions
     [key: string]: any
-    
+
     help (command: string, options: optionFunctionType, messages: string[]) {}
 
     serve(req, res, serverRoot = 'lib/ui') {
@@ -65,7 +65,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
         throw Error('Function not found')
     }
-    
+
     async readFile(...args: string[]): Promise<string> {
         const buffer = await fs.readFile(path.resolve(...args))
         return buffer.toString('utf-8')

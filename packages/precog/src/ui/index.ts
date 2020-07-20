@@ -16,14 +16,14 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
 
     render() {
         return html`
-            <traxitt-form-layout>
-                <traxitt-combo-box @selected-item-changed=${this.storageSelected} label='Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></traxitt-combo-box>
-                <traxitt-combo-box @selected-item-changed=${this.editionSelected} label='Edition' value=${this.serviceSpec.edition || 'evaluation'} required .items=${this.editions}></traxitt-combo-box>
-            </traxitt-form-layout>
-            <traxitt-form-layout>
-                <traxitt-text-field @input=${this.usernameChanged} label="Docker username" value=${this.serviceSpec.dockerUsername || ''} autoselect required></traxitt-text-field>
-                <traxitt-password-field @input=${this.passwordChanged} label="Docker password" value=${this.serviceSpec.dockerPassword || ''} autoselect required></traxitt-password-field>
-            </traxitt-form-layout>
+            <c6o-form-layout>
+                <c6o-combo-box @selected-item-changed=${this.storageSelected} label='Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></c6o-combo-box>
+                <c6o-combo-box @selected-item-changed=${this.editionSelected} label='Edition' value=${this.serviceSpec.edition || 'evaluation'} required .items=${this.editions}></c6o-combo-box>
+            </c6o-form-layout>
+            <c6o-form-layout>
+                <c6o-text-field @input=${this.usernameChanged} label="Docker username" value=${this.serviceSpec.dockerUsername || ''} autoselect required></c6o-text-field>
+                <c6o-password-field @input=${this.passwordChanged} label="Docker password" value=${this.serviceSpec.dockerPassword || ''} autoselect required></c6o-password-field>
+            </c6o-form-layout>
         `
     }
 
