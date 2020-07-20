@@ -69,6 +69,7 @@ export class TraxittSystemSettings extends LitElement {
 
     get loggerComboBox() { return this.shadowRoot.querySelector('#logger-combo-box') as ComboBoxElement }
     get npmComboBox() { return this.shadowRoot.querySelector('#npm-combo-box') as ComboBoxElement }
+    get npmURL() { return this.shadowRoot.querySelector('#npm-url') as TextFieldElement }
     get npmUsername() { return this.shadowRoot.querySelector('#npm-username') as TextFieldElement }
     get npmPassword() { return this.shadowRoot.querySelector('#npm-password') as TextFieldElement }
     get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as ComboBoxElement }
@@ -106,11 +107,17 @@ export class TraxittSystemSettings extends LitElement {
     linkNpm = async () => {
         this.npmLink = this.npmOptions.find(option => option.name === this.npmComboBox.value)
         const npmLinkOption = this.npmOptions.find(option => option.name === this.npmComboBox.value)
-        this.npmLink = {
+        this.npmLink = npmLinkOption?.name ? {
             name: npmLinkOption.name,
             username: this.npmUsername.value,
             password: this.npmPassword.value
-        }
+        } :
+        this.npmURL.value ? {
+            url: this.npmURL.value,
+            username: this.npmUsername.value,
+            password: this.npmPassword.value
+        } :
+        undefined
     }
 
     unlinkNpm = async () => {
@@ -138,6 +145,7 @@ export class TraxittSystemSettings extends LitElement {
                     .items=${this.npmOptionsList}
                     ?disabled=${this.busy}
                 ></traxitt-combo-box>
+                <traxitt-text-field id='npm-url' label="Registry URL" autoselect></traxitt-text-field>
                 <traxitt-text-field id='npm-username' label="Registry username" autoselect required></traxitt-text-field>
                 <vaadin-password-field id='npm-password' label="Registry password" autoselect required></vaadin-password-field>
                 <traxitt-button
@@ -294,9 +302,10 @@ export class TraxittSystemSettings extends LitElement {
 
         if (this.npmLink !== unlinkToken) {
             encodedLink = {
-                name: this.npmLink.name,
-                username: window.btoa(this.npmLink.username),
-                password: window.btoa(this.npmLink.password)
+                ...{ name: this.npmLink.name },
+                ...{ url: this.npmLink.url },
+                ...{ username: this.npmLink.username?.length ? window.btoa(this.npmLink.username) : undefined } ,
+                ...{ password: this.npmLink.password?.length ? window.btoa(this.npmLink.password) : undefined }
             }
         }
 
