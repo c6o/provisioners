@@ -98,9 +98,9 @@ export class AppObject {
     }
 
     getAppEdition() {
-        return this.document.metadata.labels?.['system.traxitt.com/edition'] || 'latest'
+        return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
     }
-    
+
     getAppName() {
         return this.document.metadata.name
     }

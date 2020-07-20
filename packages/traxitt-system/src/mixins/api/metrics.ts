@@ -3,7 +3,7 @@ import * as Handlebars from 'handlebars'
 import { unlinkToken } from '../../constants'
 import createDebug from 'debug'
 
-const debug = createDebug('traxitt-system:metricsMixin:')
+const debug = createDebug('c6o-system:metricsMixin:')
 
 const dashboards = [
     'dashboard-kubernetes',

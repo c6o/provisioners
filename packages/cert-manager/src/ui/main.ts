@@ -12,11 +12,11 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
 
     render() {
         return html`
-            <traxitt-form-layout>
-                <traxitt-combo-box @selected-item-changed=${this.enviroSelected} label='Environment' value=${this.serviceSpec.environment || 'staging'} required .items=${this.enviroValues}></traxitt-combo-box>
+            <c6o-form-layout>
+                <c6o-combo-box @selected-item-changed=${this.enviroSelected} label='Environment' value=${this.serviceSpec.environment || 'staging'} required .items=${this.enviroValues}></c6o-combo-box>
                 <br />
-                <traxitt-text-field @input=${this.emailChanged} label="Notify email address" value=${this.serviceSpec.notifyEmail || ''} autoselect required></traxitt-text-field>
-            </traxitt-form-layout>
+                <c6o-text-field @input=${this.emailChanged} label="Notify email address" value=${this.serviceSpec.notifyEmail || ''} autoselect required></c6o-text-field>
+            </c6o-form-layout>
         `
     }
 
@@ -30,6 +30,6 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
         this.serviceSpec.environment = 'development'
-        this.serviceSpec.notifyEmail = 'admin@traxitt.com'
+        this.serviceSpec.notifyEmail = 'admin@codezero.io'
     }
 }

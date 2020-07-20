@@ -1,11 +1,11 @@
 import { baseProvisionerType } from './index'
 
 export const execMixin = (base: baseProvisionerType) => class extends base {
-    
+
     async exec() {
-        const command = this.execArgs.shift()        
+        const command = this.execArgs.shift()
         switch(command) {
-            case 'snapshot': 
+            case 'snapshot':
                 await this.snapshot()
                 // TODO: Ensure the snapshot is created
                 break
@@ -25,7 +25,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
                 throw new Error(`Unknown command ${command}`)
         }
     }
-    
+
     // From: https://www.digitalocean.com/docs/kubernetes/how-to/snapshot-volumes/
     async snapshot() {
 
@@ -81,7 +81,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
     async ports(open = true) {
         const cluster = this.manager.cluster
 
-        // TODO: get options from args?  
+        // TODO: get options from args?
         const namespace = cluster.options.n || cluster.options.namespace
 
         if (!namespace)

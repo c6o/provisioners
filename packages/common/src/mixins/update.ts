@@ -2,7 +2,7 @@ import { baseProvisionerMixinType } from '../'
 import * as pointer from 'jsonpointer'
 import createDebug from 'debug'
 
-const debug = createDebug('provisioner:traxitt-system:updateSystem:')
+const debug = createDebug('provisioner:c6o-system:updateSystem:')
 
 export const updateMixin = (base: baseProvisionerMixinType) => class extends base {
 
@@ -13,7 +13,7 @@ export const updateMixin = (base: baseProvisionerMixinType) => class extends bas
             debug(`Failed to retrieve system ${document.kind}`, result.error)
             return
         }
-    
+
         try {
             for (const docItem of result.object.items) {
                 debug(`Updating ${document.kind}`, docItem.metadata.name)
@@ -25,7 +25,7 @@ export const updateMixin = (base: baseProvisionerMixinType) => class extends bas
                 debug(`Going from ${currentImage} to ${newImage}`)
 
                 const op = [{ op: 'replace', path, value: newImage }]
-    
+
                 const patchResult = await this.manager.cluster.patch({
                         apiVersion: document.apiVersion,
                         kind: document.kind,
