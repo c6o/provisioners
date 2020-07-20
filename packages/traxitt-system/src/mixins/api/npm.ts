@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
-const debug = createDebug('traxitt-system:npmApiMixin:')
+const debug = createDebug('c6o-system:npmApiMixin:')
 
 export const npmApiMixin = (base: baseProvisionerType) => class extends base {
 

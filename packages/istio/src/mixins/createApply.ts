@@ -142,7 +142,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .begin('Install Grafana')
                     .upsertFile('../../k8s/grafana.yaml', { istioNamespace })
                 .end()
-                
+
         if (kialiEnabled)
             await this.manager.cluster
                 .begin('Install Kiali')

@@ -2,7 +2,7 @@ import { baseProvisionerType } from '../index'
 import { unlinkToken } from '../constants'
 import createDebug from 'debug'
 
-const debug = createDebug('traxitt-system:updateApply:')
+const debug = createDebug('c6o-system:updateApply:')
 
 export const updateApplyMixin = (base: baseProvisionerType) => class extends base {
 
