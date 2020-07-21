@@ -5,8 +5,8 @@ metadata:
     name: marina
     namespace: traxitt-system
     annotations:
-      system.traxitt.com/display: Marina
-      system.traxitt.com/iconUrl: '{{hubServerURL}}/api/assets/apps/marina/icon'
+      system.codezero.io/display: Marina
+      system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/marina/icon'
 spec:
   marina:
     launch:
@@ -20,8 +20,8 @@ metadata:
   name: store
   namespace: traxitt-system
   annotations:
-    system.traxitt.com/display: Store
-    system.traxitt.com/iconUrl: '{{hubServerURL}}/api/assets/apps/store/icon'
+    system.codezero.io/display: Store
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/store/icon'
 spec:
   marina:
     launch:
@@ -42,8 +42,8 @@ metadata:
   name: navstation
   namespace: traxitt-system
   annotations:
-    system.traxitt.com/display: Nav Station
-    system.traxitt.com/iconUrl: '{{hubServerURL}}/api/assets/apps/navstation/icon'
+    system.codezero.io/display: Nav Station
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/navstation/icon'
 spec:
   marina:
     launch:

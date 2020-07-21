@@ -7,8 +7,8 @@ metadata:
     istio-injection: enabled
     role: system
   annotations:
-    system.traxitt.com/display: System
-    system.traxitt.com/icon: '<svg id="solar_x5F_system" enable-background="new 0 0 300 300" height="512" viewBox="0 0 300 300" width="512" xmlns="http://www.w3.org/2000/svg">
+    system.codezero.io/display: System
+    system.codezero.io/icon: '<svg id="solar_x5F_system" enable-background="new 0 0 300 300" height="512" viewBox="0 0 300 300" width="512" xmlns="http://www.w3.org/2000/svg">
     <circle cx="120.404" cy="125" fill="#edebdc" r="90" />
     <g fill="#4c241d">
         <path d="m247.318 260.109c-1.023 0-2.047-.391-2.828-1.172-1.562-1.562-1.562-4.094 0-5.656l14.172-14.176c1.562-1.562 4.094-1.562 5.656 0s1.562 4.094 0 5.656l-14.172 14.176c-.781.782-1.804 1.172-2.828 1.172z" />
