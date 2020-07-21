@@ -1,5 +1,5 @@
 
-apiVersion: system.traxitt.com/v1
+apiVersion: system.codezero.io/v1
 kind: Dock
 metadata:
   name: default

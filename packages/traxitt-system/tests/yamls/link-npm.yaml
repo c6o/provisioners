@@ -1,4 +1,4 @@
-apiVersion: system.traxitt.com/v1
+apiVersion: system.codezero.io/v1
 kind: App
 metadata:
     name: traxitt-system
@@ -9,8 +9,3 @@ spec:
             name: npm/verdaccio
             password: cGFzc3dvcmQ=
             username: YWRtaW4=
-
-
-
-
-    

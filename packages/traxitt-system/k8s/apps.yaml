@@ -1,5 +1,5 @@
 
-apiVersion: system.traxitt.com/v1
+apiVersion: system.codezero.io/v1
 kind: App
 metadata:
     name: marina
@@ -14,7 +14,7 @@ spec:
   provisioner: ignore
 status: Running
 ---
-apiVersion: system.traxitt.com/v1
+apiVersion: system.codezero.io/v1
 kind: App
 metadata:
   name: store
@@ -36,7 +36,7 @@ spec:
   provisioner: ignore
 status: Running
 ---
-apiVersion: system.traxitt.com/v1
+apiVersion: system.codezero.io/v1
 kind: App
 metadata:
   name: navstation
