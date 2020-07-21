@@ -6,7 +6,7 @@ export class TraxittSystemSetup extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
     get serviceSpec() {
-        return this.mediator.getServiceSpec('traxitt-system')
+        return this.mediator.getServiceSpec('c6o-system')
     }
 
     render() {

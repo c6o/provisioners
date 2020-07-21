@@ -2,10 +2,10 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: system
-  namespace: traxitt-system
+  namespace: c6o-system
 spec:
   gateways:
-  - traxitt-system/system-gateway
+  - c6o-system/system-gateway
   hosts:
   - '*'
   http:
@@ -98,7 +98,7 @@ spec:
 #   namespace: testing
 # spec:
 #   gateways:
-#   - traxitt-system/system-gateway
+#   - c6o-system/system-gateway
 #   hosts:
 #   - '*'
 #   http:
@@ -121,7 +121,7 @@ spec:
 #   namespace: testing
 # spec:
 #   gateways:
-#   - traxitt-system/system-gateway
+#   - c6o-system/system-gateway
 #   hosts:
 #   - '*'
 #   http:

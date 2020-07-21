@@ -1,8 +1,8 @@
 apiVersion: system.codezero.io/v1
 kind: App
 metadata:
-  name: traxitt-system
-  namespace: traxitt-system
+  name: c6o-system
+  namespace: c6o-system
 spec:
   provisioner:
     grafana-link: 'demo'

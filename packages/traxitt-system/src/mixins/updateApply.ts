@@ -86,7 +86,7 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
             throw result.error
         }
         const deployment = result.object
-                
+
         const previousCount = deployment.spec?.replicas
         await this.manager.cluster.patch(deployment, { spec: { replicas: 0 } })
         await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })

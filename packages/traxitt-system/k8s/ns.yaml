@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: traxitt-system
+  name: c6o-system
   labels:
-    app.kubernetes.io/managed-by: traxitt
+    app.kubernetes.io/managed-by: codezero
     istio-injection: enabled
     role: system
   annotations:

@@ -136,7 +136,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.status?.push('Provision system gateway')
 
         const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
-        const result = await istioProvisioner.createGateway('traxitt-system', this.SYSTEM_GATEWAY_NAME, this.gatewayServers)
+        const result = await istioProvisioner.createGateway('c6o-system', this.SYSTEM_GATEWAY_NAME, this.gatewayServers)
         if (result.error) throw result.error
 
         await this.manager.status?.pop()

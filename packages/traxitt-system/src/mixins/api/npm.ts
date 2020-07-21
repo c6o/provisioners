@@ -99,7 +99,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
             systemServerSecrets.data.NPM_REGISTRY_USERNAME = null
             systemServerSecrets.data.NPM_REGISTRY_PASSWORD = null
         }
-        
+
         await this.manager.cluster.upsert(systemServerSecrets)
         await this.restartSystemServer(serviceNamespace)
     }

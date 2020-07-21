@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: publisher
-    namespace: traxitt-system
+    namespace: c6o-system
     labels:
         role: system
         app: publisher
@@ -40,7 +40,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: traxitt-system
+  namespace: c6o-system
   name: publisher
   labels:
     role: system
@@ -59,7 +59,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: subscriber
-    namespace: traxitt-system
+    namespace: c6o-system
     labels:
         role: system
         app: subscriber
@@ -97,7 +97,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: traxitt-system
+  namespace: c6o-system
   name: subscriber
   labels:
     role: system

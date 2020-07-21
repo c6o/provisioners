@@ -36,7 +36,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
                     kind: 'VolumeSnapshot',
                     metadata: {
                         name: 'dev-snapshot',
-                        namespace: 'traxitt-system'
+                        namespace: 'c6o-system'
                     },
                     spec: {
                         source: {

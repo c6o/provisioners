@@ -43,7 +43,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             kind: 'Secret',
             type: 'kubernetes.io/tls',
             metadata: {
-                name: 'traxitt-system-certificate-tls',
+                name: 'c6o-system-certificate-tls',
                 namespace: 'cert-manager'
             }
         }

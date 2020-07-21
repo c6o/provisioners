@@ -5,6 +5,6 @@ metadata:
   name: default
 apps:
   - name: store
-    namespace: traxitt-system
+    namespace: c6o-system
   - name: navstation
-    namespace: traxitt-system
+    namespace: c6o-system
