@@ -2629,8 +2629,8 @@
           },
           {
             "selected": false,
-            "text": "traxitt-system",
-            "value": "traxitt-system"
+            "text": "c6o-system",
+            "value": "c6o-system"
           }
         ],
         "query": "label_values(kubernetes_namespace)",

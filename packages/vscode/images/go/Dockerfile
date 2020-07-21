@@ -1,4 +1,4 @@
-FROM traxitt/base-dev AS needs-squashing
+FROM c6o/base-dev AS needs-squashing
 
 ## The following gets the latest version of golang
 # RUN apt-get -y install software-properties-common

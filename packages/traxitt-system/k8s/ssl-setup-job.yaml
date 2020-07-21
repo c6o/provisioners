@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: c6o-ssl-setup
-  namespace: traxitt-system
+  namespace: c6o-system
 spec:
   backoffLimit: {{backoffLimit}}
   ttlSecondsAfterFinished: 0
@@ -11,7 +11,7 @@ spec:
       restartPolicy: OnFailure
       containers:
       - name: c6o-ssl-setup
-        image: traxitt/jobs-c6o-ssl:{{tag}}
+        image: c6o/jobs-c6o-ssl:{{tag}}
         imagePullPolicy: Always
         command: ["node",  "./lib/index.js"]
         env:

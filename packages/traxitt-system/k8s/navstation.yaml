@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: system-navstation
-        image: traxitt/system-navstation:{{tag}}
+        image: c6o/system-navstation:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80

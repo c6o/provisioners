@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: system-store
-        image: traxitt/system-store:{{tag}}
+        image: c6o/system-store:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80

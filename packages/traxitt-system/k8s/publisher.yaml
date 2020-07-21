@@ -32,7 +32,7 @@ spec:
               - name: LOGLEVEL
                 value: "0"
               name: publisher
-              image: traxitt/system-publisher:{{tag}}
+              image: c6o/system-publisher:{{tag}}
               imagePullPolicy: Always
               ports:
                 - containerPort: 10002

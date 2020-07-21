@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: system-marina
-        image: traxitt/system-marina:{{tag}}
+        image: c6o/system-marina:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80

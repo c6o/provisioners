@@ -1,4 +1,4 @@
-FROM traxitt/base-dev AS needs-squashing
+FROM c6o/base-dev AS needs-squashing
 
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -

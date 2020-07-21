@@ -15,7 +15,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: system-server-secrets
-  namespace: traxitt-system
+  namespace: c6o-system
 data:
   CLUSTER_KEY: '{{clusterKey}}'
 ---
@@ -42,7 +42,7 @@ spec:
       containers:
       - name: system-server
         imagePullPolicy: Always
-        image: traxitt/system-server:{{tag}}
+        image: c6o/system-server:{{tag}}
         envFrom:
           - configMapRef:
               name: system-server-config
