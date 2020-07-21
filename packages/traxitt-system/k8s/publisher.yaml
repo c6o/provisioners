@@ -32,7 +32,7 @@ spec:
               - name: LOGLEVEL
                 value: "0"
               name: publisher
-              image: c6o/system-publisher:{{tag}}
+              image: c6oio/system-publisher:{{tag}}
               imagePullPolicy: Always
               ports:
                 - containerPort: 10002

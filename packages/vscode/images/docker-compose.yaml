@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   base-dev:
-    image: c6o/base-dev
+    image: c6oio/base-dev
     build:
       context: base
   node-dev:
-    image: c6o/node-dev
+    image: c6oio/node-dev
     build:
       context: node
   go-dev:
-    image: c6o/go-dev
+    image: c6oio/go-dev
     build:
       context: go

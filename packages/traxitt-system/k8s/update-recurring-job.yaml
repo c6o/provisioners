@@ -19,7 +19,7 @@ spec:
           restartPolicy: 'Never'
           containers:
           - name: update
-            image: c6o/jobs-c6o-update:{{tag}}
+            image: c6oio/jobs-c6o-update:{{tag}}
             imagePullPolicy: Always
             command: ["node",  "./lib/index.js"]
             env:

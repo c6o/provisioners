@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: system-marina
-        image: c6o/system-marina:{{tag}}
+        image: c6oio/system-marina:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80

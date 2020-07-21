@@ -42,7 +42,7 @@ spec:
       containers:
       - name: system-server
         imagePullPolicy: Always
-        image: c6o/system-server:{{tag}}
+        image: c6oio/system-server:{{tag}}
         envFrom:
           - configMapRef:
               name: system-server-config

@@ -32,7 +32,7 @@ spec:
               - name: LOGLEVEL
                 value: "0"
               name: publisher
-              image: c6o/system-publisher:canary
+              image: c6oio/system-publisher:canary
               imagePullPolicy: Always
               ports:
                 - containerPort: 10002
@@ -89,7 +89,7 @@ spec:
               - name: LOGLEVEL
                 value: "0"
               name: subscriber
-              image: c6o/system-subscriber:canary
+              image: c6oio/system-subscriber:canary
               imagePullPolicy: Always
               ports:
                 - containerPort: 10001

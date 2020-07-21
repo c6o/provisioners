@@ -6,5 +6,5 @@ metadata:
 spec:
   containers:
   - name: system-client
-    image: c6o/system-client:canary
+    image: c6oio/system-client:canary
     imagePullPolicy: Always

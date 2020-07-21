@@ -19,7 +19,7 @@ spec:
           restartPolicy: 'Never'
           containers:
           - name: certificate
-            image: c6o/jobs-c6o-ssl:{{tag}}
+            image: c6oio/jobs-c6o-ssl:{{tag}}
             imagePullPolicy: Always
             command: ["node",  "./lib/index.js"]
             env:

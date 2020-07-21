@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: system-store
-        image: c6o/system-store:{{tag}}
+        image: c6oio/system-store:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80

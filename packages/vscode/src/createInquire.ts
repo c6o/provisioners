@@ -52,7 +52,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         this.spec.storageClass = results.storageClass
         this.spec.storage = results.storage
-        this.spec.img =`c6o/${results.env}-dev`
+        this.spec.img =`c6oio/${results.env}-dev`
 
         if (!this.spec.publicKey) {
             this.spec.publicKey = await fs.readFile(resolvePath(this.pubKeyPath(results)), 'utf8')
