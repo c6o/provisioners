@@ -2,7 +2,7 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: c6o-update-recurring
-  namespace: traxitt-system
+  namespace: c6o-system
   labels:
     role: 'system'
 spec:
@@ -14,12 +14,12 @@ spec:
     spec:
       backoffLimit: {{backoffLimit}}
       ttlSecondsAfterFinished: 0
-      template:      
+      template:
         spec:
           restartPolicy: 'Never'
           containers:
           - name: update
-            image: traxitt/jobs-c6o-update:{{tag}}
+            image: c6oio/jobs-c6o-update:{{tag}}
             imagePullPolicy: Always
             command: ["node",  "./lib/index.js"]
             env:

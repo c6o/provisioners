@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: traxitt-system
+  namespace: c6o-system
   name: rabbitmq
   labels:
     app: rabbitmq
@@ -32,7 +32,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: rabbitmq-config
-  namespace: traxitt-system
+  namespace: c6o-system
 data:
   enabled_plugins: |
       [rabbitmq_management,rabbitmq_peer_discovery_k8s].
@@ -59,13 +59,13 @@ data:
       queue_master_locator=min-masters
       ## See https://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
-   
+
 ---
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: rabbitmq
-  namespace: traxitt-system
+  namespace: c6o-system
 spec:
   serviceName: rabbitmq
   replicas: 3
@@ -76,7 +76,7 @@ spec:
     spec:
       serviceAccountName: rabbitmq
       terminationGracePeriodSeconds: 10
-      containers:        
+      containers:
       - name: rabbitmq-k8s
         image: rabbitmq:3.7
         volumeMounts:
@@ -122,7 +122,7 @@ spec:
           - name: K8S_SERVICE_NAME
             value: "rabbitmq"
           - name: RABBITMQ_ERLANG_COOKIE
-            value: "mycookie" 
+            value: "mycookie"
       volumes:
         - name: config-volume
           configMap:

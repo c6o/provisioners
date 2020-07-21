@@ -23,7 +23,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const answers = {
             storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
             storage: args['storage'],
-            env: args['env']            
+            env: args['env']
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -52,8 +52,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         this.spec.storageClass = results.storageClass
         this.spec.storage = results.storage
-        this.spec.img =`traxitt/${results.env}-dev`
-        
+        this.spec.img =`c6oio/${results.env}-dev`
+
         if (!this.spec.publicKey) {
             this.spec.publicKey = await fs.readFile(resolvePath(this.pubKeyPath(results)), 'utf8')
             if (!this.spec.publicKey)

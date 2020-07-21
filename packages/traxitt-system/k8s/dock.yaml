@@ -1,10 +1,10 @@
 
-apiVersion: system.traxitt.com/v1
+apiVersion: system.codezero.io/v1
 kind: Dock
 metadata:
   name: default
 apps:
   - name: store
-    namespace: traxitt-system
+    namespace: c6o-system
   - name: navstation
-    namespace: traxitt-system
+    namespace: c6o-system

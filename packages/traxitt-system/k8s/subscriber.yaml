@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: subscriber
-    namespace: traxitt-system
+    namespace: c6o-system
     labels:
         role: system
         app: subscriber
@@ -32,7 +32,7 @@ spec:
               - name: LOGLEVEL
                 value: "0"
               name: subscriber
-              image: traxitt/system-subscriber:{{tag}}
+              image: c6oio/system-subscriber:{{tag}}
               imagePullPolicy: Always
               ports:
                 - containerPort: 10001
@@ -40,7 +40,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: traxitt-system
+  namespace: c6o-system
   name: subscriber
   labels:
     role: system

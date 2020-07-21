@@ -22,7 +22,7 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
             apiVersion: 'apps/v1',
             kind: 'Deployment',
             metadata: {
-                namespace: 'traxitt-system',
+                namespace: 'c6o-system',
                 labels: { role: 'system' }
             }
         },
@@ -35,7 +35,7 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
             apiVersion: 'batch/v1beta1',
             kind: 'CronJob',
             metadata: {
-                namespace: 'traxitt-system',
+                namespace: 'c6o-system',
                 labels: { role: 'system' }
             }
         },

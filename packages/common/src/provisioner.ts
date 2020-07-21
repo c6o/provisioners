@@ -72,7 +72,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     }
 
     toTask = (namespace, ask: string, spec: any) => ({
-        apiVersion: 'system.traxitt.com/v1',
+        apiVersion: 'system.codezero.io/v1',
         kind: 'Task',
         metadata: {
             namespace,

@@ -17,7 +17,7 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
         await this.unlinkGrafana(serviceNamespace, false)
         this.grafanaProvisioner = await this.manager.getAppProvisioner('grafana', grafanaNamespace)
 
-        await this.grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'traxitt-system')
+        await this.grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'c6o-system')
 
         const prometheusLink = this.spec['prometheus-link'] // see if there's a linked prometheus to reference
 

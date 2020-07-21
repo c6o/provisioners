@@ -34,7 +34,7 @@ export class VSCodeCapacity extends LitElement implements StoreFlowStep {
 
     async begin() {
         this.serviceSpec.storage = this.serviceSpec.storage || '4Gi'
-		this.serviceSpec.img = this.serviceSpec.img || 'traxitt/node-dev'
+		this.serviceSpec.img = this.serviceSpec.img || 'c6oio/node-dev'
 		this.serviceSpec.launch = false
     }
 

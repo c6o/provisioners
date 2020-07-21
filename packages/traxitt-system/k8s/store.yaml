@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: traxitt-system
+  namespace: c6o-system
   name: system-store
   labels:
     role: system
@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: system-store
-        image: traxitt/system-store:{{tag}}
+        image: c6oio/system-store:{{tag}}
         imagePullPolicy: Always
         ports:
           - containerPort: 80
@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: traxitt-system
+    namespace: c6o-system
     name: system-store
     labels:
       role: system
