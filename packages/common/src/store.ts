@@ -4,13 +4,11 @@ export type StoreFlowEntry = string | StoreFlowItem
 export interface StoreFlowMediator {
     applicationSpec: any
     getServiceSpec(serviceName: string): any
-
     appendFlow(...entries: StoreFlowEntry[])
 }
 
 export interface StoreFlowStep {
     mediator?: StoreFlowMediator
-
     begin?(): Promise<void>
     end?(): Promise<boolean>
 }

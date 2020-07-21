@@ -63,7 +63,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const istioNamespace = this.spec.namespace || 'istio-system'
 
         await this.manager.cluster
-            .begin(`Install resource definitions`)
+            .begin('Install resource definitions')
                 .upsertFile('../../k8s/crds.yaml', { istioNamespace })
             .end()
     }
