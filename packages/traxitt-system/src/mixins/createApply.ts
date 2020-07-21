@@ -42,7 +42,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     traxittNamespace = {
         kind: 'Namespace',
         metadata: {
-            name: 'traxitt-system'
+            name: 'c6o-system'
         }
     }
 
