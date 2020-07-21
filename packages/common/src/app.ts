@@ -67,8 +67,6 @@ export const AppStatuses = {
 
 export class AppObject {
 
-    constructor(public document) { }
-
     _services
 
     get services() {
@@ -96,6 +94,8 @@ export class AppObject {
     get isNew() {
         return !!this.document.metadata.uid
     }
+
+    constructor(public document) { }
 
     getAppEdition() {
         return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
