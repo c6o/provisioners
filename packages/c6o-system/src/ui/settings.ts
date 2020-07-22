@@ -4,9 +4,7 @@ import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
 import { AppStatuses } from '@provisioner/common/src/app'
 
-// Narayan: The following element should not be renamed to c6o-system-settings-main
-// until the system app manifest is updated
-@customElement('traxitt-system-settings-main')
+@customElement('c6o-system-settings-main')
 export class TraxittSystemSettings extends LitElement {
     api
     choicesService
