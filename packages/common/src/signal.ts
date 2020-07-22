@@ -1,4 +1,4 @@
-import { KubeDocument } from '@traxitt/kubeclient'
+import { KubeDocument } from '@c6o/kubeclient'
 
 // annotation added to document to trigger application update
 export const DOCUMENT_SIGNAL = 'system.codezero.io/update-signal'

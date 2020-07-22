@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import { MongoClient } from 'mongodb'
-import { Processor } from '@traxitt/kubeclient'
+import { Processor } from '@c6o/kubeclient'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 

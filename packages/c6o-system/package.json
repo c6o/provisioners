@@ -1,5 +1,5 @@
 {
-  "name": "@provisioner/traxitt-system",
+  "name": "@provisioner/c6o-system",
   "version": "0.0.2",
   "description": "Traxitt provisioner for traxitt-system",
   "main": "lib/index.js",
@@ -36,7 +36,7 @@
   "homepage": "https://github.com/traxitt/node-monorepo#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.2",
-    "@traxitt/kubeclient": "^0.0.4",
+    "@c6o/kubeclient": "^0.0.4",
     "debug": "^4.1.1",
     "jsonpointer": "^4.1.0",
     "lit-element": "^2.2.1",

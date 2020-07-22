@@ -6,7 +6,7 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-node-exporter
@@ -18,11 +18,11 @@ kind: Service
 metadata:
   annotations:
     prometheus.io/scrape: "true"
-    
+
   labels:
     component: "node-exporter"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-node-exporter
@@ -37,7 +37,7 @@ spec:
   selector:
     component: "node-exporter"
     app: prometheus
-    release: traxitt
+    release: codezero
   type: "ClusterIP"
 ---
 # Source: prometheus/templates/node-exporter-daemonset.yaml
@@ -47,7 +47,7 @@ metadata:
   labels:
     component: "node-exporter"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-node-exporter
@@ -57,16 +57,16 @@ spec:
     matchLabels:
       component: "node-exporter"
       app: prometheus
-      release: traxitt
+      release: codezero
   updateStrategy:
     type: RollingUpdate
-    
+
   template:
     metadata:
       labels:
         component: "node-exporter"
         app: prometheus
-        release: traxitt
+        release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
     spec:
@@ -83,7 +83,7 @@ spec:
               containerPort: 9100
           resources:
             {}
-            
+
           volumeMounts:
             - name: proc
               mountPath: /host/proc

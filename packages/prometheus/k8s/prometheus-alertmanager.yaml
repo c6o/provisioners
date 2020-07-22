@@ -6,7 +6,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -30,7 +30,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -50,7 +50,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -63,7 +63,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -79,7 +79,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -101,7 +101,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -115,7 +115,7 @@ spec:
   selector:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
   sessionAffinity: None
   type: "ClusterIP"
 
@@ -127,7 +127,7 @@ metadata:
   labels:
     component: "alertmanager"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-alertmanager
@@ -137,14 +137,14 @@ spec:
     matchLabels:
       component: "alertmanager"
       app: prometheus
-      release: traxitt
+      release: codezero
   replicas: 1
   template:
     metadata:
       labels:
         component: "alertmanager"
         app: prometheus
-        release: traxitt
+        release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
     spec:

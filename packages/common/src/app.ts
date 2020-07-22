@@ -1,4 +1,4 @@
-import { KubeDocument } from '@traxitt/kubeclient'
+import { KubeDocument } from '@c6o/kubeclient'
 
 export interface MenuItems {
     type: string,

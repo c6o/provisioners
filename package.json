@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/istio/",
     "packages/etcd-operator/",
-    "packages/traxitt-system/",
+    "packages/c6o-system/",
     "packages/rabbitmq/",
     "packages/vscode/",
     "packages/common/",

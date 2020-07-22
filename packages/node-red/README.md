@@ -2,7 +2,7 @@
 
 ## Build
 
-At the root of the traxitt node-monorepo:
+At the root of the c6o node-monorepo:
 
 ```bash
 yarn build --scope=@provisioner/node-red
@@ -25,7 +25,7 @@ services:
 Drop it into a directory like `~/provisioners/node-red/traxitt.yaml`, then execute
 
 ```bash
-traxitt provision ~/provisioners/node-red
+czctl provision ~/provisioners/node-red
 ```
 
 To test out Node-RED once it's running in a cluster:

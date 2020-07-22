@@ -1,7 +1,7 @@
 # VS Code Provisioner
 
 ## Build
-At the root of the traxitt node-monorepo:
+At the root of the c6o node-monorepo:
 
 ```bash
 yarn build --scope=@provisioner/vscode
@@ -26,7 +26,7 @@ services:
 Drop it into a directory like `~/provisioners/vscode`, then execute
 
 ```bash
-traxitt provision ~/provisioners/vscode
+czctl provision ~/provisioners/vscode
 ```
 
 To test out VSCode once it's installed in a cluster:
@@ -49,7 +49,7 @@ dev-pod-svc       NodePort       10.245.66.7     <none>          3030:30361/TCP 
 
 | Parameter | Meaning |
 | --------- | ------- |
-| launch | true to launch VSCode from traxitt CLI |
+| launch | true to launch VSCode from c6o CLI |
 | storage | PVC storage for development |
 | publicKey | contents of ssh public key used for authentication.  If not defined, provisioner copies `id_rsa.pub` from `~/.ssh` |
 

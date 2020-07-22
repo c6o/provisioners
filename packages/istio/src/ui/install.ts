@@ -1,7 +1,7 @@
 import { LitElement, html, customElement } from 'lit-element'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
-import { cssAll } from '@traxitt/ui-theme'
+import { cssAll } from '@c6o/ui-theme'
 
 @customElement('istio-install-main')
 export class IstioSetup extends LitElement implements StoreFlowStep {
