@@ -1,5 +1,5 @@
 
-import { Cluster, Status, KubeObject } from '@traxitt/kubeclient'
+import { Cluster, Status, KubeObject } from '@c6o/kubeclient'
 import { ProvisionerBase } from './provisioner'
 import { AppDocument } from '.'
 

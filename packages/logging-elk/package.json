@@ -36,7 +36,7 @@
   "homepage": "https://github.com/traxitt/node-monorepo#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.2",
-    "@traxitt/kubeclient": "^0.0.4",
+    "@c6o/kubeclient": "^0.0.4",
     "debug": "^4.1.1",
     "lit-element": "^2.2.1",
     "mixwith": "^0.1.1",

@@ -7,7 +7,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-server
@@ -28,7 +28,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-server
@@ -42,7 +42,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-server
@@ -85,7 +85,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-server
@@ -107,7 +107,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus
@@ -121,7 +121,7 @@ spec:
   selector:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
   sessionAffinity: None
   type: "ClusterIP"
 ---
@@ -132,7 +132,7 @@ metadata:
   labels:
     component: "server"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-server
@@ -142,14 +142,14 @@ spec:
     matchLabels:
       component: "server"
       app: prometheus
-      release: traxitt
+      release: codezero
   replicas: 1
   template:
     metadata:
       labels:
         component: "server"
         app: prometheus
-        release: traxitt
+        release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
         name: prometheus-server

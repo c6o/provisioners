@@ -1,4 +1,4 @@
-import { KubeDocument, Result } from '@traxitt/kubeclient'
+import { KubeDocument, Result } from '@c6o/kubeclient'
 import { AppDocument } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
 

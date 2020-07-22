@@ -6,7 +6,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-kube-state-metrics
@@ -19,7 +19,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-kube-state-metrics
@@ -126,7 +126,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-kube-state-metrics
@@ -150,7 +150,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-kube-state-metrics
@@ -169,7 +169,7 @@ spec:
   selector:
     component: "kube-state-metrics"
     app: prometheus
-    release: traxitt
+    release: codezero
   type: "ClusterIP"
 
 ---
@@ -180,7 +180,7 @@ metadata:
   labels:
     component: "kube-state-metrics"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-kube-state-metrics
@@ -190,14 +190,14 @@ spec:
     matchLabels:
       component: "kube-state-metrics"
       app: prometheus
-      release: traxitt
+      release: codezero
   replicas: 1
   template:
     metadata:
       labels:
         component: "kube-state-metrics"
         app: prometheus
-        release: traxitt
+        release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
     spec:
