@@ -13,15 +13,29 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-storage-class
+                <c6o-store-storage-class-combo-box
+                    colspan="2"
                     id='storageClass'
+                    label='Storage Class'
+                    required
                     @selected-item-changed=${this.storageClassSelected}
-                    required                    
-                    label='Storage Class'></c6o-storage-class>
-                <br />
-                <c6o-combo-box @selected-item-changed=${this.storageSelected} label='Log Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></c6o-combo-box>
-                <br />
-                <c6o-text-field @input=${this.k8sLogIndexPrefixChanged} label="Kubernetes log index prefix?" path="k8sLogIndexPrefix" autoselect required></c6o-text-field>
+                ></c6o-store-storage-class-combo-box>
+                <c6o-combo-box
+                    allow-custom-value
+                    colspan="2"
+                    label='Log Storage' value=${this.serviceSpec.storage}
+                    required
+                    .items=${this.values}
+                    @selected-item-changed=${this.storageSelected}
+                ></c6o-combo-box>
+                <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Kubernetes log index prefix?"
+                    path="k8sLogIndexPrefix"
+                    required
+                    @input=${this.k8sLogIndexPrefixChanged}
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }
