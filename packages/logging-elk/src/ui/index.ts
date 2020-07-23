@@ -13,13 +13,6 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-store-storage-class-combo-box
-                    colspan="2"
-                    id='storageClass'
-                    label='Storage Class'
-                    required
-                    @selected-item-changed=${this.storageClassSelected}
-                ></c6o-store-storage-class-combo-box>
                 <c6o-combo-box
                     allow-custom-value
                     colspan="2"
@@ -43,10 +36,6 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
     async begin() {
         this.serviceSpec.storage = this.serviceSpec.storage || '1Gi'
         this.serviceSpec.k8sLogIndexPrefix = this.serviceSpec.k8sLogIndexPrefix || 'cloud'
-    }
-
-    storageClassSelected = (e) => {
-        this.serviceSpec.storageClass = e.detail.value
     }
 
     storageSelected = (e) => {
