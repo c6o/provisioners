@@ -1,0 +1,19 @@
+apiVersion: mattermost.com/v1alpha1
+kind: ClusterInstallation
+metadata:
+  name: {{name}}
+spec:
+  size: {{users}}users
+  ingressName: {{ingressName}}
+  ingressAnnotations:
+    kubernetes.io/ingress.class: nginx
+  version: 5.14.0
+  mattermostLicenseSecret: "{{mattermostLicenseSecret}}"
+  database:
+    storageSize: {{databaseStorageSize}}
+  minio:
+    storageSize: {{minioStorageSize}}
+  elasticSearch:
+    host: "{{elasticHost}}"
+    username: "{{elasticUsername}}"
+    password: "{{elasticPassword}}"

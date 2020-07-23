@@ -1,0 +1,45 @@
+{
+  "name": "@provisioner/mattermost-cluster",
+  "version": "0.0.1",
+  "description": "Traxitt provisioner for a MatterMost cluster",
+  "main": "lib/index.js",
+  "scripts": {
+    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
+    "build": "tsc -b && yarn run bundle",
+    "develop": "tsc -b -w --preserveWatchOutput",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browserslist": [
+    "last 1 chrome version"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nsainaney/traxitt.git"
+  },
+  "files": [
+    "lib",
+    "k8s"
+  ],
+  "publishConfig": {
+    "access": "private"
+  },
+  "keywords": [
+    "traxitt",
+    "provisioner",
+    "mattermost"
+  ],
+  "author": "Narayan Sainaney",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/traxitt/node-monorepo/issues"
+  },
+  "homepage": "https://github.com/traxitt/node-monorepo#readme",
+  "dependencies": {
+    "@provisioner/common": "^0.0.1",
+    "@traxitt/kubeclient": "^0.0.2",
+    "lit-element": "^2.3.1",
+    "mixwith": "^0.1.1",
+    "parcel-bundler": "^1.12.4",
+    "tslib": "^1.11.1"
+  }
+}
