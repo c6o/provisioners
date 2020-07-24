@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mattrmost-preview
-  namespace: '{{namespace}}'
+  name: {{name}}
+  namespace: {{namespace}}
+  labels:
+    app: mattermost-preview
 spec:
   selector:
     matchLabels:
-      app: mattrmost-preview
+      app: mattermost-preview
   replicas: 1
   template:
     metadata:
       labels:
-        app: mattrmost-preview
+        app: mattermost-preview
     spec:
       containers:
       - image: mattermost/mattermost-preview
-        name: mattrmost-preview
+        name: mattermost-preview
         ports:
         - containerPort: 8065
           name: http
@@ -26,10 +28,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mattrmost-preview
-  namespace: '{{namespace}}'
+  name: {{name}}
+  namespace: {{namespace}}
   labels:
-    app: mattrmost-preview
+    app: mattermost-preview
 spec:
   type: NodePort
   ports:
@@ -37,4 +39,4 @@ spec:
       port: 80
       targetPort: 8065
   selector:
-    app: mattrmost-preview
+    app: mattermost-preview

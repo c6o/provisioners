@@ -1,4 +1,4 @@
-import { baseProvisionerType } from '..'
+import { baseProvisionerType } from '../../../mattermost/src'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
 
