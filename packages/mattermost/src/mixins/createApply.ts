@@ -49,63 +49,65 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         const isPreview = (edition === 'preview')
 
+        console.log('///////////////////////')
+        console.log(this)
+        console.log('///////////////////////')
+        console.log(this.spec)
+        console.log('\\\\\\\\\\\\\\\\\\\\\/')
+
         if (isPreview) {
             await this.manager.cluster
                 .begin('Install Mattermost services, preview edition.')
                 .list(this.mattermostPods)
                 .do((result, processor) => {
                     if (!result?.object?.items?.length) {
+
                         const namespace = this.serviceNamespace
 
                         processor
                             .addOwner(this.manager.document)
-                            .upsertFile('../../k8s/preview.yaml', { namespace, name })
+                            .upsertFile('../../k8s/preview/1. preview.yaml', { namespace, name })
+
                     }
                 })
                 .end()
-            return
+        } else {
+
+            await this.manager.cluster
+                .begin('Install Mattermost Clustering services')
+                .list(this.mattermostPods)
+                .do()
+                .end()
+
+            await this.manager.cluster
+                .begin('Install mysql operator')
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/latest/1. mysql-operator.yaml', { namespace, name })
+                .end()
+
+            await this.manager.cluster
+                .begin('Install minio operator')
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/latest/2. minio-operator.yaml', { namespace, name })
+                .end()
+
+            await this.manager.cluster
+                .begin('Install mattermost operator')
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/latest/3. mattermost-operator.yaml', { namespace, name })
+                .end()
+
+            await this.manager.cluster
+                .begin('Install mattermost ingress')
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/latest/4. mattermost-cluster.yaml', { namespace, name, users, ingressName, mattermostLicenseSecret, databaseStorageSize, minioStorageSize, elasticHost, elasticUsername, elasticPassword })
+                .end()
         }
-
-        await this.manager.cluster
-            .begin('Install Mattermost Clustering services')
-            .list(this.mattermostPods)
-            .do()
-            .end()
-
-        await this.manager.cluster
-            .begin('Install mysql operator')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/mysql-operator.yaml', { namespace, name })
-            .end()
-
-        await this.manager.cluster
-            .begin('Install minio operator')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/minio-operator.yaml', { namespace, name })
-            .end()
-
-        await this.manager.cluster
-            .begin('Install mattermost operator')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/mattermost-operator.yaml', { namespace, name })
-            .end()
-
-        await this.manager.cluster
-            .begin('Install mattermost ingress')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/mattermost-ingress.yaml', { namespace, name })
-            .end()
-
-        await this.manager.cluster
-            .begin('Install mattermost ingress')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/mattermost-cluster.yaml', { namespace, name, users, ingressName, mattermostLicenseSecret, databaseStorageSize, minioStorageSize, elasticHost, elasticUsername, elasticPassword })
-            .end()
     }
 
     async ensureMattermostIsRunning() {
 
-        const watchPods = this.spec.edition === 'preview' ? this.mattermostPreviewPods : this.mattermostClusterPods;
+        const watchPods = this.spec.edition === 'preview' ? this.mattermostPreviewPods : this.mattermostClusterPods
 
         await this.manager.cluster.
             begin('Ensure Mattermost services are running')

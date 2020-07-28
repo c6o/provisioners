@@ -1,8 +1,14 @@
+#https://github.com/mattermost/mattermost-operator/tree/master/docs/mattermost-operator
+apiVersion: v1
+kind: Namespace
+metadata:
+   name: mattermost-operator
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: mattermost-operator
-  namespace: {{namespace}}
+  namespace: mattermost-operator
   labels:
     app: mattermost-cluster
 ---
@@ -10,7 +16,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: clusterinstallations.mattermost.com
-  namespace: {{namespace}}
+  namespace: mattermost-operator
   labels:
     app: mattermost-cluster
 spec:
@@ -1354,7 +1360,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: mattermostrestoredbs.mattermost.com
-  namespace: {{namespace}}
+  namespace: mattermost-operator
   labels:
     app: mattermost-cluster
 spec:
@@ -1444,7 +1450,7 @@ kind: ClusterRole
 metadata:
   creationTimestamp: null
   name: mattermost-operator
-  namespace: {{namespace}}
+  namespace: mattermost-operator
   labels:
     app: mattermost-cluster
 rules:
@@ -1589,7 +1595,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mattermost-operator
-  namespace: {{namespace}}
+  namespace: mattermost-operator
   labels:
     app: mattermost-cluster
 subjects:
@@ -1605,7 +1611,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mattermost-operator
-  namespace: {{namespace}}
+  namespace: mattermost-operator
   labels:
     app: mattermost-cluster
 spec:
@@ -1617,6 +1623,7 @@ spec:
     metadata:
       labels:
         name: mattermost-operator
+        app.kubernetes.io/managed-by: codezero
     spec:
       serviceAccountName: mattermost-operator
       containers:

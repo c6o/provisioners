@@ -3,11 +3,10 @@ import { baseProvisionerType } from '..'
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     storageSizeChoices = ['1Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
-    userCountChoices = [5000, 10000, 25000]
-    editionChoices = ['preview', 'latest']
 
-    editionProvided(answers) { return !!(this.spec.edition || answers.edition) }
-    nameProvided(answers) { return !!(this.spec.name || answers.name) }
+    //Accepts 100users, 1000users, 5000users, 10000users, or 25000users.
+    userCountChoices = [100, 1000, 5000, 10000, 25000]
+
     usersProvided(answers) { return !!(this.spec.users || answers.users) }
     ingressNameProvided(answers) { return !!(this.spec.ingressName || answers.ingressName) }
     mattermostLicenseSecretProvided(answers) { return !!(this.spec.mattermostLicenseSecret || answers.mattermostLicenseSecret) }
@@ -19,30 +18,18 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(answers) {
 
-        if (!this.editionProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'list',
-                name: 'edition',
-                choices: this.editionChoices,
-                default: this.spec.name || this.editionChoices[0],
-                message: 'Which edition would you like to install?',
-            })
+        console.log('----------------------------------')
+        console.log(this.manager.document)
+        console.log('----------------------------------')
 
-            this.spec.edition = response?.edition || 'preview'
-        }
+        const edition = this.manager.document.spec.edition
+        const isPreview = (edition == 'preview')
 
-        if (!this.nameProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'input',
-                name: 'name',
-                default: this.spec.name || 'mattermost',
-                message: 'Name?',
-            })
+        console.log('----------------------------------')
+        console.log(edition, isPreview)
+        console.log('----------------------------------')
 
-            this.spec.name = response?.name || 'mattermost'
-        }
-
-        if (this.spec.edition !== 'preview') {
+        if (!isPreview) {
 
             if (!this.usersProvided(answers)) {
                 const response = await this.manager.inquirer?.prompt({

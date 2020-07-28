@@ -1,0 +1,33 @@
+# https://github.com/mattermost/mattermost-operator/tree/master/docs/examples
+# https://raw.githubusercontent.com/mattermost/mattermost-operator/master/docs/examples/full.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{namespace}}
+  labels:
+    app.kubernetes.io/managed-by: codezero
+---
+apiVersion: mattermost.com/v1alpha1
+kind: ClusterInstallation
+metadata:
+  name: mattermost-cluster
+  namespace: {{namespace}}
+  labels:
+    app: mattermost-cluster
+    app.kubernetes.io/managed-by: codezero
+spec:
+  size: {{users}}users   #customer provided value, helps decided on scale parameters of the install
+  image: mattermost/mattermost-enterprise-edition # Docker image for the app servers.
+  ingressName: {{ingressName}}  #customer provided URL
+  useServiceLoadBalancer: false # Set to true to use AWS or Azure load balancers instead of an NGINX controller.
+  version: 5.19.1 # Docker tag for the image.
+  mattermostLicenseSecret: '{{mattermostLicenseSecret}}'   #customer provided value, optional
+  database:
+    type: mysql # Supports "mysql". Ignored if externalSecret is set.
+    storageSize: {{databaseStorageSize}} # Set the file storage size to be used by the database. Ignored if externalSecret is set.
+  minio:
+    storageSize: {{minioStorageSize}} # Set the file storage size to be used by Minio.
+  elasticSearch:   #customer provided, optional
+    host: '{{elasticHost}}'
+    username: '{{elasticUsername}}'
+    password: '{{elasticPassword}}'
