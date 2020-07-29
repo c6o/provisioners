@@ -5,6 +5,7 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: mattermost-preview
+    app.kubernetes.io/managed-by: codezero
 spec:
   selector:
     matchLabels:
@@ -28,10 +29,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{name}}
+  name: mattermost-preview
   namespace: {{namespace}}
   labels:
     app: mattermost-preview
+    app.kubernetes.io/managed-by: codezero
 spec:
   type: NodePort
   ports:

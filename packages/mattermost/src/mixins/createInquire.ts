@@ -4,7 +4,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     storageSizeChoices = ['1Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
 
-    //Accepts 100users, 1000users, 5000users, 10000users, or 25000users.
+    //these choices are based on the mattermost enterprise operator/deployment
     userCountChoices = [100, 1000, 5000, 10000, 25000]
 
     usersProvided(answers) { return !!(this.spec.users || answers.users) }
@@ -18,18 +18,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(answers) {
 
-        console.log('----------------------------------')
-        console.log(this.manager.document)
-        console.log('----------------------------------')
+        this.spec.edition = this.manager.document.spec.edition
+        this.spec.isPreview = (this.spec.edition == 'preview')
 
-        const edition = this.manager.document.spec.edition
-        const isPreview = (edition == 'preview')
-
-        console.log('----------------------------------')
-        console.log(edition, isPreview)
-        console.log('----------------------------------')
-
-        if (!isPreview) {
+        if (!this.spec.isPreview) {
 
             if (!this.usersProvided(answers)) {
                 const response = await this.manager.inquirer?.prompt({
@@ -59,7 +51,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'input',
                     name: 'mattermostLicenseSecret',
                     default: this.spec.mattermostLicenseSecret,
-                    message: 'Mattermost license secret',
+                    optional: true,
+                    message: 'Mattermost license secret  (optional):',
                 })
 
                 this.spec.mattermostLicenseSecret = response?.mattermostLicenseSecret || ''
@@ -94,7 +87,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'input',
                     name: 'elasticHost',
                     default: this.spec.elasticHost,
-                    message: 'ElasticSearch Host?',
+                    optional: true,
+                    message: 'ElasticSearch Host (optional)?',
                 })
 
                 this.spec.elasticHost = response?.elasticHost || ''
@@ -105,7 +99,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'input',
                     name: 'elasticUsername',
                     default: this.spec.elasticUsername,
-                    message: 'ElasticSearch Username?',
+                    optional: true,
+                    message: 'ElasticSearch Username (optional)?',
                 })
 
                 this.spec.elasticUsername = response?.elasticUsername || ''
@@ -116,7 +111,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'input',
                     name: 'elasticPassword',
                     default: this.spec.elasticPassword,
-                    message: 'ElasticSearch Password?',
+                    optional: true,
+                    message: 'ElasticSearch Password (optional)?',
                 })
 
                 this.spec.elasticPassword = response?.elasticPassword || ''
