@@ -18,6 +18,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(answers) {
 
+        //copy these over to spec, so they are also available for createApply
         this.spec.edition = this.manager.document.spec.edition
         this.spec.isPreview = (this.spec.edition == 'preview')
 

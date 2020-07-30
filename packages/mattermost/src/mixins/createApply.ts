@@ -20,7 +20,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             metadata: {
                 namespace: this.serviceNamespace,
                 labels: {
-                    app: 'mattermost-cluster'
+                    app: 'mattermost'
                 }
             }
         }

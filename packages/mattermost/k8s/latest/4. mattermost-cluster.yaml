@@ -13,7 +13,7 @@ metadata:
   name: mattermost-cluster
   namespace: {{namespace}}
   labels:
-    app: mattermost-cluster
+    app: mattermost
     app.kubernetes.io/managed-by: codezero
 spec:
   size: {{users}}users   #customer provided value, helps decided on scale parameters of the install
