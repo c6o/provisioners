@@ -16,6 +16,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (!this.spec.isPreview) {
 
             //load spec with our default values
+            //keep in mind that the default values for lists do NOT show in the UI as you would expect, at least the CLI UI.
             this.spec.users = answers.users || this.spec.users || 5000
             this.spec.ingressName = answers.ingressName || this.spec.ingressName || ''
             this.spec.mattermostLicenseSecret = answers.mattermostLicenseSecret || this.spec.mattermostLicenseSecret || ''
@@ -25,8 +26,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             this.spec.elasticUsername = answers.elasticUsername || this.spec.elasticUsername || ''
             this.spec.elasticPassword = answers.elasticPassword || this.spec.elasticPassword || ''
 
-            //inquire for any changes beyond the defaults
-            //if we have a value already in answers, skip asking.  these were provided by the customer directly
+            //inquire for our values.
+            //if we have a value already in answers, skip asking --> these were provided by the customer directly
             //https://www.npmjs.com/package/inquirer
             if (!answers.users) {
                 this.spec.users = (await this.manager.inquirer?.prompt(
@@ -35,23 +36,23 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                         name: 'users',
                         choices: this.userCountChoices,
                         default: 5000, //if no answer
-                        value: 25000,
                         message: 'Expected users count (5000)?'
                     })).users
             }
 
-            if (!answers.ingressName) {
+            if (!answers.ingressName || answers.ingressName === '') {
                 this.spec.ingressName = (await this.manager.inquirer?.prompt(
                     {
                         type: 'input',
                         name: 'ingressName',
                         default: answers.ingressName,
-                        message: 'Ingress name (DNS host name)?',
+                        optional: false,
+                        validate: function(value) { return value != ''},
+                        message: 'Ingress name (required)?',
                     })).ingressName
             }
 
-
-            if (!answers.mattermostLicenseSecret) {
+            if (!answers.mattermostLicenseSecret || answers.mattermostLicenseSecret === '') {
                 this.spec.mattermostLicenseSecret = (await this.manager.inquirer?.prompt(
                     {
                         type: 'input',
@@ -63,7 +64,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 )).mattermostLicenseSecret
             }
 
-            if (!answers.databaseStorageSize) {
+            if (!answers.databaseStorageSize || answers.databaseStorageSize === '') {
                 this.spec.databaseStorageSize = (await this.manager.inquirer?.prompt(
                     {
                         type: 'list',
@@ -75,7 +76,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 )).databaseStorageSize
             }
 
-            if (!answers.minioStorageSize) {
+            if (!answers.minioStorageSize || answers.minioStorageSize === '') {
                 this.spec.minioStorageSize = (await this.manager.inquirer?.prompt(
                     {
                         type: 'list',
@@ -87,7 +88,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 )).minioStorageSize
             }
 
-            if (!answers.elasticHost) {
+            if (!answers.elasticHost || answers.elasticHost === '') {
                 this.spec.elasticHost = (await this.manager.inquirer?.prompt(
                     {
                         type: 'input',
@@ -99,8 +100,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 )).elasticHost
             }
 
-
-            if (!answers.elasticUsername) {
+            if (!answers.elasticUsername || answers.elasticUsername === '') {
                 this.spec.elasticUsername = (await this.manager.inquirer?.prompt(
                     {
                         type: 'input',
@@ -112,8 +112,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 )).elasticUsername
             }
 
-
-            if (!answers.elasticPassword) {
+            if (!answers.elasticPassword || answers.elasticPassword === '') {
                 this.spec.elasticPassword = (await this.manager.inquirer?.prompt(
                     {
                         type: 'input',
