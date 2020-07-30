@@ -7,15 +7,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     //these choices are based on the mattermost enterprise operator/deployment
     userCountChoices = [100, 1000, 5000, 10000, 25000]
 
-    usersProvided(answers) { return !!(this.spec.users || answers.users) }
-    ingressNameProvided(answers) { return !!(this.spec.ingressName || answers.ingressName) }
-    mattermostLicenseSecretProvided(answers) { return !!(this.spec.mattermostLicenseSecret || answers.mattermostLicenseSecret) }
-    databaseStorageSizeProvided(answers) { return !!(this.spec.databaseStorageSize || answers.databaseStorageSize) }
-    minioStorageSizeProvided(answers) { return !!(this.spec.minioStorageSize || answers.minioStorageSize) }
-    elasticHostProvided(answers) { return !!(this.spec.elasticHost || answers.elasticHost) }
-    elasticUsernameProvided(answers) { return !!(this.spec.elasticUsername || answers.elasticUsername) }
-    elasticPasswordProvided(answers) { return !!(this.spec.elasticPassword || answers.elasticPassword) }
-
     async createInquire(answers) {
 
         //copy these over to spec, so they are also available for createApply
@@ -24,99 +15,114 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         if (!this.spec.isPreview) {
 
-            if (!this.usersProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'list',
-                    name: 'users',
-                    choices: this.userCountChoices,
-                    default: this.spec.users || 5000,
-                    message: 'Expected users count?',
-                })
+            //load spec with our default values
+            this.spec.users = answers.users || this.spec.users || 5000
+            this.spec.ingressName = answers.ingressName || this.spec.ingressName || ''
+            this.spec.mattermostLicenseSecret = answers.mattermostLicenseSecret || this.spec.mattermostLicenseSecret || ''
+            this.spec.databaseStorageSize = answers.databaseStorageSize || this.spec.databaseStorageSize || '5Gi'
+            this.spec.minioStorageSize = answers.minioStorageSize || this.spec.minioStorageSize || '5Gi'
+            this.spec.elasticHost = answers.elasticHost || this.spec.elasticHost || ''
+            this.spec.elasticUsername = answers.elasticUsername || this.spec.elasticUsername || ''
+            this.spec.elasticPassword = answers.elasticPassword || this.spec.elasticPassword || ''
 
-                this.spec.users = response?.users || 5000
+            //inquire for any changes beyond the defaults
+            //if we have a value already in answers, skip asking.  these were provided by the customer directly
+            //https://www.npmjs.com/package/inquirer
+            if (!answers.users) {
+                this.spec.users = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'list',
+                        name: 'users',
+                        choices: this.userCountChoices,
+                        default: 5000, //if no answer
+                        value: 25000,
+                        message: 'Expected users count (5000)?'
+                    })).users
             }
 
-            if (!this.ingressNameProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'input',
-                    name: 'ingressName',
-                    default: this.spec.ingressName || 'mattermost.mydomain.org',
-                    message: 'Ingress name (DNS host name)?',
-                })
-
-                this.spec.ingressName = response?.ingressName
+            if (!answers.ingressName) {
+                this.spec.ingressName = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'input',
+                        name: 'ingressName',
+                        default: answers.ingressName,
+                        message: 'Ingress name (DNS host name)?',
+                    })).ingressName
             }
 
-            if (!this.mattermostLicenseSecretProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'input',
-                    name: 'mattermostLicenseSecret',
-                    default: this.spec.mattermostLicenseSecret,
-                    optional: true,
-                    message: 'Mattermost license secret  (optional):',
-                })
 
-                this.spec.mattermostLicenseSecret = response?.mattermostLicenseSecret || ''
+            if (!answers.mattermostLicenseSecret) {
+                this.spec.mattermostLicenseSecret = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'input',
+                        name: 'mattermostLicenseSecret',
+                        default: answers.mattermostLicenseSecret,
+                        optional: true,
+                        message: 'Mattermost license secret (optional):',
+                    }
+                )).mattermostLicenseSecret
             }
 
-            if (!this.databaseStorageSizeProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'list',
-                    name: 'databaseStorageSize',
-                    choices: this.storageSizeChoices,
-                    default: this.spec.databaseStorageSize || '1Gi',
-                    message: 'Amount of storage to provision for the database?',
-                })
-
-                this.spec.databaseStorageSize = response?.databaseStorageSize || '1Gi'
+            if (!answers.databaseStorageSize) {
+                this.spec.databaseStorageSize = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'list',
+                        name: 'databaseStorageSize',
+                        choices: this.storageSizeChoices,
+                        default: answers.databaseStorageSize,
+                        message: 'Amount of storage to provision for the database?',
+                    }
+                )).databaseStorageSize
             }
 
-            if (!this.minioStorageSizeProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'list',
-                    name: 'minioStorageSize',
-                    choices: this.storageSizeChoices,
-                    default: this.spec.minioStorageSize || '1Gi',
-                    message: 'Amount of storage to provision for the minio?',
-                })
-
-                this.spec.minioStorageSize = response?.minioStorageSize || '1Gi'
+            if (!answers.minioStorageSize) {
+                this.spec.minioStorageSize = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'list',
+                        name: 'minioStorageSize',
+                        choices: this.storageSizeChoices,
+                        default: answers.minioStorageSize,
+                        message: 'Amount of storage to provision for the minio?',
+                    }
+                )).minioStorageSize
             }
 
-            if (!this.elasticHostProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'input',
-                    name: 'elasticHost',
-                    default: this.spec.elasticHost,
-                    optional: true,
-                    message: 'ElasticSearch Host (optional)?',
-                })
-
-                this.spec.elasticHost = response?.elasticHost || ''
+            if (!answers.elasticHost) {
+                this.spec.elasticHost = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'input',
+                        name: 'elasticHost',
+                        default: answers.elasticHost,
+                        optional: true,
+                        message: 'ElasticSearch Host (optional)?',
+                    }
+                )).elasticHost
             }
 
-            if (!this.elasticUsernameProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'input',
-                    name: 'elasticUsername',
-                    default: this.spec.elasticUsername,
-                    optional: true,
-                    message: 'ElasticSearch Username (optional)?',
-                })
 
-                this.spec.elasticUsername = response?.elasticUsername || ''
+            if (!answers.elasticUsername) {
+                this.spec.elasticUsername = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'input',
+                        name: 'elasticUsername',
+                        default: answers.elasticUsername,
+                        optional: true,
+                        message: 'ElasticSearch Username (optional)?',
+                    }
+                )).elasticUsername
             }
 
-            if (!this.elasticPasswordProvided(answers)) {
-                const response = await this.manager.inquirer?.prompt({
-                    type: 'input',
-                    name: 'elasticPassword',
-                    default: this.spec.elasticPassword,
-                    optional: true,
-                    message: 'ElasticSearch Password (optional)?',
-                })
 
-                this.spec.elasticPassword = response?.elasticPassword || ''
+            if (!answers.elasticPassword) {
+                this.spec.elasticPassword = (await this.manager.inquirer?.prompt(
+                    {
+                        type: 'input',
+                        name: 'elasticPassword',
+                        default: answers.elasticPassword,
+                        optional: true,
+                        message: 'ElasticSearch Password (optional)?',
+                    }
+                )).elasticPassword
             }
         }
     }
