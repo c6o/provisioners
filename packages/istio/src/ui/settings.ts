@@ -1,6 +1,6 @@
-import { LitElement, html, customElement, property, css } from 'lit-element'
-import { unlinkToken } from '../constants'
+import { LitElement, html, customElement, property, css, CSSResult } from 'lit-element'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
+import { unlinkToken } from '@provisioner/istio/src'
 
 @customElement('istio-settings-main')
 export class IstioSettings extends LitElement {
@@ -29,10 +29,16 @@ export class IstioSettings extends LitElement {
     @property({ type: Boolean })
     loaded = false
 
-    static get styles() {
+    static get styles(): CSSResult[] | CSSResult {
         return css`
             .inline {
-                margin-left: 15px;
+                margin-left: var(--md-spacing);
+                width: auto !important;
+            }
+
+            h3 {
+                color: var(--color-navy);
+                margin-block-start: 0;
             }
 
             .btn-footer {
@@ -43,8 +49,10 @@ export class IstioSettings extends LitElement {
                 padding-top: var(--md-spacing);
             }
 
-            .form-row {
+            hr {
                 margin-bottom: var(--xl-spacing);
+                border: 0;
+                border-top: 1px solid var(--color-wind);
             }
         `
     }
@@ -79,58 +87,72 @@ export class IstioSettings extends LitElement {
     renderGrafanaLink() {
         if (this.grafanaNamespace !== unlinkToken)
             return html`
-                <c6o-button
-                    class="form-row"
-                    @click=${this.unlinkGrafana}
-                    ?disabled=${this.busy}>
-                    Unlink Grafana in ${this.grafanaNamespace}
-                </c6o-button>
+                <c6o-form-layout>
+                    <h3>Grafana Linked</h3>
+                    <c6o-button
+                        class="inline"
+                        theme="tertiary"
+                        @click=${this.unlinkGrafana}
+                        ?disabled=${this.busy}>
+                        Unlink Grafana in ${this.grafanaNamespace}
+                    </c6o-button>
+                </c6o-form-layout>
             `
 
         return html`
-            <c6o-combo-box
-                id='grafana-combo-box'
-                label='Select Grafana Installation'
-                required
-                value=${this.grafanaOptions[0]}
-                .items=${this.grafanaOptions}
-                ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }
-            ></c6o-combo-box>
-            <c6o-button
-                class="inline"
-                @click=${this.linkGrafana}
-                ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>
-                Link Grafana
-            </c6o-button>
+            <c6o-form-layout>
+                <c6o-combo-box
+                    id='grafana-combo-box'
+                    label='Select Grafana Installation'
+                    required
+                    value=${this.grafanaOptions[0]}
+                    .items=${this.grafanaOptions}
+                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }
+                ></c6o-combo-box>
+                <c6o-button
+                    class="inline"
+                    theme="tertiary"
+                    @click=${this.linkGrafana}
+                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>
+                    Link Grafana
+                </c6o-button>
+            </c6o-form-layout>
         `
     }
 
     renderPrometheusLink() {
         if (this.prometheusNamespace !== unlinkToken)
             return html`
-                <c6o-button
-                    class="form-row"
-                    @click=${this.unlinkPrometheus}
-                    ?disabled=${this.busy}>
-                    Unlink Prometheus in ${this.prometheusNamespace}
-                </c6o-button>
+                <c6o-form-layout>
+                    <h3>Prometheus Linked</h3>
+                    <c6o-button
+                        class="inline"
+                        theme="tertiary"
+                        @click=${this.unlinkPrometheus}
+                        ?disabled=${this.busy}>
+                        Unlink Prometheus in ${this.prometheusNamespace}
+                    </c6o-button>
+                </c6o-form-layout>
             `
 
         return html`
-            <c6o-combo-box
-                id='prometheus-combo-box'
-                label='Select Prometheus Installation'
-                required
-                value=${this.prometheusOptions[0]}
-                .items=${this.prometheusOptions}
-                ?disabled=${this.busy}
-            ></c6o-combo-box>
-            <c6o-button
-                class="inline"
-                @click=${this.linkPrometheus}
-                ?disabled=${this.busy}>
-                Link Prometheus
-            </c6o-button>
+            <c6o-form-layout>
+                <c6o-combo-box
+                    id='prometheus-combo-box'
+                    label='Select Prometheus Installation'
+                    required
+                    value=${this.prometheusOptions[0]}
+                    .items=${this.prometheusOptions}
+                    ?disabled=${this.busy}
+                ></c6o-combo-box>
+                <c6o-button
+                    class="inline"
+                    theme="tertiary"
+                    @click=${this.linkPrometheus}
+                    ?disabled=${this.busy}>
+                    Link Prometheus
+                </c6o-button>
+            </c6o-form-layout>
         `
     }
 

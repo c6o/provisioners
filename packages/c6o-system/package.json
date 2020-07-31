@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/c6o-system",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for traxitt-system",
+  "description": "CodeZero provisioner for c6o-system",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -21,7 +21,7 @@
     "k8s"
   ],
   "publishConfig": {
-    "access": "private"
+    "access": "restricted"
   },
   "keywords": [
     "traxitt",

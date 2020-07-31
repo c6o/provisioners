@@ -19,10 +19,7 @@
         "lib": ["es2018", "dom"],
     },
     "references": [
-        { "path":  "../common" }
-    ],
-    "include": [
-        "src"
+        { "path":  "../../../common" }
     ],
     "exclude": [
         "node_modules",
