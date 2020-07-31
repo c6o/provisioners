@@ -1,6 +1,6 @@
 import { LitElement, html, customElement, property, css } from 'lit-element'
-import { unlinkToken } from '../constants'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
+import { unlinkToken } from '@provisioner/istio/src'
 
 @customElement('istio-settings-main')
 export class IstioSettings extends LitElement {

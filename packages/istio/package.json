@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/istio",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for Istio",
+  "description": "CodeZero provisioner for Istio",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -23,7 +23,7 @@
     "grafana"
   ],
   "publishConfig": {
-    "access": "private"
+    "access": "restricted"
   },
   "keywords": [
     "traxitt",

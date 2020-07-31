@@ -17,7 +17,7 @@
     "k8s"
   ],
   "publishConfig": {
-    "access": "private"
+    "access": "restricted"
   },
   "keywords": [
     "traxitt",
