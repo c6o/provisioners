@@ -1,4 +1,4 @@
-import { LitElement, html, customElement, property, css } from 'lit-element'
+import { LitElement, html, customElement, property, css, CSSResult } from 'lit-element'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
 import { AppStatuses } from '@provisioner/common/src/app'
@@ -40,7 +40,7 @@ export class TraxittSystemSettings extends LitElement {
     @property({ type: Boolean })
     loaded = false
 
-    static get styles() {
+    static get styles(): CSSResult[] | CSSResult {
         return css`
             .inline {
                 margin-left: var(--md-spacing);

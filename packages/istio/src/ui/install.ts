@@ -1,4 +1,4 @@
-import { LitElement, html, customElement } from 'lit-element'
+import { LitElement, html, customElement, CSSResult } from 'lit-element'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 import { cssAll } from '@c6o/ui-theme'
@@ -7,7 +7,7 @@ import { cssAll } from '@c6o/ui-theme'
 export class IstioSetup extends LitElement implements StoreFlowStep {
     mediator: StoreFlowMediator
 
-    static get styles() {
+    static get styles(): (CSSResult[] | CSSResult)[] {
         return [
             cssAll
         ]
