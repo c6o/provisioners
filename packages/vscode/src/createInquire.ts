@@ -42,6 +42,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             message: 'What environment do you want?',
             choices: this.envChoices,
             default: this.spec.env || 'node'
+        }, {
+            type: 'confirm',
+            name: 'launch',
+            message: 'Launch VSCode locally?',
+            default: true
         }], answers)
 
         return responses
@@ -60,7 +65,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 throw new Error('publicKey is required')
         }
 
-        this.spec.launch = !!this.spec.launch
+        this.spec.launch = results.launch || !!this.spec.launch
     }
 
     pubKeyPath(answers) {

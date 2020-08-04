@@ -87,6 +87,13 @@ spec:
                               type: string
                             rewrite:
                               type: string
+                        tcp:
+                          type: object
+                          properties:
+                            service:
+                              type: string
+                            port:
+                              type: number
   scope: Namespaced
   names:
     # plural name to be used in the URL: /apis/<group>/<version>/<plural>

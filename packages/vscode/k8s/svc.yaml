@@ -6,7 +6,7 @@ metadata:
   labels:
     app: vscode
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       name: ssh
