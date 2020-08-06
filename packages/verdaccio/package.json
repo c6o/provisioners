@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/verdaccio",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for verdaccio",
+  "description": "CodeZero provisioner for verdaccio",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -b",
@@ -20,7 +20,7 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "mongodb"
   ],

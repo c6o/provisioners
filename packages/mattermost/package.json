@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/mattermost",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for MatterMost",
+  "description": "CodeZero provisioner for MatterMost",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nsainaney/traxitt.git"
+    "url": "git+https://github.com/c6o/provisioners.git"
   },
   "files": [
     "lib",
@@ -24,16 +24,16 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "precog"
   ],
   "author": "Narayan Sainaney",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/traxitt/node-monorepo/issues"
+    "url": "https://github.com/c6o/provisioners/issues"
   },
-  "homepage": "https://github.com/traxitt/node-monorepo#readme",
+  "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.2",
     "@c6o/kubeclient": "^0.0.4",
