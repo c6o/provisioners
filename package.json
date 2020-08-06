@@ -11,6 +11,7 @@
     "packages/etcd/",
     "packages/mongo/",
     "packages/mattermost/",
+    "packages/nginx/",
     "packages/kafka/",
     "packages/node-red/",
     "packages/grafana/",
