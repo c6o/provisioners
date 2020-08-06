@@ -31,9 +31,9 @@
   "author": "Narayan Sainaney",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/c6o/node-monorepo/issues"
+    "url": "https://github.com/c6o/provisioners/issues"
   },
-  "homepage": "https://github.com/c6o/node-monorepo#readme",
+  "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.2",
     "@c6o/kubeclient": "^0.0.4",
