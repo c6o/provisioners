@@ -2,6 +2,10 @@
 
 Welcome aboard CodeZero's provisioner documentation
 
+# Licensing
+
+?
+
 # Supporting documentation
 
 Refer to our [app developer documentation](https://docs.codezero.io)
