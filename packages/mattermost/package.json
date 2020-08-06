@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/mattermost",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for MatterMost",
+  "description": "CodeZero provisioner for MatterMost",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -24,7 +24,7 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "precog"
   ],

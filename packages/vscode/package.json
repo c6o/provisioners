@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/vscode",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for vscode",
+  "description": "CodeZero provisioner for vscode",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -25,7 +25,7 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "traxitt-system"
   ],

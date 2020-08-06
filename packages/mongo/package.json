@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/mongo",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for mongodb",
+  "description": "CodeZero provisioner for mongodb",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -b",
@@ -20,7 +20,7 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "mongodb"
   ],

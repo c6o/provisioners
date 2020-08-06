@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/prometheus",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for Prometheus",
+  "description": "CodeZero provisioner for Prometheus",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -24,7 +24,7 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "prometheus"
   ],

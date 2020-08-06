@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/kafka",
   "version": "0.0.2",
-  "description": "Traxitt provisioner for kafka",
+  "description": "CodeZero provisioner for kafka",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -b",
@@ -20,7 +20,7 @@
     "access": "restricted"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "kafka"
   ],
