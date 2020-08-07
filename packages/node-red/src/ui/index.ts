@@ -18,6 +18,15 @@ export class NodeRedSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-checkbox @checked-changed=${this.projectsCheckChanged} ?checked=${this.serviceSpec.projects == true}>Enable Projects</c6o-checkbox>
             </c6o-form-layout>
+            <c6o-form-layout>
+                <c6o-store-storage-class-combo-box
+                    colspan="2"
+                    id="storageClass"
+                    label="Storage Class"
+                    required
+                    @selected-item-changed=${this.storageClassSelected}
+                 ></c6o-store-storage-class-combo-box>
+            </c6o-form-layout>
         `
     }
 
@@ -34,4 +43,12 @@ export class NodeRedSettings extends LitElement implements StoreFlowStep {
     projectsCheckChanged = (e) => {
         this.serviceSpec.projects = e.detail.value
     }
+
+
+    storageClassSelected = (e) => {
+        const storageClassStore = e.detail.value
+        if (storageClassStore)
+            this.serviceSpec.storageClass = storageClassStore.entity.metadata.name
+    }
+
 }
