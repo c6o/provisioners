@@ -32,7 +32,7 @@
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.2",
-    "@c6o/kubeclient": "^0.0.4",
+    "@c6o/kubeclient": "^0.0.5",
     "js-yaml": "^3.12.1",
     "mixwith": "^0.1.1",
     "mongodb": "^3.3.2"

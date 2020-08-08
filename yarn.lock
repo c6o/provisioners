@@ -838,10 +838,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@c6o/kubeclient@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient/-/kubeclient-0.0.4.tgz#9e3847127a52a19fe3666ff5bb6c9f14e611827e"
-  integrity sha512-5fRUGukCkAG7sWpCCkJH6meRpiZ/PHuhly04dSBubQCHo6fiaAIgrZq4jVIuXxuxnvwKZC3oj1PozaBOYr4QHw==
+"@c6o/kubeclient@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient/-/kubeclient-0.0.5.tgz#8e1459877ed5bcf04cd4daaf295f5c635c34be69"
+  integrity sha512-vR8aGec7HhAbUBqvQkiLCqHv4Fr8dBH+EMpHVkxQfeU2mMYILEGq15C8E32GjphpEVXXQXguVH2DqaycgkBAhg==
   dependencies:
     "@kubernetes/client-node" "^0.11.0"
     byline "^5.0.0"

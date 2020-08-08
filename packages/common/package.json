@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@c6o/kubeclient": "^0.0.4",
+    "@c6o/kubeclient": "^0.0.5",
     "debug": "^4.1.1",
     "generate-password": "^1.4.1",
     "jsonpointer": "^4.1.0",
