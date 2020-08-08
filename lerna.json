@@ -8,6 +8,8 @@
   "command": {
     "version": {
       "allowBranch": "develop",
+      "changelogPreset": "metahub",
+      "message": "chore(release): %s",
       "conventionalCommits": true,
       "createRelease": "github"
     }
