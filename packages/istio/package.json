@@ -23,7 +23,7 @@
     "grafana"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "keywords": [
     "codezero",

@@ -22,7 +22,7 @@
     "k8s"
   ],
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "keywords": [
     "codezero",
