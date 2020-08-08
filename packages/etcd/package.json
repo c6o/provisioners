@@ -34,5 +34,6 @@
     "@c6o/kubeclient": "^0.0.5",
     "@provisioner/common": "^0.0.3",
     "mixwith": "^0.1.1"
-  }
+  },
+  "gitHead": "d613611d27b5907902111c7bc171a1e13d1ab984"
 }
