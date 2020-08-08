@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+  namespace: '{{namespace}}'
+  labels:
+    name: nextcloud
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: nextcloud
+  template:
+    metadata:
+      labels:
+        name: nextcloud
+    spec:
+      containers:
+      - name: nextcloud
+        image: "nextcloud:17.0.0-apache"
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SQLITE_DATABASE
+          value: "nextcloud"
+        - name: NEXTCLOUD_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud
+              key: nextcloud-username
+        - name: NEXTCLOUD_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nextcloud
+              key: nextcloud-password
+        - name: NEXTCLOUD_TRUSTED_DOMAINS
+          value: {{hostname}}
+        - name: NEXTCLOUD_DATA_DIR
+          value: "/var/www/html/data"
+        ports:
+        - name: http
+          containerPort: 80
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /status.php
+            port: http
+            httpHeaders:
+            - name: Host
+              value: "{{hostname}}"
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /status.php
+            port: http
+            httpHeaders:
+            - name: Host
+              value: "{{hostname}}"
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        volumeMounts:
+        - name: nextcloud-data
+          mountPath: /var/www/
+      volumes:
+      - name: nextcloud-data
+        persistentVolumeClaim:
+            claimName: nextcloud-pvc
+      # Will mount configuration files as www-data (id: 33) for nextcloud
+      securityContext:
+        fsGroup: 33

@@ -1,0 +1,42 @@
+{
+  "name": "@provisioner/nextcloud",
+  "version": "0.0.2",
+  "description": "CodeZero provisioner for NextCloud",
+  "main": "lib/index.js",
+  "scripts": {
+    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
+    "build": "tsc -b && yarn run bundle",
+    "develop": "tsc -b -w --preserveWatchOutput",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browserslist": [
+    "last 1 chrome version"
+  ],
+  "files": [
+    "lib",
+    "k8s"
+  ],
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "keywords": [
+    "codezero",
+    "provisioner",
+    "nextcloud"
+  ],
+  "author": "Connery Noble",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/c6o/provisioners/issues"
+  },
+  "homepage": "https://github.com/c6o/provisioners/issues#readme",
+  "dependencies": {
+    "@c6o/kubeclient": "^0.0.4",
+    "@provisioner/common": "^0.0.2",
+    "lit-element": "^2.3.1",
+    "mixwith": "^0.1.1",
+    "parcel": "^1.12.4",
+    "parcel-bundler": "^1.12.4",
+    "tslib": "^1.10.0"
+  }
+}
