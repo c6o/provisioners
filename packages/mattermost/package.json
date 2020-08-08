@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/mattermost",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CodeZero provisioner for MatterMost",
   "main": "lib/index.js",
   "scripts": {
@@ -35,8 +35,8 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.2",
     "@c6o/kubeclient": "^0.0.5",
+    "@provisioner/common": "^0.0.3",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",

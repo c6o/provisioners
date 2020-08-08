@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/etcd-operator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "CodeZero provisioner for etcd-operator",
   "main": "lib/index.js",
   "scripts": {
@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.2",
     "@c6o/kubeclient": "^0.0.5",
+    "@provisioner/common": "^0.0.3",
     "mixwith": "^0.1.1"
   }
 }
