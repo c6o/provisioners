@@ -9,6 +9,13 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         'https://develop.hub.codezero.io': 'dev.codezero.cloud'
     }
 
+    hubToCluster = (hubURL) => {
+        if (hubURL.endsWith('ngrok.io'))
+            return 'dev.traxitt.org'
+
+        return this.hubToClusterMap[hubURL] || 'codezero.cloud'
+    }
+
     async createValidate() {
 
         const {
@@ -42,7 +49,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
             this.spec.tag = 'latest'
 
         if (!this.spec.clusterDomain)
-            this.spec.clusterDomain = this.hubToClusterMap[this.spec.hubServerURL] || 'codezero.cloud'
+            this.spec.clusterDomain = this.hubToCluster(this.spec.hubServerURL)
 
         // TODO: This is a hack - we actually add the CRDs here
         // because it is required before apply is called!
