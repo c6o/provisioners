@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4](https://github.com/c6o/node-monorepo/compare/v0.0.3...v0.0.4) (2020-08-10)
+
+
+### ✨ Features
+
+* **system:** ngrok support ([031e20b](https://github.com/c6o/node-monorepo/commit/031e20bc25d3404155232a20a8dfc78b5256d042))
+
+
+### ♻️ Chores
+
+* **system:** Updated folder icon ([fae65c1](https://github.com/c6o/node-monorepo/commit/fae65c1770f61635335e88837b56e8ebe0b3c57e))
+* Updated gitHead ([2045140](https://github.com/c6o/node-monorepo/commit/2045140b6ae8bc2e4504ff7756b7a8776c087609))
+
+
+
+
+
 ## [0.0.3](https://github.com/c6o/node-monorepo/compare/v0.0.2...v0.0.3) (2020-08-08)
 
 
