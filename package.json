@@ -12,6 +12,7 @@
     "packages/mongo/",
     "packages/mattermost/",
     "packages/kafka/",
+    "packages/nextcloud/",
     "packages/node-red/",
     "packages/grafana/",
     "packages/cert-manager/",
