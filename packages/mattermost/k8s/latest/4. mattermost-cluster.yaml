@@ -18,7 +18,7 @@ metadata:
 spec:
   size: {{users}}users   #customer provided value, helps decided on scale parameters of the install
   image: mattermost/mattermost-enterprise-edition # Docker image for the app servers.
-  ingressName: {{ingressName}}  #customer provided URL
+  ingressName: 'cz-mattermost-{{namespace}}'  #customer provided URL
   useServiceLoadBalancer: false # Set to true to use AWS or Azure load balancers instead of an NGINX controller.
   version: 5.19.1 # Docker tag for the image.
   mattermostLicenseSecret: '{{mattermostLicenseSecret}}'   #customer provided value, optional
@@ -31,3 +31,19 @@ spec:
     host: '{{elasticHost}}'
     username: '{{elasticUsername}}'
     password: '{{elasticPassword}}'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cz-mattermost-cluster
+  namespace: {{namespace}}
+  labels:
+    app.kubernetes.io/managed-by: codezero
+spec:
+  type: NodePort
+  selector:
+    app: mattermost
+  ports:
+    - port: 8065
+      targetPort: 8065
+      name: http

@@ -37,13 +37,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const {
             name,
             users,
-            ingressName,
             mattermostLicenseSecret,
             databaseStorageSize,
             minioStorageSize,
-            elasticHost,
-            elasticUsername,
-            elasticPassword,
             edition,
             isPreview
         } = this.spec
@@ -67,31 +63,27 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .list(this.mattermostClusterPods)
                 .do((result, processor) => {
                     //no-op
-                    })
+                })
                 .end()
 
             await this.manager.cluster
                 .begin('Install mysql operator')
-                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/latest/1. mysql-operator.yaml')
                 .end()
 
             await this.manager.cluster
                 .begin('Install minio operator')
-                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/latest/2. minio-operator.yaml')
                 .end()
 
             await this.manager.cluster
                 .begin('Install mattermost operator')
-                .addOwner(this.manager.document)
                 .upsertFile('../../k8s/latest/3. mattermost-operator.yaml')
                 .end()
 
             await this.manager.cluster
                 .begin('Install mattermost ingress')
-                .addOwner(this.manager.document)
-                .upsertFile('../../k8s/latest/4. mattermost-cluster.yaml', { namespace, name, users, ingressName, mattermostLicenseSecret, databaseStorageSize, minioStorageSize, elasticHost, elasticUsername, elasticPassword })
+                .upsertFile('../../k8s/latest/4. mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize, elasticHost, elasticUsername, elasticPassword })
                 .end()
 
 
