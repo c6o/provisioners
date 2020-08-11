@@ -1,4 +1,7 @@
 import { baseProvisionerType } from '../index'
+import createDebug from 'debug'
+
+const debug = createDebug('nextCloud:createApply:')
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -32,9 +35,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.manager.cluster
             .begin('Install NextCloud services')
-                .list(this.nodeRedPods)
+                .list(this.nextCloudPods)
                 .do((result, processor) => {
+                    debug("Made it do 'do'")
                     if (result?.object?.items?.length == 0) {
+                        debug("processing objects")
                         // There are no node-red pods running
                         // Install node-red
                         processor
@@ -50,7 +55,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureNextCloudIsRunning() {
         await this.manager.cluster.
             begin('Ensure a NextCloud replica is running')
-                .beginWatch(this.nodeRedPods)
+                .beginWatch(this.nextCloudPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                     processor.endWatch()
                 })
