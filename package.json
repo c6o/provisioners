@@ -13,6 +13,7 @@
     "packages/mattermost/",
     "packages/ghost/",
     "packages/kafka/",
+    "packages/nextcloud/",
     "packages/node-red/",
     "packages/jitsi/",
     "packages/grafana/",

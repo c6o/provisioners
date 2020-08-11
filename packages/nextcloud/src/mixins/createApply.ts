@@ -1,7 +1,4 @@
 import { baseProvisionerType } from '../index'
-import createDebug from 'debug'
-
-const debug = createDebug('nextCloud:createApply:')
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -37,11 +34,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin('Install NextCloud services')
                 .list(this.nextCloudPods)
                 .do((result, processor) => {
-                    debug("Made it do 'do'")
                     if (result?.object?.items?.length == 0) {
-                        debug("processing objects")
-                        // There are no node-red pods running
-                        // Install node-red
+                        // There are no NextCloud pods running
+                        // Install NextCloud
                         processor
                             .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
                             .upsertFile('../../k8s/secrets.yaml', { namespace, adminUsername, adminPassword })
