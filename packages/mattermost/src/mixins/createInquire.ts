@@ -8,11 +8,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(answers) {
 
-        //copy these over to spec, so they are also available for createApply
-        this.spec.edition = this.manager.document.spec.edition
-        this.spec.isPreview = (this.spec.edition == 'preview')
+        debugger
+        const edition = this.manager.document.metadata.labels["system.codezero.io/edition"];
+        const isLatest = (edition !== 'preview')
 
-        if (!this.spec.isPreview) {
+        if (isLatest) {
 
             //load spec with our default values
             //keep in mind that the default values for lists do NOT show in the UI as you would expect, at least the CLI UI.

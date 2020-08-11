@@ -39,10 +39,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             users,
             mattermostLicenseSecret,
             databaseStorageSize,
-            minioStorageSize,
-            edition,
-            isPreview
+            minioStorageSize
         } = this.spec
+
+        let edition = this.manager.document.metadata.labels['system.codezero.io/edition']
+        if (!edition && this.spec.edition) edition = this.spec.edition
+        const isPreview = (edition === 'preview')
 
         if (isPreview) {
             await this.manager.cluster
@@ -83,7 +85,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.manager.cluster
                 .begin('Install mattermost ingress')
-                .upsertFile('../../k8s/latest/4. mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize, elasticHost, elasticUsername, elasticPassword })
+                .upsertFile('../../k8s/latest/4. mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
                 .end()
 
 

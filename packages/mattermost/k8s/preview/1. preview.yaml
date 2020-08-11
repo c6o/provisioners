@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mattermost-preview
-  namespace: {{namespace}}
+  namespace: { { namespace } }
   labels:
     app: mattermost-preview
     app.kubernetes.io/managed-by: codezero
+    system.codezero.io/edition: preview
 spec:
   selector:
     matchLabels:
@@ -17,12 +18,12 @@ spec:
         app: mattermost-preview
     spec:
       containers:
-      - image: mattermost/mattermost-preview
-        name: mattermost-preview
-        ports:
-        - containerPort: 8065
-          name: http
-        imagePullPolicy: Always
+        - image: mattermost/mattermost-preview
+          name: mattermost-preview
+          ports:
+            - containerPort: 8065
+              name: http
+          imagePullPolicy: Always
       restartPolicy: Always
       terminationGracePeriodSeconds: 60
 ---
@@ -30,7 +31,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mattermost-preview
-  namespace: {{namespace}}
+  namespace: { { namespace } }
   labels:
     app: mattermost-preview
     app.kubernetes.io/managed-by: codezero
