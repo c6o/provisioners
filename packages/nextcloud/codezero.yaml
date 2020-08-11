@@ -1,0 +1,18 @@
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: nextcloud
+  labels:
+    app.kubernetes.io/version: 0.0.1
+  annotations:
+    system.codezero.io/display: NextCloud
+    system.codezero.io/description: NextCloud application
+spec:
+  marina:
+    launch:
+      type: inline
+      port: 8080
+      tag: nextcloud
+  provisioner:
+      projects: false
+      storage: 2Gi
