@@ -2,15 +2,14 @@ import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    storageSizeChoices = ['5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
+    storageSizeChoices = ['2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
     //these choices are based on the mattermost enterprise operator/deployment
     userCountChoices = [100, 1000, 5000, 10000, 25000]
 
     async createInquire(answers) {
 
-        debugger
         const edition = this.manager.document.metadata.labels["system.codezero.io/edition"];
-        const isLatest = (edition !== 'preview')
+        const isLatest = (edition === 'latest')
 
         if (isLatest) {
 

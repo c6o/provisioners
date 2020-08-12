@@ -32,6 +32,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.ensureMattermostIsRunning()
     }
 
+    isPreview = false
+
     async installMattermostComponents() {
         const namespace = this.serviceNamespace
         const {
@@ -45,9 +47,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         let edition = this.manager.document.metadata.labels['system.codezero.io/edition']
         if (!edition && this.spec.edition)
             edition = this.spec.edition
-        const isPreview = (edition === 'preview')
+        this.isPreview = (edition === 'preview')
 
-        if (isPreview) {
+        if (this.isPreview) {
             await this.manager.cluster
                 .begin(`Install Mattermost services (${edition} edition)`)
                 .list(this.mattermostPreviewPods)
@@ -77,7 +79,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureMattermostIsRunning() {
-        const watchPods = this.spec.isPreview ? this.mattermostPreviewPods : this.mattermostClusterPods
+
+        const watchPods = this.isPreview ? this.mattermostPreviewPods : this.mattermostClusterPods
 
         await this.manager.cluster.
             begin('Ensure Mattermost services are running')

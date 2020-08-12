@@ -1,14 +1,9 @@
 #https://github.com/mattermost/mattermost-operator/tree/master/docs/minio-operator
-apiVersion: v1
-kind: Namespace
-metadata:
-   name: minio-operator
----
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   name: minioinstances.miniocontroller.min.io
-  namespace: minio-operator
+  namespace: mattermost
   labels:
     app: mattermost-cluster
 spec:
@@ -49,7 +44,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
   name: minio-operator-role
-  namespace: minio-operator
+  namespace: mattermost
   labels:
     app: mattermost-cluster
 rules:
@@ -105,13 +100,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: minio-operator-sa
-  namespace: minio-operator
+  namespace: mattermost
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: minio-operator-binding
-  namespace: minio-operator
+  namespace: mattermost
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -119,13 +114,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: minio-operator-sa
-  namespace: minio-operator
+  namespace: mattermost
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: minio-operator
-  namespace: minio-operator
+  namespace: mattermost
 spec:
   replicas: 1
   selector:
