@@ -44,14 +44,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             minioStorageSize
         } = this.spec
 
-        let edition = this.manager.document.metadata.labels['system.codezero.io/edition']
-        if (!edition && this.spec.edition)
-            edition = this.spec.edition
+        const edition = this.manager.document.metadata.labels['system.codezero.io/edition']
+
         this.isPreview = (edition === 'preview')
 
         if (this.isPreview) {
             await this.manager.cluster
-                .begin(`Install Mattermost services (${edition} edition)`)
+                .begin(`Installing mattermost services (${edition} edition)`)
                 .list(this.mattermostPreviewPods)
                 .do((result, processor) => {
                     if (!result?.object?.items?.length) {
@@ -62,18 +61,78 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 })
                 .end()
         } else {
+
             await this.manager.cluster
-                .begin(`Install Mattermost services (${edition} edition)`)
-                    .list(this.mattermostClusterPods)
-                    .do((result, processor) => {
-                        if (!result?.object?.items?.length) {
-                            processor
-                                .upsertFile('../../k8s/full/1-mysql-operator.yaml')
-                                .upsertFile('../../k8s/full/2-minio-operator.yaml')
-                                .upsertFile('../../k8s/full/3-mattermost-operator.yaml')
-                                .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
-                        }
-                    })
+                .begin(`Installing mattermost services ('${edition}' edition.)`)
+                //.list(this.mattermostClusterPods)
+                .do((result, processor) => {
+                    //no-op
+                })
+                .end()
+
+            // await this.manager.cluster
+            //     .begin('Installing mysql operator')
+            //     .list(this.mattermostClusterPods)
+            //     .do((result, processor) => {
+            //         if (!result?.object?.items?.length) {
+            //             processor
+            //                 .upsertFile('../../k8s/full/1-mysql-operator.yaml')
+            //         }
+            //     })
+            //     .end()
+            await this.manager.cluster
+                .begin('Install mysql operator')
+                .upsertFile('../../k8s/full/1-mysql-operator.yaml')
+                .end()
+
+            // await this.manager.cluster
+            //     .begin('Installing minio operator')
+            //     .list(this.mattermostClusterPods)
+            //     .do((result, processor) => {
+            //         if (!result?.object?.items?.length) {
+            //             processor
+            //                 .upsertFile('../../k8s/full/2-minio-operator.yaml')
+            //         }
+            //     })
+            //     .end()
+
+
+            await this.manager.cluster
+                .begin('Install minio operator')
+                .upsertFile('../../k8s/full/2-minio-operator.yaml')
+                .end()
+
+            // await this.manager.cluster
+            //     .begin('Installing Mattermost Operator')
+            //     .list(this.mattermostClusterPods)
+            //     .do((result, processor) => {
+            //         if (!result?.object?.items?.length) {
+            //             processor
+            //                 .upsertFile('../../k8s/full/3-mattermost-operator.yaml')
+            //         }
+            //     })
+            //     .end()
+
+            await this.manager.cluster
+                .begin('Install mattermost operator')
+                .upsertFile('../../k8s/full/3-mattermost-operator.yaml')
+                .end()
+
+            // await this.manager.cluster
+            //     .begin('Installing Mattermost Cluster')
+            //     .list(this.mattermostClusterPods)
+            //     .do((result, processor) => {
+            //         if (!result?.object?.items?.length) {
+            //             processor
+            //                 .addOwner(this.manager.document)
+            //                 .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
+            //         }
+            //     })
+            //     .end()
+
+            await this.manager.cluster
+                .begin('Install mattermost cluster')
+                .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
                 .end()
         }
     }
@@ -84,10 +143,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.manager.cluster.
             begin('Ensure Mattermost services are running')
-                .beginWatch(watchPods)
-                .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
-                    processor.endWatch()
-                })
+            .beginWatch(watchPods)
+            .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
+                processor.endWatch()
+            })
             .end()
     }
 }

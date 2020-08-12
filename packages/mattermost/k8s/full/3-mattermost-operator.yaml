@@ -1,11 +1,20 @@
-#https://github.com/mattermost/mattermost-operator/tree/master/docs/mattermost-operator
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mattermost-operator
+  labels:
+    app.kubernetes.io/managed-by: codezero
+    system.codezero.io/edition: latest
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mattermost-operator
+---
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: clusterinstallations.mattermost.com
-  namespace: mattermost
-  labels:
-    app: mattermost-cluster
 spec:
   group: mattermost.com
   names:
@@ -1347,9 +1356,6 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   name: mattermostrestoredbs.mattermost.com
-  namespace: mattermost
-  labels:
-    app: mattermost-cluster
 spec:
   group: mattermost.com
   names:
@@ -1437,9 +1443,6 @@ kind: ClusterRole
 metadata:
   creationTimestamp: null
   name: mattermost-operator
-  namespace: mattermost
-  labels:
-    app: mattermost-cluster
 rules:
 - apiGroups:
   - ""
@@ -1582,13 +1585,10 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mattermost-operator
-  namespace: mattermost
-  labels:
-    app: mattermost-cluster
 subjects:
 - kind: ServiceAccount
   name: mattermost-operator
-  namespace: mattermost
+  namespace: mattermost-operator
 roleRef:
   kind: ClusterRole
   name: mattermost-operator
@@ -1598,9 +1598,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mattermost-operator
-  namespace: mattermost
-  labels:
-    app: mattermost-cluster
 spec:
   replicas: 1
   selector:
@@ -1610,7 +1607,6 @@ spec:
     metadata:
       labels:
         name: mattermost-operator
-        app.kubernetes.io/managed-by: codezero
     spec:
       serviceAccountName: mattermost-operator
       containers:
@@ -1627,4 +1623,4 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: "mattermost"
+              value: "mattermost-operator"
