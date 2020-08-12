@@ -1,30 +1,17 @@
-import { baseProvisionerType } from '../../../mattermost/src'
+import { baseProvisionerType } from '../index'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
 
     async removeApply() {
         const namespace = this.manager.document.metadata.namespace
 
-        if (this.spec.databaseDeprovision) {
-            await this.manager.cluster
-                .begin('Deprovisioning the database')
-                .deleteFile('../../k8s/mysql-operator.yaml', { namespace })
-                .end()
-        }
-
-        if (this.spec.minioDeprovision) {
-            await this.manager.cluster
-                .begin('Deprovisioning minio')
-                .deleteFile('../../k8s/minio-operator.yaml', { namespace })
-                .end()
-        }
-
+        // TODO: this needs more work since the preview may have been installed
         await this.manager.cluster
-            .begin('Remove prometheus server')
-                .deleteFile('../../k8s/mattermost-ingress.yaml', { namespace })
-                .deleteFile('../../k8s/prometheus-operator.yaml', { namespace })
-                .deleteFile('../../k8s/mattermost-cluster.yaml', { namespace })
+            .begin('Deprovisioning the app')
+                .deleteFile('../../k8s/full/1-mysql-operator.yaml')
+                .deleteFile('../../k8s/full/2-minio-operator.yaml')
+                .deleteFile('../../k8s/full/3-mattermost-operator.yaml')
+                .deleteFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace })
             .end()
     }
-
 }

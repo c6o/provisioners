@@ -17,7 +17,7 @@ metadata:
     app: mattermost
     app.kubernetes.io/managed-by: codezero
 spec:
-  size: {{users}}users   #customer provided value, helps decided on scale parameters of the install
+  size: '{{users}}users' # customer provided value, helps decided on scale parameters of the install
   image: mattermost/mattermost-enterprise-edition # Docker image for the app servers.
   ingressName: 'cz-mattermost-{{namespace}}'  #customer provided URL
   useServiceLoadBalancer: false # Set to true to use AWS or Azure load balancers instead of an NGINX controller.
@@ -28,10 +28,6 @@ spec:
     storageSize: {{databaseStorageSize}} # Set the file storage size to be used by the database. Ignored if externalSecret is set.
   minio:
     storageSize: {{minioStorageSize}} # Set the file storage size to be used by Minio.
-  elasticSearch:   #customer provided, optional
-    host: '{{elasticHost}}'
-    username: '{{elasticUsername}}'
-    password: '{{elasticPassword}}'
 ---
 apiVersion: v1
 kind: Service

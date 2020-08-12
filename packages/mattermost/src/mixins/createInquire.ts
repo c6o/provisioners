@@ -1,4 +1,4 @@
-import { baseProvisionerType } from '..'
+import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
@@ -18,8 +18,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             //keep in mind that the default values for lists do NOT show in the UI as you would expect, at least the CLI UI.
             this.spec.users = answers.users || this.spec.users || 5000
             this.spec.mattermostLicenseSecret = answers.mattermostLicenseSecret || this.spec.mattermostLicenseSecret || ''
-            this.spec.databaseStorageSize = answers.databaseStorageSize || this.spec.databaseStorageSize || '5Gi'
-            this.spec.minioStorageSize = answers.minioStorageSize || this.spec.minioStorageSize || '5Gi'
+            this.spec.databaseStorageSize = answers.databaseStorageSize || this.spec.databaseStorageSize || '2Gi'
+            this.spec.minioStorageSize = answers.minioStorageSize || this.spec.minioStorageSize || '2Gi'
 
             //inquire for our values.
             //if we have a value already in answers, skip asking --> these were provided by the customer directly

@@ -21,37 +21,33 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
                 <c6o-combo-box
                     @selected-item-changed=${this.usersSelected}
                     error-message="Please select an expected number of users"
-                    id="select-users"
                     value="100"
                     required
-                    label="Expected users count (100)?"
+                    label="Expected users count (100)"
                     .items=${this.userCountChoices}
                 ></c6o-combo-box>
 
                 <c6o-text-field
                     colspan="2"
-                    id="license-secret"
-                    label="Mattermost license secret:"
+                    label="Mattermost license secret (optional)"
                     @change=${this.handleSearch}
                 ></c6o-text-field>
 
                 <c6o-combo-box
                     @selected-item-changed=${this.dbSizeSelected}
                     error-message="Please select an expected size."
-                    value="5Gi"
+                    value="2Gi"
                     required
-                    id="select-db-size"
-                    label="Amount of storage to provision for the database?"
+                    label="Amount of storage to provision for the database"
                     .items=${this.storageSizeChoices}
                 ></c6o-combo-box>
 
                 <c6o-combo-box
                     @selected-item-changed=${this.minioSizeSelected}
                     error-message="Please select an expected size."
-                    value="5Gi"
+                    value="2Gi"
                     required
-                    id="select-minio-size"
-                    label="Amount of storage to provision for minio?"
+                    label="Amount of storage to provision for minio"
                     .items=${this.storageSizeChoices}
                 ></c6o-combo-box>
 
@@ -71,11 +67,11 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
         this.serviceSpec.mattermostLicenseSecret = e.detail.value
     }
 
-
     async begin() {
         // set defaults
         this.edition = this.mediator.applicationSpec.metadata.labels["system.codezero.io/edition"]
-        if (this.edition !== 'latest') throw new Error("Only the latest edition of Mattermost Provisioner allowed to pass")
+        if (this.edition !== 'latest')
+            throw new Error("Only the latest edition of Mattermost Provisioner allowed to pass")
         this.serviceSpec.edition = this.edition
     }
 }
