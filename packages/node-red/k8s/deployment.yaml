@@ -6,6 +6,7 @@ metadata:
   labels:
     role: server
     name: node-red
+    system.codezero.io/app: node-red
 spec:
   selector:
     matchLabels:
