@@ -27,6 +27,7 @@ metadata:
   labels:
     role: system
     app: server
+    system.codezero.io/app: c6o-system
 spec:
   selector:
     matchLabels:
@@ -59,6 +60,7 @@ metadata:
   labels:
     role: system
     app: server
+    system.codezero.io/app: c6o-system
   annotations:
     prometheus.io/scrape: 'true'
 spec:

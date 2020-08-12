@@ -6,6 +6,7 @@ metadata:
   labels:
     role: system
     app: navstation
+    system.codezero.io/app: navstation
 spec:
   selector:
     matchLabels:
@@ -33,6 +34,7 @@ metadata:
     labels:
       role: system
       app: navstation
+      system.codezero.io/app: navstation
 spec:
     ports:
     - port: 80

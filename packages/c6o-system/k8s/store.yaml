@@ -6,6 +6,7 @@ metadata:
   labels:
     role: system
     app: store
+    system.codezero.io/app: store
 spec:
   selector:
     matchLabels:
@@ -33,6 +34,7 @@ metadata:
     labels:
       role: system
       app: store
+      system.codezero.io/app: store
 spec:
     ports:
     - port: 80
