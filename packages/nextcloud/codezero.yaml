@@ -11,8 +11,7 @@ spec:
   marina:
     launch:
       type: inline
-      port: 8080
+      port: 9623
       tag: nextcloud
   provisioner:
-      projects: false
       storage: 2Gi
