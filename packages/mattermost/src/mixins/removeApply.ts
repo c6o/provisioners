@@ -46,8 +46,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                 .deleteFile('../../k8s/full/2-minio-operator.yaml', { namespace })
                 .deleteFile('../../k8s/full/3-mattermost-operator.yaml', { namespace })
                 .deleteFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace })
-                .deleteFile('../../k8s/full/remove-straglers.yaml', { namespace })
-
+                .deleteFile('../../k8s/full/remove-stragglers.yaml', { namespace })
             .end()
 
         // Do not remove the CRDs as there could be other instances of mattermost
