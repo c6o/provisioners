@@ -1,0 +1,49 @@
+{
+  "name": "@provisioner/mosquitto",
+  "version": "0.0.1",
+  "description": "CodeZero provisioner for MQTT (eclipse-mosquitto)",
+  "main": "lib/index.js",
+  "scripts": {
+    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
+    "build": "tsc -b && yarn run bundle",
+    "develop": "tsc -b -w --preserveWatchOutput",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browserslist": [
+    "last 1 chrome version"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c6o/provisioners.git"
+  },
+  "files": [
+    "lib",
+    "k8s"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "codezero",
+    "provisioner",
+    "mqtt",
+    "eclipse",
+    "mosquitto",
+    "eclipse-mosquitto"
+  ],
+  "author": "Rob Chartier",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/c6o/provisioners/issues"
+  },
+  "homepage": "https://github.com/c6o/provisioners#readme",
+  "dependencies": {
+    "@c6o/kubeclient": "^0.0.5",
+    "@provisioner/common": "^0.0.5",
+    "lit-element": "^2.3.1",
+    "mixwith": "^0.1.1",
+    "parcel-bundler": "^1.12.4",
+    "tslib": "^1.11.1"
+  },
+  "gitHead": "db2f853696fe6d336812a46d1cac44855aec9dfa"
+}
