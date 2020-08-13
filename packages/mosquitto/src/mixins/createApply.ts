@@ -26,8 +26,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install mosquitto deployment')
                 .addOwner(this.manager.document)
-                .upsert(this.mySqlConfig)
-                .upsertFile('../../k8s/latest/1-deployment', { namespace })
+                .upsertFile('../../k8s/latest/1-deployment.yaml', { namespace })
             .end()
 
 
@@ -48,7 +47,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureMosquittoIsRunning() {
         await this.manager.cluster.
             begin('Ensure mosquitto services are running')
-                .beginWatch(this.MattermostmosquittoPods)
+                .beginWatch(this.mosquittoPods)
                 .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
                     processor.endWatch()
                 })
