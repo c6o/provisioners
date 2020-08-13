@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/c6o/node-monorepo/compare/v0.0.4...v0.0.5) (2020-08-13)
+
+
+### ✨ Features
+
+* **mattermost-provisioner:** Enable support for latest (cluster) and preview modes for the installer ([#20](https://github.com/c6o/node-monorepo/issues/20)) ([a3a374c](https://github.com/c6o/node-monorepo/commit/a3a374c387314567469dcc86377c0eef1b9ff694))
+
+
+### ♻️ Chores
+
+* **c6o-system:** Upgrade system icon ([#21](https://github.com/c6o/node-monorepo/issues/21)) ([386b237](https://github.com/c6o/node-monorepo/commit/386b2374a08dda1ea1fab1ab2b7ca1e2225bde71))
+* **node-red:** Added app labels ([3dd67df](https://github.com/c6o/node-monorepo/commit/3dd67df32b41bc98c349ef5997453fb8635c45ef))
+* **system:** Added app labels ([5f22610](https://github.com/c6o/node-monorepo/commit/5f226103c6a67253c82964d8b578328731dc0d1b))
+* Updated gitHead ([570855f](https://github.com/c6o/node-monorepo/commit/570855fb1f45f0e051dedccc2acef7b83375ebac))
+
+
+
+
+
 ## [0.0.4](https://github.com/c6o/node-monorepo/compare/v0.0.3...v0.0.4) (2020-08-10)
 
 

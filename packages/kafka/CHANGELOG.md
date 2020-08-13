@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/c6o/provisioners/compare/v0.0.4...v0.0.5) (2020-08-13)
+
+
+### ♻️ Chores
+
+* Updated gitHead ([570855f](https://github.com/c6o/provisioners/commit/570855fb1f45f0e051dedccc2acef7b83375ebac))
+
+
+
+
+
 ## [0.0.4](https://github.com/c6o/provisioners/compare/v0.0.3...v0.0.4) (2020-08-10)
 
 

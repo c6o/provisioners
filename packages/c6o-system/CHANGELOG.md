@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://github.com/c6o/provisioners/compare/v0.0.4...v0.0.5) (2020-08-13)
+
+
+### ♻️ Chores
+
+* **c6o-system:** Upgrade system icon ([#21](https://github.com/c6o/provisioners/issues/21)) ([386b237](https://github.com/c6o/provisioners/commit/386b2374a08dda1ea1fab1ab2b7ca1e2225bde71))
+* **system:** Added app labels ([5f22610](https://github.com/c6o/provisioners/commit/5f226103c6a67253c82964d8b578328731dc0d1b))
+* Updated gitHead ([570855f](https://github.com/c6o/provisioners/commit/570855fb1f45f0e051dedccc2acef7b83375ebac))
+
+
+
+
+
 ## [0.0.4](https://github.com/c6o/provisioners/compare/v0.0.3...v0.0.4) (2020-08-10)
 
 
