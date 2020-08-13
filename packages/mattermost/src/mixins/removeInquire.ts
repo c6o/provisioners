@@ -2,32 +2,30 @@ import { baseProvisionerType } from '../index'
 
 export const removeInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    databaseDeprovisionProvided(answers) { return !!(this.spec.databaseDeprovision || answers.databaseDeprovision) }
-    minioDeprovisionProvided(answers) { return !!(this.spec.minioDeprovision || answers.minioDeprovision) }
+    async removeInquire(args) {
 
-    async removeInquire(answers) {
-
-        if (!this.databaseDeprovisionProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'confirm',
-                name: 'databaseDeprovision',
-                default: false,
-                message: 'Deprovision the database?',
-            })
-
-            this.spec.databaseDeprovision = response?.databaseDeprovision || false
+        // TODO: Implement keep - not sure if we can actually keep the data
+        // https://github.com/c6o/provisioners/issues/25
+        const answers = {
+            keepDatabase: this.spec.keepDatabase || args['keep-db'],
+            keepMino: this.spec.keepMinio || args['keep-minio']
         }
 
-        if (!this.minioDeprovisionProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
-                type: 'confirm',
-                name: 'minioDeprovision',
-                default: false,
-                message: 'Deprovision minio?',
-            })
+        const response = await this.manager.inquirer?.prompt([
+            {
+            type: 'confirm',
+            name: 'keepDatabase',
+            default: false,
+            message: 'Keep the database?',
+        },
+        {
+            type: 'confirm',
+            name: 'keepMino',
+            default: false,
+            message: 'Keep all media files?',
+        }], answers)
 
-            this.spec.minioDeprovision = response?.minioDeprovision || false
-        }
+        this.spec.keepDatabase = response.keepDatabase
+        this.spec.keepMino = response.keepMino
     }
-
 }

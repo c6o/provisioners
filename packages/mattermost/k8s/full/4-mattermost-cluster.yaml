@@ -1,13 +1,5 @@
 # https://github.com/mattermost/mattermost-operator/tree/master/docs/examples
 # https://raw.githubusercontent.com/mattermost/mattermost-operator/master/docs/examples/full.yaml
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: {{namespace}}
-  labels:
-    app.kubernetes.io/managed-by: codezero
-    system.codezero.io/edition: latest
----
 apiVersion: mattermost.com/v1alpha1
 kind: ClusterInstallation
 metadata:

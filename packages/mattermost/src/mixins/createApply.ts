@@ -65,6 +65,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async installMattermostEnterprise() {
         const namespace = this.serviceNamespace
+
         const {
             users,
             mattermostLicenseSecret,
@@ -80,6 +81,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin('Install mysql operator')
                 .addOwner(this.manager.document)
                 .upsert(this.mySqlConfig)
+                .upsertFile('../../k8s/full/1-mysql-crds.yaml')
                 .upsertFile('../../k8s/full/1-mysql-operator.yaml', { namespace, topologyUser, topologyPassword })
             .end()
 
@@ -87,12 +89,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install minio operator')
                 .addOwner(this.manager.document)
+                .upsertFile('../../k8s/full/2-minio-crds.yaml')
                 .upsertFile('../../k8s/full/2-minio-operator.yaml', { namespace })
             .end()
 
         await this.manager.cluster
             .begin('Install mattermost operator')
                 .addOwner(this.manager.document)
+                .upsertFile('../../k8s/full/3-mattermost-crds.yaml')
                 .upsertFile('../../k8s/full/3-mattermost-operator.yaml', { namespace })
             .end()
 
