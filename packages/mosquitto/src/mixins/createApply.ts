@@ -1,5 +1,4 @@
 import { baseProvisionerType } from '../index'
-import { Buffer } from 'buffer'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     get mosquittoPods() {

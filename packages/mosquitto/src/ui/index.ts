@@ -1,5 +1,4 @@
 import { LitElement, html, customElement } from 'lit-element'
-import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('mosquitto-install-main')
@@ -28,7 +27,6 @@ export class MosquittoSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
         // set defaults
-        debugger
         const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
         this.serviceSpec.edition = edition
     }
