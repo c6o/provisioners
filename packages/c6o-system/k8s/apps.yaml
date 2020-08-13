@@ -1,0 +1,59 @@
+
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+    name: marina
+    namespace: c6o-system
+    annotations:
+      system.codezero.io/display: Marina
+      system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/marina/icon'
+spec:
+  marina:
+    launch:
+      service: system-marina
+  provisioner: ignore
+status: Running
+---
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: store
+  namespace: c6o-system
+  annotations:
+    system.codezero.io/display: Store
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/store/icon'
+spec:
+  marina:
+    launch:
+      type: inline
+      tag: c6o-store-app
+      api: true
+      path: /store/
+    menus:
+      - type: apps
+        display: Uninstall...
+        action: uninstall
+  provisioner: ignore
+status: Running
+---
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: navstation
+  namespace: c6o-system
+  annotations:
+    system.codezero.io/display: Nav Station
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/navstation/icon'
+spec:
+  marina:
+    launch:
+      type: inline
+      tag: c6o-navstation-app
+      api: true
+      path: /navstation/
+    menus:
+      - type: apps
+        display: Settings...
+        action: settings
+  provisioner: ignore
+status: Running

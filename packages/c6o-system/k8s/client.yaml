@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: system-client
+  namespace: c6o-system
+spec:
+  containers:
+  - name: system-client
+    image: c6oio/system-client:canary
+    imagePullPolicy: Always

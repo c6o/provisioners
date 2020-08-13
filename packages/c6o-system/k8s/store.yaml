@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: c6o-system
+  name: system-store
+  labels:
+    role: system
+    app: store
+    system.codezero.io/app: store
+spec:
+  selector:
+    matchLabels:
+      role: system
+      app: store
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: system
+        app: store
+    spec:
+      containers:
+      - name: system-store
+        image: c6oio/system-store:{{tag}}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: c6o-system
+    name: system-store
+    labels:
+      role: system
+      app: store
+      system.codezero.io/app: store
+spec:
+    ports:
+    - port: 80
+      name: http
+    type: NodePort
+    selector:
+      role: system
+      app: store

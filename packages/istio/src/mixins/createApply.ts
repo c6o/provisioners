@@ -43,7 +43,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             kind: 'Secret',
             type: 'kubernetes.io/tls',
             metadata: {
-                name: 'traxitt-system-certificate-tls',
+                name: 'c6o-system-certificate-tls',
                 namespace: 'cert-manager'
             }
         }
@@ -63,7 +63,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const istioNamespace = this.spec.namespace || 'istio-system'
 
         await this.manager.cluster
-            .begin(`Install resource definitions`)
+            .begin('Install resource definitions')
                 .upsertFile('../../k8s/crds.yaml', { istioNamespace })
             .end()
     }
@@ -142,7 +142,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .begin('Install Grafana')
                     .upsertFile('../../k8s/grafana.yaml', { istioNamespace })
                 .end()
-                
+
         if (kialiEnabled)
             await this.manager.cluster
                 .begin('Install Kiali')

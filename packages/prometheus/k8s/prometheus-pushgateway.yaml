@@ -6,7 +6,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-pushgateway
@@ -19,7 +19,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-pushgateway
@@ -35,7 +35,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-pushgateway
@@ -60,7 +60,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-pushgateway
@@ -74,7 +74,7 @@ spec:
   selector:
     component: "pushgateway"
     app: prometheus
-    release: traxitt
+    release: codezero
   type: "ClusterIP"
 
 ---
@@ -85,7 +85,7 @@ metadata:
   labels:
     component: "pushgateway"
     app: prometheus
-    release: traxitt
+    release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
   name: prometheus-pushgateway
@@ -95,14 +95,14 @@ spec:
     matchLabels:
       component: "pushgateway"
       app: prometheus
-      release: traxitt
+      release: codezero
   replicas: 1
   template:
     metadata:
       labels:
         component: "pushgateway"
         app: prometheus
-        release: traxitt
+        release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
     spec:

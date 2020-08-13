@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: c6o-ssl-setup
+  namespace: c6o-system
+spec:
+  backoffLimit: {{backoffLimit}}
+  ttlSecondsAfterFinished: 0
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: c6o-ssl-setup
+        image: c6oio/jobs-c6o-ssl:{{tag}}
+        imagePullPolicy: Always
+        command: ["node",  "./lib/index.js"]
+        env:
+          - name: HUB_SERVER_URL
+            value: '{{hubServerURL}}'
+          - name: CLUSTER_ID
+            value: '{{clusterId}}'
+          - name: CLUSTER_KEY
+            value: '{{clusterKey}}'
+          - name: ACCOUNT_NAME
+            value: '{{accountName}}'
+          - name: DEBUG
+            value: '*,-engine*,-nodemon*,-*expo*,-babel*,-winston*'

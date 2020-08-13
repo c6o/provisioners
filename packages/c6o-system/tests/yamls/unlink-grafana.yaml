@@ -1,0 +1,7 @@
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: c6o-system
+  namespace: c6o-system
+provisioner:
+  grafana-link: '$unset'

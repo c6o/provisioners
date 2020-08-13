@@ -1,8 +1,0 @@
-
-apiVersion: system.traxitt.com/v1
-kind: OAuth
-metadata:
-  name: codezero
-  annotations:
-    system.traxitt.com/display: CodeZero
-    system.traxitt.com/iconUrl: '{{hubServerURL}}/api/assets/oauth/codezero/icon'

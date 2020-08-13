@@ -1,0 +1,10 @@
+
+apiVersion: system.codezero.io/v1
+kind: Dock
+metadata:
+  name: default
+apps:
+  - name: store
+    namespace: c6o-system
+  - name: navstation
+    namespace: c6o-system

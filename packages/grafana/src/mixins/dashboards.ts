@@ -17,8 +17,8 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     removeDatasources = []
 
     apiConfigMapAppMetadata = (appNamespace: string, appName: string) => ({
-        'system.traxitt.com/app-name': appName,
-        'system.traxitt.com/app-namespace': appNamespace
+        'system.codezero.io/app-name': appName,
+        'system.codezero.io/app-namespace': appNamespace
     })
 
     apiDashboardConfigMap(dashboardName: string, dashboardSpec?: string) {
@@ -28,7 +28,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
                 namespace: this.runningDeployment.metadata.namespace,
                 name: `${this.appNamespace}-${this.appName}-${dashboardName}`,
                 labels: {
-                    'system.traxitt.com/managed-by': 'grafana',
+                    'system.codezero.io/managed-by': 'grafana',
                     ...this.apiConfigMapAppMetadata(this.appNamespace, this.appName)
                 }
             }
@@ -54,9 +54,9 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     /**
      * Clear configuration from all grafanas installed for specified
      * application and namespace
-     * 
-     * @param appNamespace 
-     * @param appName 
+     *
+     * @param appNamespace
+     * @param appName
      */
     async clearConfig(namespace: string, appNamespace: string, appName: string) {
 
@@ -91,10 +91,10 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
     /**
      * Remove all dashboards and data sources added by an app
-     * 
-     * @param deploymentItem 
-     * @param appNamespace 
-     * @param appName 
+     *
+     * @param deploymentItem
+     * @param appNamespace
+     * @param appName
      */
     async removeFoldersDataSources(namespace: string, appNamespace, appName) {
 

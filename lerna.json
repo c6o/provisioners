@@ -2,12 +2,14 @@
   "packages": [
     "packages/**"
   ],
-  "version": "0.0.2",
+  "version": "0.0.5",
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
     "version": {
       "allowBranch": "develop",
+      "changelogPreset": "metahub",
+      "message": "chore(release): %s",
       "conventionalCommits": true,
       "createRelease": "github"
     }

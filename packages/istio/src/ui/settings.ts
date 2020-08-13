@@ -1,10 +1,12 @@
-import { LitElement, html, customElement, property } from 'lit-element'
-import { unlinkToken } from '../constants'
+import { LitElement, html, customElement, property, css, CSSResult } from 'lit-element'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
+import { unlinkToken } from '@provisioner/istio/src/constants'
 
 @customElement('istio-settings-main')
 export class IstioSettings extends LitElement {
     api
+    choicesService
+    disposer
 
     @property({ type: Object })
     grafanaNamespace
@@ -27,48 +29,130 @@ export class IstioSettings extends LitElement {
     @property({ type: Boolean })
     loaded = false
 
-    choicesService
-    disposer
+    static get styles(): CSSResult[] | CSSResult {
+        return css`
+            .inline {
+                margin-left: var(--md-spacing);
+                width: auto !important;
+            }
+
+            h3 {
+                color: var(--color-navy);
+                margin-block-start: 0;
+            }
+
+            .btn-footer {
+                border-top: 1px solid var(--color-wind);
+                display: flex;
+                justify-content: space-between;
+                margin-top: var(--md-spacing);
+                padding-top: var(--md-spacing);
+            }
+
+            hr {
+                margin-bottom: var(--xl-spacing);
+                border: 0;
+                border-top: 1px solid var(--color-wind);
+            }
+        `
+    }
 
     get grafanaComboBox() { return this.shadowRoot.querySelector('#grafana-combo-box') as ComboBoxElement }
     get prometheusComboBox() { return this.shadowRoot.querySelector('#prometheus-combo-box') as ComboBoxElement }
 
     render() {
         if (!this.loaded)
-            return html`Loading...`
+            return html`<c6o-loading></c6o-loading>`
 
         return html`
-            ${this.renderPrometheusLink()}
-            <hr />
-            ${this.renderGrafanaLink()}
-            <hr />
-            <traxitt-checkbox @checked-changed=${this.httpsRedirectChanged} ?disabled=${this.busy} ?checked=${this.httpsRedirect}>Enable https redirect</traxitt-checkbox>
-            <traxitt-button @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</traxitt-button>
-            <traxitt-button @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</traxitt-button>
-            `
+            <div id="prometheus">
+                ${this.renderPrometheusLink()}
+            </div>
+            <div id="grafana">
+                ${this.renderGrafanaLink()}
+            </div>
+            <c6o-checkbox
+                @checked-changed=${this.httpsRedirectChanged}
+                ?disabled=${this.busy}
+                ?checked=${this.httpsRedirect}>
+                Enable https redirect
+            </c6o-checkbox>
+            <div class="btn-footer">
+                <c6o-button theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</c6o-button>
+                <c6o-button theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</c6o-button>
+            </div>
+        `
     }
 
     renderGrafanaLink() {
         if (this.grafanaNamespace !== unlinkToken)
             return html`
-            <traxitt-button @click=${this.unlinkGrafana} ?disabled=${this.busy}>Unlink Grafana in ${this.grafanaNamespace}</traxitt-button>
-          `
+                <c6o-form-layout>
+                    <h3>Grafana Linked</h3>
+                    <c6o-button
+                        class="inline"
+                        theme="tertiary"
+                        @click=${this.unlinkGrafana}
+                        ?disabled=${this.busy}>
+                        Unlink Grafana in ${this.grafanaNamespace}
+                    </c6o-button>
+                </c6o-form-layout>
+            `
+
         return html`
-            <traxitt-combo-box id='grafana-combo-box' label='Select Grafana Installation'
-                required value=${this.grafanaOptions[0]} .items=${this.grafanaOptions} ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }></traxitt-combo-box>
-            <traxitt-button @click=${this.linkGrafana} ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>Link Grafana</traxitt-button>
+            <c6o-form-layout>
+                <c6o-combo-box
+                    id='grafana-combo-box'
+                    label='Select Grafana Installation'
+                    required
+                    value=${this.grafanaOptions[0]}
+                    .items=${this.grafanaOptions}
+                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }
+                ></c6o-combo-box>
+                <c6o-button
+                    class="inline"
+                    theme="tertiary"
+                    @click=${this.linkGrafana}
+                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>
+                    Link Grafana
+                </c6o-button>
+            </c6o-form-layout>
         `
     }
 
     renderPrometheusLink() {
         if (this.prometheusNamespace !== unlinkToken)
             return html`
-            <traxitt-button @click=${this.unlinkPrometheus} ?disabled=${this.busy}>Unlink Prometheus in ${this.prometheusNamespace}</traxitt-button>
-          `
+                <c6o-form-layout>
+                    <h3>Prometheus Linked</h3>
+                    <c6o-button
+                        class="inline"
+                        theme="tertiary"
+                        @click=${this.unlinkPrometheus}
+                        ?disabled=${this.busy}>
+                        Unlink Prometheus in ${this.prometheusNamespace}
+                    </c6o-button>
+                </c6o-form-layout>
+            `
 
         return html`
-          <traxitt-combo-box id='prometheus-combo-box' label='Select Prometheus Installation' required value=${this.prometheusOptions[0]} .items=${this.prometheusOptions} ?disabled=${this.busy}></traxitt-combo-box>
-          <traxitt-button @click=${this.linkPrometheus} ?disabled=${this.busy}>Link Prometheus</traxitt-button>
+            <c6o-form-layout>
+                <c6o-combo-box
+                    id='prometheus-combo-box'
+                    label='Select Prometheus Installation'
+                    required
+                    value=${this.prometheusOptions[0]}
+                    .items=${this.prometheusOptions}
+                    ?disabled=${this.busy}
+                ></c6o-combo-box>
+                <c6o-button
+                    class="inline"
+                    theme="tertiary"
+                    @click=${this.linkPrometheus}
+                    ?disabled=${this.busy}>
+                    Link Prometheus
+                </c6o-button>
+            </c6o-form-layout>
         `
     }
 

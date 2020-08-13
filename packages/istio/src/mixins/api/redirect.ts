@@ -16,20 +16,20 @@ export const httpsRedirectApiMixin = (base: baseProvisionerType) => class extend
         }
     }
 
-    traxittGateway = {
+    gateway = {
         apiVersion: 'networking.istio.io/v1alpha3',
         kind: 'Gateway',
         metadata: {
-            name: 'traxitt-system-marina-gateway',
+            name: 'c6o-system-marina-gateway',
             namespace: 'istio-system'
         }
     }
 
     async findGateway() {
-        return await this.manager.cluster.read(this.traxittGateway)
+        return await this.manager.cluster.read(this.gateway)
     }
 
     async setHttpsRedirect(enable) {
-        return await this.manager.cluster.patch(this.traxittGateway, [{ 'op': 'replace', 'path': '/spec/servers/0/tls/httpsRedirect', 'value': enable}])
+        return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': '/spec/servers/0/tls/httpsRedirect', 'value': enable}])
     }
 }

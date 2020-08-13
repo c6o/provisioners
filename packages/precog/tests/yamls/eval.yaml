@@ -70,7 +70,7 @@ spec:
 #   namespace: demo
 # spec:
 #   gateways:
-#   - traxitt-system/system-gateway
+#   - c6o-system/system-gateway
 #   hosts:
 #   - '*'
 #   http:

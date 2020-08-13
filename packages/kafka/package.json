@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/kafka",
-  "version": "0.0.2",
-  "description": "Traxitt provisioner for kafka",
+  "version": "0.0.5",
+  "description": "CodeZero provisioner for kafka",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -b",
@@ -10,29 +10,30 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/traxitt/node-monorepo.git"
+    "url": "git+https://github.com/c6o/provisioners.git"
   },
   "files": [
     "lib",
     "k8s"
   ],
   "publishConfig": {
-    "access": "private"
+    "access": "public"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "kafka"
   ],
   "author": "Mike Blackstock",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/traxitt/node-monorepo/issues"
+    "url": "https://github.com/c6o/provisioners/issues"
   },
-  "homepage": "https://github.com/traxitt/node-monorepo#readme",
+  "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.2",
-    "@traxitt/kubeclient": "^0.0.4",
+    "@c6o/kubeclient": "^0.0.5",
+    "@provisioner/common": "^0.0.5",
     "mixwith": "^0.1.1"
-  }
+  },
+  "gitHead": "db2f853696fe6d336812a46d1cac44855aec9dfa"
 }

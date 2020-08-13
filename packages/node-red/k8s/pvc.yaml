@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: node-red-pvc
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: node-red
 spec:
   accessModes:
   - ReadWriteOnce

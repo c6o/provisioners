@@ -12,27 +12,30 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
 
     render() {
         return html`
-            <traxitt-form-layout>
-                <traxitt-storage-class
-                    id='storageClass'
-                    @selected-item-changed=${this.storageClassSelected}
-                    required                    
-                    label='Storage Class'></traxitt-storage-class>
-                <br />
-                <traxitt-combo-box @selected-item-changed=${this.storageSelected} label='Log Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></traxitt-combo-box>
-                <br />
-                <traxitt-text-field @input=${this.k8sLogIndexPrefixChanged} label="Kubernetes log index prefix?" path="k8sLogIndexPrefix" autoselect required></traxitt-text-field>
-            </traxitt-form-layout>
+            <c6o-form-layout>
+                <c6o-combo-box
+                    allow-custom-value
+                    colspan="2"
+                    label='Log Storage' value=${this.serviceSpec.storage}
+                    required
+                    .items=${this.values}
+                    @selected-item-changed=${this.storageSelected}
+                ></c6o-combo-box>
+                <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Kubernetes log index prefix?"
+                    path="k8sLogIndexPrefix"
+                    required
+                    @input=${this.k8sLogIndexPrefixChanged}
+                ></c6o-text-field>
+            </c6o-form-layout>
         `
     }
 
     async begin() {
         this.serviceSpec.storage = this.serviceSpec.storage || '1Gi'
         this.serviceSpec.k8sLogIndexPrefix = this.serviceSpec.k8sLogIndexPrefix || 'cloud'
-    }
-
-    storageClassSelected = (e) => {
-        this.serviceSpec.storageClass = e.detail.value
     }
 
     storageSelected = (e) => {

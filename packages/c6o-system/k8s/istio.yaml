@@ -1,0 +1,11 @@
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: istio
+  namespace: istio-system
+  annotations:
+    system.codezero.io/display: Istio
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/istio/icon'
+spec:
+  navstation: true
+status: Running

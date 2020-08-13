@@ -1,7 +1,7 @@
 {
   "name": "@provisioner/node-red",
-  "version": "0.0.2",
-  "description": "Traxitt provisioner for node-red",
+  "version": "0.0.5",
+  "description": "CodeZero provisioner for node-red",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -14,32 +14,33 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/traxitt/traxitt.git"
+    "url": "git+https://github.com/c6o/provisioners.git"
   },
   "files": [
     "lib",
     "k8s"
   ],
   "publishConfig": {
-    "access": "private"
+    "access": "public"
   },
   "keywords": [
-    "traxitt",
+    "codezero",
     "provisioner",
     "node-red"
   ],
   "author": "Mike Blackstock",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/traxitt/node-monorepo/issues"
+    "url": "https://github.com/c6o/provisioners/issues"
   },
-  "homepage": "https://github.com/traxitt/node-monorepo#readme",
+  "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.2",
-    "@traxitt/kubeclient": "^0.0.4",
-    "lit-element": "^2.2.1",
+    "@c6o/kubeclient": "^0.0.5",
+    "@provisioner/common": "^0.0.5",
+    "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",
     "tslib": "^1.10.0"
-  }
+  },
+  "gitHead": "db2f853696fe6d336812a46d1cac44855aec9dfa"
 }

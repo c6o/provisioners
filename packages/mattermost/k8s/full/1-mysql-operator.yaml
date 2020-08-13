@@ -1,0 +1,277 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-operator-orc
+  namespace: {{namespace}}
+  labels:
+    app: mysql-operator
+    release: mysql-operator
+data:
+  TOPOLOGY_USER: {{topologyUser}}
+  TOPOLOGY_PASSWORD: {{topologyPassword}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mysql-operator
+  namespace: {{namespace}}
+  labels:
+    app: mysql-operator
+    release: mysql-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app: 'mysql-operator'
+    release: 'mysql-operator'
+  name: 'mysql-operator'
+rules:
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - mysql.presslabs.org
+  resources:
+  - mysqlbackups
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - secrets
+  - services
+  - events
+  - jobs
+  - pods
+  - persistentvolumeclaims
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - mysql.presslabs.org
+  resources:
+  - mysqlclusters
+  - mysqlclusters/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - policy
+  resources:
+  - poddisruptionbudgets
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - pods/status
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: mysql-operator
+  labels:
+    app: mysql-operator
+    release: mysql-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: mysql-operator
+subjects:
+  - name: mysql-operator
+    namespace: {{namespace}}
+    kind: ServiceAccount
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-operator-0-svc
+  namespace: {{namespace}}
+  labels:
+    app: mysql-operator
+    release: mysql-operator
+    system.codezero.io/app: mattermost
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  type: ClusterIP
+  ports:
+  - name: web
+    port: 80
+    targetPort: 3000
+  - name: raft
+    port: 10008
+    targetPort: 10008
+  selector:
+    statefulset.kubernetes.io/pod-name: mysql-operator-0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-operator
+  namespace: {{namespace}}
+  labels:
+    app: mysql-operator
+    release: mysql-operator
+    system.codezero.io/app: mattermost
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql-operator
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 3000
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-operator
+  namespace: {{namespace}}
+  labels:
+    app: mysql-operator
+    release: mysql-operator
+    system.codezero.io/app: mattermost
+spec:
+  replicas: 1
+  serviceName: mysql-operator-orc
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      app: mysql-operator
+      release: mysql-operator
+  template:
+    metadata:
+      labels:
+        app: mysql-operator
+        release: mysql-operator
+      annotations:
+        checksum/config: 4b7db0b6281fab87fd1fe282fa4f2f521dbcb5a9486a7589396701e825a9fbb9
+        checksum/secret: cf656f56e9efe9eaab93bc378aa1783d4ac5585ec82b5a5f5380c1c228cb5f02
+    spec:
+      serviceAccountName: mysql-operator
+      containers:
+        - name: operator
+          image: "quay.io/presslabs/mysql-operator:0.4.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ORC_TOPOLOGY_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-operator-orc
+                  key: TOPOLOGY_USER
+            - name: ORC_TOPOLOGY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-operator-orc
+                  key: TOPOLOGY_PASSWORD
+          args:
+            - --leader-election-namespace={{namespace}}
+            # connect to orchestrator on localhost
+            - --orchestrator-uri=http://127.0.0.1:3000/api
+            - --sidecar-image=quay.io/presslabs/mysql-operator-sidecar:0.4.0
+        - name: orchestrator
+          image: quay.io/presslabs/mysql-operator-orchestrator:0.4.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: web
+              protocol: TCP
+            - containerPort: 10008
+              name: raft
+              protocol: TCP
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          envFrom:
+            - prefix: ORC_
+              secretRef:
+                name: mysql-operator-orc
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/orchestrator/
+            - name: config
+              mountPath: /templates/
+          livenessProbe:
+            timeoutSeconds: 10
+            initialDelaySeconds: 200
+            httpGet:
+              path: /api/lb-check
+              port: 3000
+          # https://github.com/github/orchestrator/blob/master/docs/raft.md#proxy-healthy-raft-nodes
+          readinessProbe:
+            timeoutSeconds: 10
+            httpGet:
+              path: /api/raft-health
+              port: 3000
+      volumes:
+        - name: config
+          configMap:
+            name: mysql-operator-orc
+      # security context to mount corectly the volume for orc
+      securityContext:
+        fsGroup: 777
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ ReadWriteOnce ]
+        resources:
+          requests:
+            storage: 10Gi

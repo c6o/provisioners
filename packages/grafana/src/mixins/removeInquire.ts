@@ -8,7 +8,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
             metadata: {
                 namespace,
                 labels: {
-                    'system.traxitt.com/managed-by': 'grafana'
+                    'system.codezero.io/managed-by': 'grafana'
                 }
             }
         }

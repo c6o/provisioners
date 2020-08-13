@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: system-server-config
+  namespace: c6o-system
+data:
+  DEBUG: '*,-engine*,-nodemon*,-*expo*,-babel*,-winston*,-elasticsearch*'
+  PORT: '3050'
+  HOST: '{{host}}'
+  CLUSTER_ID: '{{clusterId}}'
+  HUB_SERVER_URL: '{{hubServerURL}}'
+  SYSTEM_OAUTH_REDIRECT: '{{systemServerURL}}'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: system-server-secrets
+  namespace: c6o-system
+data:
+  CLUSTER_KEY: '{{clusterKey}}'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: 'c6o-system'
+  name: system-server
+  labels:
+    role: system
+    app: server
+    system.codezero.io/app: c6o-system
+spec:
+  selector:
+    matchLabels:
+      role: system
+      app: server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: system
+        app: server
+    spec:
+      containers:
+      - name: system-server
+        imagePullPolicy: Always
+        image: c6oio/system-server:{{tag}}
+        envFrom:
+          - configMapRef:
+              name: system-server-config
+          - secretRef:
+              name: system-server-secrets
+        ports:
+          - containerPort: 3050
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: 'c6o-system'
+  name: system-server
+  labels:
+    role: system
+    app: server
+    system.codezero.io/app: c6o-system
+  annotations:
+    prometheus.io/scrape: 'true'
+spec:
+  selector:
+    role: system
+    app: server
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3050
+    protocol: TCP
+  type: NodePort

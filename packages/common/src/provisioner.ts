@@ -29,8 +29,10 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
     // Has other API functions
     [key: string]: any
-    
+
     help (command: string, options: optionFunctionType, messages: string[]) {}
+
+    get edition(): string { return this.manager?.document?.metadata?.labels['system.codezero.io/edition'] }
 
     serve(req, res, serverRoot = 'lib/ui') {
         const root = path.resolve(this.moduleLocation, serverRoot)
@@ -65,14 +67,14 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
         throw Error('Function not found')
     }
-    
+
     async readFile(...args: string[]): Promise<string> {
         const buffer = await fs.readFile(path.resolve(...args))
         return buffer.toString('utf-8')
     }
 
     toTask = (namespace, ask: string, spec: any) => ({
-        apiVersion: 'system.traxitt.com/v1',
+        apiVersion: 'system.codezero.io/v1',
         kind: 'Task',
         metadata: {
             namespace,

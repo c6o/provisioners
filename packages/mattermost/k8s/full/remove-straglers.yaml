@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{namespace}}
+  name: mysql
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: {{namespace}}
+  name: mattermost-cluster-mysql-root-password
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{namespace}}
+  name: mysql-operator-leader-election
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{namespace}}
+  name: mysql-operator-orc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-mysql-operator-0
+  namespace: {{namespace}}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mattermost-cluster-minio-mattermost-cluster-minio-0
+  namespace: {{namespace}}

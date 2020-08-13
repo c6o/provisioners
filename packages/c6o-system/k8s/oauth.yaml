@@ -1,0 +1,8 @@
+
+apiVersion: system.codezero.io/v1
+kind: OAuth
+metadata:
+  name: codezero
+  annotations:
+    system.codezero.io/display: CodeZero
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/oauth/codezero/icon'

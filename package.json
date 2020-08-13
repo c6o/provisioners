@@ -4,7 +4,7 @@
   "workspaces": [
     "packages/istio/",
     "packages/etcd-operator/",
-    "packages/traxitt-system/",
+    "packages/c6o-system/",
     "packages/rabbitmq/",
     "packages/vscode/",
     "packages/common/",
@@ -23,6 +23,7 @@
   "scripts": {
     "clean": "del packages/**/lib && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean",
     "build": "lerna run build --stream",
+    "develop": "lerna run develop --parallel --stream",
     "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
     "release": "lerna version",
     "publish": "git checkout main && git merge --no-ff"

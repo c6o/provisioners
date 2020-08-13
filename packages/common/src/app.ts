@@ -1,4 +1,4 @@
-import { KubeDocument } from '@traxitt/kubeclient'
+import { KubeDocument } from '@c6o/kubeclient'
 
 export interface MenuItems {
     type: string,
@@ -67,8 +67,6 @@ export const AppStatuses = {
 
 export class AppObject {
 
-    constructor(public document) { }
-
     _services
 
     get services() {
@@ -97,10 +95,12 @@ export class AppObject {
         return !!this.document.metadata.uid
     }
 
+    constructor(public document) { }
+
     getAppEdition() {
-        return this.document.metadata.labels?.['system.traxitt.com/edition'] || 'latest'
+        return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
     }
-    
+
     getAppName() {
         return this.document.metadata.name
     }

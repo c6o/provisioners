@@ -1,0 +1,35 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: c6o-ssl-recurring
+  namespace: c6o-system
+  labels:
+    role: 'system'
+spec:
+  schedule: '{{schedule}}'
+  concurrencyPolicy: 'Replace'
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: {{backoffLimit}}
+      ttlSecondsAfterFinished: 0
+      template:
+        spec:
+          restartPolicy: 'Never'
+          containers:
+          - name: certificate
+            image: c6oio/jobs-c6o-ssl:{{tag}}
+            imagePullPolicy: Always
+            command: ["node",  "./lib/index.js"]
+            env:
+              - name: HUB_SERVER_URL
+                value: '{{hubServerURL}}'
+              - name: CLUSTER_KEY
+                value: '{{clusterKey}}'
+              - name: CLUSTER_ID
+                value: '{{clusterId}}'
+              - name: ACCOUNT_NAME
+                value: '{{accountName}}'
+              - name: DEBUG
+                value: '*,-engine*,-nodemon*,-*expo*,-babel*,-winston*'
