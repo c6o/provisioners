@@ -61,8 +61,8 @@ metadata:
     app: mysql-operator
     release: mysql-operator
 data:
-  TOPOLOGY_USER: "b3JjaGVzdHJhdG9y"
-  TOPOLOGY_PASSWORD: "YW1QZHlGN1VmRA=="
+  TOPOLOGY_USER: {{topologyUser}}
+  TOPOLOGY_PASSWORD: {{topologyPassword}}
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -271,7 +271,7 @@ spec:
                   name: mysql-operator-orc
                   key: TOPOLOGY_PASSWORD
           args:
-            - --leader-election-namespace=mysql-operator
+            - --leader-election-namespace={{namespace}}
             # connect to orchestrator on localhost
             - --orchestrator-uri=http://127.0.0.1:3000/api
             - --sidecar-image=quay.io/presslabs/mysql-operator-sidecar:0.4.0

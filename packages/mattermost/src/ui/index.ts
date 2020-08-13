@@ -5,11 +5,9 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 export class MattermostSettings extends LitElement implements StoreFlowStep {
     mediator: StoreFlowMediator
 
-    storageSizeChoices = ['5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
     //these choices are based on the mattermost enterprise operator/deployment
+    storageSizeChoices = ['5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
     userCountChoices = [100, 1000, 5000, 10000, 25000]
-
-    edition = 'latest'
 
     get serviceSpec() {
         return this.mediator.getServiceSpec('mattermost')
@@ -69,9 +67,9 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
         // set defaults
-        this.edition = this.mediator.applicationSpec.metadata.labels["system.codezero.io/edition"]
-        if (this.edition !== 'latest')
-            throw new Error("Only the latest edition of Mattermost Provisioner allowed to pass")
-        this.serviceSpec.edition = this.edition
+        const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
+        if (edition !== 'latest')
+            throw new Error('Only the latest edition of Mattermost Provisioner allowed to pass')
+        this.serviceSpec.edition = edition
     }
 }
