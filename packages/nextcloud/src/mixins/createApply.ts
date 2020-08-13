@@ -39,7 +39,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         // Install NextCloud
                         processor
                             .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
-                            .upsertFile('../../k8s/secrets.yaml', { namespace, adminUsername, adminPassword })
+                            .upsertFile('../../k8s/secrets.yaml', { namespace, adminUsername: Buffer.from(adminUsername).toString('base64'), adminPassword: Buffer.from(adminPassword).toString('base64') })
                             .upsertFile('../../k8s/deployment.yaml', { namespace, hostname })
                             .upsertFile('../../k8s/service.yaml', { namespace })
                     }

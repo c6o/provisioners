@@ -4,7 +4,9 @@ metadata:
   name: nextcloud
   namespace: '{{namespace}}'
   labels:
+    role: server
     name: nextcloud
+    system.codezero.io/app: nextcloud
 spec:
   replicas: 1
   strategy:

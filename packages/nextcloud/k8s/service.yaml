@@ -5,13 +5,14 @@ metadata:
   name: nextcloud
   namespace: '{{namespace}}'
   labels:
+    role: server
     name: nextcloud
+    system.codezero.io/app: nextcloud
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-  - port: 8080
-    targetPort: http
-    protocol: TCP
+  - port: 80
+    targetPort: 80
     name: http
   selector:
     name: nextcloud

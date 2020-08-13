@@ -22,23 +22,19 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             choices: this.storageChoices,
             default: '2Gi'
         },{
-            type: 'domain',
-            name: 'adminUsername',
-            message: 'What is the admin username?',
-            choices: this.storageChoices,
-            default: 'admin'
-        },{
-            type: 'domain',
-            name: 'adminPassword',
-            message: 'What is the admin password?',
-            choices: this.storageChoices,
-            default: 'admin'
-        },{
-            type: 'domain',
+            type: 'input',
             name: 'hostname',
-            message: 'What is the domain name for your NextCloud?',
-            choices: this.storageChoices,
-            default: ''
+            message: 'What will be the domain name for your NextCloud?',
+            default: 'example.com'
+        },{
+            type: 'input',
+            name: 'adminUsername',
+            message: 'Set an initial admin username:',
+            default: 'admin'
+        },{
+            type: 'password',
+            name: 'adminPassword',
+            message: 'Set an initial admin password:',
         }], answers)
 
         return responses
@@ -49,7 +45,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         this.spec.storageClass = results.storageClass
         this.spec.storage = results.storage
-        this.spec.adminUsername = results.adminPassword
         this.spec.hostname = results.hostname
+        this.spec.adminUsername = results.adminUsername
+        this.spec.adminPassword = results.adminPassword
     }
 }

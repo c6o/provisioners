@@ -5,6 +5,7 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     name: nextcloud
+    system.codezero.io/app: nextcloud
 spec:
   accessModes:
   - ReadWriteOnce
