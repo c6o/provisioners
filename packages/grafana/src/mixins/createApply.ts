@@ -22,7 +22,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureGrafanaIsInstalled() {
 
-        const namespace = this.serviceNamespace        
+        const namespace = this.serviceNamespace
         const {
             storageClass,
             storage,
