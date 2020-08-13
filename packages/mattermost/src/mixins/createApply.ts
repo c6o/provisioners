@@ -48,8 +48,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.ensureMattermostIsRunning()
     }
 
-    get isPreview() { return this.manager.document.metadata.labels['system.codezero.io/edition'] === 'preview' }
-
     installMattermost = async () =>
         this.isPreview ?
             this.installMattermostPreview() :
@@ -57,19 +55,17 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async installMattermostPreview() {
         const namespace = this.serviceNamespace
-        const name = this.spec.name
 
         await this.manager.cluster
             .begin('Installing mattermost preview edition')
                 .addOwner(this.manager.document)
-                .upsertFile('../../k8s/preview/preview.yaml', { namespace, name })
+                .upsertFile('../../k8s/preview/preview.yaml', { namespace })
             .end()
     }
 
     async installMattermostEnterprise() {
         const namespace = this.serviceNamespace
         const {
-            name,
             users,
             mattermostLicenseSecret,
             databaseStorageSize,
@@ -103,7 +99,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install mattermost cluster')
                 .addOwner(this.manager.document)
-                .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, name, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
+                .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
             .end()
     }
 

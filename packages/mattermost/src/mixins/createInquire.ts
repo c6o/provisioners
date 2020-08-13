@@ -3,72 +3,57 @@ import { baseProvisionerType } from '../index'
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     storageSizeChoices = ['2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
-    //these choices are based on the mattermost enterprise operator/deployment
     userCountChoices = [100, 1000, 5000, 10000, 25000]
 
-    async createInquire(answers) {
+    async createInquire(args) {
+        if (!this.isPreview) {
 
-        const edition = this.manager.document.metadata.labels["system.codezero.io/edition"];
-        const isLatest = (edition === 'latest')
-
-        if (isLatest) {
-
-            //load spec with our default values
-            //keep in mind that the default values for lists do NOT show in the UI as you would expect, at least the CLI UI.
-            this.spec.users = answers.users || this.spec.users || 5000
-            this.spec.mattermostLicenseSecret = answers.mattermostLicenseSecret || this.spec.mattermostLicenseSecret || ''
-            this.spec.databaseStorageSize = answers.databaseStorageSize || this.spec.databaseStorageSize || '2Gi'
-            this.spec.minioStorageSize = answers.minioStorageSize || this.spec.minioStorageSize || '2Gi'
-
-            //inquire for our values.
-            //if we have a value already in answers, skip asking --> these were provided by the customer directly
-            //https://www.npmjs.com/package/inquirer
-            if (!answers.users) {
-                this.spec.users = (await this.manager.inquirer?.prompt(
-                    {
-                        type: 'list',
-                        name: 'users',
-                        choices: this.userCountChoices,
-                        default: 100, //if no answer
-                        message: 'Expected users count (100)?'
-                    })).users
+            const answers = {
+                users: args.users || this.spec.users,
+                mattermostLicenseSecret: args.mattermostLicenseSecret || this.spec.mattermostLicenseSecret,
+                databaseStorageSize: args.databaseStorageSize || this.spec.databaseStorageSize,
+                minioStorageSize: args.minioStorageSize || this.spec.minioStorageSize
             }
 
-            if (!answers.mattermostLicenseSecret || answers.mattermostLicenseSecret === '') {
-                this.spec.mattermostLicenseSecret = (await this.manager.inquirer?.prompt(
-                    {
-                        type: 'input',
-                        name: 'mattermostLicenseSecret',
-                        default: answers.mattermostLicenseSecret,
-                        optional: true,
-                        message: 'Mattermost license secret (optional):',
-                    }
-                )).mattermostLicenseSecret
-            }
+            const responses = await this.manager.inquirer?.prompt([
+                {
+                    type: 'list',
+                    name: 'users',
+                    choices: this.userCountChoices,
+                    default: 0,
+                    message: 'How many users do you expect?'
+                },
+                {
+                    type: 'confirm',
+                    name: 'haveLicense',
+                    default: false,
+                    message: 'Do you have a Mattermost license secret?',
+                },
+                {
+                    type: 'input',
+                    name: 'mattermostLicenseSecret',
+                    message: 'What is your Mattermost license secret?',
+                    when: (answers) => answers.haveLicense
+                },
+                {
+                    type: 'list',
+                    name: 'databaseStorageSize',
+                    choices: this.storageSizeChoices,
+                    message: 'How much storage should we allocate for the database?',
+                },
+                {
+                    type: 'list',
+                    name: 'minioStorageSize',
+                    choices: this.storageSizeChoices,
+                    default: 0,
+                    message: 'How much storage should we allocate media files?',
+                }
+            ], answers)
 
-            if (!answers.databaseStorageSize || answers.databaseStorageSize === '') {
-                this.spec.databaseStorageSize = (await this.manager.inquirer?.prompt(
-                    {
-                        type: 'list',
-                        name: 'databaseStorageSize',
-                        choices: this.storageSizeChoices,
-                        default: answers.databaseStorageSize,
-                        message: 'Amount of storage to provision for the database?',
-                    }
-                )).databaseStorageSize
-            }
-
-            if (!answers.minioStorageSize || answers.minioStorageSize === '') {
-                this.spec.minioStorageSize = (await this.manager.inquirer?.prompt(
-                    {
-                        type: 'list',
-                        name: 'minioStorageSize',
-                        choices: this.storageSizeChoices,
-                        default: answers.minioStorageSize,
-                        message: 'Amount of storage to provision for minio?',
-                    }
-                )).minioStorageSize
-            }
+            this.spec.users = responses.users
+            this.spec.mattermostLicenseSecret = responses.mattermostLicenseSecret
+            this.spec.databaseStorageSize = responses.databaseStorageSize
+            this.spec.minioStorageSize = responses.minioStorageSize
         }
     }
 }
