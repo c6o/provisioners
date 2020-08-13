@@ -20,7 +20,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
     async removeApply() {
         const namespace = this.manager.document.metadata.namespace
         const mysqlClusterDoc = this.toMySqlClusterDoc(namespace)
-debugger
+
         await this.manager.cluster
             .begin('Remove MySQL data')
                 .list(mysqlClusterDoc)
