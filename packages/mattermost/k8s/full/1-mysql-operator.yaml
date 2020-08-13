@@ -6,7 +6,6 @@ metadata:
     release: 'mysql-operator'
     app: mysql-operator
   name: mysqlbackups.mysql.presslabs.org
-  namespace: mysql-operator
 spec:
   group: mysql.presslabs.org
   names:
@@ -23,7 +22,6 @@ metadata:
     release: 'mysql-operator'
     app: mysql-operator
   name: mysqlclusters.mysql.presslabs.org
-  namespace: mysql-operator
 spec:
   additionalPrinterColumns:
   - JSONPath: .status.conditions[?(@.type == "Ready")].status
