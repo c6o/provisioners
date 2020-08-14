@@ -9,25 +9,37 @@ declare module '../../' {
 
 export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
-    passwdConfigMap: any = {
+    mosquittoSettingsConfigMap: any = {
         apiVersion: 'v1',
         kind: 'ConfigMap',
         metadata: {
-            name: 'mosquitto-users-config'
+            name: 'mosquitto-config'
         }
     }
 
     async addUser(username: string, password: string, namespace: string) {
 
-        this.passwdConfigMap.metadata.namespace = namespace
-        let result = await this.mana.cluster.read(this.passwdConfigMap)
+        debugger
+
+        this.mosquittoSettingsConfigMap.metadata.namespace = namespace
+        let result
+
+        try {
+            console.log('reading config map from cluster', this.mosquittoSettingsConfigMap)
+            result = await this.manager.cluster.read(this.mosquittoSettingsConfigMap)
+            console.log(result)
+        } catch (e) {
+            console.log(e)
+            debugger
+        }
+        debugger
         if (result.error)
             throw new Error('Failed to load Mosquitto password configMap')
         const currentUsers = result.object
         // check if user exists
         // modify currentUsers.data
         result.object.data
-        result = await this.mana.cluster.update(this.passwdConfigMap, currentUsers)
+        result = await this.mana.cluster.update(this.mosquittoSettingsConfigMap, currentUsers)
         if (result.error)
             throw new Error('Failed to save Mosquitto password configMap')
         // restart deployment
