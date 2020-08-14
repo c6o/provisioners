@@ -5,20 +5,13 @@ metadata:
   namespace: {{namespace}}
 data:
   mosquitto.conf: |
-    log_dest stout
+    log_dest stdout
     log_type all
     log_timestamp true
     allow_anonymous false
-    password_file users.conf
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mosquitto-users-config
-  namespace: {{namespace}}
-data:
+    password_file /mosquitto/config/users.conf
   users.conf: |
-    foo bar
+    admin:$6$fLqGRjVBAqJvcDc7$mJjEZzufjQ9pG7b6EpZfR4BDjqfNwHTahqR5OE9THTskWLMUMdy3iP7znPw7ujRudy+kSduUJFNKZhaqP/rLjA==
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -50,10 +43,10 @@ spec:
         ports:
           - name: mosquitto
             containerPort: 1883
-      #   volumeMounts:
-      #     - name: config-file
-      #       mountPath: /mosquitto/config
-      # volumes:
-      # - name: config-file
-      #   configMap:
-      #     name: mosquitto-config
+        volumeMounts:
+          - name: config-file
+            mountPath: /mosquitto/config
+      volumes:
+      - name: config-file
+        configMap:
+          name: mosquitto-config
