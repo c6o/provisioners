@@ -1,3 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquitto-config
+  namespace: {{namespace}}
+data:
+  mosquitto.conf: |
+    log_dest stout
+    log_type all
+    log_timestamp true
+    allow_anonymous false
+    password_file users.conf
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquitto-users-config
+  namespace: {{namespace}}
+data:
+  users.conf: |
+    foo bar
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,3 +50,10 @@ spec:
         ports:
           - name: mosquitto
             containerPort: 1883
+      #   volumeMounts:
+      #     - name: config-file
+      #       mountPath: /mosquitto/config
+      # volumes:
+      # - name: config-file
+      #   configMap:
+      #     name: mosquitto-config
