@@ -1,18 +1,4 @@
-# CertManager component is disabled.
-
-# Citadel component is disabled.
-
-# Cni component is disabled.
-
-# CoreDNS component is disabled.
-
-# EgressGateway component is disabled.
-
-# Galley component is disabled.
-
-# Grafana component is disabled.
-
-# Resources for IngressGateway component
+# Resources for IngressGateways component
 
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
@@ -22,7 +8,7 @@ metadata:
     istio: ingressgateway
     release: istio
   name: istio-ingressgateway
-  namespace: {{istioGatewayNamespace}}
+  namespace: istio-system
 spec:
   maxReplicas: 5
   metrics:
@@ -47,7 +33,7 @@ metadata:
     istio: ingressgateway
     release: istio
   name: istio-ingressgateway
-  namespace: {{istioGatewayNamespace}}
+  namespace: istio-system
 spec:
   selector:
     matchLabels:
@@ -63,7 +49,12 @@ spec:
         sidecar.istio.io/inject: "false"
       labels:
         app: istio-ingressgateway
+        chart: gateways
+        heritage: Tiller
         istio: ingressgateway
+        release: istio
+        service.istio.io/canonical-name: istio-ingressgateway
+        service.istio.io/canonical-revision: latest
     spec:
       affinity:
         nodeAffinity:
@@ -99,29 +90,6 @@ spec:
                 - ppc64le
                 - s390x
       containers:
-      - env:
-        - name: ENABLE_WORKLOAD_SDS
-          value: "false"
-        - name: ENABLE_INGRESS_GATEWAY_SDS
-          value: "true"
-        - name: INGRESS_GATEWAY_NAMESPACE
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.namespace
-        image: docker.io/istio/node-agent-k8s:1.4.5
-        imagePullPolicy: IfNotPresent
-        name: ingress-sds
-        resources:
-          limits:
-            cpu: 2000m
-            memory: 1024Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
-        volumeMounts:
-        - mountPath: /var/run/ingress_gateway
-          name: ingressgatewaysdsudspath
       - args:
         - proxy
         - router
@@ -130,26 +98,16 @@ spec:
         - --proxyLogLevel=warning
         - --proxyComponentLogLevel=misc:error
         - --log_output_level=default:info
-        - --drainDuration
-        - 45s
-        - --parentShutdownDuration
-        - 1m0s
-        - --connectTimeout
-        - 10s
         - --serviceCluster
         - istio-ingressgateway
-        - --zipkinAddress
-        - zipkin.{{istioNamespace}}:9411
-        - --proxyAdminPort
-        - "15000"
-        - --statusPort
-        - "15020"
-        - --controlPlaneAuthPolicy
-        - NONE
-        - --discoveryAddress
-        - istio-pilot.{{istioNamespace}}:15010
         - --trust-domain=cluster.local
         env:
+        - name: JWT_POLICY
+          value: third-party-jwt
+        - name: PILOT_CERT_PROVIDER
+          value: istiod
+        - name: CA_ADDR
+          value: istiod.istio-system.svc:15012
         - name: NODE_NAME
           valueFrom:
             fieldRef:
@@ -179,45 +137,33 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.serviceAccountName
+        - name: CANONICAL_SERVICE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['service.istio.io/canonical-name']
+        - name: CANONICAL_REVISION
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['service.istio.io/canonical-revision']
         - name: ISTIO_META_WORKLOAD_NAME
           value: istio-ingressgateway
         - name: ISTIO_META_OWNER
-          value: kubernetes://apis/apps/v1/namespaces/{{istioGatewayNamespace}}/deployments/istio-ingressgateway
+          value: kubernetes://apis/apps/v1/namespaces/istio-system/deployments/istio-ingressgateway
         - name: ISTIO_META_MESH_ID
           value: cluster.local
-        - name: ISTIO_META_POD_NAME
-          valueFrom:
-            fieldRef:
-              apiVersion: v1
-              fieldPath: metadata.name
-        - name: ISTIO_META_CONFIG_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: ISTIO_META_USER_SDS
-          value: "true"
         - name: ISTIO_META_ROUTER_MODE
           value: sni-dnat
-        - name: ISTIO_METAJSON_LABELS
-          value: |
-            {"app":"istio-ingressgateway","istio":"ingressgateway"}
         - name: ISTIO_META_CLUSTER_ID
           value: Kubernetes
-        - name: SDS_ENABLED
-          value: "false"
-        image: docker.io/istio/proxyv2:1.4.5
-        imagePullPolicy: IfNotPresent
+        image: docker.io/istio/proxyv2:1.6.6
         name: istio-proxy
         ports:
-        - containerPort: 15020
-        - containerPort: 80
-        - containerPort: 443
-        #- containerPort: 15029
-        #- containerPort: 15030
-        #- containerPort: 15031
-        #- containerPort: 15032
-        #- containerPort: 15443
+        - containerPort: 15021
+        - containerPort: 8080
+        - containerPort: 8443
+        - containerPort: 15443
         - containerPort: 15011
+        - containerPort: 15012
         - containerPort: 8060
         - containerPort: 853
         - containerPort: 15090
@@ -227,7 +173,7 @@ spec:
           failureThreshold: 30
           httpGet:
             path: /healthz/ready
-            port: 15020
+            port: 15021
             scheme: HTTP
           initialDelaySeconds: 1
           periodSeconds: 2
@@ -241,11 +187,19 @@ spec:
             cpu: 100m
             memory: 128Mi
         volumeMounts:
-        - mountPath: /etc/certs
-          name: istio-certs
+        - mountPath: /etc/istio/proxy
+          name: istio-envoy
+        - mountPath: /etc/istio/config
+          name: config-volume
+        - mountPath: /var/run/secrets/istio
+          name: istiod-ca-cert
+        - mountPath: /var/run/secrets/tokens
+          name: istio-token
           readOnly: true
         - mountPath: /var/run/ingress_gateway
           name: ingressgatewaysdsudspath
+        - mountPath: /etc/istio/pod
+          name: podinfo
         - mountPath: /etc/istio/ingressgateway-certs
           name: ingressgateway-certs
           readOnly: true
@@ -254,12 +208,33 @@ spec:
           readOnly: true
       serviceAccountName: istio-ingressgateway-service-account
       volumes:
+      - configMap:
+          name: istio-ca-root-cert
+        name: istiod-ca-cert
+      - downwardAPI:
+          items:
+          - fieldRef:
+              fieldPath: metadata.labels
+            path: labels
+          - fieldRef:
+              fieldPath: metadata.annotations
+            path: annotations
+        name: podinfo
+      - emptyDir: {}
+        name: istio-envoy
       - emptyDir: {}
         name: ingressgatewaysdsudspath
-      - name: istio-certs
-        secret:
+      - name: istio-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              audience: istio-ca
+              expirationSeconds: 43200
+              path: istio-token
+      - configMap:
+          name: istio
           optional: true
-          secretName: istio.istio-ingressgateway-service-account
+        name: config-volume
       - name: ingressgateway-certs
         secret:
           optional: true
@@ -271,44 +246,23 @@ spec:
 
 ---
 
-# Be sure not to include the default gateway
-# apiVersion: networking.istio.io/v1alpha3
-# kind: Gateway
-# metadata:
-#   name: ingressgateway
-#   namespace: {{istioGatewayNamespace}}
-#   labels:
-#     release: istio
-# spec:
-#   selector:
-#     istio: ingressgateway
-#   servers:
-#   - port:
-#       number: 8080
-#       name: http
-#       protocol: HTTP
-#     hosts:
-#       - "*"
-    # Additional ports in gateaway for the ingressPorts - apps using dedicated port instead of hostname
----
-
 
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  name: ingressgateway
-  namespace: {{istioGatewayNamespace}}
+  name: istio-ingressgateway
+  namespace: istio-system
   labels:
     app: istio-ingressgateway
-    release: istio
     istio: ingressgateway
+    release: istio
 spec:
   minAvailable: 1
   selector:
     matchLabels:
       app: istio-ingressgateway
-      release: istio
       istio: ingressgateway
+      release: istio
 ---
 
 
@@ -316,7 +270,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: istio-ingressgateway-sds
-  namespace: {{istioGatewayNamespace}}
+  namespace: istio-system
   labels:
     release: istio
 rules:
@@ -330,7 +284,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: istio-ingressgateway-sds
-  namespace: {{istioGatewayNamespace}}
+  namespace: istio-system
   labels:
     release: istio
 roleRef:
@@ -346,49 +300,32 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: istio-ingressgateway
-  namespace: {{istioGatewayNamespace}}
-  annotations:
+  annotations: null
   labels:
     app: istio-ingressgateway
-    release: istio
     istio: ingressgateway
+    release: istio
+  name: istio-ingressgateway
+  namespace: istio-system
 spec:
-  type: LoadBalancer
+  ports:
+  - name: status-port
+    port: 15021
+    targetPort: 15021
+  - name: http2
+    port: 80
+    targetPort: 8080
+  - name: https
+    port: 443
+    targetPort: 8443
+  - name: tls
+    port: 15443
+    targetPort: 15443
   selector:
     app: istio-ingressgateway
-  ports:
-    -
-      name: status-port
-      port: 15020
-      targetPort: 15020
-    -
-      name: http2
-      port: 80
-      targetPort: 80
-    -
-      name: https
-      port: 443
-    # -
-    #   name: kiali
-    #   port: 15029
-    #   targetPort: 15029
-    # -
-    #   name: prometheus
-    #   port: 15030
-    #   targetPort: 15030
-    # -
-    #   name: grafana
-    #   port: 15031
-    #   targetPort: 15031
-    # -
-    #   name: tracing
-    #   port: 15032
-    #   targetPort: 15032
-    # -
-    #   name: tls
-    #   port: 15443
-    #   targetPort: 15443
+    istio: ingressgateway
+  type: LoadBalancer
+
 ---
 
 
@@ -396,41 +333,9 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: istio-ingressgateway-service-account
-  namespace: {{istioGatewayNamespace}}
+  namespace: istio-system
   labels:
     app: istio-ingressgateway
+    istio: ingressgateway
     release: istio
 ---
-
-
-apiVersion: networking.istio.io/v1alpha3
-kind: Sidecar
-metadata:
-  name: default
-  namespace: {{istioGatewayNamespace}}
-  labels:
-    release: istio
-spec:
-  egress:
-    - hosts:
-        - "*/*"
----
-
-# Injector component is disabled.
-
-# Kiali component is disabled.
-
-# NodeAgent component is disabled.
-
-# Pilot component is disabled.
-
-# Policy component is disabled.
-
-# Prometheus component is disabled.
-
-# PrometheusOperator component is disabled.
-
-# Telemetry component is disabled.
-
-# Tracing component is disabled.
-
