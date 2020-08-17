@@ -7,5 +7,7 @@ metadata:
     system.codezero.io/edition: latest
 spec:
   provisioner:
-    remove-user:
-      user: userName
+    update-user:
+      originalUsername: userName10.32807118347061914
+      newUsername: admin
+      password: demoPassword

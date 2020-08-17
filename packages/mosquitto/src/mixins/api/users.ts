@@ -4,8 +4,10 @@ import parse from 'parse-passwd'
 
 declare module '../../' {
     export interface Provisioner {
-        addUser(username: string, password: string, namespace: string)
-        removeUser(username: string, namespace: string)
+        addUser(username: string, password: string, namespace: string, restart: boolean)
+        removeUser(username: string, namespace: string, restart: boolean)
+        updateUser(originalUsername: string, newUsername: string, password: string, namespace: string)
+        listUsers(namespace: string)
     }
 }
 
@@ -17,7 +19,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
     //taken from the yaml/configmap/metadata/name
     configMap = 'mosquitto-config'
 
-    async listUsers(namespace: string){
+    async listUsers(namespace: string) {
         const settings = await this.readSettings(namespace)
         return settings.users
     }
@@ -42,12 +44,13 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
         return settings
     }
 
-    async addUser(username: string, password: string, namespace: string) {
+    async updateUser(originalUsername: string, newUsername: string, password: string, namespace: string) {
+        await this.removeUser(originalUsername, namespace, false)
+        await this.addUser(newUsername, password, namespace, true)
+    }
+    async addUser(username: string, password: string, namespace: string, restart: boolean) {
 
         const settings = await this.readSettings(namespace)
-
-        //PR REVIEW: YOU SHALL NOT PASS PR
-        username = username + Math.random()
 
         const found = settings.users.find(user => user.username === username) !== undefined
 
@@ -70,20 +73,21 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
                 throw new Error('Failed to save Mosquitto password configMap')
             }
 
-            //kick the deployment for the new settings to take effect
-            await this.restartDeployment(namespace, this.deployment)
-
+            if (restart) {
+                //kick the deployment for the new settings to take effect
+                await this.restartDeployment(namespace, this.deployment)
+            }
         }
 
     }
 
-    async removeUser(username: string, namespace: string) {
+    async removeUser(username: string, namespace: string, restart: boolean) {
         const settings = await this.readSettings(namespace)
         const found = settings.users.find(user => user.username === username) !== undefined
-        if(found) {
+        if (found) {
 
             //filter the item from our array
-            const users = settings.users.filter( item => item.username !== username)
+            const users = settings.users.filter(item => item.username !== username)
 
             //join the reamining items and stuff them back into our config map
             settings.configmap.data['users.conf'] = users.map(item => `${item.username}:${item.password}`).join('\n').trim()
@@ -95,8 +99,10 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
                 throw new Error('Failed to save Mosquitto password configMap')
             }
 
-            //kick the deployment for the new settings to take effect
-            await this.restartDeployment(namespace, this.deployment)
+            if (restart) {
+                //kick the deployment for the new settings to take effect
+                await this.restartDeployment(namespace, this.deployment)
+            }
 
         }
     }
