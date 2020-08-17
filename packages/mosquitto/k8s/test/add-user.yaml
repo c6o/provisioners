@@ -8,5 +8,5 @@ metadata:
 spec:
   provisioner:
     add-user:
-      user: userName
+      user: userName1
       password: demoPassword
