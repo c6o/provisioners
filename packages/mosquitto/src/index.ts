@@ -19,22 +19,37 @@ export interface Provisioner extends ProvisionerBase {
 export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin, createValidateMixin, removeApplyMixin, removeInquireMixin, userMgmtMixin, updateApplyMixin) {
     get isLatest() { return this.edition === 'latest' }
 
-    async restartDeployment(namespace: string, name: string) {
+    async getConfigMap(namespace: string, name: string) {
+
         const manifest = {
             apiVersion: 'v1',
+            kind: 'ConfigMap',
+            metadata: {
+                name,
+                namespace
+            }
+        }
+
+        const result = await this.manager.cluster.read(manifest)
+
+        if (result.error) {
+            throw new Error('Failed to load Mosquitto password configMap')
+        }
+
+        return { configmap: result.object, manifest }
+    }
+
+    async restartDeployment(namespace: string, name: string) {
+
+        const manifest = {
+            apiVersion: 'apps/v1',
             kind: 'Deployment',
             metadata: {
                 name,
                 namespace
             }
         }
-        let deploymentResult
-        try  {
-            deploymentResult = await this.manager.cluster.read(manifest)
-        } catch(e)
-        {
-            console.log(e)
-        }
+        const deploymentResult = await this.manager.cluster.read(manifest)
 
         if (deploymentResult.error) {
             throw new Error(`Failed to retreive deployment ${name} in ns:${namespace}`)

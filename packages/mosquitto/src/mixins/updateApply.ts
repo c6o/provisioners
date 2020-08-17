@@ -17,7 +17,7 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
 
         if (removeUser) {
             this.manager.status?.push('Removing user from Mosquitto')
-            await this.deleteUser(removeUser.user, appNamespace)
+            await this.removeUser(removeUser.user, appNamespace)
             this.manager.document.spec.provisioner['remove-user'] = '$unset'
             this.manager.status?.pop()
         }
