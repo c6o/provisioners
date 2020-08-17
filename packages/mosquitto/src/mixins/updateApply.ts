@@ -6,7 +6,7 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newUser = this.spec['add-user']
         if (newUser) {
             this.manager.status?.push('Adding user to Mosquitto')
-            this.addUser(newUser.user, newUser.password, appNamespace)
+            await this.addUser(newUser.user, newUser.password, appNamespace)
             this.manager.document.spec.provisioner['add-user'] = '$unset'
             this.manager.status?.pop()
         }
@@ -17,7 +17,7 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
 
         if (removeUser) {
             this.manager.status?.push('Removing user from Mosquitto')
-            this.deleteUser(removeUser.user, appNamespace)
+            await this.deleteUser(removeUser.user, appNamespace)
             this.manager.document.spec.provisioner['remove-user'] = '$unset'
             this.manager.status?.pop()
         }
