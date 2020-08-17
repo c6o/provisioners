@@ -33,7 +33,7 @@ export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, cre
         const result = await this.manager.cluster.read(manifest)
 
         if (result.error) {
-            throw new Error('Failed to load Mosquitto password configMap')
+            throw new Error(`Failed to load the ConfigMap '${name}' from '${namespace}'`)
         }
 
         return { configmap: result.object, manifest }
@@ -52,7 +52,7 @@ export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, cre
         const deploymentResult = await this.manager.cluster.read(manifest)
 
         if (deploymentResult.error) {
-            throw new Error(`Failed to retreive deployment ${name} in ns:${namespace}`)
+            throw new Error(`Failed to retreive deployment '${name}' from '${namespace}'`)
         }
 
         const deployment = deploymentResult.object
