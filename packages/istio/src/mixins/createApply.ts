@@ -123,10 +123,4 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 })
             .end()
     }
-
-    async findTlsCertificate() {
-        const result = await this.manager.cluster.list(this.expectedTlsCertificate)
-        return result?.object?.items?.length > 0
-    }
 }
-
