@@ -1,4 +1,6 @@
 import { baseProvisionerType } from '../../'
+import mosquittoPasswd from 'mosquitto-passwd'
+import parse from 'parse-passwd'
 
 declare module '../../' {
     export interface Provisioner {
@@ -17,42 +19,58 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
         }
     }
 
+    async parse(passwdPayload: string) {
+        //returns {Array}: Array of user objects parsed from the content.
+        return parse(passwdPayload)
+    }
+    async generateMosquittoUserPayload(username: string, password: string) {
+        // Username, password, salt (optional, by default will generate 12 bytes salt)
+        return await mosquittoPasswd(username, password)
+    }
+
     async addUser(username: string, password: string, namespace: string) {
 
-        debugger
-
         this.mosquittoSettingsConfigMap.metadata.namespace = namespace
-        let result
 
-        try {
-            console.log('reading config map from cluster', this.mosquittoSettingsConfigMap)
-            result = await this.manager.cluster.read(this.mosquittoSettingsConfigMap)
-            console.log(result)
-        } catch (e) {
-            console.log(e)
-            debugger
-        }
-        debugger
-        if (result.error)
+        const configMap = await this.manager.cluster.read(this.mosquittoSettingsConfigMap)
+
+        if (configMap.error) {
             throw new Error('Failed to load Mosquitto password configMap')
-        const currentUsers = result.object
-        // check if user exists
-        // modify currentUsers.data
-        result.object.data
-        result = await this.mana.cluster.update(this.mosquittoSettingsConfigMap, currentUsers)
-        if (result.error)
-            throw new Error('Failed to save Mosquitto password configMap')
-        // restart deployment
-        // super.restartDeployment
+        }
+
+        const data = configMap.object.data
+
+        //const mosquittoConf = data['mosquitto.conf']
+        let usersConf = data['users.conf']
+        const users = await this.parse(usersConf)
+
+        //PR REVIEW: YOU SHALL NOT PASS PR
+        username = username + Math.random()
+
+        const found = users.find(user => user.username === username) !== undefined
+
+        if (!found) {
+
+            const userPayload = await this.generateMosquittoUserPayload(username, password)
+            usersConf += '\n' + userPayload
+            configMap.object.data['users.conf'] = usersConf.trim()
+
+            const updatedResult = await this.manager.cluster.put(this.mosquittoSettingsConfigMap, configMap.object)
+
+            if (updatedResult.error) {
+                throw new Error('Failed to save Mosquitto password configMap')
+            }
+
+            //taken from the yaml/deployment/metadata/name
+            const deploymentName = 'mosquitto'
+
+            await this.restartDeployment(namespace, deploymentName)
+
+        }
+
     }
 
     async removeUser(username: string, namespace: string) {
 
-    }
-
-    async restartDeployment(namespace: string, name: string) {
-        // const previousCount = this.runningDeployment.spec?.replicas || 0
-        // await this.manager.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
-        // await this.manager.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
     }
 }

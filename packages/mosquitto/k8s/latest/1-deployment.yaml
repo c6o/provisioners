@@ -11,7 +11,6 @@ data:
     allow_anonymous false
     password_file /mosquitto/config/users.conf
   users.conf: |
-    admin:$6$fLqGRjVBAqJvcDc7$mJjEZzufjQ9pG7b6EpZfR4BDjqfNwHTahqR5OE9THTskWLMUMdy3iP7znPw7ujRudy+kSduUJFNKZhaqP/rLjA==
 ---
 apiVersion: apps/v1
 kind: Deployment
