@@ -389,7 +389,6 @@ data:
     injectedAnnotations:
 
     template: |
-      {{{{raw}}}}
       rewriteAppHTTPProbe: {{ valueOrDefault .Values.sidecarInjectorWebhook.rewriteAppHTTPProbe false }}
       initContainers:
       {{ if ne (annotation .ObjectMeta `sidecar.istio.io/interceptionMode` .ProxyConfig.InterceptionMode) `NONE` }}
@@ -832,7 +831,6 @@ data:
         - name: {{ . }}
         {{- end }}
       {{- end }}
-      {{{{/raw}}}}
 ---
 
 
