@@ -6,16 +6,16 @@ import { promises as fs } from 'fs'
 import { baseProvisionerType } from '../../'
 
 export const prometheusApiMixin = (base: baseProvisionerType) => class extends base {
-    
+
     async linkPrometheus(prometheusNamespace, istioNamespace) {
         await this.unlinkPrometheus(istioNamespace, false)
         await this.manager.cluster.begin('Adding access for Prometheus')
-            .upsertFile('../../../k8s/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
+            .upsertFile('../../../k8s/prometheus/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
         .end()
         const prometheusProvisioner = await this.manager.getAppProvisioner('prometheus', prometheusNamespace)
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
-        const jobs = await this.loadYaml(path.resolve(__dirname, '../../../prometheus/jobs.yaml'), { istioNamespace })
+        const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
         await prometheusProvisioner.addJobs(jobs)
         await prometheusProvisioner.endConfig()
     }
@@ -37,7 +37,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
                 name: `prometheus-${istioNamespace}`
             }
         }
-        
+
         this.manager.status?.push('Removing access for Prometheus')
         await this.manager.cluster.delete(clusterRole)
         await this.manager.cluster.delete(clusterRoleBinding)

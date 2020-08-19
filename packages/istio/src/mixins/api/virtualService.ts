@@ -68,8 +68,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         spec: {
             hosts: ['*'],
             gateways: [gateway],
-            http: [app.spec.routes.simple ? this.simpleHttpSection(app) : undefined],
-            https: [app.spec.routes.simple ? this.simpleHttpSection(app) : undefined]
+            http: [app.spec.routes.simple ? this.simpleHttpSection(app) : undefined]
         }
     })
 }

@@ -1,6 +1,6 @@
 import { baseProvisionerType } from '../index'
 
-const expectedCRDCount = 23
+const expectedCRDCount = 25
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -17,12 +17,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
-    get ingressPods() {
+    get ingressPod() {
         return {
             kind: 'Pod',
             metadata: {
                 namespace: this.serviceNamespace,
-                labels: { app: 'istio-ingressgateway' }
+                labels: { istio: 'ingressgateway' }
             }
         }
     }
@@ -32,7 +32,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             kind: 'Pod',
             metadata: {
                 namespace: this.serviceNamespace,
-                labels: { app: 'pilot' }
+                labels: { istio: 'pilot' }
             }
         }
     }
@@ -54,43 +54,21 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.installCrds()
         await this.ensureCrdsApplied()
         await this.installIstioServices()
-        await this.ensureIngressGatewayIsRunning()
 
         await this.getExternalIPAddress()
     }
 
     async installCrds() {
-        const istioNamespace = this.spec.namespace || 'istio-system'
-
         await this.manager.cluster
             .begin('Install resource definitions')
-                .upsertFile('../../k8s/crds.yaml', { istioNamespace })
+                .upsertFile('../../k8s/crds.yaml')
             .end()
     }
 
     async installIstioServices() {
-        // const sslPossible = await this.findTlsCertificate()
-
-        const istioNamespace = this.spec.namespace || 'istio-system'
-
-        const { autoInjectEnabled,
-            citadelEnabled,
-            coreDnsEnabled,
-            galleyEnabled,
-            policyEnabled,
-            telemetryEnabled,
-            grafanaEnabled,
-            kialiEnabled,
-            prometheusEnabled
-        } = this.spec
-
-        const gatewayParams:any = {domainName: this.spec.domainName, httpsRedirect: this.spec.httpsRedirect }
-        if (this.spec.hostName)
-            gatewayParams.hostName = `- ${this.spec.hostName}.${this.spec.domainName}`
-
         await this.manager.cluster
             .begin('Install Pilot')
-                .upsertFile('../../k8s/traffic.yaml', { istioNamespace, istioTrafficNamespace: istioNamespace })
+                .upsertFile('../../k8s/traffic.yaml')
             .end()
 
         // ensure pilot is running before install ingress gateway to reduce installation delays
@@ -98,62 +76,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.manager.cluster
             .begin('Install Ingress Gateway')
-                .upsertFile('../../k8s/gateway.yaml', { istioNamespace, istioGatewayNamespace: istioNamespace })
+                .upsertFile('../../k8s/gateway.yaml')
             .end()
 
-        if (autoInjectEnabled)
-            await this.manager.cluster
-                .begin('Install Auto Injection')
-                    .upsertFile('../../k8s/autoinject.yaml', { istioNamespace, istioInjectNamespace: istioNamespace })
-                .end()
-
-        if (citadelEnabled)
-            await this.manager.cluster
-                .begin('Install Citadel')
-                    .upsertFile('../../k8s/citadel.yaml', { istioNamespace, istioCitadelNamespace: istioNamespace })
-                .end()
-
-        if (coreDnsEnabled)
-            await this.manager.cluster
-                .begin('Install Core DNS')
-                    .upsertFile('../../k8s/coredns.yaml', { istioNamespace, istioCoreDnsNamespace: istioNamespace })
-                .end()
-
-        if (galleyEnabled)
-            await this.manager.cluster
-                .begin('Install Galley')
-                    .upsertFile('../../k8s/galley.yaml', { istioNamespace, istioGalleyNamespace: istioNamespace })
-                .end()
-
-        if (policyEnabled)
-            await this.manager.cluster
-                .begin('Install Policy')
-                    .upsertFile('../../k8s/policy.yaml', { istioNamespace, istioPolicyNamespace: istioNamespace })
-                .end()
-
-        if (telemetryEnabled)
-            await this.manager.cluster
-                .begin('Install Telemetry')
-                    .upsertFile('../../k8s/telemetry.yaml', { istioNamespace, istioTelemetryNamespace: istioNamespace })
-                .end()
-
-        if (grafanaEnabled)
-            await this.manager.cluster
-                .begin('Install Grafana')
-                    .upsertFile('../../k8s/grafana.yaml', { istioNamespace })
-                .end()
-
-        if (kialiEnabled)
-            await this.manager.cluster
-                .begin('Install Kiali')
-                    .upsertFile('../../k8s/kiali.yaml', { istioNamespace, istioPrometheusNamespace: istioNamespace })
-                .end()
-
-        if (prometheusEnabled)
-            await this.manager.cluster
-                .begin('Install Prometheus')
-                    .upsertFile('../../k8s/prometheus.yaml', { istioNamespace, istioKialiNamespace: istioNamespace })
-                .end()
+        await this.ensureIngressIsRunning()
     }
 
     async ensureCrdsApplied() {
@@ -178,10 +104,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         return count >= expectedCRDCount
     }
 
-    async ensureIngressGatewayIsRunning() {
+    async ensureIngressIsRunning() {
         await this.manager.cluster
             .begin(`Ensure ingress gateway is running`)
-                .beginWatch(this.ingressPods)
+                .beginWatch(this.ingressPod)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                     processor.endWatch()
                 })
@@ -197,10 +123,4 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 })
             .end()
     }
-
-    async findTlsCertificate() {
-        const result = await this.manager.cluster.list(this.expectedTlsCertificate)
-        return result?.object?.items?.length > 0
-    }
 }
-
