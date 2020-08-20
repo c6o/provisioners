@@ -22,15 +22,12 @@
   ],
   "scripts": {
     "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",
-    "preinstall": "yarn link @c6o/kubeclient @c6o/ui-web @c6o/ui-theme",
+
     "build": "lerna run build --stream",
     "develop": "lerna run develop --parallel --stream",
     "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
     "release": "lerna version",
-    "publish": "git checkout main && git merge --no-ff",
-    "unlink-all": "lerna exec yarn unlink",
-    "link-all": "lerna exec yarn link",
-    "pack-all": "lerna exec yarn pack"
+    "publish": "git checkout main && git merge --no-ff"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
