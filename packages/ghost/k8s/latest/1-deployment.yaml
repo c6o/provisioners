@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost
+  namespace: {{ namespace }}
+  labels:
+    app: ghost
+    app.kubernetes.io/managed-by: codezero
+    system.codezero.io/edition: latest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ghost
+  template:
+    metadata:
+      labels:
+        app: ghost
+    spec:
+      containers:
+      - name: ghost
+        image: ghost
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 2368
+          name: http
