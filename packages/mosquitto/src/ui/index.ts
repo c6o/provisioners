@@ -6,25 +6,29 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 export class MosquittoSettings extends LitElement implements StoreFlowStep {
     mediator: StoreFlowMediator
 
-    //these choices are based on the mattermost enterprise operator/deployment
-    storageSizeChoices = ['2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
-    userCountChoices = [100, 1000, 5000, 10000, 25000]
-
     get serviceSpec() {
-        return this.mediator.getServiceSpec('mattermost')
+        return this.mediator.getServiceSpec('mosquitto')
     }
 
     render() {
         return html`
             <c6o-form-layout>
-                Hello from the mosquitto provisioner
+                <c6o-text-field @input=${this.usernameChanged} label="Username" value=${this.serviceSpec.username || ''} autoselect required></c6o-text-field>
+                <c6o-password-field @input=${this.passwordChanged} label="Password" value=${this.serviceSpec.password || ''} autoselect required></c6o-password-field>
             </c6o-form-layout>
         `
     }
+    usernameChanged = (e) => {
+        this.serviceSpec.username = e.target.value
+    }
 
+    passwordChanged = (e) => {
+        this.serviceSpec.password = e.target.value
+    }
 
     async begin() {
         // set defaults
+        debugger
         const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
         this.serviceSpec.edition = edition
     }
@@ -32,7 +36,6 @@ export class MosquittoSettings extends LitElement implements StoreFlowStep {
     async end() {
         let valid = true
         await window.customElements.whenDefined('c6o-combo-box')
-
         this.requestUpdate()
         return valid
     }

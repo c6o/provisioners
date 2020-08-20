@@ -14,10 +14,10 @@ declare module '../../' {
 export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
     //taken from the yaml/deployment/metadata/name
-    deployment = 'mosquitto'
+    deploymentName = 'mosquitto'
 
     //taken from the yaml/configmap/metadata/name
-    configMap = 'mosquitto-config'
+    configMapName = 'mosquitto-config'
 
     async listUsers(namespace: string) {
         const settings = await this.readSettings(namespace)
@@ -35,7 +35,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
     async readSettings(namespace: string) {
 
-        const settings: any = await this.getConfigMap(namespace, this.configMap)
+        const settings: any = await super.getConfigMap(namespace, this.configMapName)
 
         settings.mosquittoConf = settings.configmap.data['mosquitto.conf']
         settings.userConf = settings.configmap.data['users.conf']
@@ -75,7 +75,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await this.restartDeployment(namespace, this.deployment)
+                await super.restartDeployment(namespace, this.deploymentName)
             }
         }
 
@@ -101,7 +101,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await this.restartDeployment(namespace, this.deployment)
+                await super.restartDeployment(namespace, this.deploymentName)
             }
 
         }
