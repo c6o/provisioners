@@ -24,6 +24,11 @@ export interface RoutesType {
             port?: number
             prefix?: string
             rewrite?: string
+        },
+        tcp?: {
+            service: string
+            port?: number
+            inboundPort: number
         }
     }
 }
