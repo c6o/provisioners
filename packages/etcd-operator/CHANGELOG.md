@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/nsainaney/traxitt/compare/v0.0.5...v0.0.6) (2020-08-23)
+
+
+### ♻️ Chores
+
+* Bumped references ([798c6a3](https://github.com/nsainaney/traxitt/commit/798c6a3f7c826d04f2327a5cfae535f2dd3d04e8))
+
+
+
+
+
 ## [0.0.5](https://github.com/nsainaney/traxitt/compare/v0.0.4...v0.0.5) (2020-08-13)
 
 

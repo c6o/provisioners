@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/c6o/provisioners/compare/v0.0.5...v0.0.6) (2020-08-23)
+
+
+### ♻️ Chores
+
+* Bumped references ([798c6a3](https://github.com/c6o/provisioners/commit/798c6a3f7c826d04f2327a5cfae535f2dd3d04e8))
+* **istio:** Upgrade Istio from 1.4.2 to 1.6.6 ([#30](https://github.com/c6o/provisioners/issues/30)) ([c8f5e14](https://github.com/c6o/provisioners/commit/c8f5e143bb68ad069d98d67c91ad96e5d4bae526))
+* Updated dependencies ([18ff8de](https://github.com/c6o/provisioners/commit/18ff8de36b5a0c9b1f343842724167fdc60bf62d))
+
+
+
+
+
 ## [0.0.5](https://github.com/c6o/provisioners/compare/v0.0.4...v0.0.5) (2020-08-13)
 
 

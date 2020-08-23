@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://github.com/c6o/node-monorepo/compare/v0.0.5...v0.0.6) (2020-08-23)
+
+
+### ♻️ Chores
+
+* Added pack-all script ([200ba08](https://github.com/c6o/node-monorepo/commit/200ba0818791f99441d56d9c3262701962d9d54b))
+* Bumped references ([798c6a3](https://github.com/c6o/node-monorepo/commit/798c6a3f7c826d04f2327a5cfae535f2dd3d04e8))
+* Rerveted to workspaces ([#31](https://github.com/c6o/node-monorepo/issues/31)) ([aa2b267](https://github.com/c6o/node-monorepo/commit/aa2b267fff9af1da96f0790917e1cc7e838dd86d))
+* **istio:** Upgrade Istio from 1.4.2 to 1.6.6 ([#30](https://github.com/c6o/node-monorepo/issues/30)) ([c8f5e14](https://github.com/c6o/node-monorepo/commit/c8f5e143bb68ad069d98d67c91ad96e5d4bae526))
+* Removed extraneous debugger statement ([2981418](https://github.com/c6o/node-monorepo/commit/298141896a221c585856f2d11541ced346556eb8))
+* Spelling issues ([f302134](https://github.com/c6o/node-monorepo/commit/f3021348e25e9cb1f76cce1694d2cdba236b491d))
+* Updated build scripts ([#28](https://github.com/c6o/node-monorepo/issues/28)) ([a0b1c40](https://github.com/c6o/node-monorepo/commit/a0b1c403ea128c5f2d515febfcb71772a31990c5))
+* Updated dependencies ([18ff8de](https://github.com/c6o/node-monorepo/commit/18ff8de36b5a0c9b1f343842724167fdc60bf62d))
+
+
+
+
+
 ## [0.0.5](https://github.com/c6o/node-monorepo/compare/v0.0.4...v0.0.5) (2020-08-13)
 
 
