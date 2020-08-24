@@ -6,8 +6,6 @@ import {
     createInquireMixin,
     createValidateMixin,
     removeApplyMixin,
-    removeInquireMixin,
-    updateApplyMixin
 } from './mixins'
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
@@ -15,7 +13,7 @@ export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 export interface Provisioner extends ProvisionerBase {
 }
 
-export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin, createValidateMixin, removeApplyMixin, removeInquireMixin, updateApplyMixin) {
+export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin, createValidateMixin, removeApplyMixin) {
 
     get isLatest() { return this.edition === 'latest' }
 
