@@ -13,14 +13,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             {
                 type: 'input',
                 name: 'username',
-                message: 'Username:',
+                message: 'MySql Username:',
                 askAnswered: true,
                 validate: (username) => (username !== '' ? true : '')
             },
             {
                 type: 'password',
                 name: 'password',
-                message: 'Password:',
+                message: 'MySql Password:',
                 askAnswered: true,
                 validate: (password) => (password !== '' ? true : '')
             }
