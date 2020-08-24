@@ -12,7 +12,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         if (hubURL.endsWith('ngrok.io'))
             return 'codezero.dev'
 
-        return this.hubToClusterMap[hubURL] || 'codezero.dev'
+        return this.hubToClusterMap[hubURL] || 'codezero.cloud'
     }
 
     async createValidate() {
