@@ -3,15 +3,14 @@ import { baseProvisionerType } from '../'
 export const createValidateMixin = (base: baseProvisionerType) => class extends base {
 
     hubToClusterMap = {
-        'https://staging.hub.traxitt.com': 'stg.traxitt.org',
-        'https://develop.hub.traxitt.com': 'dev.traxitt.org',
-        'https://staging.hub.codezero.io': 'stg.codezero.cloud',
-        'https://develop.hub.codezero.io': 'dev.codezero.cloud'
+        'https://develop.hub.codezero.io': 'codezero.dev',
+        'https://staging.hub.codezero.io': 'codezero.dev',
+        'https://hub.codezero.io': 'codezero.cloud'
     }
 
     hubToCluster = (hubURL) => {
         if (hubURL.endsWith('ngrok.io'))
-            return 'dev.traxitt.org'
+            return 'codezero.dev'
 
         return this.hubToClusterMap[hubURL] || 'codezero.cloud'
     }
