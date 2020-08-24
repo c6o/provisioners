@@ -32,7 +32,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install NodePort')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/2-nodeport.yaml', { namespace })
+            .upsertFile('../../k8s/latest/2-service.yaml', { namespace })
             .end()
 
         // await this.manager.cluster
