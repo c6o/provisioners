@@ -11,9 +11,6 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
         // You may not have to remove the following because owners takes care of most of it
         await this.manager.cluster
             .begin('De-provisioning the app')
-            .deleteFile('../../k8s/latest/3-virtualservice.yaml', { namespace })
-            .deleteFile('../../k8s/latest/2-nodeport.yaml', { namespace })
-            .deleteFile('../../k8s/latest/1-deployment.yaml', { namespace })
             .end()
     }
 }
