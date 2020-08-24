@@ -118,27 +118,4 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         //set replicas back to what it was, that will trigger a startup
         await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
     }
-
-
-    async getConfigMap(namespace: string, name: string) {
-
-        const manifest = {
-            apiVersion: 'v1',
-            kind: 'ConfigMap',
-            metadata: {
-                name,
-                namespace
-            }
-        }
-
-        const result = await this.manager.cluster.read(manifest)
-
-        if (result.error) {
-            throw new Error(`Failed to load the ConfigMap '${name}' from '${namespace}'`)
-        }
-
-        return { configmap: result.object, manifest }
-    }
-
-
 }

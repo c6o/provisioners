@@ -35,7 +35,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
     async readSettings(namespace: string) {
 
-        const settings: any = await super.getConfigMap(namespace, this.configMapName)
+        const settings: any = await this.getSettingsConfigMap(namespace, this.configMapName)
 
         settings.mosquittoConf = settings.configmap.data['mosquitto.conf']
         settings.userConf = settings.configmap.data['users.conf']
