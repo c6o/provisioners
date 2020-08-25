@@ -21,6 +21,27 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.ensureJitsiIsRunning()
     }
 
+    async getIngressGatewayService() {
+        const service = {
+            apiVersion: 'v1',
+            kind: 'Service',
+            metadata: {
+                namespace: 'istio-system',
+                name: 'istio-ingressgateway', // constants?
+                labels: {
+                    app: 'istio-ingressgateway'
+                }
+            }
+        }
+        const result = await this.manager.cluster.read(service)
+
+        if (result.error) {
+            this.logger?.error(result.error)
+            throw result.error
+        }
+        return result.object
+    }
+
     async installJitsi() {
         const namespace = this.serviceNamespace
 
@@ -33,6 +54,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const secret64 = Buffer.from(secret).toString('base64')
         const authPassword64 = Buffer.from(authPassword).toString('base64')
         const jvbPassword64 = Buffer.from(jvbPassword).toString('base64')
+        const gateway = await this.getIngressGatewayService()
+
+        const clusterip = gateway.spec.clusterIP
 
         await this.manager.cluster
             .begin('Install jitsi deployment')
@@ -44,7 +68,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install NodePort')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/2-deployment.yaml', { namespace })
+            .upsertFile('../../k8s/latest/2-deployment.yaml', { namespace, clusterip })
             .end()
 
         await this.manager.cluster
