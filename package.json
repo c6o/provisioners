@@ -13,7 +13,6 @@
     "packages/mattermost/",
     "packages/kafka/",
     "packages/node-red/",
-    "packages/jitsi/",
     "packages/grafana/",
     "packages/cert-manager/",
     "packages/prometheus/",
