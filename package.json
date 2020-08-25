@@ -16,6 +16,7 @@
     "packages/node-red/",
     "packages/jitsi/",
     "packages/grafana/",
+    "packages/mosquitto/",
     "packages/cert-manager/",
     "packages/prometheus/",
     "packages/wordpress/",
