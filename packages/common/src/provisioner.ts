@@ -92,7 +92,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         return await this.manager.cluster.create(taskDocument)
     }
 
-    async getIngressGatewayService() {
+    async getIngressGatewayServiceClusterIp() {
         const service = {
             apiVersion: 'v1',
             kind: 'Service',
@@ -110,7 +110,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
             this.logger?.error(result.error)
             throw result.error
         }
-        return result.object
+        return result.object?.spec?.clusterIP
     }
 
     async restartDeployment(namespace: string, name: string) {
