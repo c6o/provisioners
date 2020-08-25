@@ -31,10 +31,4 @@ export class MosquittoSettings extends LitElement implements StoreFlowStep {
         this.serviceSpec.edition = edition
     }
 
-    async end() {
-        let valid = true
-        await window.customElements.whenDefined('c6o-combo-box')
-        this.requestUpdate()
-        return valid
-    }
 }
