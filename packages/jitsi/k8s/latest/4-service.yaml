@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     service: jvb
-    system.codezero.io/app: wordpress
+    system.codezero.io/app: jitsi
     app.kubernetes.io/managed-by: codezero
     app: jitsi
   name: jvb-udp
