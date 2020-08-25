@@ -18,6 +18,7 @@
     "packages/grafana/",
     "packages/cert-manager/",
     "packages/prometheus/",
+    "packages/wordpress/",
     "packages/verdaccio/",
     "packages/logging-elk/",
     "packages/precog/"
