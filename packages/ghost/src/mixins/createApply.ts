@@ -35,12 +35,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .upsertFile('../../k8s/latest/2-service.yaml', { namespace })
             .end()
 
-        // await this.manager.cluster
-        //     .begin('Install Virtual Service')
-        //     .addOwner(this.manager.document)
-        //     .upsertFile('../../k8s/latest/3-virtualservice.yaml', { namespace })
-        //     .end()
-
     }
 
     async ensureGhostIsRunning() {
