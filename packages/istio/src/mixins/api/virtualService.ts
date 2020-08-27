@@ -7,8 +7,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     async createVirtualService(app: AppDocument, gateway: string): Promise<Result> {
         debugger
         app.spec.routes.simple.tcp = {
-            service: 'node-red',
-            inboundPort: 80
+            service : 'node-red',
+            inboundPort : 80
         }
         const vs = this.virtualService(app, gateway)
         const result = await this.manager.cluster
@@ -113,7 +113,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         }
     })
 
-    async getTcpPortGateway() {
+    async getGateway() {
         return await this.manager.cluster.read(this.gateway)
     }
 
@@ -125,12 +125,12 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
         let portNumber = app.spec.routes.simple.tcp.inboundPort
 
-        // since we keep the Istio gateway in sync with the LoadBalancer service, just check one of them for conflicts
-        const gatewayServers = (await this.getTcpPortGateway()).object.spec.servers
-        let conflict = gatewayServers.some(item => item.port?.number === portNumber && item.port?.name !== portName)
+        // the LoadBalancer is the source of truth since it's the first layer
+        const loadBalancerPorts = (await this.getLoadBalancer()).object.spec.ports
+        let conflict = loadBalancerPorts.some(item => item.port === portNumber && item.name !== portName)
         while (conflict) {
             portNumber = this.generateUsablePortNumber()
-            conflict = gatewayServers.some(item => item.port?.number === portNumber)
+            conflict = loadBalancerPorts.some(item => item.port === portNumber)
             if (!conflict)
                 app.spec.routes.simple.tcp.inboundPort = portNumber
         }
@@ -139,7 +139,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     async addTcpPortGateway(app: AppDocument) {
         const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
         let portNumber = app.spec.routes.simple.tcp.inboundPort
-        const gatewayServers = (await this.getTcpPortGateway()).object.spec.servers
+        const gatewayServers = (await this.getGateway()).object.spec.servers
 
         const server = this.gatewayTcpPortTemplate(portName, portNumber)
         const alreadyExists = gatewayServers.find(item => item.port?.name === portName)
@@ -152,7 +152,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
     async removeTcpPortGateway(app: AppDocument) {
         const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
-        const gatewayServers: any[] = (await this.getTcpPortGateway()).object.spec.servers
+        const gatewayServers: any[] = (await this.getGateway()).object.spec.servers
 
         const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(portName);
         if (index !== -1) {
@@ -167,6 +167,10 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             name: 'istio-ingressgateway',
             namespace: 'istio-system'
         }
+    }
+
+    async getLoadBalancer() {
+        return await this.manager.cluster.read(this.loadBalancer)
     }
 
     loadBalancerTcpPortTemplate = (app: AppDocument) => ({
