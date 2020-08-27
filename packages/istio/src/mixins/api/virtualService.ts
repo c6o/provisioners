@@ -17,8 +17,9 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
                 .upsert(vs)
             .end()
         if (!result.error && app.spec.routes?.simple?.tcp) {
+            await this.checkPortConflict(app)
             const ggb1 = await this.addTcpPortGateway(app)
-            const ggb3 = await this.removeTcpPort(app)
+            const ggb3 = await this.removeTcpPortGateway(app)
             //const ggb2 = await this.addTcpPortLoadBalancer(app)
         }
         return result
@@ -120,34 +121,42 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return Math.floor(Math.random() * (65535 - 1024 + 1)) + 1024 // usable port range between 1024 and 65535
     }
 
-    async addTcpPortGateway(app: AppDocument) {
+    async checkPortConflict(app: AppDocument) {
         const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
         let portNumber = app.spec.routes.simple.tcp.inboundPort
 
+        // since we keep the Istio gateway in sync with the LoadBalancer service, just check one of them for conflicts
         const gatewayServers = (await this.getTcpPortGateway()).object.spec.servers
         let conflict = gatewayServers.some(item => item.port?.number === portNumber && item.port?.name !== portName)
         while (conflict) {
             portNumber = this.generateUsablePortNumber()
             conflict = gatewayServers.some(item => item.port?.number === portNumber)
+            if (!conflict)
+                app.spec.routes.simple.tcp.inboundPort = portNumber
         }
-
-        const alreadyExists = gatewayServers.find(item => item.port?.name === portName)
-        if (!alreadyExists) {
-            const server = this.gatewayTcpPortTemplate(portName, portNumber)
-            return await this.manager.cluster.patch(this.gateway, [{ 'op': 'add', 'path': '/spec/servers/-', 'value': server } ])
-        }
-        alreadyExists.port.number = portNumber
-        alreadyExists.port.protocol = 'TCP'
-        return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': '/spec/servers', 'value': gatewayServers } ])
     }
 
-    async removeTcpPort(app: AppDocument) {
+    async addTcpPortGateway(app: AppDocument) {
+        const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
+        let portNumber = app.spec.routes.simple.tcp.inboundPort
+        const gatewayServers = (await this.getTcpPortGateway()).object.spec.servers
+
+        const server = this.gatewayTcpPortTemplate(portName, portNumber)
+        const alreadyExists = gatewayServers.find(item => item.port?.name === portName)
+        if (!alreadyExists)
+            return await this.manager.cluster.patch(this.gateway, [{ 'op': 'add', 'path': '/spec/servers/-', 'value': server } ])
+
+        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(portName);
+        return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': `/spec/servers/${index}`, 'value': server } ])
+    }
+
+    async removeTcpPortGateway(app: AppDocument) {
         const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
         const gatewayServers: any[] = (await this.getTcpPortGateway()).object.spec.servers
 
         const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(portName);
         if (index !== -1) {
-            return await this.manager.cluster.patch(this.gateway, [{ 'op': 'remove', 'path': `/spec/servers/${index}`, 'value': gatewayServers } ])
+            return await this.manager.cluster.patch(this.gateway, [{ 'op': 'remove', 'path': `/spec/servers/${index}` } ])
         }
     }
 
