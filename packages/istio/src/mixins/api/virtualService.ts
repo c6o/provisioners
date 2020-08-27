@@ -106,12 +106,24 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         }
     })
 
-    gatewayTcpPortTemplate = (name: string, portNumber: number) => ({
+    getTcpPortNumber(app: AppDocument) {
+        return app.spec.routes.simple.tcp.inboundPort
+    }
+
+    setTcpPortNumber(app: AppDocument, portNumber: number) {
+        return app.spec.routes.simple.tcp.inboundPort = portNumber
+    }
+
+    getTcpPortName(app: AppDocument) {
+        return `tcp-${app.metadata.namespace}-${app.metadata.name}`
+    }
+
+    gatewayTcpPortTemplate = (app: AppDocument) => ({
         hosts: ['*'],
         port: {
-            name: name,
+            name: this.getTcpPortName(app),
             protocol: 'TCP',
-            number: portNumber
+            number: this.getTcpPortNumber(app)
         }
     })
 
@@ -124,8 +136,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     }
 
     async checkPortConflict(app: AppDocument) {
-        const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
-        let portNumber = app.spec.routes.simple.tcp.inboundPort
+        const portName = this.getTcpPortName(app)
+        let portNumber = this.getTcpPortNumber(app)
 
         // the LoadBalancer is the source of truth since it's the first layer
         const loadBalancerPorts = (await this.getLoadBalancer()).object.spec.ports
@@ -134,29 +146,26 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             portNumber = this.generateUsablePortNumber()
             conflict = loadBalancerPorts.some(item => item.port === portNumber)
             if (!conflict)
-                app.spec.routes.simple.tcp.inboundPort = portNumber
+                this.setTcpPortNumber(app, portNumber)
         }
     }
 
     async addTcpPortGateway(app: AppDocument) {
-        const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
-        let portNumber = app.spec.routes.simple.tcp.inboundPort
         const gatewayServers = (await this.getGateway()).object.spec.servers
 
-        const item = this.gatewayTcpPortTemplate(portName, portNumber)
-        const alreadyExists = gatewayServers.find(item => item.port?.name === portName)
+        const item = this.gatewayTcpPortTemplate(app)
+        const alreadyExists = gatewayServers.find(item => item.port?.name === this.getTcpPortName(app))
         if (!alreadyExists)
             return await this.manager.cluster.patch(this.gateway, [{ 'op': 'add', 'path': '/spec/servers/-', 'value': item } ])
 
-        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(portName);
+        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(app));
         return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': `/spec/servers/${index}`, 'value': item } ])
     }
 
     async removeTcpPortGateway(app: AppDocument) {
-        const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
         const gatewayServers: any[] = (await this.getGateway()).object.spec.servers
 
-        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(portName);
+        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(app));
         if (index !== -1) {
             return await this.manager.cluster.patch(this.gateway, [{ 'op': 'remove', 'path': `/spec/servers/${index}` } ])
         }
@@ -175,32 +184,29 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return await this.manager.cluster.read(this.loadBalancer)
     }
 
-    loadBalancerTcpPortTemplate = (name: string, portNumber: number) => ({
-        name: name,
+    loadBalancerTcpPortTemplate = (app: AppDocument) => ({
+        name: this.getTcpPortName(app),
         protocol: 'TCP',
-        port: portNumber,
-        targetPort: portNumber
+        port: this.getTcpPortNumber(app),
+        targetPort: this.getTcpPortNumber(app)
     })
 
     async addTcpPortLoadBalancer(app: AppDocument) {
-        const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
-        let portNumber = app.spec.routes.simple.tcp.inboundPort
         const loadBalancerPorts = (await this.getLoadBalancer()).object.spec.ports
 
-        const item = this.loadBalancerTcpPortTemplate(portName, portNumber)
-        const alreadyExists = loadBalancerPorts.find(item => item.name === portName)
+        const item = this.loadBalancerTcpPortTemplate(app)
+        const alreadyExists = loadBalancerPorts.find(item => item.name === this.getTcpPortName(app))
         if (!alreadyExists)
             return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'add', 'path': '/spec/ports/-', 'value': item } ])
 
-        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(portName);
+        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(app));
         return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'replace', 'path': `/spec/ports/${index}`, 'value': item } ])
     }
 
     async removeTcpPortLoadBalancer(app: AppDocument) {
-        const portName = `tcp-${app.metadata.namespace}-${app.metadata.name}`
         const loadBalancerPorts: any[] = (await this.getLoadBalancer()).object.spec.ports
 
-        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(portName);
+        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(app));
         if (index !== -1) {
             return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'remove', 'path': `/spec/ports/${index}` } ])
         }
