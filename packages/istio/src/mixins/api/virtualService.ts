@@ -43,6 +43,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     }
 
     async removeVirtualService(app: AppDocument) {
+        this.app = app
 
         if (!app.spec.routes)
             return
