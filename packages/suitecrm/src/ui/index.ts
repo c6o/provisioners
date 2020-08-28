@@ -25,7 +25,7 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
-        this.serviceSpec.storage = this.serviceSpec.storage || '10Gi'
+        this.serviceSpec.storage = this.serviceSpec.storage || '1Gi'
         this.serviceSpec.suitecrmusername = this.serviceSpec.suitecrmusername || 'admin'
         this.serviceSpec.suitecrmpassword = this.serviceSpec.suitecrmpassword || 'admin'
     }
