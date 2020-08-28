@@ -7,24 +7,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     app: AppDocument
 
     async createVirtualService(app: AppDocument, gateway: string): Promise<Result> {
-        debugger
         this.app = app
-        app.spec.routes = [{
-                name: 'ggb1',
-                type: 'tcp',
-                service: 'node-red'
-            },
-            {
-                name: 'ggb2',
-                type: 'tcp',
-                service: 'node-red'
-            },
-            {
-                name: 'ggb3',
-                type: 'http',
-                service : 'node-red'
-            }
-        ]
 
         if (!app.spec.routes)
             return
@@ -76,14 +59,14 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
         await this.manager.cluster
             .begin(`Removing Virtual Service for ${app.metadata.namespace}/${app.metadata.name}`)
-            .delete({
-                apiVersion: 'networking.istio.io/v1alpha3',
-                kind: 'VirtualService',
-                metadata: {
-                    name: app.metadata.name,
-                    namespace: app.metadata.namespace
-                }
-            })
+                .delete({
+                    apiVersion: 'networking.istio.io/v1alpha3',
+                    kind: 'VirtualService',
+                    metadata: {
+                        name: app.metadata.name,
+                        namespace: app.metadata.namespace
+                    }
+                })
             .end()
     }
 
