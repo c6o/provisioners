@@ -27,7 +27,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'list',
                     name: 'databasesize',
                     choices: this.storageSizeChoices,
-                    default: '10Gi',
+                    default: '1Gi',
                     message: 'How much storage should we allocate for the database?',
                 },
             ], answers)
