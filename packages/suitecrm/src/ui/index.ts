@@ -6,7 +6,7 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
-    storageSizeChoices = ['2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
+    storageSizeChoices = ['1Gi','2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
 
     get serviceSpec() {
         return this.mediator.getServiceSpec('suitecrm')
