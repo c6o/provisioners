@@ -31,7 +31,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
         const vs = this.virtualService(app, gateway)
 
-        await Promise.all(app.spec.routes.map(async (route) => {
+        for (const route of app.spec.routes) {
             if (route.disabled)
                 return
 
@@ -46,7 +46,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
                 await this.addTcpPortLoadBalancer(route)
                 vs.spec.tcp.push(this.simpleTcpSection(route))
             }
-        }))
+        }
 
         if (vs.spec.http.length === 0 && vs.spec.tcp.length === 0)
             return
@@ -59,31 +59,29 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return result
     }
 
-    async removeVirtualService(namespace: string, name: string) {
+    async removeVirtualService(app: AppDocument) {
 
-        // if (!app.spec.routes)
-        //     return
+        if (!app.spec.routes)
+            return
 
-        // const vs = this.virtualService(app, gateway)
+        for (const route of app.spec.routes) {
+            if (route.disabled)
+                return
 
-        // await Promise.all(app.spec.routes.map(async (route) => {
-        //     if (route.disabled)
-        //         return
-
-        //     if (route.type === 'tcp') {
-        //         await this.removeTcpPortGateway(route)
-        //         await this.removeTcpPortLoadBalancer(route)
-        //     }
-        // }))
+            if (route.type === 'tcp') {
+                await this.removeTcpPortGateway(route)
+                await this.removeTcpPortLoadBalancer(route)
+            }
+        }
 
         await this.manager.cluster
-            .begin(`Removing Virtual Service for ${namespace}/${name}`)
+            .begin(`Removing Virtual Service for ${app.metadata.namespace}/${app.metadata.name}`)
             .delete({
                 apiVersion: 'networking.istio.io/v1alpha3',
                 kind: 'VirtualService',
                 metadata: {
-                    name,
-                    namespace
+                    name: app.metadata.name,
+                    namespace: app.metadata.namespace
                 }
             })
             .end()
