@@ -15,18 +15,21 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 type: 'input',
                 name: 'username',
                 message: 'Username:',
+                default: answers.username,
                 askAnswered: true,
             },
             {
                 type: 'password',
                 name: 'passkey',
                 message: 'Pass Key: (32 hexadecimal characters if provided)',
+                default: answers.passkey,
                 askAnswered: true,
             },
             {
                 type: 'input',
                 name: 'teamNumber',
                 message: 'Team Number (https://apps.foldingathome.org/team):',
+                default: answers.teamNumber,
                 askAnswered: true,
             }
         ], answers)
