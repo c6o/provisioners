@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../index'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    get dockerRegistryPods() {
+    get pods() {
         return {
             kind: 'Pod',
             metadata: {
@@ -15,51 +15,45 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async createApply() {
         await this.ensureServiceNamespacesExist()
-        await this.installMosquitto()
-        await this.ensureMosquittoIsRunning()
+        await this.installDockerRegistry()
+        await this.ensureDockerRegistryIsRunning()
     }
 
-    async installMosquitto() {
+    async installDockerRegistry() {
         const namespace = this.serviceNamespace
 
-        const {
-            username,
-            password,
-        } = this.spec
-
-        //we will always need to send in "users" to the configMap
-        //so we set it to empty string to start with
-        let users = ''
-        //if we have a username && password
-        if (username?.length > 0 && password?.length > 0) {
-            users = await this.generateMosquittoUserPayload(username, password)
-        }
-
         await this.manager.cluster
-            .begin('Install mosquitto deployment')
+            .begin('Install docker-registry secrets')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/1-deployment.yaml', { namespace, users })
+            .upsertFile('../../k8s/latest/1-secret.yaml', { namespace })
             .end()
 
 
         await this.manager.cluster
-            .begin('Install NodePort')
+            .begin('Install docker-registry configuration')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/2-nodeport.yaml', { namespace })
+            .upsertFile('../../k8s/latest/2-configmap.yaml', { namespace })
             .end()
 
         await this.manager.cluster
-            .begin('Install Virtual Service')
+            .begin('Install docker-registry networking services')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/3-virtualservice.yaml', { namespace })
+            .upsertFile('../../k8s/latest/3-service.yaml', { namespace })
+            .end()
+
+
+        await this.manager.cluster
+            .begin('Install docker-registry deployment')
+            .addOwner(this.manager.document)
+            .upsertFile('../../k8s/latest/4-deployment.yaml', { namespace })
             .end()
 
     }
 
-    async ensureMosquittoIsRunning() {
+    async ensureDockerRegistryIsRunning() {
         await this.manager.cluster.
-            begin('Ensure mosquitto services are running')
-            .beginWatch(this.dockerRegistryPods)
+            begin('Ensure docker-registry services are running')
+            .beginWatch(this.pods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
                 processor.endWatch()
             })
