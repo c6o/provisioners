@@ -18,15 +18,19 @@ export interface LaunchType {
     }
 }
 export interface RoutesType {
-    name: string,
     type: 'tcp'|'http',
-    service: string,
     port?: number,
-    strictPort?: boolean,
-    servicePort?: number,
-    prefix?: string,
-    rewrite?: string,
+    targetService: string,
+    targetPort?: number,
     disabled?: boolean
+    http?: {
+        prefix?: string,
+        rewrite?: string
+    },
+    tcp?: {
+        name: string,
+        strictPort?: boolean
+    }
 }
 export interface ServicesType {
     // open

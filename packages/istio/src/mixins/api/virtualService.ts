@@ -81,13 +81,13 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             route: [
                 {
                     destination: {
-                        host: route.service
+                        host: route.targetService
                     }
                 }
             ]
         }
-        if (route.servicePort)
-            tcp.route[0].destination.port = route.servicePort
+        if (route.targetPort)
+            tcp.route[0].destination.port = route.targetPort
         return tcp
     }
 
@@ -105,18 +105,18 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
                 route: [
                     {
                         destination: {
-                            host: route.service
+                            host: route.targetService
                         }
                     }
                 ]
             }
 
-        if (route.prefix)
-            http.match.push({uri: {prefix : route.prefix}})
-        if (route.rewrite)
-            http.rewrite = {uri : route.rewrite}
-        if (route.servicePort)
-            http.route[0].destination.port = route.servicePort
+        if (route.http?.prefix)
+            http.match.push({uri: {prefix : route.http.prefix}})
+        if (route.http?.rewrite)
+            http.rewrite = {uri : route.http.rewrite}
+        if (route.targetPort)
+            http.route[0].destination.port = route.targetPort
         return http
     }
 
@@ -145,7 +145,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     }
 
     getTcpPortName(route: RoutesType) {
-        return `tcp-${this.app.metadata.namespace}-${this.app.metadata.name}-${route.name}`
+        return `tcp-${this.app.metadata.namespace}-${this.app.metadata.name}-${route.tcp.name}`
     }
 
     gatewayTcpPortTemplate = (route: RoutesType) => ({
@@ -172,8 +172,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         // the LoadBalancer is the source of truth since it's the first layer
         const loadBalancerPorts = (await this.getLoadBalancer()).object.spec.ports
         let conflict = loadBalancerPorts.some(item => item.port === portNumber && item.name !== portName)
-        if (conflict && route.strictPort)
-            throw new Error('Port conflict encountered with .strictPort route setting')
+        if (conflict && route.tcp?.strictPort)
+            throw new Error('Port conflict encountered with .tcp.strictPort route setting')
 
         while (conflict) {
             portNumber = this.generateUsablePortNumber()
