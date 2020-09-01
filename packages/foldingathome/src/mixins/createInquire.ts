@@ -10,6 +10,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             teamNumber: args.teamNumber || this.spec.teamNumber
         }
 
+        //https://apps.foldingathome.org/team
         const responses = await this.manager.inquirer?.prompt([
             {
                 type: 'input',
@@ -28,7 +29,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             {
                 type: 'input',
                 name: 'teamNumber',
-                message: 'Team Number (https://apps.foldingathome.org/team):',
+                message: 'Team Number:',
                 default: answers.teamNumber,
                 askAnswered: true,
             }
