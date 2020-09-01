@@ -1,4 +1,4 @@
-import { KubeDocument, Result } from '@c6o/kubeclient'
+import { Result } from '@c6o/kubeclient'
 import { AppDocument, RoutesType } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
 
