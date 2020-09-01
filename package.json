@@ -20,6 +20,7 @@
     "packages/cert-manager/",
     "packages/prometheus/",
     "packages/wordpress/",
+    "packages/docker-registry/",
     "packages/verdaccio/",
     "packages/logging-elk/",
     "packages/precog/"
