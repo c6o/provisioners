@@ -24,7 +24,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             number: 80,
             protocol: 'HTTP'
         },
-        hosts: ['*']
+        hosts: ['*'],
+        tls: {
+            httpsRedirect: true
+        }
     },
     {
         port: {
