@@ -24,6 +24,7 @@ export class FoldingAtHomeSettings extends LitElement implements StoreFlowStep {
     usernameChanged = (e) => {
         this.serviceSpec.username = e.target.value
     }
+
     teamChanged = (e) => {
         this.serviceSpec.teamNumber = e.target.value
     }
