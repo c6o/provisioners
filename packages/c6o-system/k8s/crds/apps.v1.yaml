@@ -77,13 +77,6 @@ spec:
                     required:
                       - type
                       - targetService
-                    oneOf:
-                    - not:
-                        anyOf:
-                        - required:
-                          - http
-                        - required:
-                          - tcp
                     properties:
                       type:
                         type: string

@@ -6,7 +6,7 @@ import {
     updateApplyMixin,
     updateSystemMixin,
     createValidateMixin,
-    routingMixin,
+    postAppMixin,
     removeApplyMixin,
     choicesApiMixin,
     loggerApiMixin,
@@ -18,7 +18,7 @@ import {
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
 export class Provisioner extends mix(ProvisionerBase).with(
-    routingMixin,
+    postAppMixin,
     removeApplyMixin,
     createApplyMixin,
     updateApplyMixin,
