@@ -25,9 +25,9 @@ spec:
       volumes:
         - name: data
           emptyDir: {}
-        - name: docker-registry-config
+        - name: docker-registry
           configMap:
-            name: docker-registry-config
+            name: docker-registry
 
       containers:
         - name: docker-registry-frontend
@@ -79,13 +79,13 @@ spec:
             - name: REGISTRY_HTTP_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: docker-registry-secret
+                  name: docker-registry
                   key: haSharedSecret
             - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
               value: "/var/lib/registry"
           volumeMounts:
             - name: data
               mountPath: /var/lib/registry/
-            - name: "docker-registry-config"
+            - name: docker-registry
               mountPath: "/etc/docker/registry"
 ---
