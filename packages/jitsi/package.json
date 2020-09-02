@@ -37,7 +37,7 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@c6o/kubeclient": "^0.0.6",
-    "@provisioner/common": "^0.0.5",
+    "@provisioner/common": "^0.0.6",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "mosquitto-passwd": "^1.0.3",
