@@ -21,8 +21,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             if (route.type === 'http')
                 vs.spec.http.push(this.simpleHttpSection(route))
             else if (route.type === 'tcp') {
-                if (!route.port || route.port === 0)
-                    route.port = this.generateUsablePortNumber()
+                if (!route.tcp.port || route.tcp.port === 0)
+                    route.tcp.port = this.generateUsablePortNumber()
 
                 await this.checkPortConflict(route)
                 await this.addTcpPortGateway(route)
@@ -75,7 +75,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const tcp: any = {
             match: [
                 {
-                    port: route.port
+                    port: route.tcp.port
                 }
             ],
             route: [
@@ -137,11 +137,11 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     })
 
     getTcpPortNumber(route: RoutesType) {
-        return route.port
+        return route.tcp.port
     }
 
     setTcpPortNumber(route: RoutesType, port: number) {
-        route.port = port
+        route.tcp.port = port
     }
 
     getTcpPortName(route: RoutesType) {

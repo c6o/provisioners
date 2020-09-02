@@ -19,7 +19,6 @@ export interface LaunchType {
 }
 export interface RoutesType {
     type: 'tcp'|'http',
-    port?: number,
     targetService: string,
     targetPort?: number,
     disabled?: boolean
@@ -28,6 +27,7 @@ export interface RoutesType {
         rewrite?: string
     },
     tcp?: {
+        port?: number,
         name: string,
         strictPort?: boolean
     }
