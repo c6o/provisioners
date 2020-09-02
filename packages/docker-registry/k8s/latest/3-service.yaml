@@ -6,7 +6,7 @@ metadata:
   labels:
     app: docker-registry
     name: docker-registry
-    app.kubernetes.io/managed-by: codezero
+    role: server
     system.codezero.io/app: docker-registry
 spec:
   type: NodePort
@@ -15,7 +15,10 @@ spec:
       protocol: TCP
       name: registry
       targetPort: 5000
+    - port: 80
+      protocol: TCP
+      name: registry-frontend
+      targetPort: http
   selector:
     app: docker-registry
-    release: docker-registry
 ---

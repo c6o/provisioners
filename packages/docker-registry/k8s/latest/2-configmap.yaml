@@ -6,7 +6,7 @@ metadata:
   labels:
     app: docker-registry
     name: docker-registry
-    app.kubernetes.io/managed-by: codezero
+    role: server
     system.codezero.io/app: docker-registry
 data:
   config.yml: |-
