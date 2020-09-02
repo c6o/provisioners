@@ -71,22 +71,40 @@ spec:
                 services:
                   x-kubernetes-preserve-unknown-fields: true
                 routes:
-                  type: object
-                  properties:
-                    simple:
-                      type: object
-                      properties:
-                        http:
-                          type: object
-                          properties:
-                            service:
-                              type: string
-                            port:
-                              type: number
-                            prefix:
-                              type: string
-                            rewrite:
-                              type: string
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - type
+                      - targetService
+                    properties:
+                      type:
+                        type: string
+                        pattern: '^(http|tcp)$'
+                      targetService:
+                        type: string
+                      targetPort:
+                        type: number
+                      disabled:
+                        type: boolean
+                      http:
+                        type: object
+                        properties:
+                          prefix:
+                            type: string
+                          rewrite:
+                            type: string
+                      tcp:
+                        type: object
+                        required:
+                          - name
+                        properties:
+                          name:
+                            type: string
+                          port:
+                            type: number
+                          strictPort:
+                            type: boolean
   scope: Namespaced
   names:
     # plural name to be used in the URL: /apis/<group>/<version>/<plural>

@@ -18,13 +18,18 @@ export interface LaunchType {
     }
 }
 export interface RoutesType {
-    simple?: {
-        http?: {
-            service: string
-            port?: number
-            prefix?: string
-            rewrite?: string
-        }
+    type: 'tcp'|'http',
+    targetService: string,
+    targetPort?: number,
+    disabled?: boolean
+    http?: {
+        prefix?: string,
+        rewrite?: string
+    },
+    tcp?: {
+        port?: number,
+        name: string,
+        strictPort?: boolean
     }
 }
 export interface ServicesType {
@@ -41,7 +46,7 @@ export interface AppDocument extends KubeDocument {
         }
         provisioner?: any | 'ignore'
         services?: ServicesType
-        routes?: RoutesType
+        routes?: Array<RoutesType>
     }
 }
 

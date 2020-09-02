@@ -20,8 +20,8 @@ export const httpsRedirectApiMixin = (base: baseProvisionerType) => class extend
         apiVersion: 'networking.istio.io/v1alpha3',
         kind: 'Gateway',
         metadata: {
-            name: 'c6o-system-marina-gateway',
-            namespace: 'istio-system'
+            name: 'system-gateway',
+            namespace: 'c6o-system'
         }
     }
 
