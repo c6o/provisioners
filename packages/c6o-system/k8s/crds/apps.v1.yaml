@@ -87,7 +87,7 @@ spec:
                     properties:
                       type:
                         type: string
-                        pattern: '^http|tcp$'
+                        pattern: '^(http|tcp)$'
                       targetService:
                         type: string
                       targetPort:
