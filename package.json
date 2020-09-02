@@ -21,6 +21,7 @@
     "packages/prometheus/",
     "packages/wordpress/",
     "packages/verdaccio/",
+    "packages/foldingathome/",
     "packages/logging-elk/",
     "packages/precog/",
     "packages/suitecrm/"
