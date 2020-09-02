@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry
+  namespace: {{namespace}}
+  labels:
+    app: docker-registry
+    name: docker-registry
+    role: server
+    system.codezero.io/app: docker-registry
+spec:
+  selector:
+    matchLabels:
+      app: docker-registry
+  replicas: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: docker-registry
+        name: docker-registry
+        role: server
+        system.codezero.io/app: docker-registry
+    spec:
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: docker-registry
+          configMap:
+            name: docker-registry
+
+      containers:
+        - name: docker-registry-frontend
+          image: konradkleine/docker-registry-frontend:v2
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: registry
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+          env:
+            - name: ENV_DOCKER_REGISTRY_HOST
+              value: docker-registry
+            - name: ENV_DOCKER_REGISTRY_PORT
+              value: "5000"
+          volumeMounts:
+          - name: data
+            mountPath: /data/docker_registry
+
+        - name: docker-registry
+          image: registry:2
+          imagePullPolicy: IfNotPresent
+          command:
+          - /bin/registry
+          - serve
+          - /etc/docker/registry/config.yml
+          ports:
+            - containerPort: 5000
+              name: registry
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+          env:
+            - name: REGISTRY_HTTP_ADDR
+              value: :5000
+            - name: REGISTRY_HTTP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: docker-registry
+                  key: haSharedSecret
+            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+              value: "/var/lib/registry"
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/registry/
+            - name: docker-registry
+              mountPath: "/etc/docker/registry"
+---
