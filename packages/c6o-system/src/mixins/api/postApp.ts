@@ -29,16 +29,4 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             this.manager.status?.pop()
         }
     }
-
-    async preCreateApp(app: AppDocument) {
-        // placeholder
-    }
-
-    async preRemoveApp(app: AppDocument) {
-        // placeholder
-    }
-
-    async preUpdateApp(app: AppDocument) {
-        // placeholder
-    }
 }

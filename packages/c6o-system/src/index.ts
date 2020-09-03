@@ -29,6 +29,8 @@ export class Provisioner extends mix(ProvisionerBase).with(
     loggerApiMixin,
     npmApiMixin,
     metricsMixin) {
+
+    newClusterId
 }
 
 export * from './constants'

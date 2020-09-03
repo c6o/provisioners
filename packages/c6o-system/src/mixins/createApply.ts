@@ -16,6 +16,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.provisionRoutes()
         await this.provisionCertificate()
         await this.provisionUpdate()
+        await this.patchCluster()
     }
 
     gatewayServers = [{
@@ -129,7 +130,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // The apps above are not going through the provisioner
                     // TODO: Remove this hack - have them be properly provisioned
                     // at some point perhaps
-                    await this.createAppPost(appDoc)
+                    await this.postCreateApp(appDoc)
                 }, '../../k8s/apps.yaml', options)
             .end()
     }
@@ -204,5 +205,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin(`Provision update cron job`)
                 .upsertFile('../../k8s/update-recurring-job.yaml', options)
             .end()
+    }
+
+    async patchCluster() {
+        if (!this.newClusterId)
+            return
+        await this.manager.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'completed' } })
     }
 }
