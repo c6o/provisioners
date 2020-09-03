@@ -29,12 +29,11 @@
   ],
   "scripts": {
     "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",
-
     "build": "lerna run build --stream",
     "develop": "lerna run develop --parallel --stream",
     "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
-    "release": "lerna version",
-    "publish": "git checkout main && git merge --no-ff"
+    "publish-patch": "yarn reset && lerna publish patch",
+    "publish-main": "git checkout main && git merge --no-ff"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
