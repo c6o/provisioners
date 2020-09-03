@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{namespace}}
+  name: suitecrm
+  labels:
+    app: suitecrm
+    app.kubernetes.io/managed-by: codezero
+spec:
+  selector:
+    matchLabels:
+      app: suitecrm
+  template:
+    metadata:
+      labels:
+        app: suitecrm
+        app.kubernetes.io/managed-by: codezero
+    spec:
+      hostAliases:
+      - ip: "127.0.0.1"
+        hostnames:
+        - "status.localhost"
+      containers:
+      - name: suitecrm
+        image: docker.io/bitnami/suitecrm:7.11.13-debian-10-r27
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: ALLOW_EMPTY_PASSWORD
+          value: "no"
+        - name: SUITECRM_VALIDATE_USER_IP
+          value: "no"
+        - name: MARIADB_HOST
+          value: mariadb
+        - name: MARIADB_PORT_NUMBER
+          value: "3306"
+        - name: SUITECRM_DATABASE_NAME
+          value: "bitnami_suitecrm"
+        - name: SUITECRM_DATABASE_USER
+          value: "bn_suitecrm"
+        - name: SUITECRM_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb
+              key: mariadb-password
+        - name: SUITECRM_HOST
+          value: "localhost:"
+        - name: SUITECRM_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: suitecrm
+              key: suitecrm-username
+        - name: SUITECRM_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: suitecrm
+              key: suitecrm-password
+        - name: SUITECRM_EMAIL
+          value: "user@example.com"
+        - name: SUITECRM_LAST_NAME
+          value: "Name"
+        - name: SUITECRM_SMTP_HOST
+          value:
+        - name: SUITECRM_SMTP_PORT
+          value:
+        - name: SUITECRM_SMTP_USER
+          value:
+        - name: SUITECRM_SMTP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: suitecrm
+              key: suitecrm-smtp-password
+        - name: SUITECRM_SMTP_PROTOCOL
+          value:
+        ports:
+        - name: http
+          containerPort: 80
+        livenessProbe:
+          httpGet:
+            path: /index.php
+            port: http
+            httpHeaders:
+            - name: Host
+              value: "127.0.0.1"
+          initialDelaySeconds: 300
+        readinessProbe:
+          httpGet:
+            path: /index.php
+            port: http
+            httpHeaders:
+            - name: Host
+              value: "127.0.0.1"
+          initialDelaySeconds: 60
+        resources:
+          {}
+        volumeMounts:
+        - name: suitecrm-data
+          mountPath: /bitnami/suitecrm
+          subPath: suitecrm
+      volumes:
+      - name: suitecrm-data
+        persistentVolumeClaim:
+          claimName: suitecrm

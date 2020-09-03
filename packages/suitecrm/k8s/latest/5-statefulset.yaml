@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  namespace: {{namespace}}
+  labels:
+    app: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  serviceName: mariadb
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      serviceAccountName: default
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app: mariadb
+      initContainers:
+      containers:
+        - name: mariadb
+          image: docker.io/bitnami/mariadb:10.3.22-debian-10-r92
+          imagePullPolicy: "IfNotPresent"
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: mariadb-root-password
+            - name: MARIADB_USER
+              value: "bn_suitecrm"
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: mariadb-password
+            - name: MARIADB_DATABASE
+              value: "bitnami_suitecrm"
+          ports:
+            - name: mysql
+              containerPort: 3306
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  if [ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]; then
+                      password_aux=$(cat $MARIADB_ROOT_PASSWORD_FILE)
+                  fi
+                  mysqladmin status -uroot -p$password_aux
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  if [ -f "${MARIADB_ROOT_PASSWORD_FILE:-}" ]; then
+                      password_aux=$(cat $MARIADB_ROOT_PASSWORD_FILE)
+                  fi
+                  mysqladmin status -uroot -p$password_aux
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/mariadb
+            - name: config
+              mountPath: /opt/bitnami/mariadb/conf/my.cnf
+              subPath: my.cnf
+      volumes:
+        - name: config
+          configMap:
+            name: mariadb
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: mariadb
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "{{databasesize}}"

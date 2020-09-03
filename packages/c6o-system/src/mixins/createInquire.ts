@@ -1,9 +1,8 @@
 import { baseProvisionerType } from '../'
 
+const inquireNewClusterId = '** new cluster **'
+
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
-
-    newClusterId = '** new cluster **'
-
     clusters
     accounts
 
@@ -13,7 +12,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     clusterIdWhen = async (answers) => {
         if (this.clusters.length === 0) {
             // There are no clusters to choose. Force the user to create a new one
-            answers.clusterId = this.newClusterId
+            answers.clusterId = inquireNewClusterId
             return false
         }
         return true
@@ -21,12 +20,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     clusterIdChoices = async () => {
         const choices = this.clusters.map(cluster => ({ name: cluster.name, value: cluster._id }))
-        const newCluster = { name: 'New cluster', value: this.newClusterId }
+        const newCluster = { name: 'New cluster', value: inquireNewClusterId }
         choices.unshift(newCluster, new this.manager.inquirer.Separator())
         return choices
     }
 
-    newClusterWhen = async (answers) => answers.clusterId === this.newClusterId
+    newClusterWhen = async (answers) => answers.clusterId === inquireNewClusterId
     accountIdChoices = _ => this.accounts.map(account => ({ name: account.name, value: account._id }))
 
     async inquire(args) {
@@ -79,7 +78,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             name: 'tag',
             default: 0,
             when: process.env.NODE_ENV === 'development',
-            choices: [process.env.USER, 'canary', 'latest'],
+            choices: ['dragon', process.env.USER, 'canary', 'latest'],
             message: 'What image tags would you like to use?',
         }, {
             type: 'list',
@@ -106,11 +105,16 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const answers = await this.inquire(args)
 
         let cluster
-        if (answers.clusterId === this.newClusterId) {
+        if (answers.clusterId === inquireNewClusterId) {
             cluster = await this.manager.hubClient.createCluster({
                 namespace: answers.clusterNamespace,
-                name: answers.clusterName
+                name: answers.clusterName,
+                iaas: {
+                    provider: 'kubeconfig'
+                }
             })
+            this.newClusterId = cluster._id
+            await this.manager.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'installing' } })
         }
         else
             cluster = this.findCluster(answers.clusterId)

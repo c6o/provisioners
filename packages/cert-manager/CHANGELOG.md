@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/c6o/provisioners/compare/v0.0.6...v0.0.7) (2020-09-03)
+
+
+### ♻️ Chores
+
+* Bumped gitHead ([15d30cf](https://github.com/c6o/provisioners/commit/15d30cf8f5386a58e2873cf2dd97fdc55f8f7cd2))
+
+
+
+
+
+## [0.0.6](https://github.com/c6o/provisioners/compare/v0.0.5...v0.0.6) (2020-08-23)
+
+
+### ♻️ Chores
+
+* Bumped references ([798c6a3](https://github.com/c6o/provisioners/commit/798c6a3f7c826d04f2327a5cfae535f2dd3d04e8))
+
+
+
+
+
 ## [0.0.5](https://github.com/c6o/provisioners/compare/v0.0.4...v0.0.5) (2020-08-13)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/kafka",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "description": "CodeZero provisioner for kafka",
   "main": "lib/index.js",
   "scripts": {
@@ -31,9 +31,9 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient": "^0.0.5",
-    "@provisioner/common": "^0.0.5",
+    "@c6o/kubeclient": "^0.0.6",
+    "@provisioner/common": "^0.0.7",
     "mixwith": "^0.1.1"
   },
-  "gitHead": "db2f853696fe6d336812a46d1cac44855aec9dfa"
+  "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884"
 }

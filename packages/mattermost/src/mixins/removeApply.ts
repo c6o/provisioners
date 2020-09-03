@@ -20,7 +20,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
     async removeApply() {
         const namespace = this.manager.document.metadata.namespace
         const mysqlClusterDoc = this.toMySqlClusterDoc(namespace)
-debugger
+
         await this.manager.cluster
             .begin('Remove MySQL data')
                 .list(mysqlClusterDoc)
@@ -46,8 +46,7 @@ debugger
                 .deleteFile('../../k8s/full/2-minio-operator.yaml', { namespace })
                 .deleteFile('../../k8s/full/3-mattermost-operator.yaml', { namespace })
                 .deleteFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace })
-                .deleteFile('../../k8s/full/remove-straglers.yaml', { namespace })
-
+                .deleteFile('../../k8s/full/remove-stragglers.yaml', { namespace })
             .end()
 
         // Do not remove the CRDs as there could be other instances of mattermost

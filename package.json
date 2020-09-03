@@ -11,17 +11,25 @@
     "packages/etcd/",
     "packages/mongo/",
     "packages/mattermost/",
+    "packages/ghost/",
     "packages/kafka/",
     "packages/node-red/",
+    "packages/jitsi/",
     "packages/grafana/",
+    "packages/mosquitto/",
     "packages/cert-manager/",
     "packages/prometheus/",
+    "packages/wordpress/",
+    "packages/docker-registry/",
     "packages/verdaccio/",
+    "packages/foldingathome/",
     "packages/logging-elk/",
-    "packages/precog/"
+    "packages/precog/",
+    "packages/suitecrm/"
   ],
   "scripts": {
-    "clean": "del packages/**/lib && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean",
+    "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",
+
     "build": "lerna run build --stream",
     "develop": "lerna run develop --parallel --stream",
     "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
@@ -30,7 +38,7 @@
   },
   "devDependencies": {
     "@types/node": "^10.12.18",
-    "del-cli": "^1.1.0",
+    "del-cli": "^3.0.1",
     "lerna": "^3.20.2",
     "source-map-support": "^0.5.16",
     "typescript": "^3.9.5"

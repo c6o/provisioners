@@ -91,4 +91,51 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         const taskDocument = this.toTask(namespace, ask, spec)
         return await this.manager.cluster.create(taskDocument)
     }
+
+    async getIngressGatewayServiceClusterIp() {
+        const service = {
+            apiVersion: 'v1',
+            kind: 'Service',
+            metadata: {
+                namespace: 'istio-system',
+                name: 'istio-ingressgateway', // constants?
+                labels: {
+                    app: 'istio-ingressgateway'
+                }
+            }
+        }
+        const result = await this.manager.cluster.read(service)
+
+        if (result.error) {
+            this.logger?.error(result.error)
+            throw result.error
+        }
+        return result.object?.spec?.clusterIP
+    }
+
+    async restartDeployment(namespace: string, name: string) {
+
+        const service = {
+            apiVersion: 'apps/v1',
+            kind: 'Deployment',
+            metadata: {
+                namespace,
+                name,
+            }
+        }
+
+        const result = await this.manager.cluster.read(service)
+
+        if (result.error) {
+            this.logger?.error(result.error)
+            throw result.error
+        }
+
+        const deployment = result.object
+
+        const previousCount = deployment.spec?.replicas
+        await this.manager.cluster.patch(deployment, { spec: { replicas: 0 } })
+        await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
+    }
+
 }

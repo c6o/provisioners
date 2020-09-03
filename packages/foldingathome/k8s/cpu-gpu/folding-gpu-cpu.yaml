@@ -1,0 +1,134 @@
+#https://github.com/richstokes/k8s-fah
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: foldingathome-config
+  namespace: {{namespace}}
+data:
+  config.xml: |
+    <config>
+      <!--
+        To set your user name, team and passkey just edit the text
+        in quotes below.
+      -->
+
+      <!-- User Information -->
+      <user value="{{username}}"/> <!-- Enter your user name here -->
+      <team value="{{teamNumber}}"/>         <!-- Your team number -->
+      <passkey value="{{passkey}}"/>       <!-- 32 hexadecimal characters if provided -->
+
+      <power value="full"/>     <!-- Throttling this at K8s level -->
+      <gpu value="true"/>      <!-- If true, attempt to autoconfigure GPUs -->
+      <fold-anon value="true"/>
+
+      <!-- Folding Slots
+        No folding slot configuration is necessary.  The client will
+        automaticlaly choose a good configuration for you.  However, here
+        are some examples:
+
+          <slot id="0" type="CPU"/>
+
+        or
+
+          <slot id="0" type="CPU"/>
+          <slot id="1" type="GPU"/>
+
+        All slots in a configuration MUST have unique ids.
+      -->
+    </config>
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: folding
+  namespace: {{namespace}}
+  labels:
+    app: folding
+    role: server
+    name: folding
+    system.codezero.io/app: foldingathome
+spec:
+  selector:
+    matchLabels:
+      app: folding
+  replicas: 2 # Set number of replicas to run - one replica per node
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 100%
+      maxSurge: 100%
+  template:
+    metadata:
+      labels:
+        app: folding
+        role: server
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - folding
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: folding
+          image: "richstokes20/fah-covid:latest"
+          # --run-as UID should match runAsUser value in containers securityContext
+          command:
+            - "/usr/bin/FAHClient"
+            - "--config"
+            - "/var/lib/fahclient/config.xml"
+            - "--config-rotate=false"
+            - "--run-as"
+            - "1234"
+            - "--pid-file=/var/lib/fahclient/fahclient.pid"
+            - "--gpu=true"
+          resources:
+            limits:
+              nvidia.com/gpu: "1" # How many gpu's you want to donate per ndoe
+              cpu: 1000m # How much CPU you wish to donate per node
+              memory: 512Mi
+            requests:
+              nvidia.com/gpu: "1"
+              cpu: 100m
+              memory: 512Mi
+          # Make the container harder to break out of or exploit
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1234
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /var/lib/fahclient
+              name: fahclient
+      # We make an emptyDir to mount on the work directory /var/lib/fahclient
+      # so we can make the rest of the container's root filesystem read-only
+      volumes:
+        - name: fahclient
+          emptyDir: {}
+        - name: folding-config
+          configMap:
+            name: foldingathome-config
+      initContainers:
+        - name: copy-config
+          imagePullPolicy: Always
+          image: "richstokes20/fah-covid:latest"
+          command:
+            - "sh"
+            - "-c"
+            - "cp /etc/fahclient-config/config.xml /var/lib/fahclient/config.xml"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1234
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /var/lib/fahclient
+              name: fahclient
+            - mountPath: /etc/fahclient-config
+              name: folding-config
+---
