@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/nsainaney/traxitt/compare/v0.0.6...v0.0.7) (2020-09-03)
+
+
+### ✨ Features
+
+* **jitsi:** Jitsi Provisioner ([#42](https://github.com/nsainaney/traxitt/issues/42)) ([dfca726](https://github.com/nsainaney/traxitt/commit/dfca72651911bc8c438b38d6e86a1876fb54651a))
+* **jitsi:** Jitsi Provisioner ([#44](https://github.com/nsainaney/traxitt/issues/44)) ([d7e69be](https://github.com/nsainaney/traxitt/commit/d7e69bedbe413f22d059a4bc13799403f3fc5e97))
+
+
+### ♻️ Chores
+
+* Bumped gitHead ([15d30cf](https://github.com/nsainaney/traxitt/commit/15d30cf8f5386a58e2873cf2dd97fdc55f8f7cd2))
+
+
+
+
+
 ## [0.0.6](https://github.com/nsainaney/traxitt/compare/v0.0.5...v0.0.6) (2020-08-23)
 
 

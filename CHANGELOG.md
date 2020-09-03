@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/c6o/node-monorepo/compare/v0.0.6...v0.0.7) (2020-09-03)
+
+
+### ✨ Features
+
+* **docker-registry:** Provisioner for docker-registry ([#58](https://github.com/c6o/node-monorepo/issues/58)) ([4ea6767](https://github.com/c6o/node-monorepo/commit/4ea6767565dabab7c58f525b60744e5712ce4f82))
+* **Folding@Home:** Folding@Home Provisioner ([#50](https://github.com/c6o/node-monorepo/issues/50)) ([f4d04c4](https://github.com/c6o/node-monorepo/commit/f4d04c4a07f08acc69f1e9091957d3dd368c9bc9))
+* **ghost:** Ghost provisioner implementation ([#36](https://github.com/c6o/node-monorepo/issues/36)) ([6ae493b](https://github.com/c6o/node-monorepo/commit/6ae493b96860d96e1a449cec2b7289d5fa9879ce))
+* **jitsi:** Jitsi Provisioner ([#42](https://github.com/c6o/node-monorepo/issues/42)) ([dfca726](https://github.com/c6o/node-monorepo/commit/dfca72651911bc8c438b38d6e86a1876fb54651a))
+* **jitsi:** Jitsi Provisioner ([#44](https://github.com/c6o/node-monorepo/issues/44)) ([d7e69be](https://github.com/c6o/node-monorepo/commit/d7e69bedbe413f22d059a4bc13799403f3fc5e97))
+* **mosquitto:** Mosquitto provisioner ([#40](https://github.com/c6o/node-monorepo/issues/40)) ([0a011d4](https://github.com/c6o/node-monorepo/commit/0a011d46992a13016d02433691f0d44099d0c052))
+* **suitecrm:** SuiteCRM provisioner ([#47](https://github.com/c6o/node-monorepo/issues/47)) ([e04735b](https://github.com/c6o/node-monorepo/commit/e04735b8dd318883f1f6fcd888f976b255f113f5))
+* **wordpress:** WordPress provisioner ([#39](https://github.com/c6o/node-monorepo/issues/39)) ([d865fde](https://github.com/c6o/node-monorepo/commit/d865fdeac450360c7dd2ead704c10186e1ccf46a))
+
+
+### 🐛 Bug Fixes
+
+* **system:** preApp steps and new cluster creation status ([d9c2e32](https://github.com/c6o/node-monorepo/commit/d9c2e325277f08401c66f9b6373d06c97642767a))
+
+
+### ♻️ Chores
+
+* Bumped gitHead ([15d30cf](https://github.com/c6o/node-monorepo/commit/15d30cf8f5386a58e2873cf2dd97fdc55f8f7cd2))
+* Bumped versions ([1da2565](https://github.com/c6o/node-monorepo/commit/1da25659e5cbe7989a20537e62f2cc730005a699))
+* Bumped versions ([43a02cb](https://github.com/c6o/node-monorepo/commit/43a02cbde47a491bd5d318fe896d9922cdc71ba4))
+* Updated yarn.lock ([114a7e6](https://github.com/c6o/node-monorepo/commit/114a7e6cb604a18a1785ba995bd592d1aab2961a))
+* yarn.lock ([b04ac13](https://github.com/c6o/node-monorepo/commit/b04ac137110ec5fad4297b511b6257f8f5e70d8f))
+* **hub:** Switch domain suffix for dev and staging to codezero.dev ([#35](https://github.com/c6o/node-monorepo/issues/35)) ([47042ab](https://github.com/c6o/node-monorepo/commit/47042abe504c2e4894ec7a71d41510dfe5516b69))
+
+
+
+
+
 ## [0.0.6](https://github.com/c6o/node-monorepo/compare/v0.0.5...v0.0.6) (2020-08-23)
 
 
