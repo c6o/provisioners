@@ -1,7 +1,8 @@
 import { baseProvisionerType } from '../index'
-import { Buffer } from 'buffer'
+
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
+    // @ts-ignore
     get ghostPods() {
         return {
             kind: 'Pod',
@@ -14,34 +15,35 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
+    // @ts-ignore
     async createApply() {
         await this.ensureServiceNamespacesExist()
         await this.installGhost()
         await this.ensureGhostIsRunning()
     }
 
+    // @ts-ignore
     async installGhost() {
         const namespace = this.serviceNamespace
         await this.manager.cluster
             .begin('Install Ghost deployment')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/1-deployment.yaml', { namespace })
+            .upsertFile('../../k8s/latest/1-deployment.yaml', {namespace})
             .end()
 
 
         await this.manager.cluster
             .begin('Install NodePort')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/2-service.yaml', { namespace })
+            .upsertFile('../../k8s/latest/2-service.yaml', {namespace})
             .end()
-
     }
 
+    // @ts-ignore
     async ensureGhostIsRunning() {
-        await this.manager.cluster.
-            begin('Ensure Ghost services are running')
+        await this.manager.cluster.begin('Ensure Ghost services are running')
             .beginWatch(this.ghostPods)
-            .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
+            .whenWatch(({condition}) => condition.Ready === 'True', (processor) => {
                 processor.endWatch()
             })
             .end()
