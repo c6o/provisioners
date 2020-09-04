@@ -1,5 +1,4 @@
 import { LitElement, html, customElement } from 'lit-element'
-import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
 @customElement('ghost-install-main')
