@@ -1,19 +1,19 @@
 module.exports = {
     'roots': [
-        '<rootDir>/src'
+        './src',
     ],
     'testMatch': [
-        '**/?(*.)+(unit).+(ts)'
+        '**/?(*.)+(unit).+(ts)',
     ],
     'transform': {
-        '^.+\\.(ts|tsx)$': 'ts-jest'
+        '^.+\\.(ts|tsx)$': 'ts-jest',
     },
     'reporters': [
         'default',
         ['jest-html-reporters', {
             'publicPath': './coverage',
             'filename': 'report.html',
-            'expand': true
-        }]
+            'expand': true,
+        }],
     ],
 }
