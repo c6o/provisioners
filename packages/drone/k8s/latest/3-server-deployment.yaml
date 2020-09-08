@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  namespace: {{namespace}}
+  labels:
+    app: server
+    app.kubernetes.io/name: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: server
+  template:
+    metadata:
+      labels:
+        app: server
+        app.kubernetes.io/name: server
+    spec:
+      volumes:
+      - name: drone
+        persistentVolumeClaim:
+          claimName: drone
+      containers:
+      - name: server
+        image: drone/drone:1
+        ports:
+          - containerPort: 80
+            name: server
+            protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+        volumeMounts:
+        - name: drone
+          mountPath: /var/lib/drone
+        env:
+        - name: DRONE_SERVER_HOST
+          value: server
+        - name: DRONE_SERVER_PROTO
+          value: http
+        - name: DRONE_GIT_ALWAYS_AUTH
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GIT_ALWAYS_AUTH
+        #GITHUB
+        - name: DRONE_GITHUB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITHUB_CLIENT_ID
+        - name: DRONE_GITHUB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITHUB_CLIENT_SECRET
+        - name: DRONE_RPC_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: SECRET_KEY
+        #GITLAB
+        - name: DRONE_GITLAB_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITLAB_CLIENT_ID
+        - name: DRONE_GITLAB_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITLAB_CLIENT_SECRET
+        - name: DRONE_GITLAB_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITLAB_SERVER
+        #COGS
+        - name: DRONE_GOGS_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GOGS_SERVER
+        #GITEA
+        - name: DRONE_GITEA_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITEA_CLIENT_ID
+        - name: DRONE_GITEA_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITEA_CLIENT_SECRET
+        - name: DRONE_GITEA_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GITEA_SERVER
+        #BITBUCKET
+        - name: DRONE_BITBUCKET_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: BITBUCKET_CLIENT_ID
+        - name: DRONE_BITBUCKET_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: BITBUCKET_CLIENT_SECRET
+        #BITBUCKET SERVER
+        - name: DRONE_GIT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GIT_USERNAME
+        - name: DRONE_GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: GIT_PASSWORD
+        - name: DRONE_STASH_CONSUMER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: STASH_CONSUMER_KEY
+        - name: DRONE_STASH_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: STASH_PRIVATE_KEY
+        - name: DRONE_STASH_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: drone-secrets
+              key: STASH_SERVER
