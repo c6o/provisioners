@@ -3,7 +3,9 @@ import { baseProvisionerType } from '../index'
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
 
-    storageChoices = ['1Gi','2Gi','5Gi','10Gi','20Gi','50Gi','100Gi']
+    storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
+
+    scmChoices = ['GitHub', 'GitHub Enterprise', 'Bitbucket Cloud', 'Bitbucket Server', 'Gitea', 'GitLab', 'Gogs']
 
 
     async createInquire(args) {
@@ -24,210 +26,217 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 default: this.spec.storageSize || '5Gi'
             },
             {
+                type: 'list',
+                name: 'scmChoice',
+                message: 'Which SCM Provider would you like to use?',
+                choices: this.scmChoices,
+                default: this.scmChoices[0]
+            },
+
+            //GitHub
+            {
+                type: 'input',
+                name: 'githubClientId',
+                message: 'GitHub Client Id:',
+                validate: (githubClientId) => (githubClientId !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'GitHub'
+            },
+            {
+                type: 'input',
+                name: 'githubClientSecret',
+                message: 'GitHub Client Secret:',
+                validate: (githubClientSecret) => (githubClientSecret !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'GitHub'
+            },
+
+            //GitHub Enterprise
+            {
                 type: 'confirm',
-                name: 'githubYesNo',
-                message: 'Setup GitHub Integration:',
+                name: 'alwaysAuth',
+                message: 'Always authenticate (If private mode enabled):',
+                askAnswered: true,
                 default: true,
+                when: input => input.scmChoice === 'GitHub Enterprise'
             },
-                    {
-                        type: 'input',
-                        name: 'githubClientId',
-                        message: 'GitHub Client Id:',
-                        validate: (githubClientId) => (githubClientId !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.githubYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'githubClientSecret',
-                        message: 'GitHub Client Secret:',
-                        validate: (githubClientSecret) => (githubClientSecret !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.githubYesNo
-                    },
-
             {
-                type: 'confirm',
-                name: 'gitlabYesNo',
-                message: 'Setup GitLab Integration:',
+                type: 'input',
+                name: 'githubClientId',
+                message: 'GitHub Client Id:',
+                validate: (githubClientId) => (githubClientId !== '' ? true : ''),
                 askAnswered: true,
-                default: false
+                when: input => input.scmChoice === 'GitHub Enterprise'
             },
-
-                    {
-                        type: 'input',
-                        name: 'gitlabClientId',
-                        message: 'GitLab Client Id:',
-                        validate: (gitlabClientId) => (gitlabClientId !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.gitlabYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'gitlabClientSecret',
-                        message: 'GitLab Client Secret:',
-                        validate: (gitlabClientSecret) => (gitlabClientSecret !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.gitlabYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'gitlabUrl',
-                        message: 'GitLab Server URL:',
-                        validate: (gitlabUrl) => (gitlabUrl !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.gitlabYesNo
-                    },
-
             {
-                type: 'confirm',
-                name: 'gogsYesNo',
-                message: 'Setup Gogs Integration:',
+                type: 'input',
+                name: 'githubClientSecret',
+                message: 'GitHub Client Secret:',
+                validate: (githubClientSecret) => (githubClientSecret !== '' ? true : ''),
                 askAnswered: true,
-                default: false
+                when: input => input.scmChoice === 'GitHub Enterprise'
             },
-                    {
-                        type: 'input',
-                        name: 'gogsServer',
-                        message: 'Gogs Server URL:',
-                        validate: (gogsServer) => (gogsServer !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.gogsYesNo
-
-                    },
-
             {
-                type: 'confirm',
-                name: 'giteaYesNo',
-                message: 'Setup Gitea Integration:',
+                type: 'input',
+                name: 'githubServer',
+                message: 'GitHub Server URL:',
+                validate: (githubServer) => (githubServer !== '' ? true : ''),
                 askAnswered: true,
-                default: false
+                when: input => input.scmChoice === 'GitHub Enterprise'
             },
 
-                    {
-                        type: 'input',
-                        name: 'giteaClientId',
-                        message: 'Gitea Client Id:',
-                        validate: (giteaClientId) => (giteaClientId !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.giteaYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'giteaClientSecret',
-                        message: 'Gitea Client Secret:',
-                        validate: (giteaClientSecret) => (giteaClientSecret !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.giteaYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'giteaUrl',
-                        message: 'Gitea Server URL:',
-                        validate: (giteaUrl) => (giteaUrl !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.giteaYesNo
-                    },
-
+            //GitLab
             {
-                type: 'confirm',
-                name: 'bitBucketCloudYesNo',
-                message: 'Setup BitBucket Cloud Integration:',
+                type: 'input',
+                name: 'gitlabClientId',
+                message: 'GitLab Client Id:',
+                validate: (gitlabClientId) => (gitlabClientId !== '' ? true : ''),
                 askAnswered: true,
-                default: false,
+                when: input => input.scmChoice === 'GitLab'
             },
-                    {
-                        type: 'input',
-                        name: 'bitbucketClientId',
-                        message: 'BitBucket Client Id:',
-                        validate: (bitbucketClientId) => (bitbucketClientId !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketCloudYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'bitbucketClientSecret',
-                        message: 'BitBucket Client Secret:',
-                        validate: (bitbucketClientSecret) => (bitbucketClientSecret !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketCloudYesNo
-                    },
-
-
             {
-                type: 'confirm',
-                name: 'bitBucketServerYesNo',
-                message: 'Setup BitBucket Server Integration:',
+                type: 'input',
+                name: 'gitlabClientSecret',
+                message: 'GitLab Client Secret:',
+                validate: (gitlabClientSecret) => (gitlabClientSecret !== '' ? true : ''),
                 askAnswered: true,
-                default: false
+                when: input => input.scmChoice === 'GitLab'
+            },
+            {
+                type: 'input',
+                name: 'gitlabUrl',
+                message: 'GitLab Server URL:',
+                validate: (gitlabUrl) => (gitlabUrl !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'GitLab'
             },
 
-                    {
-                        type: 'input',
-                        name: 'gitUsername',
-                        message: 'Git Username:',
-                        validate: (gitUsername) => (gitUsername !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketServerYesNo
-                    },
-                    {
-                        type: 'password',
-                        name: 'gitPassword',
-                        message: 'Git Password:',
-                        validate: (gitPassword) => (gitPassword !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketServerYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'stashConsumerKey',
-                        message: 'Stash Consumer Key:',
-                        validate: (stashConsumerKey) => (stashConsumerKey !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketServerYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'stashPrivateKey',
-                        message: 'Stash Private Key:',
-                        validate: (stashPrivateKey) => (stashPrivateKey !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketServerYesNo
-                    },
-                    {
-                        type: 'input',
-                        name: 'stashServer',
-                        message: 'Stash Server:',
-                        validate: (stashServer) => (stashServer !== '' ? true : ''),
-                        askAnswered: true,
-                        when: input => input.bitBucketServerYesNo
-                    },
+            //GOGS
+            {
+                type: 'input',
+                name: 'gogsServer',
+                message: 'Gogs Server URL:',
+                validate: (gogsServer) => (gogsServer !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Gogs'
+            },
+
+            //Gitea
+            {
+                type: 'input',
+                name: 'giteaClientId',
+                message: 'Gitea Client Id:',
+                validate: (giteaClientId) => (giteaClientId !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Gitea'
+            },
+            {
+                type: 'input',
+                name: 'giteaClientSecret',
+                message: 'Gitea Client Secret:',
+                validate: (giteaClientSecret) => (giteaClientSecret !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Gitea'
+            },
+            {
+                type: 'input',
+                name: 'giteaUrl',
+                message: 'Gitea Server URL:',
+                validate: (giteaUrl) => (giteaUrl !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Gitea'
+            },
+
+
+            //BitBucket Cloud
+            {
+                type: 'input',
+                name: 'bitbucketClientId',
+                message: 'BitBucket Client Id:',
+                validate: (bitbucketClientId) => (bitbucketClientId !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Cloud'
+            },
+            {
+                type: 'input',
+                name: 'bitbucketClientSecret',
+                message: 'BitBucket Client Secret:',
+                validate: (bitbucketClientSecret) => (bitbucketClientSecret !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Cloud'
+            },
+
+
+            //BitBucket Server
+            {
+                type: 'input',
+                name: 'gitUsername',
+                message: 'Git Username:',
+                validate: (gitUsername) => (gitUsername !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Server'
+            },
+            {
+                type: 'password',
+                name: 'gitPassword',
+                message: 'Git Password:',
+                validate: (gitPassword) => (gitPassword !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Server'
+            },
+            {
+                type: 'input',
+                name: 'stashConsumerKey',
+                message: 'Stash Consumer Key:',
+                validate: (stashConsumerKey) => (stashConsumerKey !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Server'
+            },
+            {
+                type: 'input',
+                name: 'stashPrivateKey',
+                message: 'Stash Private Key:',
+                validate: (stashPrivateKey) => (stashPrivateKey !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Server'
+            },
+            {
+                type: 'input',
+                name: 'stashServer',
+                message: 'Stash Server:',
+                validate: (stashServer) => (stashServer !== '' ? true : ''),
+                askAnswered: true,
+                when: input => input.scmChoice === 'Bitbucket Server'
+            },
 
         ], answers)
 
         this.spec.storageSize = responses.storageSize
+        this.spec.scmChoice = responses.scmChoice
 
-        this.spec.githubClientId = responses.githubClientId
-        this.spec.githubClientSecret = responses.githubClientSecret
+        if(responses.githubClientId) this.spec.githubClientId = responses.githubClientId
+        if(responses.githubClientSecret) this.spec.githubClientSecret = responses.githubClientSecret
+        if(responses.githubServer) this.spec.githubServer = responses.githubServer
+        if(responses.alwaysAuth) this.spec.alwaysAuth = responses.alwaysAuth
 
-        this.spec.gitlabClientId = responses.gitlabClientId
-        this.spec.gitlabClientSecret = responses.gitlabClientSecret
-        this.spec.gitlabUrl = responses.gitlabUrl
+        if(responses.gitlabClientId) this.spec.gitlabClientId = responses.gitlabClientId
+        if(responses.gitlabClientSecret) this.spec.gitlabClientSecret = responses.gitlabClientSecret
+        if(responses.gitlabUrl) this.spec.gitlabUrl = responses.gitlabUrl
 
-        this.spec.gogsServer = responses.gogsServer
+        if(responses.gogsServer) this.spec.gogsServer = responses.gogsServer
 
-        this.spec.giteaClientId = responses.giteaClientId
-        this.spec.giteaClientSecret = responses.giteaClientSecret
-        this.spec.giteaUrl = responses.giteaUrl
+        if(responses.giteaClientId) this.spec.giteaClientId = responses.giteaClientId
+        if(responses.giteaClientSecret) this.spec.giteaClientSecret = responses.giteaClientSecret
+        if(responses.giteaUrl) this.spec.giteaUrl = responses.giteaUrl
 
-        this.spec.bitbucketClientId = responses.bitbucketClientId
-        this.spec.bitbucketClientSecret = responses.bitbucketClientSecret
+        if(responses.bitbucketClientId) this.spec.bitbucketClientId = responses.bitbucketClientId
+        if(responses.bitbucketClientSecret) this.spec.bitbucketClientSecret = responses.bitbucketClientSecret
 
-        this.spec.gitUsername = responses.gitUsername
-        this.spec.gitPassword = responses.gitPassword
-        this.spec.stashConsumerKey = responses.stashConsumerKey
-        this.spec.stashPrivateKey = responses.stashPrivateKey
-        this.spec.stashServer = responses.stashServer
+        if(responses.gitUsername) this.spec.gitUsername = responses.gitUsername
+        if(responses.gitPassword) this.spec.gitPassword = responses.gitPassword
+        if(responses.stashConsumerKey) this.spec.stashConsumerKey = responses.stashConsumerKey
+        if(responses.stashPrivateKey) this.spec.stashPrivateKey = responses.stashPrivateKey
+        if(responses.stashServer) this.spec.stashServer = responses.stashServer
 
     }
 }

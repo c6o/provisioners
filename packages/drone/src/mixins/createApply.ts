@@ -25,7 +25,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const data = {
             namespace : this.serviceNamespace,
             secretKey : Buffer.from(super.processPassword()).toString('base64'),
-            gitAlwaysAuth : Buffer.from('false').toString('base64')
+            gitAlwaysAuth : Buffer.from( this.spec.alwaysAuth === true ? 'true' : 'false' ).toString('base64')
         }
 
         Object.keys(this.spec).forEach(key => {
