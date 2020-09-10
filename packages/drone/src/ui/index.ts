@@ -1,4 +1,4 @@
-export * from './Main'
+export * from './main'
 export * from './SCMProviders/bitbucketCloud'
 export * from './SCMProviders/bitbucketServer'
 export * from './SCMProviders/gitea'
