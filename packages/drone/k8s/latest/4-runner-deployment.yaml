@@ -5,6 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app.kubernetes.io/name: runner
+    app.kubernetes.io/managed-by: codezero
+    system.codezero.io/edition: latest
 spec:
   replicas: 1
   selector:
@@ -14,6 +16,8 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: runner
+        app.kubernetes.io/managed-by: codezero
+        system.codezero.io/edition: latest
     spec:
       containers:
       - name: runner

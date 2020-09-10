@@ -7,6 +7,7 @@ metadata:
     name: drone-server
     role: server
     system.codezero.io/app: drone-server
+    system.codezero.io/edition: latest
     app.kubernetes.io/managed-by: codezero
 spec:
   type: NodePort

@@ -17,7 +17,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createApply() {
         await this.ensureServiceNamespacesExist()
         await this.provision()
-        await this.provisionerIsRunning()
+        await this.ensureProvisionerIsRunning()
     }
 
     async provision() {
@@ -66,7 +66,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     }
 
-    async provisionerIsRunning() {
+    async ensureProvisionerIsRunning() {
         await this.manager.cluster.
             begin('Ensure Drone services are running')
             .beginWatch(this.pods)

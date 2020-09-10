@@ -5,6 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: server
+    app.kubernetes.io/managed-by: codezero
+    system.codezero.io/edition: latest
     app.kubernetes.io/name: server
 spec:
   replicas: 1
@@ -15,6 +17,8 @@ spec:
     metadata:
       labels:
         app: server
+        app.kubernetes.io/managed-by: codezero
+        system.codezero.io/edition: latest
         app.kubernetes.io/name: server
     spec:
       volumes:

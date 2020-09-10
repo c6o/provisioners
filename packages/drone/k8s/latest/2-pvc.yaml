@@ -5,6 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: drone
+    app.kubernetes.io/managed-by: codezero
+    system.codezero.io/edition: latest
 spec:
   accessModes:
     - "ReadWriteOnce"
