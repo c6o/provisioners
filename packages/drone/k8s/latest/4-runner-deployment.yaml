@@ -5,8 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app.kubernetes.io/name: runner
+    system.codezero.io/name: drone
     app.kubernetes.io/managed-by: codezero
-    system.codezero.io/edition: latest
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
       labels:
         app.kubernetes.io/name: runner
         app.kubernetes.io/managed-by: codezero
-        system.codezero.io/edition: latest
+        system.codezero.io/name: drone
     spec:
       containers:
       - name: runner
