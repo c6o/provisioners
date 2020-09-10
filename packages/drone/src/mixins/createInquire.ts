@@ -40,6 +40,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitHub Client Id:',
                 validate: (githubClientId) => (githubClientId !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.githubClientId || '',
                 when: input => input.scmChoice === 'GitHub'
             },
             {
@@ -48,6 +49,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitHub Client Secret:',
                 validate: (githubClientSecret) => (githubClientSecret !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.githubClientSecret || '',
                 when: input => input.scmChoice === 'GitHub'
             },
 
@@ -57,7 +59,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 name: 'alwaysAuth',
                 message: 'Always authenticate (If private mode enabled):',
                 askAnswered: true,
-                default: true,
+                default: this.spec.alwaysAuth || true,
                 when: input => input.scmChoice === 'GitHub Enterprise'
             },
             {
@@ -66,6 +68,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitHub Client Id:',
                 validate: (githubClientId) => (githubClientId !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.githubClientId || '',
                 when: input => input.scmChoice === 'GitHub Enterprise'
             },
             {
@@ -74,6 +77,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitHub Client Secret:',
                 validate: (githubClientSecret) => (githubClientSecret !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.githubClientSecret || '',
                 when: input => input.scmChoice === 'GitHub Enterprise'
             },
             {
@@ -82,6 +86,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitHub Server URL:',
                 validate: (githubServer) => (githubServer !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.githubServer || '',
                 when: input => input.scmChoice === 'GitHub Enterprise'
             },
 
@@ -92,6 +97,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitLab Client Id:',
                 validate: (gitlabClientId) => (gitlabClientId !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.gitlabClientId || '',
                 when: input => input.scmChoice === 'GitLab'
             },
             {
@@ -100,6 +106,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitLab Client Secret:',
                 validate: (gitlabClientSecret) => (gitlabClientSecret !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.gitlabClientSecret || '',
                 when: input => input.scmChoice === 'GitLab'
             },
             {
@@ -108,6 +115,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'GitLab Server URL:',
                 validate: (gitlabUrl) => (gitlabUrl !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.gitlabUrl || '',
                 when: input => input.scmChoice === 'GitLab'
             },
 
@@ -118,6 +126,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Gogs Server URL:',
                 validate: (gogsServer) => (gogsServer !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.gogsServer || '',
                 when: input => input.scmChoice === 'Gogs'
             },
 
@@ -128,6 +137,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Gitea Client Id:',
                 validate: (giteaClientId) => (giteaClientId !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.giteaClientId || '',
                 when: input => input.scmChoice === 'Gitea'
             },
             {
@@ -136,6 +146,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Gitea Client Secret:',
                 validate: (giteaClientSecret) => (giteaClientSecret !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.giteaClientSecret || '',
                 when: input => input.scmChoice === 'Gitea'
             },
             {
@@ -144,6 +155,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Gitea Server URL:',
                 validate: (giteaUrl) => (giteaUrl !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.giteaUrl || '',
                 when: input => input.scmChoice === 'Gitea'
             },
 
@@ -155,6 +167,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'BitBucket Client Id:',
                 validate: (bitbucketClientId) => (bitbucketClientId !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.bitbucketClientId || '',
                 when: input => input.scmChoice === 'Bitbucket Cloud'
             },
             {
@@ -163,6 +176,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'BitBucket Client Secret:',
                 validate: (bitbucketClientSecret) => (bitbucketClientSecret !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.bitbucketClientSecret || '',
                 when: input => input.scmChoice === 'Bitbucket Cloud'
             },
 
@@ -174,6 +188,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Git Username:',
                 validate: (gitUsername) => (gitUsername !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.gitUsername || '',
                 when: input => input.scmChoice === 'Bitbucket Server'
             },
             {
@@ -182,6 +197,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Git Password:',
                 validate: (gitPassword) => (gitPassword !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.gitPassword || '',
                 when: input => input.scmChoice === 'Bitbucket Server'
             },
             {
@@ -190,6 +206,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Stash Consumer Key:',
                 validate: (stashConsumerKey) => (stashConsumerKey !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.stashConsumerKey || '',
                 when: input => input.scmChoice === 'Bitbucket Server'
             },
             {
@@ -198,6 +215,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Stash Private Key:',
                 validate: (stashPrivateKey) => (stashPrivateKey !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.stashPrivateKey || '',
                 when: input => input.scmChoice === 'Bitbucket Server'
             },
             {
@@ -206,6 +224,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'Stash Server:',
                 validate: (stashServer) => (stashServer !== '' ? true : ''),
                 askAnswered: true,
+                default: this.spec.stashServer || '',
                 when: input => input.scmChoice === 'Bitbucket Server'
             },
 
