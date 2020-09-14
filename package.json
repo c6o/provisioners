@@ -25,7 +25,8 @@
     "packages/foldingathome/",
     "packages/logging-elk/",
     "packages/precog/",
-    "packages/suitecrm/"
+    "packages/suitecrm/",
+    "packages/drone/"
   ],
   "scripts": {
     "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",
