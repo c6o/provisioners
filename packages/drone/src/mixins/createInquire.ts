@@ -11,8 +11,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         const answers = {
-            githubClientId: args.githubClientId || this.spec.githubClientId,
-            githubClientSecret: args.githubClientSecret || this.spec.githubClientSecret,
+            githubClientId: args['git-id'] || this.spec.githubClientId,
+            githubClientSecret: args['git-secret'] || this.spec.githubClientSecret,
+            //add all other inputs here, easy to use short names
         }
 
         console.log('Installation help for each SCM provider can be found here: https://docs.drone.io/server/overview/\n')
