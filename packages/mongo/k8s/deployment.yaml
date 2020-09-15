@@ -17,8 +17,8 @@ spec:
       labels:
         role: server
         name: mongo
-        system.codezero.io/app: mosquitto
-        system.codezero.io/name: mosquitto
+        system.codezero.io/app: mongo
+        system.codezero.io/name: mongo
   spec:
     containers:
     - env:
