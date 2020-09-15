@@ -6,6 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/name: runner
     system.codezero.io/name: drone
+    system.codezero.io/app: drone
     app.kubernetes.io/managed-by: codezero
 spec:
   replicas: 1
@@ -18,6 +19,7 @@ spec:
         app.kubernetes.io/name: runner
         app.kubernetes.io/managed-by: codezero
         system.codezero.io/name: drone
+        system.codezero.io/app: drone
     spec:
       containers:
       - name: runner

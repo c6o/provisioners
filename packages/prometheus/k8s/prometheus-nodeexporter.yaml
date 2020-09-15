@@ -9,6 +9,8 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
+    system.codezero.io/name: prometheus
   name: prometheus-node-exporter
   namespace: '{{namespace}}'
 ---
@@ -25,6 +27,8 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
+    system.codezero.io/name: prometheus
   name: prometheus-node-exporter
   namespace: '{{namespace}}'
 spec:
@@ -50,6 +54,8 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
+    system.codezero.io/name: prometheus
   name: prometheus-node-exporter
   namespace: '{{namespace}}'
 spec:
@@ -69,6 +75,8 @@ spec:
         release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
+        system.codezero.io/app: prometheus
+        system.codezero.io/name: prometheus
     spec:
       serviceAccountName: prometheus-node-exporter
       containers:

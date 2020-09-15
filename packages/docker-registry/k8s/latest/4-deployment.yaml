@@ -8,6 +8,7 @@ metadata:
     name: docker-registry
     role: server
     system.codezero.io/app: docker-registry
+    system.codezero.io/name: docker-registry
 spec:
   selector:
     matchLabels:
@@ -21,6 +22,7 @@ spec:
         name: docker-registry
         role: server
         system.codezero.io/app: docker-registry
+        system.codezero.io/name: docker-registry
     spec:
       volumes:
         - name: data

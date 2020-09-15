@@ -4,7 +4,9 @@ metadata:
     name: dev-dep
     namespace: '{{namespace}}'
     labels:
-        app: vscode
+      system.codezero.io/app: vscode
+      system.codezero.io/name: vscode
+      app: vscode
 spec:
     selector:
         matchLabels:
@@ -14,6 +16,8 @@ spec:
         metadata:
             labels:
                 app: vscode
+                system.codezero.io/app: vscode
+                system.codezero.io/name: vscode
         spec:
             containers:
             - name: dev-pod

@@ -38,6 +38,9 @@ items:
     name: prometheus-server
     namespace: {{namespace}}
     selfLink: /api/v1/namespaces/default/configmaps/prometheus-example-cm
+    labels:
+      system.codezero.io/app: prometheus
+      system.codezero.io/name: prometheus
 - apiVersion: v1
   data:
     alertmanager.yml: |
@@ -61,6 +64,8 @@ items:
       component: alertmanager
       heritage: Tiller
       release: release-name
+      system.codezero.io/app: prometheus
+      system.codezero.io/name: prometheus
     name: release-name-prometheus-alertmanager
     namespace: {{namespace}}
     selfLink: /api/v1/namespaces/default/configmaps/release-name-prometheus-alertmanager
@@ -355,6 +360,8 @@ items:
       component: server
       heritage: Tiller
       release: release-name
+      system.codezero.io/app: prometheus
+      system.codezero.io/name: prometheus
     name: release-name-prometheus-server
     namespace: {{namespace}}
     selfLink: /api/v1/namespaces/default/configmaps/release-name-prometheus-server

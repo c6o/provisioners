@@ -5,6 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: mariadb
+    system.codezero.io/app: suitecrm
+    system.codezero.io/name: suitecrm
 data:
   my.cnf: |-
     [mysqld]
@@ -40,6 +42,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: "mariadb-tests"
+    system.codezero.io/app: suitecrm
+    system.codezero.io/name: suitecrm
 data:
   run.sh: |-
     @test "Testing MariaDB is accessible" {

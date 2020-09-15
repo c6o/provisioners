@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    system.codezero.io/name: jitsi
+    system.codezero.io/app: jitsi
     k8s-app: jitsi
   name: jitsi
   namespace: {{namespace}}
@@ -15,6 +17,8 @@ spec:
   template:
     metadata:
       labels:
+        system.codezero.io/name: jitsi
+        system.codezero.io/app: jitsi
         k8s-app: jitsi
         app: jitsi
         tier: frontend

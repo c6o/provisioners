@@ -5,6 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: suitecrm
+    system.codezero.io/app: suitecrm
+    system.codezero.io/name: suitecrm
 spec:
   accessModes:
     - "ReadWriteOnce"

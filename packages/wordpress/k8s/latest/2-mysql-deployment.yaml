@@ -6,6 +6,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: wordpress
+    system.codezero.io/app: wordpress
+    system.codezero.io/name: wordpress
 spec:
   ports:
     - port: 3306
@@ -21,6 +23,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: wordpress
+    system.codezero.io/app: wordpress
+    system.codezero.io/name: wordpress
 spec:
   accessModes:
     - ReadWriteOnce
@@ -35,6 +39,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: wordpress
+    system.codezero.io/app: wordpress
+    system.codezero.io/name: wordpress
 spec:
   selector:
     matchLabels:
@@ -47,6 +53,8 @@ spec:
       labels:
         app: wordpress
         tier: mysql
+        system.codezero.io/app: wordpress
+        system.codezero.io/name: wordpress
     spec:
       containers:
       - image: mysql:5.6

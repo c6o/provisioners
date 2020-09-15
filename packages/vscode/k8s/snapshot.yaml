@@ -3,6 +3,9 @@ kind: VolumeSnapshot
 metadata:
   name: dev-snapshot
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: vscode
+    system.codezero.io/name: vscode
 spec:
   source:
     name: dev-pvc

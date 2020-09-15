@@ -6,9 +6,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async inquire(args) {
         const answers = {
             storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
-            storage: args['storage'],
-            adminUsername: args['adminUsername'],
-            adminPassword: args['adminPassword']
+            storage: args['storage'] || this.spec.storage,
+            adminUsername: args['username'] || this.spec.username,
+            adminPassword: args['password'] || this.spec.password,
         }
 
         const responses = await this.manager.inquirer?.prompt([

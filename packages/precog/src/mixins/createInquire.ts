@@ -32,8 +32,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 type: 'input',
                 name: 'storage',
                 default: '2Gi',
-                message: 'What size data volume would you like for PreCog?',
-                askAnswered: true
+                message: 'What size data volume would you like for PreCog?'
             }, {
                 type: 'list',
                 choices: ['evaluation', 'enterprise'],

@@ -5,9 +5,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         const answers = {
-            username: args.username || this.spec.username,
-            passkey: args.passkey || this.spec.passkey,
-            teamNumber: args.teamNumber || this.spec.teamNumber
+            username: args['username'] || this.spec.username,
+            passkey: args['passkey'] || this.spec.passkey,
+            teamNumber: args['team-number'] || this.spec.teamNumber
         }
 
         //https://apps.foldingathome.org/team
@@ -16,22 +16,19 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 type: 'input',
                 name: 'username',
                 message: 'Username:',
-                default: answers.username,
-                askAnswered: true,
+                default: answers.username
             },
             {
                 type: 'password',
                 name: 'passkey',
                 message: 'Pass Key: (32 hexadecimal characters if provided)',
-                default: answers.passkey,
-                askAnswered: true,
+                default: answers.passkey
             },
             {
                 type: 'input',
                 name: 'teamNumber',
                 message: 'Team Number:',
-                default: answers.teamNumber,
-                askAnswered: true,
+                default: answers.teamNumber
             }
         ], answers)
 

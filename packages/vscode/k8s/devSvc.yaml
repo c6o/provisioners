@@ -5,6 +5,8 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     app: vscode
+    system.codezero.io/app: vscode
+    system.codezero.io/name: vscode
 spec:
   type: NodePort
   ports:

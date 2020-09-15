@@ -5,6 +5,8 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: elasticsearch
+    system.codezero.io/app: elasticsearch
+    system.codezero.io/name: elasticsearch
 spec:
   selector:
     app: elasticsearch
@@ -21,6 +23,10 @@ kind: StatefulSet
 metadata:
   name: es-cluster
   namespace: {{namespace}}
+  labels:
+    system.codezero.io/app: elasticsearch
+    system.codezero.io/name: elasticsearch
+    app: elasticsearch
 spec:
   serviceName: elasticsearch
   replicas: 3
@@ -31,6 +37,8 @@ spec:
     metadata:
       labels:
         app: elasticsearch
+        system.codezero.io/app: elasticsearch
+        system.codezero.io/name: elasticsearch
     spec:
       containers:
       - name: elasticsearch

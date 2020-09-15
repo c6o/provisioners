@@ -6,6 +6,8 @@ metadata:
   labels:
     app: mariadb
     app.kubernetes.io/managed-by: codezero
+    system.codezero.io/app: suitecrm
+    system.codezero.io/name: suitecrm
 spec:
   type: ClusterIP
   ports:
@@ -23,6 +25,8 @@ metadata:
   labels:
     app: suitecrm
     app.kubernetes.io/managed-by: codezero
+    system.codezero.io/app: suitecrm
+    system.codezero.io/name: suitecrm
 spec:
   type: NodePort
   externalTrafficPolicy: "Cluster"
