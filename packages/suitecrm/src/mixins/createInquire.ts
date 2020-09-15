@@ -7,9 +7,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
         if (!this.isPreview) {
             const answers = {
-                suitecrmusername: args.suitecrmusername || this.spec.suitecrmusername,
-                suitecrmpassword: args.suitecrmpassword || this.spec.suitecrmpassword,
-                databasesize: args.databasesize || this.spec.databasesize,
+                suitecrmusername: args['username'] || this.spec.suitecrmusername,
+                suitecrmpassword: args['password'] || this.spec.suitecrmpassword,
+                databasesize: args['database-size'] || this.spec.databasesize,
             }
 
             const responses = await this.manager.inquirer?.prompt([

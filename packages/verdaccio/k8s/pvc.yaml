@@ -5,6 +5,8 @@ metadata:
   name: verdaccio-pvc
   labels:
     app: verdaccio
+    system.codezero.io/app: verdaccio
+    system.codezero.io/name: verdaccio
 spec:
   accessModes:
     - "ReadWriteOnce"

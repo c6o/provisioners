@@ -10,9 +10,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
             const answers = {
                 users: args.users || this.spec.users,
-                mattermostLicenseSecret: args.mattermostLicenseSecret || this.spec.mattermostLicenseSecret,
-                databaseStorageSize: args.databaseStorageSize || this.spec.databaseStorageSize,
-                minioStorageSize: args.minioStorageSize || this.spec.minioStorageSize
+                mattermostLicenseSecret: args['license-secret'] || this.spec.mattermostLicenseSecret,
+                databaseStorageSize: args['db-storage-size'] || this.spec.databaseStorageSize,
+                minioStorageSize: args['minio-storage-size'] || this.spec.minioStorageSize
             }
 
             const responses = await this.manager.inquirer?.prompt([

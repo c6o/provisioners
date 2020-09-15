@@ -3,6 +3,9 @@ kind: PersistentVolumeClaim
 metadata:
   name: precog-pv-claim
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: precog
+    system.codezero.io/name: precog
 spec:
   accessModes:
     - ReadWriteOnce
