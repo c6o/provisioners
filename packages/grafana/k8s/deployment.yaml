@@ -6,6 +6,7 @@ metadata:
   labels:
     role: server
     name: grafana
+    system.codezero.io/app: grafana
 data:
   dashboardproviders.yaml: |
     apiVersion: 1
@@ -20,6 +21,7 @@ metadata:
   labels:
     role: server
     name: grafana
+    system.codezero.io/app: grafana
 spec:
   selector:
     matchLabels:
@@ -30,6 +32,7 @@ spec:
       labels:
         role: server
         name: grafana
+        system.codezero.io/app: grafana
     spec:
       securityContext:
         runAsUser: 472

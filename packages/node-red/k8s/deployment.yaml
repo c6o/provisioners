@@ -17,6 +17,7 @@ spec:
       labels:
         role: server
         name: node-red
+        system.codezero.io/app: node-red
     spec:
       securityContext:
         runAsUser: 1000

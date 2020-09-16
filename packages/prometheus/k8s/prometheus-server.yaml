@@ -10,6 +10,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-server
   namespace: '{{namespace}}'
 spec:
@@ -31,6 +32,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-server
   namespace: '{{namespace}}'
 
@@ -45,6 +47,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-server
   namespace: '{{namespace}}'
 rules:
@@ -88,6 +91,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-server
   namespace: '{{namespace}}'
 subjects:
@@ -110,6 +114,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus
   namespace: '{{namespace}}'
 spec:
@@ -135,6 +140,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-server
   namespace: '{{namespace}}'
 spec:
@@ -153,6 +159,7 @@ spec:
         chart: prometheus-10.4.0
         heritage: Tiller
         name: prometheus-server
+        system.codezero.io/app: prometheus
     spec:
       serviceAccountName: prometheus-server
       containers:

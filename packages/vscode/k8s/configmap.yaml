@@ -6,3 +6,5 @@ kind: ConfigMap
 metadata:
   name: vscode-rsa-pub-key
   namespace: {{namespace}}
+  labels:
+    system.codezero.io/app: vscode

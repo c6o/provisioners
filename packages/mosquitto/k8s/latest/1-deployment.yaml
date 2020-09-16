@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: mosquitto-config
   namespace: {{namespace}}
+  labels:
+    system.codezero.io/app: mosquitto
 data:
   mosquitto.conf: |
     log_dest stdout
@@ -33,6 +35,7 @@ spec:
         role: server
         name: mosquitto
         app: mosquitto
+        system.codezero.io/app: mosquitto
     spec:
       securityContext:
         runAsUser: 1000

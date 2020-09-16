@@ -6,7 +6,7 @@ metadata:
   labels:
     app: server
     app.kubernetes.io/managed-by: codezero
-    system.codezero.io/name: drone
+    system.codezero.io/app: drone
     app.kubernetes.io/name: server
 spec:
   replicas: 1
@@ -18,7 +18,7 @@ spec:
       labels:
         app: server
         app.kubernetes.io/managed-by: codezero
-        app.kubernetes.io/name: drone
+        system.codezero.io/app: drone
     spec:
       volumes:
       - name: drone

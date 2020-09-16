@@ -6,9 +6,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquire(args) {
         const answers = {
-            storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
-            storage: args['storage'],
-            projects: args['projects']
+            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
+            storage: args['storage-size'] || this.spec.storage,
+            projects: args['enable-projects'] || this.spec.project
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -23,7 +23,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             default: '2Gi'
         },{
             type: 'confirm',
-            name: 'projects',            
+            name: 'projects',
             message: 'Enable projects feature?',
             default: false
         }], answers)

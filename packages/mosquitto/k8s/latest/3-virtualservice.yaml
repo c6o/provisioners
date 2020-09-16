@@ -1,10 +1,10 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  labels:
-    system.codezero.io/edition: latest
   name: mosquitto
   namespace: {{namespace}}
+  labels:
+    system.codezero.io/app: mosquitto
 spec:
   gateways:
   - c6o-system/system-gateway

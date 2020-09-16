@@ -9,6 +9,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 data:
@@ -33,6 +34,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 spec:
@@ -53,6 +55,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 ---
@@ -66,6 +69,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 rules:
@@ -82,6 +86,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 subjects:
@@ -104,6 +109,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 spec:
@@ -130,6 +136,7 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
+    system.codezero.io/app: prometheus
   name: prometheus-alertmanager
   namespace: '{{namespace}}'
 spec:
@@ -147,6 +154,7 @@ spec:
         release: codezero
         chart: prometheus-10.4.0
         heritage: Tiller
+        system.codezero.io/app: prometheus
     spec:
       serviceAccountName: prometheus-alertmanager
       containers:

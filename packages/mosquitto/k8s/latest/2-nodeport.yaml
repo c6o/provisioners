@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: {{namespace}}
+  namespace: {{namespace}}
+  name: mosquitto
+  labels:
     name: mosquitto
-    labels:
-        name: mosquitto
-        role: server
-        system.codezero.io/app: mosquitto
+    role: server
+    system.codezero.io/app: mosquitto
 spec:
-    type: NodePort
-    ports:
-    - port: 1883
-      name: tcp
-      targetPort: 1883
-    selector:
-        name: mosquitto
+  type: NodePort
+  ports:
+  - port: 1883
+    name: tcp
+    targetPort: 1883
+  selector:
+    name: mosquitto

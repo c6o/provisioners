@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: dev-pvc
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: vscode
 spec:
   accessModes:
   - ReadWriteOnce

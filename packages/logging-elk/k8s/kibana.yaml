@@ -4,6 +4,7 @@ metadata:
   name: kibana
   namespace: {{namespace}}
   labels:
+    system.codezero.io/app: kibana
     app: kibana
 spec:
   ports:
@@ -20,6 +21,7 @@ metadata:
   name: kibana
   namespace: {{namespace}}
   labels:
+    system.codezero.io/app: kibana
     app: kibana
 spec:
   replicas: 1
@@ -29,6 +31,7 @@ spec:
   template:
     metadata:
       labels:
+        system.codezero.io/app: kibana
         app: kibana
     spec:
       containers:

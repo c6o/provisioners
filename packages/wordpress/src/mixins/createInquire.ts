@@ -5,8 +5,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         const answers = {
-            username: args.username || this.spec.username,
-            password: args.password || this.spec.password
+            username: args['username'] || this.spec.username,
+            password: args['password'] || this.spec.password
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -14,14 +14,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 type: 'input',
                 name: 'username',
                 message: 'MySql Username:',
-                askAnswered: true,
                 validate: (username) => (username !== '' ? true : '')
             },
             {
                 type: 'password',
                 name: 'password',
                 message: 'MySql Password:',
-                askAnswered: true,
                 validate: (password) => (password !== '' ? true : '')
             }
         ], answers)

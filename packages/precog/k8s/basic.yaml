@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: precog
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: precog
 spec:
   selector:
     matchLabels:
@@ -12,6 +14,7 @@ spec:
     metadata:
       labels:
         app: precog
+        system.codezero.io/app: precog
     spec:
       imagePullSecrets:
       - name: regcred
@@ -39,6 +42,7 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     app: precog
+    system.codezero.io/app: precog
 spec:
   type: NodePort
   ports:

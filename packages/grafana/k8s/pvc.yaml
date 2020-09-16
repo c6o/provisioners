@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: grafana-pvc
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: grafana
 spec:
   accessModes:
   - ReadWriteOnce

@@ -5,6 +5,7 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     app: vscode
+    system.codezero.io/app: vscode
 spec:
   containers:
   - name: dev-pod-container

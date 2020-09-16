@@ -3,12 +3,16 @@ kind: ServiceAccount
 metadata:
   name: mattermost-operator
   namespace: {{namespace}}
+  labels:
+    system.codezero.io/app: mattermost
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
   name: mattermost-operator
+  labels:
+    system.codezero.io/app: mattermost
 rules:
 - apiGroups:
   - ""
@@ -151,6 +155,8 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: mattermost-operator
+  labels:
+    system.codezero.io/app: mattermost
 subjects:
 - kind: ServiceAccount
   name: mattermost-operator
@@ -176,6 +182,7 @@ spec:
     metadata:
       labels:
         name: mattermost-operator
+        system.codezero.io/app: mattermost
     spec:
       serviceAccountName: mattermost-operator
       containers:

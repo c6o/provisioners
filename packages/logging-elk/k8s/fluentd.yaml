@@ -5,6 +5,7 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: fluentd
+    system.codezero.io/app: elasticsearch
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -13,6 +14,7 @@ metadata:
   name: fluentd
   labels:
     app: fluentd
+    system.codezero.io/app: elasticsearch
 rules:
 - apiGroups:
   - ""
@@ -29,6 +31,8 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: fluentd
+  labels:
+    system.codezero.io/app: elasticsearch
 roleRef:
   kind: ClusterRole
   name: fluentd
@@ -45,7 +49,7 @@ metadata:
   name: fluentd
   namespace: {{namespace}}
   labels:
-    app: fluentd
+    system.codezero.io/app: elasticsearch
 spec:
   selector:
     matchLabels:
@@ -53,6 +57,7 @@ spec:
   template:
     metadata:
       labels:
+        system.codezero.io/app: elasticsearch
         app: fluentd
     spec:
       serviceAccount: fluentd
@@ -94,4 +99,4 @@ spec:
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
----          
+---

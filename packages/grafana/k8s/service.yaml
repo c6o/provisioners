@@ -1,16 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-    namespace: '{{namespace}}'
+  namespace: '{{namespace}}'
+  name: grafana
+  labels:
     name: grafana
-    labels:
-        name: grafana
-        role: server
+    role: server
+    system.codezero.io/app: grafana
 spec:
-    ports:
-    - name: http
-      port: 80
-      targetPort: 3000
-    type: NodePort
-    selector:
-        name: grafana
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+  type: NodePort
+  selector:
+      name: grafana

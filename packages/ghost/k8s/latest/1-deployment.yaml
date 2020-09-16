@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         app: ghost
+        system.codezero.io/app: ghost
     spec:
       containers:
       - name: ghost

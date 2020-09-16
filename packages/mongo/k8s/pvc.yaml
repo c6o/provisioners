@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   namespace: '{{namespace}}'
   name: mongo-pvc
+  labels:
+    system.codezero.io/app: mongo
 spec:
   accessModes:
   - ReadWriteOnce

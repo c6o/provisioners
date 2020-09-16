@@ -3,7 +3,9 @@ kind: VolumeSnapshot
 metadata:
   name: dev-snapshot
   namespace: '{{namespace}}'
-spec:
+  labels:
+    system.codezero.io/app: vscode
+    spec:
   source:
     name: dev-pvc
     kind: PersistentVolumeClaim

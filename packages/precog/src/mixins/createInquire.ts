@@ -17,11 +17,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         const answers = {
             storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
-            storage: args['storage'],
-            edition: args['edition'],
-            username: args['username'],
-            password: args['password'],
-            email: 'ignore@ignored.com' // docker no longer needs this but it needs to be in creds
+            storage: args['storage'] || this.spec.storage,
+            edition: args['edition'] || this.spec.edition,
+            username: args['username'] || this.spec.username,
+            password: args['password'] || this.spec.password,
+            email: 'ignore@ignored.com' || this.spec.email, // docker no longer needs this but it needs to be in creds
         }
 
         const responses = await this.manager.inquirer.prompt([
@@ -32,8 +32,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 type: 'input',
                 name: 'storage',
                 default: '2Gi',
-                message: 'What size data volume would you like for PreCog?',
-                askAnswered: true
+                message: 'What size data volume would you like for PreCog?'
             }, {
                 type: 'list',
                 choices: ['evaluation', 'enterprise'],

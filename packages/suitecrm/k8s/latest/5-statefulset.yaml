@@ -5,6 +5,7 @@ metadata:
   namespace: {{namespace}}
   labels:
     app: mariadb
+    system.codezero.io/app: suitecrm
 spec:
   selector:
     matchLabels:
@@ -17,6 +18,7 @@ spec:
     metadata:
       labels:
         app: mariadb
+        system.codezero.io/app: suitecrm
     spec:
       serviceAccountName: default
       securityContext:

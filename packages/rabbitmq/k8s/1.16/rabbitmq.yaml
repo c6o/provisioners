@@ -5,6 +5,7 @@ metadata:
   name: rabbitmq
   labels:
     app: rabbitmq
+    system.codezero.io/app: rabbitmq
 spec:
   sessionAffinity: None
   type: ClusterIP
@@ -33,6 +34,8 @@ kind: ConfigMap
 metadata:
   name: rabbitmq-config
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: rabbitmq
 data:
   enabled_plugins: |
       [rabbitmq_management,rabbitmq_peer_discovery_k8s].
@@ -59,13 +62,15 @@ data:
       queue_master_locator=min-masters
       ## See https://www.rabbitmq.com/access-control.html#loopback-users
       loopback_users.guest = false
-   
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: rabbitmq
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: rabbitmq
 spec:
   serviceName: rabbitmq
   replicas: 3
@@ -76,6 +81,7 @@ spec:
     metadata:
       labels:
         app: rabbitmq
+        system.codezero.io/app: rabbitmq
     spec:
       serviceAccountName: rabbitmq
       terminationGracePeriodSeconds: 10
@@ -125,7 +131,7 @@ spec:
           - name: K8S_SERVICE_NAME
             value: "rabbitmq"
           - name: RABBITMQ_ERLANG_COOKIE
-            value: "mycookie" 
+            value: "mycookie"
       volumes:
         - name: config-volume
           configMap:

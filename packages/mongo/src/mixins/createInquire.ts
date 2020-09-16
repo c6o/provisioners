@@ -16,8 +16,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             // the secret key reference where to put the connection strings once configured
 
             const answers = {
-                storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
-                secretKeyRef: args['secretKeyRef']            
+                storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
+                secretKeyRef: args['secret-key-ref'] || this.spec.secretKeyRef
             }
 
             const responses = await this.manager.inquirer?.prompt(

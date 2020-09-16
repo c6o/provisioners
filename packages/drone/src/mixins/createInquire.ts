@@ -13,7 +13,21 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const answers = {
             githubClientId: args['git-id'] || this.spec.githubClientId,
             githubClientSecret: args['git-secret'] || this.spec.githubClientSecret,
-            //add all other inputs here, easy to use short names
+            alwaysAuth: args['always-auth'] || this.spec.alwaysAuth,
+            githubServer: args['git-server'] || this.spec.githubServer,
+            gitlabClientId: args['gitlab-id'] || this.spec.gitlabClientId,
+            gitlabUrl: args['gitlab-url'] || this.spec.gitlabUrl,
+            gitlabClientSecret: args['gitlab-secret'] || this.spec.gitlabClientSecret,
+            gogsServer: args['gogs-server'] || this.spec.gogsServer,
+            giteaClientSecret: args['gitea-secret'] || this.spec.giteaClientSecret,
+            giteaUrl: args['gitea-server'] || this.spec.giteaUrl,
+            bitbucketClientId: args['bitbucket-id'] || this.spec.bitbucketClientId,
+            bitbucketClientSecret: args['bitbucket-secret'] || this.spec.bitbucketClientSecret,
+            gitUsername: args['git-username'] || this.spec.gitUsername,
+            gitPassword: args['git-password'] || this.spec.gitPassword,
+            stashConsumerKey: args['stash-consumer'] || this.spec.stashConsumerKey,
+            stashPrivateKey: args['stash-private'] || this.spec.stashPrivateKey,
+            stashServer: args['stash-server'] || this.spec.stashServer,
         }
 
         console.log('Installation help for each SCM provider can be found here: https://docs.drone.io/server/overview/\n')
@@ -120,7 +134,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 default: this.spec.gogsServer || '',
                 when: input => input.scmChoice === 'Gogs'
             },
-
             //Gitea
             {
                 type: 'input',

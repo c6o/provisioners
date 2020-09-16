@@ -6,6 +6,7 @@ metadata:
   labels:
     app: suitecrm
     app.kubernetes.io/managed-by: codezero
+    system.codezero.io/app: suitecrm
 spec:
   selector:
     matchLabels:
@@ -15,6 +16,7 @@ spec:
       labels:
         app: suitecrm
         app.kubernetes.io/managed-by: codezero
+        system.codezero.io/app: suitecrm
     spec:
       hostAliases:
       - ip: "127.0.0.1"

@@ -9,7 +9,8 @@ metadata:
     release: codezero
     chart: prometheus-10.4.0
     heritage: Tiller
-  name: prometheus-server
+    system.codezero.io/app: prometheus
+    name: prometheus-server
   namespace: '{{namespace}}'
 data:
   alerting_rules.yml: |

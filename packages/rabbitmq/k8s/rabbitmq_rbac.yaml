@@ -2,14 +2,18 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: rabbitmq 
+  name: rabbitmq
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: rabbitmq
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: endpoint-reader
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: rabbitmq
 rules:
 - apiGroups: [""]
   resources: ["endpoints"]
@@ -20,6 +24,8 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
   name: endpoint-reader
   namespace: '{{namespace}}'
+  labels:
+    system.codezero.io/app: rabbitmq
 subjects:
 - kind: ServiceAccount
   name: rabbitmq

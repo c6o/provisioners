@@ -5,7 +5,8 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     app: vscode
-spec:
+    system.codezero.io/app: vscode
+    spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
