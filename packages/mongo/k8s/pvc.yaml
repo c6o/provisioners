@@ -5,7 +5,6 @@ metadata:
   name: mongo-pvc
   labels:
     system.codezero.io/app: mongo
-    system.codezero.io/name: mongo
 spec:
   accessModes:
   - ReadWriteOnce

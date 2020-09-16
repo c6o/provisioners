@@ -7,7 +7,6 @@ metadata:
     release: 'mysql-operator'
     app: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   group: mysql.presslabs.org
   names:
@@ -25,7 +24,6 @@ metadata:
     release: 'mysql-operator'
     app: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   additionalPrinterColumns:
   - JSONPath: .status.conditions[?(@.type == "Ready")].status

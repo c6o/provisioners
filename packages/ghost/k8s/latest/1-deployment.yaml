@@ -7,7 +7,6 @@ metadata:
     app: ghost
     app.kubernetes.io/managed-by: codezero
     system.codezero.io/app: ghost
-    system.codezero.io/name: ghost
 spec:
   replicas: 1
   selector:
@@ -18,7 +17,6 @@ spec:
       labels:
         app: ghost
         system.codezero.io/app: ghost
-        system.codezero.io/name: ghost
     spec:
       containers:
       - name: ghost

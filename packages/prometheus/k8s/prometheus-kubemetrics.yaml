@@ -10,7 +10,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-kube-state-metrics
   namespace: '{{namespace}}'
 ---
@@ -25,7 +24,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-kube-state-metrics
   namespace: '{{namespace}}'
 rules:
@@ -157,7 +155,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-kube-state-metrics
   namespace: '{{namespace}}'
 spec:
@@ -189,7 +186,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-kube-state-metrics
   namespace: '{{namespace}}'
 spec:
@@ -208,7 +204,6 @@ spec:
         chart: prometheus-10.4.0
         heritage: Tiller
         system.codezero.io/app: prometheus
-        system.codezero.io/name: prometheus
     spec:
       serviceAccountName: prometheus-kube-state-metrics
       containers:

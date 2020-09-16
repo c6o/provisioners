@@ -6,7 +6,6 @@ metadata:
   name: foldingathome-config
   namespace: {{namespace}}
   labels:
-    system.codezero.io/name: foldingathome
     system.codezero.io/app: foldingathome
 data:
   config.xml: |

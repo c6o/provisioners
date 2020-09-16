@@ -6,7 +6,6 @@ metadata:
   labels:
     app: verdaccio
     system.codezero.io/app: verdaccio
-    system.codezero.io/name: verdaccio
 data:
   config.yaml: |-
     # This is the config file used for the docker images.
@@ -78,7 +77,6 @@ metadata:
   name: verdaccio
   labels:
     system.codezero.io/app: verdaccio
-    system.codezero.io/name: verdaccio
 spec:
   replicas: 1
   selector:
@@ -89,7 +87,6 @@ spec:
       labels:
         app: verdaccio
         system.codezero.io/app: verdaccio
-        system.codezero.io/name: verdaccio
     spec:
       containers:
       - name: verdaccio
@@ -122,7 +119,6 @@ metadata:
   name: verdaccio-service
   labels:
     system.codezero.io/app: verdaccio
-    system.codezero.io/name: verdaccio
 spec:
   type: NodePort
   selector:

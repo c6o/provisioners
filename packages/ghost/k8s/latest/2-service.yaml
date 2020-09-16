@@ -7,7 +7,6 @@ metadata:
     name: ghost
     role: server
     system.codezero.io/app: ghost
-    system.codezero.io/name: ghost
     app.kubernetes.io/managed-by: codezero
 spec:
   type: NodePort

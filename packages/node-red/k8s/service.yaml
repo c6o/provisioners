@@ -7,7 +7,6 @@ metadata:
     name: node-red
     role: server
     system.codezero.io/app: node-red
-    system.codezero.io/name: node-red
 spec:
     ports:
     - port: 80

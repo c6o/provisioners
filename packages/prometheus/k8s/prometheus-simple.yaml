@@ -6,7 +6,6 @@ metadata:
   labels:
     app: prometheus
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
 spec:
   replicas: 2
   selector:
@@ -39,7 +38,6 @@ metadata:
   namespace: {{namespace}}
   labels:
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
 spec:
   selector:
     app: prometheus

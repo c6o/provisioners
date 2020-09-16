@@ -6,7 +6,6 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: node-red
-    system.codezero.io/name: node-red
 spec:
   accessModes:
   - ReadWriteOnce

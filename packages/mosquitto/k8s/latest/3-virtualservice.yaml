@@ -5,7 +5,6 @@ metadata:
   namespace: {{namespace}}
   labels:
     system.codezero.io/app: mosquitto
-    system.codezero.io/name: mosquitto
 spec:
   gateways:
   - c6o-system/system-gateway

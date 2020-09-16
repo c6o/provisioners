@@ -6,7 +6,6 @@ metadata:
   labels:
     app: fluentd
     system.codezero.io/app: elasticsearch
-    system.codezero.io/name: elasticsearch
 ---
 
 apiVersion: rbac.authorization.k8s.io/v1
@@ -16,7 +15,6 @@ metadata:
   labels:
     app: fluentd
     system.codezero.io/app: elasticsearch
-    system.codezero.io/name: elasticsearch
 rules:
 - apiGroups:
   - ""
@@ -35,7 +33,6 @@ metadata:
   name: fluentd
   labels:
     system.codezero.io/app: elasticsearch
-    system.codezero.io/name: elasticsearch
 roleRef:
   kind: ClusterRole
   name: fluentd
@@ -53,7 +50,6 @@ metadata:
   namespace: {{namespace}}
   labels:
     system.codezero.io/app: elasticsearch
-    system.codezero.io/name: elasticsearch
 spec:
   selector:
     matchLabels:
@@ -62,7 +58,6 @@ spec:
     metadata:
       labels:
         system.codezero.io/app: elasticsearch
-        system.codezero.io/name: elasticsearch
         app: fluentd
     spec:
       serviceAccount: fluentd

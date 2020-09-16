@@ -9,7 +9,6 @@ metadata:
     app: mattermost
     app.kubernetes.io/managed-by: codezero
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   size: '{{users}}users' # customer provided value, helps decided on scale parameters of the install
   image: mattermost/mattermost-enterprise-edition # Docker image for the app servers.
@@ -31,7 +30,6 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: codezero
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   type: NodePort
   selector:

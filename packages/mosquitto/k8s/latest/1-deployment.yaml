@@ -5,7 +5,6 @@ metadata:
   namespace: {{namespace}}
   labels:
     system.codezero.io/app: mosquitto
-    system.codezero.io/name: mosquitto
 data:
   mosquitto.conf: |
     log_dest stdout
@@ -25,7 +24,6 @@ metadata:
     role: server
     name: mosquitto
     system.codezero.io/app: mosquitto
-    system.codezero.io/name: mosquitto
 spec:
   selector:
     matchLabels:
@@ -38,7 +36,6 @@ spec:
         name: mosquitto
         app: mosquitto
         system.codezero.io/app: mosquitto
-        system.codezero.io/name: mosquitto
     spec:
       securityContext:
         runAsUser: 1000

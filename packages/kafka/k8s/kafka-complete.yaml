@@ -12,7 +12,6 @@ metadata:
     heritage: Tiller
     component: server
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
 spec:
   selector:
     matchLabels:
@@ -37,7 +36,6 @@ metadata:
     heritage: Tiller
     component: server
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
 data:
     ok: |
       #!/bin/sh
@@ -153,7 +151,6 @@ metadata:
     release: kafka
     heritage: Tiller
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
 spec:
   clusterIP: None
   ports:
@@ -186,7 +183,6 @@ metadata:
     release: kafka
     heritage: Tiller
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
   annotations:
 spec:
   type: ClusterIP
@@ -215,7 +211,6 @@ metadata:
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
 spec:
   ports:
   - name: broker
@@ -241,7 +236,6 @@ metadata:
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
@@ -268,7 +262,6 @@ metadata:
     heritage: Tiller
     component: server
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
 spec:
   serviceName: kafka-zookeeper-headless
   replicas: 3
@@ -397,7 +390,6 @@ metadata:
     app.kubernetes.io/name: kafka
     app.kubernetes.io/instance: kafka
     system.codezero.io/app: kafka
-    system.codezero.io/name: kafka
 spec:
   selector:
     matchLabels:
@@ -419,7 +411,6 @@ spec:
         app.kubernetes.io/name: kafka
         app.kubernetes.io/instance: kafka
         system.codezero.io/app: kafka
-        system.codezero.io/name: kafka
     spec:
       containers:
       - name: kafka-broker

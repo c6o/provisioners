@@ -4,7 +4,6 @@ metadata:
   name: minioinstances.miniocontroller.min.io
   labels:
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   group: miniocontroller.min.io
   version: v1beta1
@@ -45,7 +44,6 @@ metadata:
   name: minio-operator-role
   labels:
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 rules:
 - apiGroups:
   - ""

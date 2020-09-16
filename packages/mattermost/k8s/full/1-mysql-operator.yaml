@@ -7,7 +7,6 @@ metadata:
     app: mysql-operator
     release: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 data:
   TOPOLOGY_USER: {{topologyUser}}
   TOPOLOGY_PASSWORD: {{topologyPassword}}
@@ -21,7 +20,6 @@ metadata:
     app: mysql-operator
     release: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -131,7 +129,6 @@ metadata:
     app: mysql-operator
     release: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -150,7 +147,6 @@ metadata:
     app: mysql-operator
     release: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
@@ -174,7 +170,6 @@ metadata:
     app: mysql-operator
     release: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   type: ClusterIP
   selector:
@@ -194,7 +189,6 @@ metadata:
     app: mysql-operator
     release: mysql-operator
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   replicas: 1
   serviceName: mysql-operator-orc

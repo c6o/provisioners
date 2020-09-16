@@ -5,7 +5,6 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: precog
-    system.codezero.io/name: precog
 spec:
   accessModes:
     - ReadWriteOnce

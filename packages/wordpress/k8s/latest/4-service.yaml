@@ -7,7 +7,6 @@ metadata:
     name: wordpress
     role: server
     system.codezero.io/app: wordpress
-    system.codezero.io/name: wordpress
 spec:
   ports:
     - port: 80

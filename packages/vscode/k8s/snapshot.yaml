@@ -5,8 +5,7 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: vscode
-    system.codezero.io/name: vscode
-spec:
+    spec:
   source:
     name: dev-pvc
     kind: PersistentVolumeClaim

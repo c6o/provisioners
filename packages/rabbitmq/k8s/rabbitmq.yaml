@@ -6,7 +6,6 @@ metadata:
   labels:
     app: rabbitmq
     system.codezero.io/app: rabbitmq
-    system.codezero.io/name: rabbitmq
 spec:
   sessionAffinity: None
   type: ClusterIP
@@ -37,7 +36,6 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: rabbitmq
-    system.codezero.io/name: rabbitmq
 data:
   enabled_plugins: |
       [rabbitmq_management,rabbitmq_peer_discovery_k8s].
@@ -73,7 +71,6 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: rabbitmq
-    system.codezero.io/name: rabbitmq
 spec:
   serviceName: rabbitmq
   replicas: 3

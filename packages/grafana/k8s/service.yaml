@@ -7,7 +7,6 @@ metadata:
     name: grafana
     role: server
     system.codezero.io/app: grafana
-    system.codezero.io/name: grafana
 spec:
   ports:
   - name: http

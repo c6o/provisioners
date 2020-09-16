@@ -4,7 +4,6 @@ metadata:
   name: clusterinstallations.mattermost.com
   labels:
     system.codezero.io/app: mattermost
-    system.codezero.io/name: mattermost
 spec:
   group: mattermost.com
   names:

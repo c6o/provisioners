@@ -10,7 +10,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-pushgateway
   namespace: '{{namespace}}'
 ---
@@ -25,7 +24,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-pushgateway
   namespace: '{{namespace}}'
 rules:
@@ -43,7 +41,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-pushgateway
   namespace: '{{namespace}}'
 subjects:
@@ -70,7 +67,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-pushgateway
   namespace: '{{namespace}}'
 spec:
@@ -97,7 +93,6 @@ metadata:
     chart: prometheus-10.4.0
     heritage: Tiller
     system.codezero.io/app: prometheus
-    system.codezero.io/name: prometheus
   name: prometheus-pushgateway
   namespace: '{{namespace}}'
 spec:
@@ -116,7 +111,6 @@ spec:
         chart: prometheus-10.4.0
         heritage: Tiller
         system.codezero.io/app: prometheus
-        system.codezero.io/name: prometheus
     spec:
       serviceAccountName: prometheus-pushgateway
       containers:

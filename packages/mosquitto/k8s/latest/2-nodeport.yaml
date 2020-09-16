@@ -7,7 +7,6 @@ metadata:
     name: mosquitto
     role: server
     system.codezero.io/app: mosquitto
-    system.codezero.io/name: mosquitto
 spec:
   type: NodePort
   ports:

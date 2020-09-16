@@ -6,7 +6,6 @@ metadata:
     role: server
     name: mongo
     system.codezero.io/app: mongo
-    system.codezero.io/name: mongo
 spec:
   selector:
     matchLabels:
@@ -18,7 +17,6 @@ spec:
         role: server
         name: mongo
         system.codezero.io/app: mongo
-        system.codezero.io/name: mongo
   spec:
     containers:
     - env:

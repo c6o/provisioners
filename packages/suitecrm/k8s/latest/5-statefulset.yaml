@@ -6,7 +6,6 @@ metadata:
   labels:
     app: mariadb
     system.codezero.io/app: suitecrm
-    system.codezero.io/name: suitecrm
 spec:
   selector:
     matchLabels:
@@ -20,7 +19,6 @@ spec:
       labels:
         app: mariadb
         system.codezero.io/app: suitecrm
-        system.codezero.io/name: suitecrm
     spec:
       serviceAccountName: default
       securityContext:

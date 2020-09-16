@@ -6,7 +6,6 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: vscode
-    system.codezero.io/name: vscode
 spec:
   accessModes:
   - ReadWriteOnce

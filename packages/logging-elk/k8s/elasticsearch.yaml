@@ -6,7 +6,6 @@ metadata:
   labels:
     app: elasticsearch
     system.codezero.io/app: elasticsearch
-    system.codezero.io/name: elasticsearch
 spec:
   selector:
     app: elasticsearch
@@ -25,7 +24,6 @@ metadata:
   namespace: {{namespace}}
   labels:
     system.codezero.io/app: elasticsearch
-    system.codezero.io/name: elasticsearch
     app: elasticsearch
 spec:
   serviceName: elasticsearch
@@ -38,7 +36,6 @@ spec:
       labels:
         app: elasticsearch
         system.codezero.io/app: elasticsearch
-        system.codezero.io/name: elasticsearch
     spec:
       containers:
       - name: elasticsearch

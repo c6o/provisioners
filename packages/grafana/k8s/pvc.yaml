@@ -6,7 +6,6 @@ metadata:
   namespace: '{{namespace}}'
   labels:
     system.codezero.io/app: grafana
-    system.codezero.io/name: grafana
 spec:
   accessModes:
   - ReadWriteOnce
