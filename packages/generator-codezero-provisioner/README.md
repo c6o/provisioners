@@ -1,7 +1,19 @@
 # generator-codezero-provisioner [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
-> CodeZero provisioner generator
+> CodeZero Provisioner Generator
 
 ## Installation
+
+First, install the [CodeZero CLI](https://docs.codezero.io/#/reference/cli) using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+
+Then simply run the following command, and follow the prompts:
+
+```bash
+czctl pr-init
+```
+
+### Alternative Installation (using Yeoman directly)
+
+This generator is created using Yeoman.  So, instead of using the built in `czctl pr-init` command, the generator can be run directly using Yeoman.
 
 First, install [Yeoman](http://yeoman.io) and generator-codezero-provisioner using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
@@ -25,7 +37,7 @@ yo codezero-provisioner
 
 ## License
 
-Apache-2.0 © [Connery Noble]()
+Apache-2.0 © [CodeZero]()
 
 
 [npm-image]: https://badge.fury.io/js/generator-codezero-provisioner.svg
