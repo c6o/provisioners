@@ -35,8 +35,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
-              name: registry
-              protocol: TCP
+              name: http
           livenessProbe:
             httpGet:
               path: /
@@ -63,8 +62,7 @@ spec:
           - /etc/docker/registry/config.yml
           ports:
             - containerPort: 5000
-              name: registry
-              protocol: TCP
+              name: http
           livenessProbe:
             httpGet:
               path: /
