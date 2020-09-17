@@ -13,5 +13,8 @@ spec:
       type: inline
       port: 9623
       tag: nextcloud
+  routes:
+  - type: http
+    targetService: nextcloud
   provisioner:
       storage: 2Gi
