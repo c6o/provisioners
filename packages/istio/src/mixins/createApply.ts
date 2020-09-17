@@ -27,7 +27,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
-    get politPod() {
+    get istiodPod() {
         return {
             kind: 'Pod',
             metadata: {
@@ -54,7 +54,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.installCrds()
         await this.ensureCrdsApplied()
         await this.installIstioServices()
-
         await this.getExternalIPAddress()
     }
 
@@ -67,12 +66,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async installIstioServices() {
         await this.manager.cluster
-            .begin('Install Pilot')
+            .begin('Install Istiod')
                 .upsertFile('../../k8s/traffic.yaml')
             .end()
 
-        // ensure pilot is running before install ingress gateway to reduce installation delays
-        await this.ensurePilotIsRunning()
+        // ensure istiod is running before install ingress gateway to reduce installation delays
+        await this.ensureIstiodIsRunning()
 
         await this.manager.cluster
             .begin('Install Ingress Gateway')
@@ -114,10 +113,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .end()
     }
 
-    async ensurePilotIsRunning() {
+    async ensureIstiodIsRunning() {
         await this.manager.cluster
-            .begin(`Ensure pilot is running`)
-                .beginWatch(this.politPod)
+            .begin(`Ensure istiod is running`)
+                .beginWatch(this.istiodPod)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                     processor.endWatch()
                 })
