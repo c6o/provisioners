@@ -4,20 +4,17 @@ metadata:
   name: server
   namespace: {{namespace}}
   labels:
-    app: server
-    app.kubernetes.io/managed-by: codezero
+    name: server
     system.codezero.io/app: drone
-    app.kubernetes.io/name: server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: server
+      name: server
   template:
     metadata:
       labels:
-        app: server
-        app.kubernetes.io/managed-by: codezero
+        name: server
         system.codezero.io/app: drone
     spec:
       volumes:

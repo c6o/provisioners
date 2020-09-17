@@ -8,7 +8,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             metadata: {
                 namespace: this.serviceNamespace,
                 labels: {
-                    app: 'server'
+                    name: 'server'
                 }
             }
         }
