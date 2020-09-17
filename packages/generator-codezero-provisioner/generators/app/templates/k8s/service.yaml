@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: <%= applicationId %>-svc
+  namespace: "{{namespace}}"
+spec:
+  type: NodePort
+  ports:
+  - port: <%= containerPort %>
+    name: <%= serviceType %>
+  selector:
+    name: <%= applicationId %>

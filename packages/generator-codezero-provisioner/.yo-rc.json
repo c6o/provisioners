@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Connery Noble",
+      "authorEmail": "connery@codezero.io",
+      "authorUrl": ""
+    }
+  }
+}

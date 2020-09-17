@@ -1,0 +1,23 @@
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: <%= applicationId %>
+  annotations:
+    system.codezero.io/display: "<%= applicationName %>"
+spec:
+  package: "<%= provisionerPackageName %>"
+  provisioner:
+    tag: "<%= tag %>"
+  routes:
+  - type: <%= serviceType %>
+    targetService: <%= applicationId %>
+<% if (serviceType == 'tcp') { -%>
+    tcp:
+      name: tcp-main
+      port: <%= servicePort || 0 -%>
+<% } -%>
+<% if (serviceType == 'http') { -%>
+  marina:
+    launch:
+      type: inline
+<% } -%>
