@@ -60,7 +60,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 if (result?.object?.items?.length == 0) {
                     // There are no vscode pods running
                     processor
-                        .upsertFile('../k8s/configMap.yaml', { namespace, publicKey })
+                        .upsertFile('../k8s/configmap.yaml', { namespace, publicKey })
                         .upsertFile('../k8s/pvc.yaml', { namespace, storage, storageClass })
                         .upsertFile('../k8s/deployment.yaml', { namespace, img })
                         .upsertFile('../k8s/svc.yaml', { namespace })
