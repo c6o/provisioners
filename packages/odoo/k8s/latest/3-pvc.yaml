@@ -1,0 +1,34 @@
+
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: odoo-shop
+  namespace: {{namespace}}
+  labels:
+    app: odoo-shop
+    system.codezero.io/app: odoo
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "{{shopAddonsDatabaseSize}}"
+
+
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: odoo-db
+  namespace: {{namespace}}
+  labels:
+    app: odoo-db
+    system.codezero.io/app: odoo
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "{{databaseSize}}"

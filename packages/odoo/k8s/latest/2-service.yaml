@@ -1,0 +1,38 @@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odoo-shop
+  namespace: {{namespace}}
+  labels:
+    app: odoo-shop
+    system.codezero.io/app: odoo
+spec:
+  type: NodePort
+  ports:
+    - port: 8069
+      protocol: TCP
+      name: odoo-shop
+  selector:
+    app: odoo-shop
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: odoo-db
+  namespace: {{namespace}}
+  labels:
+    app: odoo-db
+    system.codezero.io/app: odoo
+spec:
+  ports:
+    - port: 5432
+      protocol: TCP
+      name: odoo-db
+  selector:
+    app: odoo-db
+  type: NodePort
+

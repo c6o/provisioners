@@ -23,23 +23,36 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async installOdoo() {
 
+
         const args = {
             databaseUsername: Buffer.from('admin').toString('base64'),
             databasePassword: Buffer.from(super.processPassword()).toString('base64'),
-            namespace:  this.serviceNamespace
+            namespace: this.serviceNamespace,
+            databaseSize: this.spec.databaseSize,
+            shopAddonsDatabaseSize: this.spec.shopAddonsDatabaseSize
+        }
+
+        if (this.edition == 'latest') {
+            await this.manager.cluster
+            .begin('Installing Odoo Volume Claims')
+            .addOwner(this.manager.document)
+            .upsertFile(`../../k8s/${this.edition}/3-pvc.yaml`, args)
+            .end()
         }
 
         await this.manager.cluster
-            .begin('Install Odoo Deployment')
+            .begin('Installing Odoo Deployment')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/preview/1-deployment.yaml', args)
+            .upsertFile(`../../k8s/${this.edition}/1-deployment.yaml`, args)
             .end()
 
         await this.manager.cluster
-            .begin('Install Odoo Networking Services')
+            .begin('Installing Odoo Networking Services')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/preview/2-service.yaml', args)
+            .upsertFile(`../../k8s/${this.edition}/2-service.yaml`, args)
             .end()
+
+
 
     }
 
