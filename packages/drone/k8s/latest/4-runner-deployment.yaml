@@ -4,19 +4,17 @@ metadata:
   name: runner
   namespace: {{namespace}}
   labels:
-    app.kubernetes.io/name: runner
+    name: runner
     system.codezero.io/app: drone
-    app.kubernetes.io/managed-by: codezero
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: runner
+      name: runner
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: runner
-        app.kubernetes.io/managed-by: codezero
+        name: runner
         system.codezero.io/app: drone
     spec:
       containers:

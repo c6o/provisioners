@@ -4,10 +4,8 @@ metadata:
   namespace: {{namespace}}
   name: server
   labels:
-    name: drone-server
-    role: server
+    name: server
     system.codezero.io/app: drone
-    app.kubernetes.io/managed-by: codezero
 spec:
   type: NodePort
   ports:
@@ -16,4 +14,4 @@ spec:
     targetPort: 80
     protocol: TCP
   selector:
-    app: server
+    name: server
