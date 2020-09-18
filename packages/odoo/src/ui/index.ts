@@ -1,14 +1,14 @@
 import { LitElement, html, customElement } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
-@customElement('odoo-install-main')
+@customElement('odooerp-install-main')
 export class OdooSettings extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
     storageSizeChoices = ['1Gi','2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
 
     get serviceSpec() {
-        return this.mediator.getServiceSpec('odoo')
+        return this.mediator.getServiceSpec('odooerp')
     }
 
     render() {
