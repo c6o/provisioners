@@ -23,6 +23,7 @@
     "packages/docker-registry/",
     "packages/verdaccio/",
     "packages/foldingathome/",
+    "packages/odoo/",
     "packages/logging-elk/",
     "packages/precog/",
     "packages/suitecrm/",
