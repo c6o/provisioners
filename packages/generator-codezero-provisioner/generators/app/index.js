@@ -173,14 +173,52 @@ module.exports = class extends Generator {
     if (!this.options["skip-license"]) {
       this.composeWith(require.resolve("generator-license/app"), {
         name: this.props.authorName,
-        email: this.props.authorEmail,
-        website: this.props.authorUrl
+        email: "",
+        website: ""
       });
     }
   }
 
   writing() {
     // Copy all template files
+    const currentPkg = this.fs.readJSON(
+      this.destinationPath("package.json"),
+      {}
+    );
+
+    const pkg = extend(
+      {
+        name: this.props.provisionerPackageName,
+        main: "lib/index.js",
+        description: `CodeZero Provisioner for ${this.props.applicationName}`,
+        scripts: {
+          bundle: `${this.props.npxCmd} parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui`,
+          build: `${this.props.npxCmd} tsc -b && ${this.props.npxCmd} bundle`,
+          provision: `${this.props.npxCmd} build && czctl provision app.yaml --package ./`,
+          develop: `${this.props.npxCmd} -b -w --preserveWatchOutput`,
+          test: 'echo "Error: no test specified" && exit 1'
+        },
+        files: ["lib/", "k8s/"],
+        keywords: [
+          "codezero",
+          "provisioner",
+          "kubernetes",
+          this.props.applicationId,
+          this.props.applicationName,
+          this.props.containerImage
+        ]
+      },
+      currentPkg
+    );
+
+    // Preserve existing files and keywords
+    if (currentPkg.files)
+      pkg.files = _.uniq(_.concat(pkg.files, currentPkg.files));
+    if (currentPkg.keywords)
+      pkg.keywords = _.uniq(_.concat(pkg.keywords, currentPkg.keywords));
+
+    this.fs.writeJSON(this.destinationPath("package.json"), pkg);
+
     this.fs.copyTpl(
       this.templatePath("**"),
       this.destinationPath(""),

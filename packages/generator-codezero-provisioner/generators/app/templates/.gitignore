@@ -1,0 +1,12 @@
+# Node stuff
+node_modules/
+lerna-debug.log
+npm-debug.log
+.idea
+
+# tsc and build output
+lib/
+tsconfig.tsbuildinfo
+
+# parcel cache files
+.cache

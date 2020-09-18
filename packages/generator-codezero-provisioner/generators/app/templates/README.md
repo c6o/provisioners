@@ -9,5 +9,5 @@ To run this provisioner, you will need a Kubernetes cluster up and running, with
 ```
 export KUBECONFIG=/path/to/your/cluster-config.yaml
 <%= npmCmd %> install
-<%= npxCmd %> czctl provision app.yaml --package ./
+czctl provision app.yaml --package ./
 ```
