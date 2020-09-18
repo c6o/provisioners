@@ -64,20 +64,9 @@ spec:
           ports:
             - containerPort: 8069
               name: odoo
-          # livenessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          #     httpHeaders:
-          #     - name: Host
-          #       value: "127.0.0.1"
-          #   initialDelaySeconds: 30
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
-          #     httpHeaders:
-          #     - name: Host
-          #       value: "127.0.0.1"
-          #   initialDelaySeconds: 30
-
+          startupProbe:
+            httpGet:
+              path: /
+              port: odoo
+            failureThreshold: 30
+            periodSeconds: 10
