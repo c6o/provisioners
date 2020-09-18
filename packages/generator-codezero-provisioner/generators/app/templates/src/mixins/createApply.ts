@@ -25,7 +25,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const namespace = this.serviceNamespace
         const {
             tag,
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
             storageClass,
             storage,
 <% } -%> 
@@ -39,7 +39,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         // There are no pods running
                         // So let's install the application
                         processor
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
                             .upsertFile("../../k8s/pvc.yaml", { namespace, storage, storageClass })
 <% } -%>
                             .upsertFile("../../k8s/deployment.yaml", { namespace, tag })

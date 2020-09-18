@@ -15,7 +15,7 @@ export class ApplicationInstaller extends LitElement implements StoreFlowStep {
 
     render() {
         return html`
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
             <c6o-form-layout>
                 <c6o-combo-box @selected-item-changed=${this.storageSelected} label="<%= applicationName %> Storage" value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></c6o-combo-box>
             </c6o-form-layout>
@@ -28,14 +28,14 @@ export class ApplicationInstaller extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
         this.serviceSpec.storage = this.serviceSpec.storage || "2Gi"
 <% } else { -%>
         this.serviceSpec.exampleProperty = this.serviceSpec.exampleProperty || "some default"
 <% } -%>
     }
 
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
     storageSelected = (e) => {
         this.serviceSpec.storage = e.detail.value
     }

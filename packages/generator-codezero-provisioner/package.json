@@ -1,6 +1,6 @@
 {
   "name": "generator-codezero-provisioner",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A CodeZero Provisioner generator.",
   "homepage": "https://docs.codezero.io/",
   "author": {
@@ -17,26 +17,27 @@
     "yeoman-generator"
   ],
   "devDependencies": {
-    "yeoman-test": "^1.7.0",
-    "yeoman-assert": "^3.1.0",
     "eslint": "^6.6.0",
-    "prettier": "^1.19.1",
-    "husky": "^3.0.9",
-    "lint-staged": "^9.4.3",
     "eslint-config-prettier": "^6.6.0",
-    "eslint-plugin-prettier": "^3.1.1",
     "eslint-config-xo": "^0.27.2",
-    "jest": "^26.1.0"
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "jest": "^26.1.0",
+    "lint-staged": "^9.4.3",
+    "prettier": "^1.19.1",
+    "yeoman-assert": "^3.1.0",
+    "yeoman-test": "^1.7.0"
   },
   "engines": {
     "npm": ">= 4.0.0"
   },
   "dependencies": {
     "chalk": "^2.1.0",
+    "command-exists": "^1.2.9",
     "generator-node": "^2.8.0",
     "lodash": "^4.17.20",
-    "mkdirp": "^1.0.4",
     "path": "^0.12.7",
+    "validate-npm-package-name": "^3.0.0",
     "yeoman-generator": "^2.0.1",
     "yosay": "^2.0.1"
   },

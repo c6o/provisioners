@@ -21,10 +21,10 @@ spec:
 <% if (containerPort > 0) { -%>
         - containerPort: <%= containerPort %>
 <% } -%>
-<% if (pvcEnabled) { -%>
-<% if (pvcMountPath) { -%>
+<% if (persistentVolumeEnabled) { -%>
+<% if (volumeMountPath) { -%>
         volumeMounts:
-          - mountPath: "<%= pvcMountPath %>"
+          - mountPath: "<%= volumeMountPath %>"
             name: "<%= applicationId %>-volume"
 <% } -%>
       volumes:

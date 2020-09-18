@@ -6,7 +6,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquire(args) {
         return await this.manager.inquirer?.prompt([
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
             this.inquireStorageClass({
                 name: "storageClass",
                 default: this.getDefaultStorageClass(),
@@ -32,7 +32,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const answers = await this.inquire(args)
 
         // Update spec based on users answers.
-<% if (pvcEnabled) { -%>
+<% if (persistentVolumeEnabled) { -%>
         this.spec.storageClass = answers.storageClass
         this.spec.storage = answers.storage
 <% } else { -%>
