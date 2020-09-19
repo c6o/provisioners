@@ -256,6 +256,7 @@ module.exports = class extends Generator {
         devDependencies: {
           "@types/node": pkgJson.devDependencies["@types/node"],
           "parcel-bundler": pkgJson.devDependencies["parcel-bundler"],
+          "del-cli": pkgJson.devDependencies["del-cli"],
           prettier: pkgJson.devDependencies.prettier,
           typescript: pkgJson.devDependencies.typescript,
           "ts-node": pkgJson.devDependencies["ts-node"],
@@ -305,12 +306,17 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.installDependencies({
-      npm: !this.options.yarn,
-      yarn: this.options.yarn,
-      bower: false,
-    });
+    this.spawnCommand(this.props.npmCmd, ["install"]).on(
+      "exit",
+      (code, signal) => {
+        if (code || signal) {
+          return;
+        }
 
-    this.spawnCommand(this.props.npmCmd, ["run", "prebuild"]);
+        this.emit(`Running prebuild.`);
+        this.spawnCommand(this.props.npmCmd, ["run", "prebuild"]);
+        this.emit(`Prebuild finished.`);
+      }
+    );
   }
 };
