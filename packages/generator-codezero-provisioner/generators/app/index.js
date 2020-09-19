@@ -227,12 +227,12 @@ module.exports = class extends Generator {
 
     if (!this.props.persistentVolumeEnabled) {
       // Remove pvc.yaml if not in use
-      this.deleteDestination("k8s/pvc.yaml");
+      this.fs.delete(this.destinationPath("k8s/pvc.yaml"));
     }
 
     if (this.props.serviceType === "none") {
       // Remove service.yaml if not in use
-      this.fs.deleteDestination("k8s/service.yaml");
+      this.fs.delete(this.destinationPath("k8s/service.yaml"));
     }
   }
 

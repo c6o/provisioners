@@ -10,7 +10,7 @@ spec:
     tag: "<%= tag %>"
   routes:
   - type: <%= serviceType %>
-    targetService: <%= applicationId %>
+    targetService: <%= applicationId %>-svc
 <% if (serviceType == 'tcp') { -%>
     tcp:
       name: tcp-main
