@@ -14,25 +14,25 @@ spec:
       labels:
         name: <%= applicationId %>
     spec:
-<% if (volumeMountPath) { -%>
+      # <% if (volumeMountPath) { %>
       securityContext:
         fsGroup: 1000 # Sets permissions for mounted volumes
-<% } -%>
+      # <% } %>
       containers:
       - name: <%= applicationId %>
-        image: "<%= containerImage %>:{{tag}}"
+        image: "{{image}}:{{tag}}"
+        # <% if (serviceType !== 'none') { %>
         ports:
-<% if (serviceType !== 'none') { -%>
         - containerPort: <%= containerPort %>
-<% } -%>
-<% if (persistentVolumeEnabled) { -%>
-<% if (volumeMountPath) { -%>
+        # <% } %>
+        # <% if (persistentVolumeEnabled && volumeMountPath) { %>
         volumeMounts:
           - mountPath: "<%= volumeMountPath %>"
             name: <%= applicationId %>-volume
-<% } -%>
+        # <% } %>
+      # <% if (persistentVolumeEnabled) { %>
       volumes:
         - name: <%= applicationId %>-volume
           persistentVolumeClaim:
             claimName: <%= applicationId %>-pvc
-<% } -%>
+      # <% } %>

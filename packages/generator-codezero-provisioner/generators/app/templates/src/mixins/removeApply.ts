@@ -8,7 +8,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
         // It is then safe to remove the following
         // You may not have to remove the following because owners takes care of most of it
         await this.manager.cluster
-            .begin("De-provisioning the app")
+            .begin(`De-provisioning the app from ${namespace}`)
             .end()
     }
 }

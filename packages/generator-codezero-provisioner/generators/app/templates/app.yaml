@@ -7,17 +7,18 @@ metadata:
 spec:
   package: "<%= provisionerPackageName %>"
   provisioner:
+    image: "<%= containerImage %>"
     tag: "<%= tag %>"
   routes:
   - type: <%= serviceType %>
     targetService: <%= applicationId %>-svc
-<% if (serviceType == 'tcp') { -%>
+    # <% if (serviceType == 'tcp') { %>
     tcp:
       name: tcp-main
       port: <%= servicePort || 0 -%>
-<% } -%>
-<% if (serviceType == 'http') { -%>
+    # <% } %>
+  # <% if (serviceType == 'http') { %>
   marina:
     launch:
       type: inline
-<% } -%>
+  # <% } %>

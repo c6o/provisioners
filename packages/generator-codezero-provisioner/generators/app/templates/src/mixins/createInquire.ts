@@ -4,9 +4,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     storageChoices = ["1Gi","2Gi","5Gi","10Gi","20Gi","50Gi","100Gi"]
 
-    async inquire(args) {
-        return await this.manager.inquirer?.prompt([
-<% if (persistentVolumeEnabled) { -%>
+    async inquire(args: any[]) {
+        const answers = await this.manager.inquirer?.prompt([
+// <% if (persistentVolumeEnabled) { %>
             this.inquireStorageClass({
                 name: "storageClass",
                 default: this.getDefaultStorageClass(),
@@ -16,27 +16,29 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 name: "storage",
                 message: "What size data volume would you like for your log storage?",
                 choices: this.storageChoices,
-                default: "2Gi"
+                default: "2Gi",
             },
-<% } else { -%>
+// <% } else { %>
             {
                 type: "input",
-                name: "exampleQuestion"
+                name: "exampleQuestion",
                 message: "This is an example question, what is your answer?",
             }
-<% } -%>
-        ], args)
+// <% } %>
+        ], args);
+
+        return answers
     }
 
-    async createInquire(args) {
+    async createInquire(args: any[]) {
         const answers = await this.inquire(args)
 
         // Update spec based on users answers.
-<% if (persistentVolumeEnabled) { -%>
+// <% if (persistentVolumeEnabled) { %>
         this.spec.storageClass = answers.storageClass
         this.spec.storage = answers.storage
-<% } else { -%>
+// <% } else { %>
         this.exampleQuestion = answers.exampleQuestion
-<% } -%>
+// <% } %>
     }
 }

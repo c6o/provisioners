@@ -8,7 +8,7 @@ import {
     removeApplyMixin,
 } from "./mixins"
 
-export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
+export type baseProvisionerType = new (...a: any[]) => Provisioner & ProvisionerBase
 
 export class Provisioner extends mix(ProvisionerBase)
     .with(createInquireMixin, createApplyMixin, createValidateMixin, removeApplyMixin) {

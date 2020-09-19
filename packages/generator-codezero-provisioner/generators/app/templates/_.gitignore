@@ -1,8 +1,11 @@
 # Node stuff
+coverage/
 node_modules/
-lerna-debug.log
-npm-debug.log
-.idea
+lib_test/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.nyc_output
 
 # tsc and build output
 lib/

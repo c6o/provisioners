@@ -3,7 +3,6 @@ import { StoreFlowStep, StoreFlowMediator } from "@provisioner/common"
 
 @customElement("<%= applicationId %>-install-main")
 export class ApplicationInstaller extends LitElement implements StoreFlowStep {
-
     mediator: StoreFlowMediator
     values = ["1Gi","2Gi","4Gi"]
 
@@ -28,20 +27,21 @@ export class ApplicationInstaller extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
-<% if (persistentVolumeEnabled) { -%>
+// <% if (persistentVolumeEnabled) { %>
         this.serviceSpec.storage = this.serviceSpec.storage || "2Gi"
-<% } else { -%>
+// <% } else { %>
         this.serviceSpec.exampleProperty = this.serviceSpec.exampleProperty || "some default"
-<% } -%>
+// <% } %>
     }
 
-<% if (persistentVolumeEnabled) { -%>
+// <% if (persistentVolumeEnabled) { %>
     storageSelected = (e) => {
         this.serviceSpec.storage = e.detail.value
     }
-<% } else { -%>
+    
+// <% } else { %>
     examplePropertyChanged = (e) => {
         this.serviceSpec.exampleProperty = e.target.value
     }
-<% } -%>
+// <% } %>
 }
