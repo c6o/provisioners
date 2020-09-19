@@ -15,7 +15,7 @@ spec:
     # <% if (serviceType == 'tcp') { %>
     tcp:
       name: tcp-main
-      port: <%= servicePort || 0 -%>
+      port: <%= servicePort || 0 %>
     # <% } %>
   # <% if (serviceType == 'http') { %>
   marina:
