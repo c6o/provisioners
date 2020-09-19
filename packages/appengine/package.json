@@ -1,7 +1,7 @@
 {
-  "name": "@provisioner/dockerweb",
+  "name": "@provisioner/appengine",
   "version": "0.0.8",
-  "description": "CodeZero provisioner for dockerweb",
+  "description": "CodeZero provisioner for appengine",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -26,7 +26,7 @@
   "keywords": [
     "codezero",
     "provisioner",
-    "dockerweb"
+    "appengine"
   ],
   "author": "Rob Chartier",
   "license": "Apache-2.0",

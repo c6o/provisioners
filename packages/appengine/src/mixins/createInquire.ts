@@ -2,7 +2,6 @@ import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-
     parseConfigSecrets(args, name)  {
 
         const results = []
@@ -38,12 +37,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return value
     }
 
-    async askConfig(args) {
+    async askConfig(args, automated) {
 
 
         const configs = this.parseConfigSecrets(args, 'config')
 
-        if(configs && configs.length>0) return
+        if(configs && configs.length>0 || automated) return
 
         let responses = { hasConfig: false }
 
@@ -84,11 +83,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     }
 
-    async askSecrets(args) {
+    async askSecrets(args, automated) {
 
         const secrets = this.parseConfigSecrets(args, 'secret')
 
-        if(secrets && secrets.length>0) return
+        if(secrets && secrets.length>0 || automated) return
 
         let responses = { hasSecret: false }
 
@@ -138,6 +137,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             name: args['name'] || this.spec.name,
             containerPort: args['container-port'] || this.spec.containerPort
         }
+        const automated = args["automated"] || this.spec.automated
 
         const responses = await this.manager.inquirer?.prompt([
             {
@@ -172,8 +172,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.containerPort = Number(responses.containerPort)
         this.spec.edition = this.edition
 
-        this.spec.secrets = await this.askSecrets(args)
-        this.spec.configs = await this.askConfig(args)
+        this.spec.secrets = await this.askSecrets(args, automated)
+        this.spec.configs = await this.askConfig(args, automated)
 
     }
 }
