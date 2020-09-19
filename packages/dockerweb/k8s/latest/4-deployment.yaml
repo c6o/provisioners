@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{namespace}}
+  name: {{name}}
+  labels:
+    app: {{name}}
+    app.kubernetes.io/managed-by: codezero
+    system.codezero.io/app: {{name}}
+spec:
+  selector:
+    matchLabels:
+      app: {{name}}
+  template:
+    metadata:
+      labels:
+        app: {{name}}
+        app.kubernetes.io/managed-by: codezero
+        system.codezero.io/app: {{name}}
+    spec:
+      containers:
+      - name: {{name}}
+        image: {{image}}
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - name: http
+          containerPort: {{containerPort}}
+        env:
+{{env}}
+---

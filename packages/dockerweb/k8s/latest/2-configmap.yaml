@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{name}}configs
+  namespace: {{namespace}}
+  labels:
+    app: {{name}}
+    system.codezero.io/app: {{name}}
+data:
+{{configsContent}}

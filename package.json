@@ -21,6 +21,7 @@
     "packages/prometheus/",
     "packages/wordpress/",
     "packages/docker-registry/",
+    "packages/dockerweb/",
     "packages/verdaccio/",
     "packages/foldingathome/",
     "packages/logging-elk/",
