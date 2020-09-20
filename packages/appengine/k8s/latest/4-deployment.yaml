@@ -25,4 +25,6 @@ spec:
 {{portsContent}}
         env:
 {{env}}
+{{volumeMounts}}
+{{deployVolumes}}
 ---

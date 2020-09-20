@@ -1,122 +1,9 @@
 import { baseProvisionerType } from '../index'
+import { Buffer } from 'buffer'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    parseConfigSecrets(args, name) {
-
-        const results = []
-        const rawValues = args[name] || this.spec[name]
-
-        if (rawValues) {
-            if (typeof rawValues == 'string') {
-                results.push(this.parseSingle(rawValues))
-            } else {
-                for (const single of rawValues) {
-                    results.push(this.parseSingle(single))
-                }
-            }
-        }
-
-        return results
-    }
-
-    parseSingle(single: string) {
-        const pos = single.indexOf(':')
-        let value = { name: '', value: '', env: '' }
-
-        if (pos > 0) {
-            value.name = single.substr(0, pos)
-            const right = single.substr(pos + 1)
-            const comma = right.indexOf(',')
-            if (comma > 0) {
-                value.value = right.substr(0, comma)
-                value.env = right.substr(comma + 1)
-            } else {
-                value.value = right
-            }
-        }
-        return value
-    }
-
-    parseSinglePort(portSpec) {
-            //portNumber/portName/targetPort
-            //80/http/http
-        const items = portSpec.split('/')
-        if(items.length==1) return { number: items[0], name: 'http', targetPort: 'http' }
-        if(items.length==2) return { number: items[0], name: items[1], targetPort: items[1] }
-        if(items.length>=3) return { number: items[0], name: items[1], targetPort: items[2] }
-
-    }
-    parsePorts(args) {
-
-        const results = []
-        const rawValues = args.port || this.spec.port
-
-        if(!rawValues || rawValues == '') return []
-
-        if (typeof (rawValues) == 'string') {
-            //portNumber/portName/targetPort
-            //80/http/http
-            results.push(this.parseSinglePort(rawValues))
-        } else {
-            //['80/http/http', '1883/mosquitto/tcp']
-            for(const p of rawValues) {
-                results.push(this.parseSinglePort(p))
-            }
-        }
-
-        return results
-    }
-
-    async askPorts(args, automated) {
-
-
-        const ports = this.parsePorts(args)
-
-
-        if (ports && ports.length > 0 || automated) return ports
-
-        let responses = { hasPorts: false }
-
-        do {
-            responses = await this.manager.inquirer?.prompt([
-                {
-                    type: 'confirm',
-                    name: 'hasPorts',
-                    message: 'Would you like to add an exposed port?',
-                    default: false,
-                }
-            ])
-
-            if (responses.hasPorts) {
-
-                const configResponses = await this.manager.inquirer?.prompt([
-                    {
-                        type: 'input',
-                        name: 'number',
-                        default: 8080,
-                        message: 'What is the internal port number on the container?',
-                    },
-                    {
-                        type: 'input',
-                        name: 'name',
-                        default: 'http',
-                        message: 'What is port name?',
-                    },
-                    {
-                        type: 'input',
-                        name: 'targetPort',
-                        default: 'http',
-                        message: 'What is targetPort?',
-                    }
-                ])
-                ports.push({ number: configResponses.number, name: configResponses.name, targetPort: configResponses.targetPort })
-            }
-        } while (responses.hasPorts)
-
-        return ports
-
-    }
+    //#region  config and secrets
 
     async askConfig(args, automated) {
 
@@ -210,6 +97,206 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     }
 
+    parseConfigSecrets(args, name) {
+
+        const results = []
+        const rawValues = args[name] || this.spec[name]
+
+        if (rawValues) {
+            if (typeof rawValues == 'string') {
+                results.push(this.parseSingle(rawValues))
+            } else {
+                for (const single of rawValues) {
+                    results.push(this.parseSingle(single))
+                }
+            }
+        }
+
+        return results
+    }
+
+    parseSingle(single: string) {
+        const pos = single.indexOf(':')
+        let value = { name: '', value: '', env: '' }
+
+        if (pos > 0) {
+            value.name = single.substr(0, pos)
+            const right = single.substr(pos + 1)
+            const comma = right.indexOf(',')
+            if (comma > 0) {
+                value.value = right.substr(0, comma)
+                value.env = right.substr(comma + 1)
+            } else {
+                value.value = right
+            }
+        }
+        return value
+    }
+    //#endregion
+
+    //#region  ports
+    parseSinglePort(portSpec) {
+        //portNumber/portName/targetPort
+        //80/http/http
+        const items = portSpec.split('/')
+        if (items.length == 1) return { number: items[0], name: 'http', targetPort: 'http' }
+        if (items.length == 2) return { number: items[0], name: items[1], targetPort: items[1] }
+        if (items.length >= 3) return { number: items[0], name: items[1], targetPort: items[2] }
+
+    }
+    parsePorts(args) {
+
+        const results = []
+        const rawValues = args.port || this.spec.port
+
+        if (!rawValues || rawValues == '') return []
+
+        if (typeof (rawValues) == 'string') {
+            //portNumber/portName/targetPort
+            //80/http/http
+            results.push(this.parseSinglePort(rawValues))
+        } else {
+            //['80/http/http', '1883/mosquitto/tcp']
+            for (const p of rawValues) {
+                results.push(this.parseSinglePort(p))
+            }
+        }
+
+        return results
+    }
+
+    async askPorts(args, automated) {
+
+
+        const ports = this.parsePorts(args)
+
+
+        if (ports && ports.length > 0 || automated) return ports
+
+        let responses = { hasPorts: false }
+
+        do {
+            responses = await this.manager.inquirer?.prompt([
+                {
+                    type: 'confirm',
+                    name: 'hasPorts',
+                    message: 'Would you like to add an exposed port?',
+                    default: false,
+                }
+            ])
+
+            if (responses.hasPorts) {
+
+                const configResponses = await this.manager.inquirer?.prompt([
+                    {
+                        type: 'input',
+                        name: 'number',
+                        default: 8080,
+                        message: 'What is the internal port number on the container?',
+                    },
+                    {
+                        type: 'input',
+                        name: 'name',
+                        default: 'http',
+                        message: 'What is port name?',
+                    },
+                    {
+                        type: 'input',
+                        name: 'targetPort',
+                        default: 'http',
+                        message: 'What is targetPort?',
+                    }
+                ])
+                ports.push({ number: configResponses.number, name: configResponses.name, targetPort: configResponses.targetPort })
+            }
+        } while (responses.hasPorts)
+
+        return ports
+
+    }
+    //#endregion
+
+    //#region  volumes
+    parseSingleVolume(portSpec) {
+        //size:path
+        //5Gi:/etc/config/
+        const items = portSpec.split(':')
+        const volume = { size: items[0], mountPath: items[1], name: 'data' }
+        volume.name = `data-${Buffer.from(volume.mountPath).toString('base64').toLowerCase()}`
+        return volume
+
+    }
+    parseVolumes(args) {
+
+        const results = []
+        const rawValues = args.volume || this.spec.volume
+
+        if (!rawValues || rawValues == '') return []
+
+        if (typeof (rawValues) == 'string') {
+            results.push(this.parseSingleVolume(rawValues))
+        } else {
+            for (const p of rawValues) {
+                results.push(this.parseSingleVolume(p))
+            }
+        }
+
+        return results
+    }
+
+    async askVolumes(args, automated) {
+
+        const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
+
+        const volumes = this.parseVolumes(args)
+
+        console.log(volumes)
+
+        if (volumes && volumes.length > 0 || automated) return volumes
+
+        let responses = { hasVolumes: false }
+
+        do {
+            responses = await this.manager.inquirer?.prompt([
+                {
+                    type: 'confirm',
+                    name: 'hasVolumes',
+                    message: 'Would you like to add a persistent volume?',
+                    default: false,
+                }
+            ])
+
+            if (responses.hasVolumes) {
+
+                const configResponses = await this.manager.inquirer?.prompt([
+                    {
+                        type: 'list',
+                        name: 'storageSize',
+                        message: 'What size data volume would you like to provision?',
+                        choices: storageChoices,
+                        default: '5Gi'
+                    },
+                    {
+                        type: 'input',
+                        name: 'mountPath',
+                        default: '/var',
+                        message: 'What path do you want this volume mounted at?',
+                    }
+                ])
+
+                const volume = { size: configResponses.storageSize, mountPath: configResponses.mountPath, name: 'data' }
+                volume.name = `data-${Buffer.from(volume.mountPath).toString('base64').toLowerCase()}`
+                volumes.push(volume)
+            }
+        } while (responses.hasVolumes)
+
+        return volumes
+
+    }
+    //#endregion
+
+
+    //#region  main
     async createInquire(args) {
 
 
@@ -244,6 +331,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.ports = await this.askPorts(args, automated)
         this.spec.secrets = await this.askSecrets(args, automated)
         this.spec.configs = await this.askConfig(args, automated)
+        this.spec.volumes = await this.askVolumes(args, automated)
 
     }
+
+    //#endregion
 }

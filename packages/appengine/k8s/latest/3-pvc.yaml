@@ -1,14 +1,14 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: suitecrm
+  name: {{volumeName}}
   namespace: {{namespace}}
   labels:
-    app: suitecrm
-    system.codezero.io/app: suitecrm
+    app: {{name}}
+    system.codezero.io/app: {{name}}
 spec:
   accessModes:
     - "ReadWriteOnce"
   resources:
     requests:
-      storage: "{{databasesize}}"
+      storage: "{{size}}"

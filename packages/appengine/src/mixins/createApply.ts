@@ -59,44 +59,56 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .end()
         }
 
-        if (this.spec.ports) {
+        this.spec.portsContent = ''   //deployment
 
-            this.spec.portsContent = ''  //deployment
-            this.spec.servicePortContent = ''   //service/nodePort
+        if (this.spec.ports && this.spec.ports.length > 0) {
 
-            if (this.spec.ports && this.spec.ports.length > 0) {
-                this.spec.portsContent = `        ports:\n`
-                this.spec.servicePortContent = `  ports:\n`
+            this.spec.portsContent = '        ports:\n'   //deployment
+            this.spec.servicePortContent = '  ports:\n'   //service/nodePort
 
-                for (const item of this.spec.ports) {
-                    this.spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.number}\n`
-                    this.spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'`
-                }
+            for (const item of this.spec.ports) {
+                this.spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.number}\n`
+                this.spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'`
             }
+
+            await this.manager.cluster
+                .begin('Installing Networking Services')
+                .addOwner(this.manager.document)
+                .upsertFile('../../k8s/latest/5-service.yaml', { ...this.spec, namespace: this.serviceNamespace })
+                .end()
+
         }
 
-        console.log(this.spec)
+        this.spec.volumeMounts = ''
+        this.spec.deployVolumes = ''
 
-        // await this.manager.cluster
-        //     .begin('Installing Volumes')
-        //     .addOwner(this.manager.document)
-        //     .upsertFile('../../k8s/latest/3-pvc.yaml', { ...this.spec, namespace: this.serviceNamespace })
-        //     .end()
+        if (this.spec.volumes && this.spec.volumes.length > 0) {
+            this.spec.volumeMounts = '        volumeMounts:\n'
+            this.spec.deployVolumes = '      volumes:\n'
 
+            for (const item of this.spec.volumes) {
+                if (item.name && item.name !== '') {
+                    console.log('installing volume:', item)
+                    this.spec.volumeMounts += `        - name: '${item.name}'\n          mountPath: ${item.mountPath}\n`
+                    this.spec.deployVolumes += `      - name: '${item.name}'\n        persistentVolumeClaim:\n          claimName: ${item.name}\n`
 
+                    await this.manager.cluster
+                        .begin(`Installing Volume ${item.name}`)
+                        .addOwner(this.manager.document)
+                        .upsertFile('../../k8s/latest/3-pvc.yaml', { ...this.spec, namespace: this.serviceNamespace, size: item.size, volumeName: item.name })
+                        .end()
+                }
+            }
+
+        }
+        console.log('mounts:', this.spec.volumeMounts)
+        console.log('volumes', this.spec.deployVolumes)
 
         await this.manager.cluster
             .begin('Installing the Deployment')
             .addOwner(this.manager.document)
             .upsertFile('../../k8s/latest/4-deployment.yaml', { ...this.spec, namespace: this.serviceNamespace })
             .end()
-
-        await this.manager.cluster
-            .begin('Installing Networking Services')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/5-service.yaml', { ...this.spec, namespace: this.serviceNamespace })
-            .end()
-
 
 
 
