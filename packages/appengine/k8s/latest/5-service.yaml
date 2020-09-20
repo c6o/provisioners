@@ -9,10 +9,7 @@ metadata:
     system.codezero.io/app: {{name}}
 spec:
   type: NodePort
-  externalTrafficPolicy: "Cluster"
-  ports:
-    - name: http
-      port: {{containerPort}}
-      targetPort: http
+  externalTrafficPolicy: Cluster
+{{servicePortContent}}
   selector:
     app: {{name}}

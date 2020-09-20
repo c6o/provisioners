@@ -22,9 +22,7 @@ spec:
       - name: {{name}}
         image: {{image}}
         imagePullPolicy: "IfNotPresent"
-        ports:
-        - name: http
-          containerPort: {{containerPort}}
+{{portsContent}}
         env:
 {{env}}
 ---

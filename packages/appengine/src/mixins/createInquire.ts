@@ -2,34 +2,35 @@ import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    parseConfigSecrets(args, name)  {
+    parseConfigSecrets(args, name) {
 
         const results = []
         const rawValues = args[name] || this.spec[name]
 
-        if(rawValues) {
-            if(typeof rawValues == 'string') {
+        if (rawValues) {
+            if (typeof rawValues == 'string') {
                 results.push(this.parseSingle(rawValues))
             } else {
-                for(const single of rawValues) {
+                for (const single of rawValues) {
                     results.push(this.parseSingle(single))
                 }
             }
         }
+
         return results
     }
 
     parseSingle(single: string) {
         const pos = single.indexOf(':')
-        let value = { name:'', value:'', env:'' }
+        let value = { name: '', value: '', env: '' }
 
-        if(pos > 0) {
+        if (pos > 0) {
             value.name = single.substr(0, pos)
-            const right = single.substr(pos+1)
+            const right = single.substr(pos + 1)
             const comma = right.indexOf(',')
-            if(comma > 0) {
+            if (comma > 0) {
                 value.value = right.substr(0, comma)
-                value.env = right.substr(comma+1)
+                value.env = right.substr(comma + 1)
             } else {
                 value.value = right
             }
@@ -37,12 +38,92 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return value
     }
 
+    parseSinglePort(portSpec) {
+            //portNumber/portName/targetPort
+            //80/http/http
+        const items = portSpec.split('/')
+        if(items.length==1) return { number: items[0], name: 'http', targetPort: 'http' }
+        if(items.length==2) return { number: items[0], name: items[1], targetPort: items[1] }
+        if(items.length>=3) return { number: items[0], name: items[1], targetPort: items[2] }
+
+    }
+    parsePorts(args) {
+
+        const results = []
+        const rawValues = args.port || this.spec.port
+
+        if(!rawValues || rawValues == '') return []
+
+        if (typeof (rawValues) == 'string') {
+            //portNumber/portName/targetPort
+            //80/http/http
+            results.push(this.parseSinglePort(rawValues))
+        } else {
+            //['80/http/http', '1883/mosquitto/tcp']
+            for(const p of rawValues) {
+                results.push(this.parseSinglePort(p))
+            }
+        }
+
+        return results
+    }
+
+    async askPorts(args, automated) {
+
+
+        const ports = this.parsePorts(args)
+
+
+        if (ports && ports.length > 0 || automated) return ports
+
+        let responses = { hasPorts: false }
+
+        do {
+            responses = await this.manager.inquirer?.prompt([
+                {
+                    type: 'confirm',
+                    name: 'hasPorts',
+                    message: 'Would you like to add an exposed port?',
+                    default: false,
+                }
+            ])
+
+            if (responses.hasPorts) {
+
+                const configResponses = await this.manager.inquirer?.prompt([
+                    {
+                        type: 'input',
+                        name: 'number',
+                        default: 8080,
+                        message: 'What is the internal port number on the container?',
+                    },
+                    {
+                        type: 'input',
+                        name: 'name',
+                        default: 'http',
+                        message: 'What is port name?',
+                    },
+                    {
+                        type: 'input',
+                        name: 'targetPort',
+                        default: 'http',
+                        message: 'What is targetPort?',
+                    }
+                ])
+                ports.push({ number: configResponses.number, name: configResponses.name, targetPort: configResponses.targetPort })
+            }
+        } while (responses.hasPorts)
+
+        return ports
+
+    }
+
     async askConfig(args, automated) {
 
 
         const configs = this.parseConfigSecrets(args, 'config')
 
-        if(configs && configs.length>0 || automated) return
+        if (configs && configs.length > 0 || automated) return configs
 
         let responses = { hasConfig: false }
 
@@ -75,7 +156,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                         message: 'Docker environment variable name (optional)?',
                     }
                 ])
-                configs.push( { name: configResponses.configName, value: configResponses.configValue, env: configResponses.envName})
+                configs.push({ name: configResponses.configName, value: configResponses.configValue, env: configResponses.envName })
             }
         } while (responses.hasConfig)
 
@@ -87,7 +168,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         const secrets = this.parseConfigSecrets(args, 'secret')
 
-        if(secrets && secrets.length>0 || automated) return
+        if (secrets && secrets.length > 0 || automated) return secrets
 
         let responses = { hasSecret: false }
 
@@ -121,7 +202,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     }
 
                 ])
-                secrets.push( { name: secretResponses.secretName, value: secretResponses.secretValue, env: secretResponses.envName })
+                secrets.push({ name: secretResponses.secretName, value: secretResponses.secretValue, env: secretResponses.envName })
             }
         } while (responses.hasSecret)
 
@@ -135,8 +216,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const answers = {
             image: args['image'] || this.spec.image,
             name: args['name'] || this.spec.name,
-            containerPort: args['container-port'] || this.spec.containerPort
         }
+
         const automated = args["automated"] || this.spec.automated
 
         const responses = await this.manager.inquirer?.prompt([
@@ -153,25 +234,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 message: 'What would you like to name this deployment?',
                 default: 'echoserver',
                 validate: (name) => (name !== '' ? true : '')
-            },
-            {
-                type: 'input',
-                name: 'containerPort',
-                message: 'Which port does the container use?',
-                default: 8080,
-                validate: (containerPort) => {
-                    if (containerPort === '') return false
-                    return Number(containerPort) > 0
-                }
             }
-
         ], answers)
 
         this.spec.image = responses.image
         this.spec.name = responses.name
-        this.spec.containerPort = Number(responses.containerPort)
         this.spec.edition = this.edition
 
+        this.spec.ports = await this.askPorts(args, automated)
         this.spec.secrets = await this.askSecrets(args, automated)
         this.spec.configs = await this.askConfig(args, automated)
 

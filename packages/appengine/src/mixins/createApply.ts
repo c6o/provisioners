@@ -24,12 +24,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async installApp() {
 
+        console.log('insalling', this.spec)
+
         this.spec.env = ''
 
         if (this.spec.secrets) {
             this.spec.secretsContent = ''
             for (const item of this.spec.secrets) {
-                if(!item.env || item.env ==='') item.env = item.name
+                if (!item.env || item.env === '') item.env = item.name
                 const value = Buffer.from(item.value).toString('base64')
                 this.spec.secretsContent += `    ${item.name}: '${value}'\n`
                 this.spec.env += `        - name: ${item.env}\n          valueFrom:\n            secretKeyRef:\n                name: ${this.spec.name}secrets\n                key: ${item.name}\n`
@@ -45,7 +47,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         if (this.spec.configs) {
             this.spec.configsContent = ''
             for (const item of this.spec.configs) {
-                if(!item.env || item.env ==='') item.env = item.name
+                if (!item.env || item.env === '') item.env = item.name
                 this.spec.configsContent += `    ${item.name}: '${item.value}'\n`
                 this.spec.env += `        - name: ${item.env}\n          valueFrom:\n            configMapKeyRef:\n              name: ${this.spec.name}configs\n              key: ${item.name}\n`
             }
@@ -57,11 +59,30 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .end()
         }
 
-        await this.manager.cluster
-            .begin('Installing Networking Services')
-            .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/3-service.yaml', { ...this.spec, namespace: this.serviceNamespace })
-            .end()
+        if (this.spec.ports) {
+
+            this.spec.portsContent = ''  //deployment
+            this.spec.servicePortContent = ''   //service/nodePort
+
+            if (this.spec.ports && this.spec.ports.length > 0) {
+                this.spec.portsContent = `        ports:\n`
+                this.spec.servicePortContent = `  ports:\n`
+
+                for (const item of this.spec.ports) {
+                    this.spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.number}\n`
+                    this.spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'`
+                }
+            }
+        }
+
+        console.log(this.spec)
+
+        // await this.manager.cluster
+        //     .begin('Installing Volumes')
+        //     .addOwner(this.manager.document)
+        //     .upsertFile('../../k8s/latest/3-pvc.yaml', { ...this.spec, namespace: this.serviceNamespace })
+        //     .end()
+
 
 
         await this.manager.cluster
@@ -69,6 +90,15 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .addOwner(this.manager.document)
             .upsertFile('../../k8s/latest/4-deployment.yaml', { ...this.spec, namespace: this.serviceNamespace })
             .end()
+
+        await this.manager.cluster
+            .begin('Installing Networking Services')
+            .addOwner(this.manager.document)
+            .upsertFile('../../k8s/latest/5-service.yaml', { ...this.spec, namespace: this.serviceNamespace })
+            .end()
+
+
+
 
     }
 
