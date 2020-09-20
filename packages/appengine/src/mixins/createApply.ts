@@ -88,7 +88,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             for (const item of this.spec.volumes) {
                 if (item.name && item.name !== '') {
-                    console.log('installing volume:', item)
                     this.spec.volumeMounts += `        - name: '${item.name}'\n          mountPath: ${item.mountPath}\n`
                     this.spec.deployVolumes += `      - name: '${item.name}'\n        persistentVolumeClaim:\n          claimName: ${item.name}\n`
 
@@ -101,8 +100,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
 
         }
-        console.log('mounts:', this.spec.volumeMounts)
-        console.log('volumes', this.spec.deployVolumes)
 
         await this.manager.cluster
             .begin('Installing the Deployment')

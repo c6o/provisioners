@@ -222,7 +222,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         //5Gi:/etc/config/
         const items = portSpec.split(':')
         const volume = { size: items[0], mountPath: items[1], name: 'data' }
-        volume.name = `data-${Buffer.from(volume.mountPath).toString('base64').toLowerCase()}`
+        volume.name = `data-${Math.random().toString(36).substring(7)}`
         return volume
 
     }
@@ -249,8 +249,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
 
         const volumes = this.parseVolumes(args)
-
-        console.log(volumes)
 
         if (volumes && volumes.length > 0 || automated) return volumes
 
@@ -285,7 +283,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 ])
 
                 const volume = { size: configResponses.storageSize, mountPath: configResponses.mountPath, name: 'data' }
-                volume.name = `data-${Buffer.from(volume.mountPath).toString('base64').toLowerCase()}`
+                volume.name = `data-${Math.random().toString(36).substring(7)}`
                 volumes.push(volume)
             }
         } while (responses.hasVolumes)
