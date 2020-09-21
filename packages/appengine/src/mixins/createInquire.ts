@@ -139,9 +139,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         //portNumber/portName/targetPort
         //80/http/http
         const items = portSpec.split('/')
-        if (items.length == 1) return { number: items[0], name: 'http', targetPort: 'http' }
-        if (items.length == 2) return { number: items[0], name: items[1], targetPort: items[1] }
-        if (items.length >= 3) return { number: items[0], name: items[1], targetPort: items[2] }
+        if (items.length == 1) return { number: Number(items[0]), name: 'http', targetPort: 'http' }
+        if (items.length == 2) return { number: Number(items[0]), name: items[1], targetPort: items[1] }
+        if (items.length >= 3) return { number: Number(items[0]), name: items[1], targetPort: items[2] }
 
     }
     parsePorts(args) {
@@ -330,6 +330,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.secrets = await this.askSecrets(args, automated)
         this.spec.configs = await this.askConfig(args, automated)
         this.spec.volumes = await this.askVolumes(args, automated)
+
+        this.spec.out = args['out']
 
     }
 
