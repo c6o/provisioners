@@ -47,18 +47,24 @@ module.exports = class extends Generator {
   }
 
   initializing() {
+    // Check which package manager to use (Yarn or NPM)
     if (!this.options.npm && !this.options.yarn) {
       this.options.yarn = commandExists("yarn");
     } else if (this.options.npm && this.options.yarn) {
-      this.log.error(
-        "ERROR: Cannot specify both '--npm' and '--yarn', please choose only one package manager."
+      this.options.yarn = commandExists("yarn");
+      this.options.npm = !this.options.yarn;
+
+      this.emit(
+        "error",
+        new Error(
+          `Both '--npm' and '--yarn' were specified, please select one package manager.`
+        )
       );
-      process.exit(1);
+
+      return;
     }
 
-    if (!this.options["skip-jest"]) {
-      this.composeWith(require.resolve("../jest"));
-    }
+    this.log(`Selected package manager: ${this.options.yarn ? "Yarn" : "NPM"}`);
 
     this.props = {
       applicationId:
@@ -66,13 +72,25 @@ module.exports = class extends Generator {
       npmCmd: this.options.yarn ? "yarn" : "npm",
       npxCmd: this.options.yarn ? "yarn run" : "npx",
     };
+
+    if (!this.options["skip-jest"]) {
+      this.composeWith(require.resolve("../jest"));
+    }
+
+    if (!this.options["skip-license"]) {
+      this.composeWith(require.resolve("generator-license/app"), {
+        name: this.props.authorName,
+        email: "",
+        website: "",
+      });
+    }
   }
 
   async prompting() {
     // Have Yeoman greet the user.
     this.log(
       yosay(
-        `Welcome to the stupendous ${chalk.red(
+        `Welcome to the kubetastic ${chalk.red(
           "CodeZero Provisioner"
         )} generator!`
       )
@@ -181,36 +199,41 @@ module.exports = class extends Generator {
     );
   }
 
-  default() {
-    if (!this.options["skip-license"]) {
-      this.composeWith(require.resolve("generator-license/app"), {
-        name: this.props.authorName,
-        email: "",
-        website: "",
-      });
+  writing() {
+    // Copy all template files
+    this.fs.copyTpl(
+      this.templatePath("**"),
+      this.destinationPath(""),
+      this.props
+    );
+
+    this.fs.move(
+      this.destinationPath("_.editorconfig"),
+      this.destinationPath(".editorconfig")
+    );
+    this.fs.move(
+      this.destinationPath("_.gitignore"),
+      this.destinationPath(".gitignore")
+    );
+
+    if (!this.props.persistentVolumeEnabled) {
+      // Remove pvc.yaml if not in use
+      this.fs.delete(this.destinationPath("k8s/pvc.yaml"));
     }
+
+    if (this.props.serviceType === "none") {
+      // Remove service.yaml if not in use
+      this.fs.delete(this.destinationPath("k8s/service.yaml"));
+    }
+
+    // Write package.json
+    this._writePackageJSON();
+
+    // Cleanup template artifacts
+    this._cleanupTemplates();
   }
 
-  writing() {
-    // Filter empty lines from yaml files
-    const yamlFilter = filter(["**/*.yaml"], { restore: true });
-    this.registerTransformStream([
-      yamlFilter,
-      // Remove all empty lines or lines with a single "#" and nothing else
-      replace(/\n([^\n\S]*#?[^\n\S]*(\r?\n|$))+/gm, "\n"),
-      yamlFilter.restore,
-    ]);
-
-    // Filter empty lines from yaml files
-    const tsFilter = filter(["**/*.ts"], { restore: true });
-    this.registerTransformStream([
-      tsFilter,
-      // Remove all lines with a single "//" and nothing else
-      replace(/\n([^\n\S]*\/\/[^\n\S]*(\r?\n|$))+/gm, "\n"),
-      tsFilter.restore,
-    ]);
-
-    // Copy all template files
+  _writePackageJSON() {
     const currentPkg = this.fs.readJSON(
       this.destinationPath("package.json"),
       {}
@@ -225,12 +248,11 @@ module.exports = class extends Generator {
           clean: "del lib/",
           bundle: `parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui`,
           build: `tsc --pretty && ${this.props.npmCmd} run bundle`,
-          provision: `${this.props.npmCmd} run build && czctl provision app.yaml --package ./`,
+          provision: `czctl provision app.yaml --package ./`,
           format: 'prettier --write "{src,__tests__}/**/*.ts"',
           lint: 'tslint --force --format verbose "src/**/*.ts"',
-          prebuild:
-            "npm run clean && npm run format && npm run lint && echo Using TypeScript && tsc --version",
-          develop: "npm run build -- --watch",
+          prebuild: `${this.props.npmCmd} run clean && ${this.props.npmCmd} run format && ${this.props.npmCmd} run lint && echo Using TypeScript && tsc --version`,
+          develop: `${this.props.npmCmd} run build -- --watch`,
           test: 'echo "Error: no test specified" && exit 1',
         },
         files: ["lib/", "k8s/"],
@@ -276,37 +298,37 @@ module.exports = class extends Generator {
       pkg.keywords = _.uniq(_.concat(pkg.keywords, currentPkg.keywords));
 
     this.fs.writeJSON(this.destinationPath("package.json"), pkg);
+  }
 
-    this.fs.copyTpl(
-      this.templatePath("**"),
-      this.destinationPath(""),
-      this.props
-    );
+  _cleanupTemplates() {
+    // Filter out any empty lines left in YAML files (likely due to "# <% if" statements)
+    const yamlFilter = filter(["**/*.yaml"], { restore: true });
+    this.registerTransformStream([
+      yamlFilter,
+      // Remove all empty lines or lines with a single "#" and nothing else
+      replace(/\n([^\n\S]*#?[^\n\S]*(\r?\n|$))+/gm, "\n"),
+      yamlFilter.restore,
+    ]);
 
-    this.fs.move(
-      this.destinationPath("_.editorconfig"),
-      this.destinationPath(".editorconfig")
-    );
-    this.fs.move(
-      this.destinationPath("_.gitignore"),
-      this.destinationPath(".gitignore")
-    );
-
-    if (!this.props.persistentVolumeEnabled) {
-      // Remove pvc.yaml if not in use
-      this.fs.delete(this.destinationPath("k8s/pvc.yaml"));
-    }
-
-    if (this.props.serviceType === "none") {
-      // Remove service.yaml if not in use
-      this.fs.delete(this.destinationPath("k8s/service.yaml"));
-    }
+    // Filter empty lines from typescript files (likely due to "// <% if..." statements)
+    const tsFilter = filter(["**/*.ts"], { restore: true });
+    this.registerTransformStream([
+      tsFilter,
+      // Remove all lines with a single "//" and nothing else
+      replace(/\n([^\n\S]*\/\/[^\n\S]*(\r?\n|$))+/gm, "\n"),
+      tsFilter.restore,
+    ]);
   }
 
   install() {
+    if (this.options.skipInstall) {
+      this.emit("Skipping install.");
+      return;
+    }
+
     const done = this.async();
 
-    this.spawnCommand(this.props.npmCmd, ["install"]).on(
+    this.spawnCommand(this.props.npmCmd, ["install", "--silent"]).on(
       "exit",
       (code, signal) => {
         if (code || signal) {
@@ -314,10 +336,11 @@ module.exports = class extends Generator {
         }
 
         this.emit(`Running prebuild.`);
-        this.spawnCommand(this.props.npmCmd, ["run", "prebuild"]).on(
-          "exit",
-          done
-        );
+        this.spawnCommand(this.props.npmCmd, [
+          "run",
+          "prebuild",
+          "--silent",
+        ]).on("exit", done);
       }
     );
   }
