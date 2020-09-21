@@ -50,12 +50,10 @@ module.exports = class extends Generator {
     if (!this.options.npm && !this.options.yarn) {
       this.options.yarn = commandExists("yarn");
     } else if (this.options.npm && this.options.yarn) {
-      this.emit(
-        "error",
-        new Error(
-          "Cannot specify both --npm and --yarn, please choose only one package manager."
-        )
+      this.log.error(
+        "ERROR: Cannot specify both '--npm' and '--yarn', please choose only one package manager."
       );
+      process.exit(1);
     }
 
     if (!this.options["skip-jest"]) {
@@ -306,6 +304,8 @@ module.exports = class extends Generator {
   }
 
   install() {
+    const done = this.async();
+
     this.spawnCommand(this.props.npmCmd, ["install"]).on(
       "exit",
       (code, signal) => {
@@ -314,8 +314,10 @@ module.exports = class extends Generator {
         }
 
         this.emit(`Running prebuild.`);
-        this.spawnCommand(this.props.npmCmd, ["run", "prebuild"]);
-        this.emit(`Prebuild finished.`);
+        this.spawnCommand(this.props.npmCmd, ["run", "prebuild"]).on(
+          "exit",
+          done
+        );
       }
     );
   }
