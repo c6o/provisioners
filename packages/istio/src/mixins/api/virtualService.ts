@@ -87,7 +87,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             ]
         }
         if (route.targetPort)
-            tcp.route[0].destination.port = route.targetPort
+            tcp.route[0].destination.port = { number: route.targetPort }
         return tcp
     }
 
@@ -116,7 +116,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         if (route.http?.rewrite)
             http.rewrite = {uri : route.http.rewrite}
         if (route.targetPort)
-            http.route[0].destination.port = route.targetPort
+            http.route[0].destination.port = { number: route.targetPort }
         return http
     }
 
