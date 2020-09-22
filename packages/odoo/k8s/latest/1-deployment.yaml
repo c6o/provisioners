@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-db
+  namespace: {{namespace}}
+  labels:
+    app: odoo-db
+    system.codezero.io/app: odoo
+spec:
+  selector:
+    matchLabels:
+      app: odoo-db
+  template:
+    metadata:
+      labels:
+        app: odoo-db
+        tier: backend
+        system.codezero.io/app: odoo
+    spec:
+      containers:
+      - image: postgres:9.4
+        name: odoo-db
+        env:
+        - name: POSTGRES_USER
+          value: {{databaseUsername}}
+        - name: POSTGRES_PASSWORD
+          value: {{databasePassword}}
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata
+        ports:
+        - containerPort: 5432
+          name: odoo-db
+        volumeMounts:
+        - name: odoo-db-data
+          mountPath: /var/lib/postgresql/data/
+      volumes:
+      - name: odoo-db-data
+        persistentVolumeClaim:
+          claimName: odoo-db
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: odoo-shop
+  namespace: {{namespace}}
+  labels:
+    app: odoo-shop
+    system.codezero.io/app: odoo
+spec:
+  selector:
+    matchLabels:
+      app: odoo-shop
+  template:
+    metadata:
+      labels:
+        app: odoo-shop
+        tier: frontend
+    spec:
+      containers:
+        - image: codeflavor/odoo-docker:latest
+          name: odoo-shop
+          env:
+          - name: USER
+            value: {{databaseUsername}}
+          - name: PASSWORD
+            value: {{databasePassword}}
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          ports:
+            - containerPort: 8069
+              name: odoo
+          startupProbe:
+            httpGet:
+              path: /
+              port: odoo
+            failureThreshold: 60
+            periodSeconds: 10
+          volumeMounts:
+          - name: odoo-shop
+            mountPath: /mnt/extra-addons
+      volumes:
+      - name: odoo-shop
+        persistentVolumeClaim:
+          claimName: odoo-shop
