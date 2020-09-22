@@ -37,6 +37,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 this.spec.env += `        - name: ${item.env}\n          valueFrom:\n            secretKeyRef:\n                name: ${this.spec.name}secrets\n                key: ${item.name}\n`
             }
 
+            if(this.spec.verbose && this.spec.verbose!='') console.log(`secretsContent:\n`, this.spec.secretsContent)
+
             await this.manager.cluster
                 .begin('Installing the Secrets')
                 .addOwner(this.manager.document)
@@ -51,6 +53,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 this.spec.configsContent += `    ${item.name}: '${item.value}'\n`
                 this.spec.env += `        - name: ${item.env}\n          valueFrom:\n            configMapKeyRef:\n              name: ${this.spec.name}configs\n              key: ${item.name}\n`
             }
+            if(this.spec.verbose && this.spec.verbose!='') console.log(`configsContent:\n`, this.spec.configsContent)
 
             await this.manager.cluster
                 .begin('Installing the Configuration Settings')
@@ -68,8 +71,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             for (const item of this.spec.ports) {
                 this.spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.number}\n`
-                this.spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'`
+                this.spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'\n`
             }
+            if(this.spec.verbose && this.spec.verbose!='') console.log(`portsContent:\n`, this.spec.portsContent)
+            if(this.spec.verbose && this.spec.verbose!='') console.log(`servicePortContent:\n`, this.spec.servicePortContent)
 
             await this.manager.cluster
                 .begin('Installing Networking Services')
@@ -98,8 +103,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         .end()
                 }
             }
-
         }
+        if(this.spec.verbose && this.spec.verbose!='') console.log(`volumeMounts:\n`, this.spec.volumeMounts)
+        if(this.spec.verbose && this.spec.verbose!='') console.log(`deployVolumes:\n`, this.spec.deployVolumes)
 
         await this.manager.cluster
             .begin('Installing the Deployment')

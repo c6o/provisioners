@@ -111,7 +111,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 }
             }
         }
-
+        if(this.spec.verbose && this.spec.verbose!='') console.log(`${name}:\n`, results)
         return results
     }
 
@@ -161,7 +161,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 results.push(this.parseSinglePort(p))
             }
         }
-
+        if(this.spec.verbose && this.spec.verbose!='') console.log(`ports:\n`, results)
         return results
     }
 
@@ -240,7 +240,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 results.push(this.parseSingleVolume(p))
             }
         }
-
+        if(this.spec.verbose && this.spec.verbose!='') console.log(`volumes:\n`, results)
         return results
     }
 
@@ -332,6 +332,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.volumes = await this.askVolumes(args, automated)
 
         this.spec.out = args['out']
+        this.spec.verbose = args['v']
 
     }
 
