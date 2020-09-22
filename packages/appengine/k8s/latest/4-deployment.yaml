@@ -7,6 +7,7 @@ metadata:
     app: {{name}}
     app.kubernetes.io/managed-by: codezero
     system.codezero.io/app: {{name}}
+    system.codezero.io/appengine: v1
 spec:
   selector:
     matchLabels:
@@ -17,6 +18,7 @@ spec:
         app: {{name}}
         app.kubernetes.io/managed-by: codezero
         system.codezero.io/app: {{name}}
+        system.codezero.io/appengine: v1
     spec:
       containers:
       - name: {{name}}

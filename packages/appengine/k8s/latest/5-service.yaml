@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: appengine
+  name: {{name}}
   namespace: {{namespace}}
   labels:
     app: {{name}}
     app.kubernetes.io/managed-by: codezero
     system.codezero.io/app: {{name}}
+    system.codezero.io/appengine: v1
 spec:
   type: NodePort
   externalTrafficPolicy: Cluster

@@ -6,5 +6,6 @@ metadata:
   labels:
     app: {{name}}
     system.codezero.io/app: {{name}}
+    system.codezero.io/appengine: v1
 data:
 {{configsContent}}
