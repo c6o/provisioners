@@ -1,0 +1,78 @@
+version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+app:
+    name: 'embystat'         # display name
+    id: embystat                    #App internal name (all lower, no spaces); minimum 5 characters
+    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+    icon: 'SVG of icon'                   #see 'art' section for rules for the values here
+    art:
+        - 'URL to image (PNG JPG, etc..)'
+        - 'Raw SVG markup'
+        - 'base 64 encoded image'
+        - 'could also be a path to a filename within the provisioner package itself   ./logo.svg or ./art/logo.svg'
+        - 'limits: 500kb uploaded size. (Web UI)'
+    shortDescription:
+        short description of the app
+        this is actually markdown
+        can reference markdown file in the package itself   ./docs/short.md
+    longDescription:
+        long description of the app
+        this is actually markdown
+        can reference markdown file in the package itself   ./docs/description.md
+    category: 'Business Applications'     #taken from our standard set from our UI
+    subCategory: 'Integration'            #taken from our standard set
+    video: 'youtubeId'                  #not the url, just the ID of the youtube id of the video
+    keywords:
+        - folksonomy for tags
+        - use a single item in the array for a single tag
+        - content                         #for example..
+        - content management system       #for example..
+
+    provisionerSourceCode: 'url of source code for the provisioner'
+    provisionerLicense:
+      url for provisioners license
+      this is actually markdown
+      can reference markdown file in the package itself   ./docs/license.md
+
+    appSourceCode: 'url of source code for the application itself'
+    support:
+      url for support for the application itself
+      this is actually markdown
+      can reference markdown file in the package itself   ./docs/support.md
+    terms:
+      url of terms of service
+      full text of the terms of service
+      multiple lines are ok
+      this is actually markdown
+      can reference markdown file in the package itself   ./docs/terms.md
+    privacy:
+      url for the privacy policy
+      full text of the privacy policy
+      multiple lines are ok
+      this is actually markdown
+      can reference markdown file in the package itself   ./docs/privacy.md
+    welcome:
+      templated-markdown of the welcome/intro screen for the installer
+      can reference markdown file in the package itself   ./docs/welcome.md
+    goodbye:
+      templated-markdown of the goodby/outro screen for the installer
+      can reference markdown file in the package itself   ./docs/goodbye.md
+
+    editions:
+      - name: preview
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: embystat
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: embystat
+            image: 'linuxserver/embystat:latest'
+            port: 6555/http
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
