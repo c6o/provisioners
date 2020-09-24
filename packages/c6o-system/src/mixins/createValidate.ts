@@ -8,11 +8,24 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         'https://hub.codezero.io': 'codezero.cloud'
     }
 
+    hubToFeatureKey = {
+        'https://develop.hub.codezero.io': '1bpj7rfvsdvcrvj3p9dqhs0dquk13cemsi6b',
+        'https://staging.hub.codezero.io': 'r6hbbglvc5t9l4nqrghu3iqvmbjgfbqk5bs5',
+        'https://hub.codezero.io': '1mflct6qd16q4irfe7578d8u7e9e3loddnm0'
+    }
+
     hubToCluster = (hubURL) => {
         if (hubURL.endsWith('ngrok.io'))
             return 'codezero.dev'
 
         return this.hubToClusterMap[hubURL] || 'codezero.cloud'
+    }
+
+    hubToFlagKey = (hubURL) => {
+        if (hubURL.endsWith('ngrok.io'))
+            return '1bpj7rfvsdvcrvj3p9dqhs0dquk13cemsi6b'
+
+        return this.hubToFeatureKey[hubURL] || '1mflct6qd16q4irfe7578d8u7e9e3loddnm0'
     }
 
     async createValidate() {
@@ -49,6 +62,8 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
 
         if (!this.spec.clusterDomain)
             this.spec.clusterDomain = this.hubToCluster(this.spec.hubServerURL)
+
+        this.spec.featureAuthKey = this.hubToFlagKey(this.spec.hubServerURL)
 
         // TODO: This is a hack - we actually add the CRDs here
         // because it is required before apply is called!
