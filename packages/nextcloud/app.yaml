@@ -11,10 +11,21 @@ spec:
   marina:
     launch:
       type: inline
-      port: 9623
-      tag: nextcloud
+      popUp: true
   routes:
   - type: http
     targetService: nextcloud
   provisioner:
-      storage: 2Gi
+
+    applicationName: nextcloud
+    tag: latest
+    storage: 5Gi
+
+    dbtype: 'mysql'
+    sql:
+      enabled: true             # Users SQLite if false
+      selfHosted: true          # Include MySQL deployment
+      host: 'nextcloud-db'
+      port: 3306
+      database: 'nextcloud'
+      username: 'nextcloud-user'

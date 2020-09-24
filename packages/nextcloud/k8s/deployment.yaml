@@ -1,45 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nextcloud
+  name: {{applicationName}}
   namespace: '{{namespace}}'
   labels:
     role: server
-    name: nextcloud
-    system.codezero.io/app: nextcloud
+    name: {{applicationName}}
+    system.codezero.io/app: {{applicationName}}
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      name: nextcloud
+      name: {{applicationName}}
   template:
     metadata:
       labels:
-        name: nextcloud
+        name: {{applicationName}}
     spec:
       containers:
-      - name: nextcloud
-        image: "nextcloud:17.0.0-apache"
+      - name: {{applicationName}}
+        image: "nextcloud:{{tag}}"
         imagePullPolicy: IfNotPresent
         env:
+{{#if sql.enabled}}
+        - name: MYSQL_HOST
+          value: '{{sql.host}}:{{sql.port}}'
+        - name: MYSQL_DATABASE
+          value: '{{sql.database}}'
+        - name: MYSQL_USER
+          value: '{{sql.username}}'
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{applicationName}}
+              key: {{applicationName}}-sql-password
+{{else}}
         - name: SQLITE_DATABASE
           value: "nextcloud"
+{{/if}}
         - name: NEXTCLOUD_ADMIN_USER
           valueFrom:
             secretKeyRef:
-              name: nextcloud
-              key: nextcloud-username
+              name: {{applicationName}}
+              key: {{applicationName}}-username
         - name: NEXTCLOUD_ADMIN_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: nextcloud
-              key: nextcloud-password
+              name: {{applicationName}}
+              key: {{applicationName}}-password
         - name: NEXTCLOUD_TRUSTED_DOMAINS
-          value: {{hostname}}
-        - name: NEXTCLOUD_DATA_DIR
-          value: "/var/www/html/data"
+          value: '{{#if hostname}}{{hostname}}{{^}}*.codezero.cloud{{/if}}'
         ports:
         - name: http
           containerPort: 80
@@ -50,7 +62,7 @@ spec:
             port: http
             httpHeaders:
             - name: Host
-              value: "{{hostname}}"
+              value: '{{#if hostname}}{{hostname}}{{^}}fake.codezero.cloud{{/if}}'
           initialDelaySeconds: 30
           periodSeconds: 15
           timeoutSeconds: 5
@@ -62,19 +74,20 @@ spec:
             port: http
             httpHeaders:
             - name: Host
-              value: "{{hostname}}"
+              value: '{{#if hostname}}{{hostname}}{{^}}fake.codezero.cloud{{/if}}'
           initialDelaySeconds: 30
           periodSeconds: 15
           timeoutSeconds: 5
           successThreshold: 1
           failureThreshold: 3
         volumeMounts:
-        - name: nextcloud-data
+        - name: {{applicationName}}-data
           mountPath: /var/www/
+          subPath: "server-data"
       volumes:
-      - name: nextcloud-data
+      - name: {{applicationName}}-data
         persistentVolumeClaim:
-            claimName: nextcloud-pvc
+            claimName: {{applicationName}}-pvc
       # Will mount configuration files as www-data (id: 33) for nextcloud
       securityContext:
         fsGroup: 33

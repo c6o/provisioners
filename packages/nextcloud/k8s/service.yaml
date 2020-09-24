@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nextcloud
+  name: {{applicationName}}
   namespace: '{{namespace}}'
   labels:
     role: server
-    name: nextcloud
-    system.codezero.io/app: nextcloud
+    name: {{applicationName}}
+    system.codezero.io/app: {{applicationName}}
 spec:
   type: NodePort
   ports:
@@ -15,4 +15,4 @@ spec:
     targetPort: 80
     name: http
   selector:
-    name: nextcloud
+    name: {{applicationName}}

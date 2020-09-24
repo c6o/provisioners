@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "nextcloud-pvc"
+  name: "{{applicationName}}-pvc"
   namespace: '{{namespace}}'
   labels:
-    name: nextcloud
-    system.codezero.io/app: nextcloud
+    name: {{applicationName}}
+    system.codezero.io/app: {{applicationName}}
 spec:
   accessModes:
   - ReadWriteOnce

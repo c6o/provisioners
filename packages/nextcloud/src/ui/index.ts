@@ -10,6 +10,7 @@ export class NextCloudSettings extends LitElement implements StoreFlowStep {
         return this.mediator.getServiceSpec('nextcloud')
     }
 
+    // TODO: add optional advanced options allowing user to specify remote SQL server (or SQLite??).
     render() {
         return html`
             <c6o-form-layout>
@@ -17,11 +18,7 @@ export class NextCloudSettings extends LitElement implements StoreFlowStep {
             </c6o-form-layout>
             <c6o-form-layout>
                 <c6o-text-field @input=${this.usernameChanged} label="Administrator Username" value=${this.serviceSpec.adminUsername} autoselect required></c6o-text-field>
-                <br />
-                <c6o-text-field @input=${this.passwordChanged} label="Administrator Password" value=${this.serviceSpec.adminPassword} autoselect required></c6o-text-field>
-            </c6o-form-layout>
-            <c6o-form-layout>
-                <c6o-text-field @checked-changed=${this.hostnameChanged} @input=${this.hostnameChanged} label="NextCloud Hostname" value=${this.serviceSpec.hostname} autoselect></c6o-text-field>
+                <c6o-password-field @input=${this.passwordChanged} label="Administrator Password" value=${this.serviceSpec.adminPassword} autoselect required></c6o-password-field>
             </c6o-form-layout>
         `
     }
@@ -31,7 +28,12 @@ export class NextCloudSettings extends LitElement implements StoreFlowStep {
         this.serviceSpec.storage = this.serviceSpec.storage || '2Gi'
         this.serviceSpec.adminUsername = this.serviceSpec.adminUsername !== undefined ? this.serviceSpec.adminUsername : 'admin'
         this.serviceSpec.adminPassword = this.serviceSpec.adminPassword !== undefined ? this.serviceSpec.adminPassword : 'changeme'
-        this.serviceSpec.hostname = this.serviceSpec.hostname !== undefined ? this.serviceSpec.hostname : ''
+    
+        // Default to using self hosted SQL
+        this.serviceSpec.sql = {
+            enabled: true,
+            selfHosted: true,
+        };
     }
 
     storageSelected = (e) => {
@@ -44,9 +46,5 @@ export class NextCloudSettings extends LitElement implements StoreFlowStep {
 
     passwordChanged = (e) => {
         this.serviceSpec.adminPassword = e.target.value
-    }
-
-    hostnameChanged = (e) => {
-        this.serviceSpec.hostname = e.detail.value
     }
 }

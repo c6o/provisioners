@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{applicationName}}-db
+  namespace: '{{namespace}}'
+  labels:
+    role: database
+    name: {{applicationName}}
+    system.codezero.io/app: {{applicationName}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: {{applicationName}}-db
+  template:
+    metadata:
+      labels:
+        name: {{applicationName}}-db
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_DATABASE
+          value: {{sql.database}}
+        - name: MYSQL_USER
+          value: {{sql.username}}
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{applicationName}}
+              key: {{applicationName}}-sql-password
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{applicationName}}
+              key: {{applicationName}}-sql-root-password
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: db-storage
+          mountPath: /var/lib/mysql
+          subPath: mysql-data
+      volumes:
+      - name: db-storage
+        persistentVolumeClaim:
+          # Same PVC as nextcloud.  
+          # Because do-storage only allows ReadWriteOnce
+          #  both pods are forced to run on same node.
+          # TODO - allow separate claim, or spin up NFS server
+          claimName: {{applicationName}}-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: '{{sql.host}}'
+  namespace: '{{namespace}}'
+  labels:
+    role: database
+    name: {{applicationName}}
+    system.codezero.io/app: {{applicationName}}
+spec:
+  selector:
+    name: {{applicationName}}-db
+  ports:
+  - protocol: TCP
+    port: 3306
