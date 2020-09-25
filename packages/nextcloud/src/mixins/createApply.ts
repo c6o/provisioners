@@ -1,4 +1,5 @@
 import { baseProvisionerType } from '../index'
+import { Buffer } from 'buffer'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -67,7 +68,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             // Base64 Encode (required by secrets)
             // TODO: would be nice to have a handlebars helper to convert to base64
-            sql.username64 = Buffer.from(sql.username).toString('base64')
             sql.password64 = Buffer.from(sql.password).toString('base64')
 
             if(sql.selfHosted) {
@@ -91,6 +91,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         // There are no NextCloud pods running
 
                         processor
+                            .addOwner(this.manager.document)
                             .upsertFile('../../k8s/pvc.yaml', { namespace, applicationName, storage, storageClass })
                             .upsertFile('../../k8s/secrets.yaml', { 
                                 namespace, 

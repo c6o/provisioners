@@ -15,7 +15,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const answers = {
             storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
             storage: args['storage'],
-            hostname: args['hostname']
         }
 
         const responses = await this.manager.inquirer?.prompt([
