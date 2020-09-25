@@ -32,7 +32,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             type: 'input',
             name: 'adminUsername',
             message: 'Set an initial admin username:',
-            default: 'admin'
+            default: 'Admin'
         },{
             type: 'password',
             name: 'adminPassword',

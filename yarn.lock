@@ -859,6 +859,27 @@
     ts-try "^0.2.0"
     ulid "^2.3.0"
 
+"@c6o/kubeclient@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@c6o/kubeclient/-/kubeclient-0.0.6.tgz#dd63aa745fe082b83fa706784ea55301d4c654c8"
+  integrity sha512-xrAyW3iDkFlPgd60XaApo8qGi2TXIW/uLwrip3vCDDf6gvl26q0J4WuuiteceeuoCMP1/WYSPJk0Vp/BgdW4Hg==
+  dependencies:
+    "@kubernetes/client-node" "^0.11.0"
+    byline "^5.0.0"
+    callsite "^1.0.0"
+    debug "^4.1.1"
+    find-free-port "^2.0.0"
+    handlebars "^4.1.2"
+    js-yaml "^3.12.1"
+    mixwith "^0.1.1"
+    request "^2.88.0"
+    request-promise-native "^1.0.8"
+    semver "^7.3.2"
+    tar-fs "^2.0.0"
+    tar-stream "^2.1.0"
+    ts-try "^0.2.0"
+    ulid "^2.3.0"
+
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@evocateur/libnpmaccess/-/libnpmaccess-3.1.2.tgz#ecf7f6ce6b004e9f942b098d92200be4a4b1c845"
@@ -1829,6 +1850,18 @@
   dependencies:
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
+
+"@provisioner/common@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@provisioner/common/-/common-0.0.8.tgz#48b2d840195f38b4726a043316e0ad9774e621fc"
+  integrity sha512-XuG9q3j2CF3Xa6h6RLzC2CjVES1FzjVOrxp/gp7+MS1HBgwUAHYZG3dQT+ggmcnCGuNnUyGSAU4F8Nms2vZx7w==
+  dependencies:
+    "@c6o/kubeclient" "^0.0.6"
+    debug "^4.1.1"
+    generate-password "^1.4.1"
+    jsonpointer "^4.1.0"
+    mixwith "^0.1.1"
+    ulid "^2.3.0"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -5538,6 +5571,11 @@ lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
   integrity sha512-8xOcRHvCjnocdS5cpwXQXVzmmh5e5+saE2QGoeQmbKmRS6J3VQppPOIt0MnmE+4xlZoumy0GPG0D0MVIQbNA1A==
+
+lodash@^4.17.20:
+  version "4.17.20"
+  resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-symbols@^2.2.0:
   version "2.2.0"

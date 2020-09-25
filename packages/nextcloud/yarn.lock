@@ -879,10 +879,10 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
-"@c6o/kubeclient@^0.0.4":
-  version "0.0.4"
-  resolved "http://develop.npm.codezero.io/@c6o%2fkubeclient/-/kubeclient-0.0.4.tgz#9e3847127a52a19fe3666ff5bb6c9f14e611827e"
-  integrity sha512-5fRUGukCkAG7sWpCCkJH6meRpiZ/PHuhly04dSBubQCHo6fiaAIgrZq4jVIuXxuxnvwKZC3oj1PozaBOYr4QHw==
+"@c6o/kubeclient@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/@c6o/kubeclient/-/kubeclient-0.0.6.tgz#dd63aa745fe082b83fa706784ea55301d4c654c8"
+  integrity sha512-xrAyW3iDkFlPgd60XaApo8qGi2TXIW/uLwrip3vCDDf6gvl26q0J4WuuiteceeuoCMP1/WYSPJk0Vp/BgdW4Hg==
   dependencies:
     "@kubernetes/client-node" "^0.11.0"
     byline "^5.0.0"
@@ -982,12 +982,12 @@
     "@parcel/utils" "^1.11.0"
     physical-cpu-count "^2.0.0"
 
-"@provisioner/common@^0.0.2":
-  version "0.0.2"
-  resolved "http://develop.npm.codezero.io/@provisioner%2fcommon/-/common-0.0.2.tgz#76eedd925f93eaa94cb6aad8425cc20e9d89ed9d"
-  integrity sha512-EmpVlQLVwlhiAgGHpgqQHEVXhaHcClexXMkj7G5Dt2v7OlGmPJlHUBreuFHRommwY8fbmtTHR36d0ihMn97WHQ==
+"@provisioner/common@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmjs.org/@provisioner/common/-/common-0.0.8.tgz#48b2d840195f38b4726a043316e0ad9774e621fc"
+  integrity sha512-XuG9q3j2CF3Xa6h6RLzC2CjVES1FzjVOrxp/gp7+MS1HBgwUAHYZG3dQT+ggmcnCGuNnUyGSAU4F8Nms2vZx7w==
   dependencies:
-    "@c6o/kubeclient" "^0.0.4"
+    "@c6o/kubeclient" "^0.0.6"
     debug "^4.1.1"
     generate-password "^1.4.1"
     jsonpointer "^4.1.0"

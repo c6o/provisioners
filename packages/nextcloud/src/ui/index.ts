@@ -26,14 +26,8 @@ export class NextCloudSettings extends LitElement implements StoreFlowStep {
     async begin() {
         // set defaults
         this.serviceSpec.storage = this.serviceSpec.storage || '2Gi'
-        this.serviceSpec.adminUsername = this.serviceSpec.adminUsername !== undefined ? this.serviceSpec.adminUsername : 'admin'
-        this.serviceSpec.adminPassword = this.serviceSpec.adminPassword !== undefined ? this.serviceSpec.adminPassword : 'changeme'
-    
-        // Default to using self hosted SQL
-        this.serviceSpec.sql = {
-            enabled: true,
-            selfHosted: true,
-        };
+        this.serviceSpec.adminUsername = this.serviceSpec.adminUsername !== undefined ? this.serviceSpec.adminUsername : 'Admin'
+        this.serviceSpec.adminPassword = ''
     }
 
     storageSelected = (e) => {
