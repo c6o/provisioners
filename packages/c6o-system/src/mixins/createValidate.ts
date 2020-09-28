@@ -9,9 +9,9 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
     }
 
     hubToFeatureKey = {
-        'https://develop.hub.codezero.io': '1bpj7rfvsdvcrvj3p9dqhs0dquk13cemsi6b',
-        'https://staging.hub.codezero.io': 'r6hbbglvc5t9l4nqrghu3iqvmbjgfbqk5bs5',
-        'https://hub.codezero.io': '1mflct6qd16q4irfe7578d8u7e9e3loddnm0'
+        'https://develop.hub.codezero.io': '2esfjsm95kkj0c8nc7rrlh320c7omri0hu1s',
+        'https://staging.hub.codezero.io': 'b510uri5ep25aspo5u8pi94nv3fdgffkhen9',
+        'https://hub.codezero.io': 'p2h2meb6rh5d9ac16nskh62ee1h6gs2thnv1'
     }
 
     hubToCluster = (hubURL) => {
@@ -23,24 +23,20 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
 
     hubToFlagKey = (hubURL) => {
         if (hubURL.endsWith('ngrok.io'))
-            return '1bpj7rfvsdvcrvj3p9dqhs0dquk13cemsi6b'
+            return '2esfjsm95kkj0c8nc7rrlh320c7omri0hu1s'
 
-        return this.hubToFeatureKey[hubURL] || '1mflct6qd16q4irfe7578d8u7e9e3loddnm0'
+        return this.hubToFeatureKey[hubURL] || 'p2h2meb6rh5d9ac16nskh62ee1h6gs2thnv1'
     }
 
     async createValidate() {
 
         const {
             protocol,
-            accountName,
             clusterId,
             clusterKey,
             clusterNamespace,
             tag,
             hubServerURL } = this.spec
-
-        if (!accountName)
-            throw new Error('Account name is required')
 
         if (!clusterId)
             throw new Error('Cluster Id is required')

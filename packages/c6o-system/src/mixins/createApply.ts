@@ -65,7 +65,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             accountName,
             clusterDomain
         } = this.spec
-        return `${clusterNamespace}.${accountName}.${clusterDomain}`
+
+        return accountName ?
+            `${clusterNamespace}.${accountName}.${clusterDomain}` :
+            `${clusterNamespace}.${clusterDomain}`
     }
 
     get systemServerUrl() {
@@ -111,7 +114,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const options = {
             tag: this.spec.tag,
             clusterNamespace: this.spec.clusterNamespace,
-            accountName: this.spec.accountName,
             clusterDomain: this.spec.clusterDomain,
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,

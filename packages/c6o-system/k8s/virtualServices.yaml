@@ -14,7 +14,7 @@ spec:
         prefix: /store/
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
     rewrite:
       uri: /
     route:
@@ -25,7 +25,7 @@ spec:
         prefix: /navstation/
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
     rewrite:
       uri: /
     route:
@@ -36,7 +36,7 @@ spec:
         prefix: /api/
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
     route:
     - destination:
         host: system-server
@@ -45,94 +45,7 @@ spec:
         prefix: /
       headers:
         :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
+          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
     route:
     - destination:
         host: system-marina
-  https:
-  - match:
-    - uri:
-        prefix: /store/
-      headers:
-        :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        host: system-store
-  - match:
-    - uri:
-        prefix: /navstation/
-      headers:
-        :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
-    rewrite:
-      uri: /
-    route:
-    - destination:
-        host: system-navstation
-  - match:
-    - uri:
-        prefix: /api/
-      headers:
-        :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
-    route:
-    - destination:
-        host: system-server
-  - match:
-    - uri:
-        prefix: /
-      headers:
-        :authority:
-          regex: ^[^.]+\.[^.]+\.{{clusterDomain}}$
-    route:
-    - destination:
-        host: system-marina
-# ---
-# apiVersion: networking.istio.io/v1alpha3
-# kind: VirtualService
-# metadata:
-#   name: verdaccio
-#   namespace: testing
-# spec:
-#   gateways:
-#   - c6o-system/system-gateway
-#   hosts:
-#   - '*'
-#   http:
-#   - match:
-#     - uri:
-#         prefix: /
-#       headers:
-#         :authority:
-#           regex: ^verdaccio\.testing\..*
-#     route:
-#     - destination:
-#         host: verdaccio-service
-#         port:
-#           number: 80
-# ---
-# apiVersion: networking.istio.io/v1alpha3
-# kind: VirtualService
-# metadata:
-#   name: precog
-#   namespace: testing
-# spec:
-#   gateways:
-#   - c6o-system/system-gateway
-#   hosts:
-#   - '*'
-#   http:
-#   - match:
-#     - uri:
-#         prefix: /
-#       headers:
-#         :authority:
-#           regex: ^precog.testing\..*
-#     route:
-#     - destination:
-#         host: precog
-#         port:
-#           number: 80

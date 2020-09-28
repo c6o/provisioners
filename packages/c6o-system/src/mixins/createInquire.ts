@@ -38,6 +38,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             clusterId: args['id'],
             clusterDomain: args['domain'],
             accountName: args['account'],
+            noAccountName: args['no-account'],
             clusterName: args['name'],
             clusterNamespace: args['namespace'],
             clusterKey: args['key'],
@@ -61,6 +62,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             choices: this.accountIdChoices,
             when: this.newClusterWhen,
             default: 0
+        }, {
+            type: 'confirm',
+            name: 'noAccountName',
+            message: 'Skip account name in cluster URL?',
+            default: true,
+            when: this.newClusterWhen
         }, {
             type: 'input',
             name: 'clusterName',
@@ -106,9 +113,15 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         let cluster
         if (answers.clusterId === inquireNewClusterId) {
+            // Account only really matters when it's an org
+            // otherwise hub will automatically assign it to the current user
+            const account = this.findAccount(answers.accountId)
+
             cluster = await this.manager.hubClient.createCluster({
                 namespace: answers.clusterNamespace,
                 name: answers.clusterName,
+                noAccountName: answers.noAccountName,
+                ...(account && account.type === 'o' ? { orgId: answers.accountId } : undefined),
                 iaas: {
                     provider: 'kubeconfig'
                 }
