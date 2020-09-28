@@ -19,7 +19,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     }
 
     clusterIdChoices = async () => {
-        const choices = this.clusters.map(cluster => ({ name: cluster.name, value: cluster._id }))
+        const choices = this.clusters.map(cluster => ({ name: cluster.name || cluster.namespace, value: cluster._id }))
         const newCluster = { name: 'New cluster', value: inquireNewClusterId }
         choices.unshift(newCluster, new this.manager.inquirer.Separator())
         return choices
