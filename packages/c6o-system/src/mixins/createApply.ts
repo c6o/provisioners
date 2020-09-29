@@ -150,12 +150,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionRoutes() {
-        const clusterDomain = this.spec.clusterDomain.replace(".", "\\.")
+        const host = this.host.replace(".", "\\.")
 
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)
                 .addOwner(this.manager.document)
-                .upsertFile('../../k8s/virtualServices.yaml', { clusterDomain } )
+                .upsertFile('../../k8s/virtualServices.yaml', { host } )
             .end()
     }
 

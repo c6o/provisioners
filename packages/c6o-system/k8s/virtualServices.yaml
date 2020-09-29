@@ -14,7 +14,7 @@ spec:
         prefix: /store/
       headers:
         :authority:
-          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
+          regex: ^{{host}}$
     rewrite:
       uri: /
     route:
@@ -25,7 +25,7 @@ spec:
         prefix: /navstation/
       headers:
         :authority:
-          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
+          regex: ^{{host}}$
     rewrite:
       uri: /
     route:
@@ -36,7 +36,7 @@ spec:
         prefix: /api/
       headers:
         :authority:
-          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
+          regex: ^{{host}}$
     route:
     - destination:
         host: system-server
@@ -45,7 +45,7 @@ spec:
         prefix: /
       headers:
         :authority:
-          regex: ^([^.]+\.)?[^.]+\.{{clusterDomain}}$
+          regex: ^{{host}}$
     route:
     - destination:
         host: system-marina
