@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/c6o/provisioners/compare/v0.0.8...v0.0.9) (2020-09-30)
+
+
+### ✨ Features
+
+* Added feature flag keys ([#79](https://github.com/c6o/provisioners/issues/79)) ([f7352e9](https://github.com/c6o/provisioners/commit/f7352e9010758f3d01fee6c3d1e76c293a56daaa))
+* Made cluster accountName optional ([9ef0cc4](https://github.com/c6o/provisioners/commit/9ef0cc40f337262176811886d4a9ac214939fde4))
+
+
+### 🐛 Bug Fixes
+
+* **c6o-system:** Fixed bad RegEx for detecting system vs app requests ([9cb1b77](https://github.com/c6o/provisioners/commit/9cb1b774d315063b9f00f95c557a92c4b2d3450f))
+* Show cluster namspace if name not available ([0ecf80e](https://github.com/c6o/provisioners/commit/0ecf80e87fe037abd6672712df79a9624aa2fc4c))
+
+
+
+
+
 ## [0.0.8](https://github.com/c6o/provisioners/compare/v0.0.7...v0.0.8) (2020-09-11)
 
 **Note:** Version bump only for package @provisioner/c6o-system

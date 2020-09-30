@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/c6o/provisioners/compare/v0.0.8...v0.0.9) (2020-09-30)
+
+
+### 🐛 Bug Fixes
+
+* **istio:** Fix for targetPort in Virtual Service ([#76](https://github.com/c6o/provisioners/issues/76)) ([67e99a3](https://github.com/c6o/provisioners/commit/67e99a3b8c691a12a609842a235a2ef118a2abbf))
+
+
+### ♻️ Chores
+
+* Removed c6o/ui dependency ([6733d70](https://github.com/c6o/provisioners/commit/6733d70eb184cf5faf596357935a4cbe0db8478c))
+* **istio:** Updated provisioner to reflect istiod instead of pilot ([#71](https://github.com/c6o/provisioners/issues/71)) ([#72](https://github.com/c6o/provisioners/issues/72)) ([a17609e](https://github.com/c6o/provisioners/commit/a17609e5cf4c07aeed55bf9eef08e5a8092eaa4b))
+* Bumped versions [skip ci] ([3d5e954](https://github.com/c6o/provisioners/commit/3d5e9548bf45f702619d83f93061cdec84cb5f7f))
+
+
+
+
+
 ## [0.0.8](https://github.com/c6o/provisioners/compare/v0.0.7...v0.0.8) (2020-09-11)
 
 **Note:** Version bump only for package @provisioner/istio

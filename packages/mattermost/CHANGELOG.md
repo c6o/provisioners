@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/c6o/provisioners/compare/v0.0.8...v0.0.9) (2020-09-30)
+
+
+### ♻️ Chores
+
+* Bumped versions [skip ci] ([3d5e954](https://github.com/c6o/provisioners/commit/3d5e9548bf45f702619d83f93061cdec84cb5f7f))
+* Removed c6o/ui dependency ([6733d70](https://github.com/c6o/provisioners/commit/6733d70eb184cf5faf596357935a4cbe0db8478c))
+
+
+
+
+
 ## [0.0.8](https://github.com/c6o/provisioners/compare/v0.0.7...v0.0.8) (2020-09-11)
 
 **Note:** Version bump only for package @provisioner/mattermost
