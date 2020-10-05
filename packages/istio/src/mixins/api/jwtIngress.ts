@@ -11,7 +11,7 @@ export const jwtIngressApiMixin = (base: baseProvisionerType) => class extends b
 
         const rules: any[] = (await this.getAuthorizationPolicy()).object.spec.rules
 
-        const item = this.jwtRuleToSectionTemplate(appId, namespaceId, secure, issuer)
+        const item = this.jwtRuleToSectionTemplate(appId, namespaceId, secure)
         const alreadyExists = rules.find(item => item.to[0].operation.hosts[0] === this.computeHostPrefix(appId, namespaceId))
         if (!alreadyExists)
             return await this.manager.cluster.patch(this.authorizationPolicy, [{ 'op': 'add', 'path': '/spec/rules/-', 'value': item } ])

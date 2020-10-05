@@ -76,16 +76,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionSystem() {
-        const jwtKey = [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('') // generate random key
         const options = {
             tag: this.spec.tag,
             clusterId: this.spec.clusterId,
             clusterKey: this.spec.clusterKey,
             hubServerURL: this.spec.hubServerURL,
-            systemServerURL: this.systemServerUrl,
-            host: this.host,
-            jwtKey, // plain key
-            encodedJwtKey: btoa(jwtKey) // base64 encoded key
+            systemServerURL: this.systemServerUrl
         }
 
         await this.manager.cluster
@@ -114,6 +110,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionApps() {
+        const jwtKey = [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('') // generate random key
         const options = {
             tag: this.spec.tag,
             clusterNamespace: this.spec.clusterNamespace,
@@ -121,7 +118,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
             featureAuthKey: this.spec.featureAuthKey,
-            stripePublishableKey: this.spec.stripePublishableKey
+            stripePublishableKey: this.spec.stripePublishableKey,
+            host: this.host,
+            jwtKey, // plain key
+            encodedJwtKey: Buffer.from(jwtKey).toString('base64'), // base64 encoded key
         }
 
         await this.manager.cluster
