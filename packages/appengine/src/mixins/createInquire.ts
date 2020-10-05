@@ -1,15 +1,60 @@
 import { baseProvisionerType } from '../index'
-import { Buffer } from 'buffer'
+import { ParserFactory as parserFactory } from '../parsing/parser'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    //#region  config and secrets
+    verbose = false
+
+
+    async createInquire(args) {
+
+        this.verbose = ( (this.spec.verbose && this.spec.verbose!='') || (args.verbose && args.verbose!=''))
+        if(this.verbose) console.log('Verbose is on\n')
+
+        const answers = {
+            image: args['image'] || this.spec.image,
+            name: args['name'] || this.spec.name,
+        }
+
+        const automated = args['automated'] || this.spec.automated
+
+        const responses = await this.manager.inquirer?.prompt([
+            {
+                type: 'input',
+                name: 'image',
+                message: 'Which docker image would you like to use?',
+                default: 'xperimental/goecho:v1.7',
+                validate: (image) => (image !== '' ? true : '')
+            },
+            {
+                type: 'input',
+                name: 'name',
+                message: 'What would you like to name this deployment?',
+                default: 'echoserver',
+                validate: (name) => (name !== '' ? true : '')
+            }
+        ], answers)
+
+        this.spec.image = responses.image
+        this.spec.name = responses.name
+        this.spec.edition = this.edition
+
+        this.spec.ports = await this.askPorts(args, automated)
+        this.spec.secrets = await this.askSecrets(args, automated)
+        this.spec.configs = await this.askConfig(args, automated)
+        this.spec.volumes = await this.askVolumes(args, automated)
+
+        this.spec.out = args['out']
+
+        throw new Error('barf')
+
+    }
+
 
     async askConfig(args, automated) {
 
-
-        const configs = this.parseConfigSecrets(args, 'config')
-
+        const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
+        const configs = parserFactory.getSettingsParser(secretsParserType).parse(args || this.spec, 'config', this.verbose)
         if (configs && configs.length > 0 || automated) return configs
 
         let responses = { hasConfig: false }
@@ -53,8 +98,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async askSecrets(args, automated) {
 
-        const secrets = this.parseConfigSecrets(args, 'secret')
-
+        const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
+        const secrets = parserFactory.getSettingsParser(secretsParserType).parse(args || this.spec, 'secret', this.verbose)
         if (secrets && secrets.length > 0 || automated) return secrets
 
         let responses = { hasSecret: false }
@@ -97,80 +142,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     }
 
-    parseConfigSecrets(args, name) {
-
-        const results = []
-        const rawValues = args[name] || this.spec[name]
-
-        if (rawValues) {
-            if (typeof rawValues == 'string') {
-                results.push(this.parseSingle(rawValues))
-            } else {
-                for (const single of rawValues) {
-                    results.push(this.parseSingle(single))
-                }
-            }
-        }
-        if(this.spec.verbose && this.spec.verbose!='') console.log(`${name}:\n`, results)
-        return results
-    }
-
-    parseSingle(single: string) {
-        const pos = single.indexOf(':')
-        let value = { name: '', value: '', env: '' }
-
-        if (pos > 0) {
-            value.name = single.substr(0, pos)
-            const right = single.substr(pos + 1)
-            const comma = right.indexOf(',')
-            if (comma > 0) {
-                value.value = right.substr(0, comma)
-                value.env = right.substr(comma + 1)
-            } else {
-                value.value = right
-            }
-        }
-        return value
-    }
-    //#endregion
-
-    //#region  ports
-    parseSinglePort(portSpec) {
-        //portNumber/portName/targetPort
-        //80/http/http
-        const items = portSpec.split('/')
-        if (items.length == 1) return { number: Number(items[0]), name: 'http', targetPort: 'http' }
-        if (items.length == 2) return { number: Number(items[0]), name: items[1], targetPort: items[1] }
-        if (items.length >= 3) return { number: Number(items[0]), name: items[1], targetPort: items[2] }
-
-    }
-    parsePorts(args) {
-
-        const results = []
-        const rawValues = args.port || this.spec.port
-
-        if (!rawValues || rawValues == '') return []
-
-        if (typeof (rawValues) == 'string') {
-            //portNumber/portName/targetPort
-            //80/http/http
-            results.push(this.parseSinglePort(rawValues))
-        } else {
-            //['80/http/http', '1883/mosquitto/tcp']
-            for (const p of rawValues) {
-                results.push(this.parseSinglePort(p))
-            }
-        }
-        if(this.spec.verbose && this.spec.verbose!='') console.log(`ports:\n`, results)
-        return results
-    }
-
     async askPorts(args, automated) {
 
-
-        const ports = this.parsePorts(args)
-
-
+        const portParserType = this.spec.portParser || 'BasicPortParser'
+        const ports = parserFactory.getPortParser(portParserType).parse(args || this.spec, this.verbose)
         if (ports && ports.length > 0 || automated) return ports
 
         let responses = { hasPorts: false }
@@ -214,42 +189,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return ports
 
     }
-    //#endregion
-
-    //#region  volumes
-    parseSingleVolume(portSpec) {
-        //size:path
-        //5Gi:/etc/config/
-        const items = portSpec.split(':')
-        const volume = { size: items[0], mountPath: items[1], name: 'data' }
-        volume.name = `data-${Math.random().toString(36).substring(7)}`
-        return volume
-
-    }
-    parseVolumes(args) {
-
-        const results = []
-        const rawValues = args.volume || this.spec.volume
-
-        if (!rawValues || rawValues == '') return []
-
-        if (typeof (rawValues) == 'string') {
-            results.push(this.parseSingleVolume(rawValues))
-        } else {
-            for (const p of rawValues) {
-                results.push(this.parseSingleVolume(p))
-            }
-        }
-        if(this.spec.verbose && this.spec.verbose!='') console.log(`volumes:\n`, results)
-        return results
-    }
 
     async askVolumes(args, automated) {
 
         const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
 
-        const volumes = this.parseVolumes(args)
 
+        const volumeParserType = this.spec.volumeParser || 'BasicVolumeParser'
+        const volumes = parserFactory.getVolumeParser(volumeParserType).parse(args || this.spec, this.verbose)
         if (volumes && volumes.length > 0 || automated) return volumes
 
         let responses = { hasVolumes: false }
@@ -291,50 +238,5 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return volumes
 
     }
-    //#endregion
 
-
-    //#region  main
-    async createInquire(args) {
-
-
-        const answers = {
-            image: args['image'] || this.spec.image,
-            name: args['name'] || this.spec.name,
-        }
-
-        const automated = args["automated"] || this.spec.automated
-
-        const responses = await this.manager.inquirer?.prompt([
-            {
-                type: 'input',
-                name: 'image',
-                message: 'Which docker image would you like to use?',
-                default: 'xperimental/goecho:v1.7',
-                validate: (image) => (image !== '' ? true : '')
-            },
-            {
-                type: 'input',
-                name: 'name',
-                message: 'What would you like to name this deployment?',
-                default: 'echoserver',
-                validate: (name) => (name !== '' ? true : '')
-            }
-        ], answers)
-
-        this.spec.image = responses.image
-        this.spec.name = responses.name
-        this.spec.edition = this.edition
-
-        this.spec.ports = await this.askPorts(args, automated)
-        this.spec.secrets = await this.askSecrets(args, automated)
-        this.spec.configs = await this.askConfig(args, automated)
-        this.spec.volumes = await this.askVolumes(args, automated)
-
-        this.spec.out = args['out']
-        this.spec.verbose = args['v']
-
-    }
-
-    //#endregion
 }

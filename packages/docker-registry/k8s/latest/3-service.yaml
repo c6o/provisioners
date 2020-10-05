@@ -17,7 +17,7 @@ spec:
       targetPort: 5000
     - port: 80
       protocol: TCP
-      name: registry-frontend
+      name: http
       targetPort: 80
   selector:
     app: docker-registry
