@@ -46,15 +46,13 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         this.spec.out = args['out']
 
-        throw new Error('barf')
-
     }
 
 
     async askConfig(args, automated) {
 
         const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
-        const configs = parserFactory.getSettingsParser(secretsParserType).parse(args || this.spec, 'config', this.verbose)
+        const configs = parserFactory.getSettingsParser(secretsParserType).parse(args, this.spec, 'config', this.verbose)
         if (configs && configs.length > 0 || automated) return configs
 
         let responses = { hasConfig: false }
@@ -99,7 +97,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async askSecrets(args, automated) {
 
         const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
-        const secrets = parserFactory.getSettingsParser(secretsParserType).parse(args || this.spec, 'secret', this.verbose)
+        const secrets = parserFactory.getSettingsParser(secretsParserType).parse(args, this.spec, 'secret', this.verbose)
         if (secrets && secrets.length > 0 || automated) return secrets
 
         let responses = { hasSecret: false }
@@ -145,7 +143,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async askPorts(args, automated) {
 
         const portParserType = this.spec.portParser || 'BasicPortParser'
-        const ports = parserFactory.getPortParser(portParserType).parse(args || this.spec, this.verbose)
+        const ports = parserFactory.getPortParser(portParserType).parse(args, this.spec, this.verbose)
         if (ports && ports.length > 0 || automated) return ports
 
         let responses = { hasPorts: false }
@@ -196,7 +194,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
 
         const volumeParserType = this.spec.volumeParser || 'BasicVolumeParser'
-        const volumes = parserFactory.getVolumeParser(volumeParserType).parse(args || this.spec, this.verbose)
+        const volumes = parserFactory.getVolumeParser(volumeParserType).parse(args, this.spec, this.verbose)
         if (volumes && volumes.length > 0 || automated) return volumes
 
         let responses = { hasVolumes: false }

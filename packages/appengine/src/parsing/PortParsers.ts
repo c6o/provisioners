@@ -3,12 +3,18 @@ import { Port, PortParser } from './parser'
 
 class BasicPortParser implements PortParser {
 
-    parse(args: any, verbose: boolean): Port[] {
+    parse(args: any, spec: any, verbose: boolean): Port[] {
+        if(verbose) console.log('Port Inputs:\n', args, spec)
+        let results = this.parseObject(args, verbose)
+        results = results.concat(this.parseObject(spec, verbose))
+        if(verbose) console.log('Port Outputs:\n', results)
+        return results
+    }
+
+    parseObject(args: any, verbose: boolean): Port[] {
         const results = []
         const rawValues = args.port
         if (!rawValues || rawValues == '') return []
-
-        if(verbose) console.log(`Ports Inputs:\n`, args)
 
         if (typeof (rawValues) == 'string') {
             results.push(this.parseSinglePort(rawValues))
@@ -17,7 +23,6 @@ class BasicPortParser implements PortParser {
                 results.push(this.parseSinglePort(p))
             }
         }
-        if (verbose) console.log('Ports Outputs:\n', results)
         return results
     }
 

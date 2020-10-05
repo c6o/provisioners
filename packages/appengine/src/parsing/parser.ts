@@ -5,7 +5,6 @@ import * as volumeParsers from '../parsing/VolumeParsers'
 
 export class ParserFactory{
     static getPortParser(type: string) : PortParser {
-        //return loader.getInstance<PortParser>(portParsers, type)
         return new portParsers[type]()
     }
     static getSettingsParser(type: string) : SettingsParser {
@@ -18,13 +17,13 @@ export class ParserFactory{
 
 
 export interface PortParser {
-    parse(args: any, verbose: boolean): Port[];
+    parse(args: any, spec: any, verbose: boolean): Port[];
 }
 export interface SettingsParser {
-    parse(args: any, type: string, verbose: boolean): Setting[];
+    parse(args: any, spec: any, type: string, verbose: boolean): Setting[];
 }
 export interface VolumeParser {
-    parse(args: any, verbose: boolean): Volume[];
+    parse(args: any, spec: any, verbose: boolean): Volume[];
 }
 
 export interface Setting {

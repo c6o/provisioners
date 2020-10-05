@@ -2,13 +2,19 @@ import { VolumeParser, Volume } from './parser'
 
 class BasicVolumeParser implements VolumeParser {
 
-    parse(args: any, verbose: boolean): Volume[] {
+    parse(args: any, spec: any, verbose: boolean): Volume[] {
+        if(verbose) console.log('Volume Inputs:\n', args, spec)
+        let results = this.parseObject(args, verbose)
+        results = results.concat(this.parseObject(spec, verbose))
+        if(verbose) console.log('Volume Outputs:\n', results)
+        return results
+    }
+
+    parseObject(args: any, verbose: boolean): Volume[] {
 
         const results = []
         const rawValues = args.volume
         if (!rawValues || rawValues == '') return []
-
-        if(verbose) console.log(`Volume Inputs:\n`, args)
 
         if (typeof (rawValues) == 'string') {
             results.push(this.parseSingleVolume(rawValues))
@@ -17,9 +23,6 @@ class BasicVolumeParser implements VolumeParser {
                 results.push(this.parseSingleVolume(p))
             }
         }
-
-        if(verbose) console.log(`Volume Outputs:\n`, results)
-
         return results
     }
 

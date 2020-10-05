@@ -2,14 +2,19 @@ import { SettingsParser, Setting } from './parser'
 
 class BasicSettingParser implements SettingsParser {
 
-    parse(args: any, type: string, verbose: boolean): Setting[] {
+
+    parse(args: any, spec: any, type: string, verbose: boolean): Setting[] {
+        if(verbose) console.log(`Settings Inputs: ${type}\n`, args, spec)
+        let results = this.parseObject(args, type, verbose)
+        results = results.concat(this.parseObject(spec, type, verbose))
+        if(verbose) console.log(`Settings Outputs: ${type}\n`, results)
+        return results
+    }
+
+    parseObject(args: any, type: string, verbose: boolean): Setting[] {
 
         const results = []
-
         if(!args || !args[type]) return []
-
-        if(verbose) console.log(`Settings Inputs: (${type}):\n`, args)
-
         const rawValues = args[type]
 
         if (rawValues) {
@@ -21,7 +26,6 @@ class BasicSettingParser implements SettingsParser {
                 }
             }
         }
-        if(verbose) console.log(`Settings Outputs (${type}):\n`, results)
         return results
     }
 
