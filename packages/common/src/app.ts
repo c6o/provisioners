@@ -24,7 +24,8 @@ export interface RoutesType {
     disabled?: boolean
     http?: {
         prefix?: string,
-        rewrite?: string
+        rewrite?: string,
+        public? : boolean
     },
     tcp?: {
         port?: number,

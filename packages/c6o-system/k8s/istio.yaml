@@ -9,3 +9,46 @@ metadata:
 spec:
   navstation: true
 status: Running
+---
+
+apiVersion: security.istio.io/v1beta1
+kind: "RequestAuthentication"
+metadata:
+  name: ingress
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+  jwtRules:
+    - outputPayloadToHeader: c6o-token
+      issuer: "codezero-technologies-inc"
+      jwks: |
+        {
+          keys: [
+            {
+              "kty": "oct",
+              "use": "sig",
+              "kid": "codezero-technologies-inc",
+              "k": "{{encodedJwtKey}}",
+              "alg": "HS256"
+            }
+          ]
+        }
+---
+
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+ name: ingress
+ namespace: istio-system
+spec:
+ selector:
+   matchLabels:
+     app: istio-ingressgateway
+ action: ALLOW
+ rules:
+ - to:
+   - operation:
+       methods: ["*"]
+       hosts: ["{{host}}"]

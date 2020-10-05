@@ -9,6 +9,14 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
             await istioProvisioner.createVirtualService(app, 'c6o-system/' + this.SYSTEM_GATEWAY_NAME)
             this.manager.status?.pop()
+
+            const httpRoute = app.spec.routes.find(route => route.type === "http")
+            if (httpRoute) {
+                this.manager.status?.push(`Adding app ${app.metadata.namespace} ingress`)
+                const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
+                await istioProvisioner.addJwtToRuleSection(app, app.metadata.name, app.metadata.namespace, httpRoute.http?.public)
+                this.manager.status?.pop()
+            }
         }
     }
 
@@ -18,6 +26,14 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
             await istioProvisioner.removeVirtualService(app)
             this.manager.status?.pop()
+
+            const httpRoute = app.spec.routes.find(route => route.type === "http")
+            if (httpRoute) {
+                this.manager.status?.push(`Adding app ${app.metadata.namespace} ingress`)
+                const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
+                await istioProvisioner.removeJwtToRuleSection(app, app.metadata.name)
+                this.manager.status?.pop()
+            }
         }
     }
 
@@ -27,6 +43,14 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
             await istioProvisioner.createVirtualService(app, 'c6o-system/' + this.SYSTEM_GATEWAY_NAME)
             this.manager.status?.pop()
+
+            const httpRoute = app.spec.routes.find(route => route.type === "http")
+            if (httpRoute) {
+                this.manager.status?.push(`Adding app ${app.metadata.namespace} ingress`)
+                const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
+                await istioProvisioner.addJwtToRuleSection(app, app.metadata.name, app.metadata.namespace, httpRoute.http?.public)
+                this.manager.status?.pop()
+            }
         }
     }
 }
