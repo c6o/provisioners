@@ -8,6 +8,7 @@ import {
     grafanaMixin,
     gatewayApiMixin,
     virtualServiceApiMixin,
+    jwtIngressApiMixin,
     prometheusApiMixin,
     choicesApiMixin,
     httpsRedirectApiMixin
@@ -27,7 +28,8 @@ export class Provisioner extends mix(ProvisionerBase).with(
     prometheusApiMixin,
     choicesApiMixin,
     httpsRedirectApiMixin,
-    virtualServiceApiMixin) {
+    virtualServiceApiMixin,
+    jwtIngressApiMixin) {
 }
 
 export * from './constants'

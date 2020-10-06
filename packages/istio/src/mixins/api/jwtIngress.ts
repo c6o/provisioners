@@ -6,7 +6,7 @@ export const jwtIngressApiMixin = (base: baseProvisionerType) => class extends b
 
     app: AppDocument
 
-    async addJwtToRuleSection(app: AppDocument, appId, namespaceId, secure, issuer) {
+    async addJwtToRuleSection(app: AppDocument, appId, namespaceId, secure) {
         this.app = app
 
         const rules: any[] = (await this.getAuthorizationPolicy()).object.spec.rules
@@ -57,7 +57,7 @@ export const jwtIngressApiMixin = (base: baseProvisionerType) => class extends b
                 }
             }]
         }
-        if (isPublic === false)
+        if (!isPublic)
             rule.when = [{
                 key: 'request.auth.claims[iss]',
                 values: ['codezero-technologies-inc'] // must match config item authentication.jwtOptions.issuer
