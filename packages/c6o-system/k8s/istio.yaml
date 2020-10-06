@@ -22,7 +22,7 @@ spec:
       app: istio-ingressgateway
   jwtRules:
     - outputPayloadToHeader: c6o-token
-      issuer: "codezero-technologies-inc"
+      issuer: "codezero-technologies-inc" # no spaces nor caps allowed; otherwise Istio will throw and auth errro
       jwks: |
         {
           keys: [
@@ -48,7 +48,7 @@ spec:
      app: istio-ingressgateway
  action: ALLOW
  rules:
- - to:
+ - to: # this is for the main cluster; otherwise marina, navstation and store wouldn't work
    - operation:
        methods: ["*"]
        hosts: ["{{host}}"]
