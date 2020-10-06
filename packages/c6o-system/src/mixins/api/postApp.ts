@@ -14,7 +14,7 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             if (httpRoute) {
                 this.manager.status?.push(`Adding app ${app.metadata.namespace} ingress`)
                 const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
-                await istioProvisioner.addJwtToRuleSection(app, app.metadata.name, app.metadata.namespace, httpRoute.http?.public)
+                await istioProvisioner.addJwtToRuleSection(app, app.metadata.name, app.metadata.namespace, httpRoute.http?.isPublic)
                 this.manager.status?.pop()
             }
         }
@@ -31,7 +31,7 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             if (httpRoute) {
                 this.manager.status?.push(`Removing app ${app.metadata.namespace} ingress`)
                 const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
-                await istioProvisioner.removeJwtToRuleSection(app, app.metadata.name)
+                await istioProvisioner.removeJwtToRuleSection(app, app.metadata.name, app.metadata.namespace)
                 this.manager.status?.pop()
             }
         }
@@ -48,7 +48,7 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
             if (httpRoute) {
                 this.manager.status?.push(`Updating app ${app.metadata.namespace} ingress`)
                 const istioProvisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
-                await istioProvisioner.addJwtToRuleSection(app, app.metadata.name, app.metadata.namespace, httpRoute.http?.public)
+                await istioProvisioner.addJwtToRuleSection(app, app.metadata.name, app.metadata.namespace, httpRoute.http?.isPublic)
                 this.manager.status?.pop()
             }
         }
