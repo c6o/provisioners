@@ -48,11 +48,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.name = responses.name
         this.spec.edition = this.edition
 
-        this.spec.ports = await this.askPorts(args, automated)
-        this.spec.secrets = await this.askSecrets(args, automated)
         this.spec.configs = await this.askConfig(args, automated)
+        this.spec.secrets = await this.askSecrets(args, automated)
+        this.spec.ports = await this.askPorts(args, automated)
         this.spec.volumes = await this.askVolumes(args, automated)
-
 
         this.spec.out = args['out']
 
