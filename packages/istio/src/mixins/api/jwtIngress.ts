@@ -1,4 +1,3 @@
-import { Result } from '@c6o/kubeclient'
 import { AppDocument } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
 
@@ -6,12 +5,12 @@ export const jwtIngressApiMixin = (base: baseProvisionerType) => class extends b
 
     app: AppDocument
 
-    async addJwtToRuleSection(app: AppDocument, appId, namespaceId, secure) {
+    async addJwtToRuleSection(app: AppDocument, appId, namespaceId, isPublic) {
         this.app = app
 
         const rules: any[] = (await this.getAuthorizationPolicy()).object.spec.rules
 
-        const item = this.jwtRuleToSectionTemplate(appId, namespaceId, secure)
+        const item = this.jwtRuleToSectionTemplate(appId, namespaceId, isPublic)
         const alreadyExists = rules.find(item => item.to[0].operation.hosts[0] === this.computeHostPrefix(appId, namespaceId))
         if (!alreadyExists)
             return await this.manager.cluster.patch(this.authorizationPolicy, [{ 'op': 'add', 'path': '/spec/rules/-', 'value': item } ])
@@ -48,7 +47,7 @@ export const jwtIngressApiMixin = (base: baseProvisionerType) => class extends b
         return `${appId}-${namespaceId}.*`
     }
 
-    jwtRuleToSectionTemplate = (appId, namespaceId, isPublic: boolean) => {
+    jwtRuleToSectionTemplate = (appId, namespaceId, isPublic) => {
         const rule: any = {
             to: [{
                 operation: {
