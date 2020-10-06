@@ -1,5 +1,5 @@
 import { baseProvisionerType } from '../index'
-import { ParserFactory as parserFactory } from '../parsing/parser'
+import { ParserFactory as parserFactory } from '../parsing'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
@@ -9,7 +9,16 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         this.verbose = ( (this.spec.verbose && this.spec.verbose!='') || (args.verbose && args.verbose!=''))
+        this.spec.verbose = this.verbose
         if(this.verbose) console.log('Verbose is on\n')
+
+        this.spec.dryRun = false
+        if(args['dry-run']) {
+            args.applier = 'DryRunApplier'
+        }
+        if(args.applier) this.spec.applier = args.applier
+        if(this.spec.applier === 'DryRunApplier') this.spec.dryRun = true
+
 
         const answers = {
             image: args['image'] || this.spec.image,
@@ -43,6 +52,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.secrets = await this.askSecrets(args, automated)
         this.spec.configs = await this.askConfig(args, automated)
         this.spec.volumes = await this.askVolumes(args, automated)
+
 
         this.spec.out = args['out']
 

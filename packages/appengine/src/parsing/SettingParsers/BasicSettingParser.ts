@@ -1,4 +1,4 @@
-import { SettingsParser, Setting } from './parser'
+import { SettingsParser, Setting } from '..'
 
 class BasicSettingParser implements SettingsParser {
 

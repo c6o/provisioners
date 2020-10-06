@@ -1,4 +1,4 @@
-import { VolumeParser, Volume } from './parser'
+import { VolumeParser, Volume } from '..'
 
 class BasicVolumeParser implements VolumeParser {
 

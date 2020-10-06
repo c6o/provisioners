@@ -1,5 +1,4 @@
-
-import { Port, PortParser } from './parser'
+import { Port, PortParser } from '..'
 
 class BasicPortParser implements PortParser {
 

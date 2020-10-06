@@ -1,6 +1,6 @@
-import * as portParsers from '../parsing/PortParsers'
-import * as settingsParsers from '../parsing/SettingParsers'
-import * as volumeParsers from '../parsing/VolumeParsers'
+import * as portParsers from './PortParsers/'
+import * as settingsParsers from './SettingParsers/'
+import * as volumeParsers from './VolumeParsers/'
 
 
 export class ParserFactory{
