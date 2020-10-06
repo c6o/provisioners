@@ -83,7 +83,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     {
                         type: 'input',
                         name: 'envName',
-                        message: 'Docker environment variable name (optional)?',
+                        message: 'Container environment variable name (optional)?',
                     }
                 ])
                 configs.push({ name: configResponses.configName, value: configResponses.configValue, env: configResponses.envName })
@@ -128,7 +128,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     {
                         type: 'input',
                         name: 'envName',
-                        message: 'Docker environment variable name (optional)?',
+                        message: 'Container environment variable name (optional)?',
                     }
 
                 ])
