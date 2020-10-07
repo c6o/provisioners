@@ -31,6 +31,12 @@ class BasicSettingParser implements SettingsParser {
 
 
     parseSingle(single: string) : Setting {
+
+        //provison takes a file as an input..
+
+        //czctl install --local --n testing photoshow --secret foo:bar --config d:fff,D_VAR --config E:fff,D_VAR --out yaml
+        //NAME:VALUE,ENV_VAR_NAME
+        //split
         const pos = single.indexOf(':')
         const value = { name: '', value: '', env: '' }
 

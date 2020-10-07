@@ -1,6 +1,9 @@
 import { baseProvisionerType } from '../index'
 import { ParserFactory as parserFactory } from '../parsing'
 
+
+const debug = createDebug('@appengine:createInquire')
+
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     verbose = false
@@ -62,7 +65,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
         const configs = parserFactory.getSettingsParser(secretsParserType).parse(args, this.spec, 'config', this.verbose)
-        if (configs && configs.length > 0 || automated) return configs
+        if (configs.length > 0 || automated) return configs
 
         let responses = { hasConfig: false }
 
@@ -73,30 +76,30 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     name: 'hasConfig',
                     message: 'Would you like to add a configuration parameter?',
                     default: false,
+                },
+                {
+                    type: 'input',
+                    name: 'configName',
+                    message: 'What is configuration parameter name?',
+                    when: a => a.hasConfig
+                },
+                {
+                    type: 'input',
+                    name: 'configValue',
+                    message: 'What is configuration parameter value?',
+                    when: a => a.hasConfig
+                },
+                {
+                    type: 'input',
+                    name: 'envName',
+                    message: 'Container environment variable name (optional)?',
+                    when: a => a.hasConfig
                 }
             ])
 
-            if (responses.hasConfig) {
+            if (responses.hasConfig)
+                configs.push({ name: responses.configName, value: responses.configValue, env: responses.envName })
 
-                const configResponses = await this.manager.inquirer?.prompt([
-                    {
-                        type: 'input',
-                        name: 'configName',
-                        message: 'What is configuration parameter name?',
-                    },
-                    {
-                        type: 'input',
-                        name: 'configValue',
-                        message: 'What is configuration parameter value?',
-                    },
-                    {
-                        type: 'input',
-                        name: 'envName',
-                        message: 'Container environment variable name (optional)?',
-                    }
-                ])
-                configs.push({ name: configResponses.configName, value: configResponses.configValue, env: configResponses.envName })
-            }
         } while (responses.hasConfig)
 
         return configs
@@ -185,9 +188,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     {
                         type: 'input',
                         name: 'targetPort',
-                        default: 'http',
+                        default: '80|http',  //should be a number....  need to research
                         message: 'What is targetPort?',
+                        //validate: a => a...  //validate that it is a Number()
                     }
+                    //do you want to expose this outside of the cluster?   need to expose via the R#outes/nodes in the manifest
                 ])
                 ports.push({ number: configResponses.number, name: configResponses.name, targetPort: configResponses.targetPort })
             }
@@ -227,17 +232,23 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                         message: 'What size data volume would you like to provision?',
                         choices: storageChoices,
                         default: '5Gi'
-                    },
+                    },//╰─$ czctl install --local --n testing appengine --name foo --image foo --verbose --applier ObjectApplier --secret foo:bar --config d:fff  --out yaml
+
                     {
                         type: 'input',
                         name: 'mountPath',
                         default: '/var',
                         message: 'What path do you want this volume mounted at?',
+                    },
+                    {
+                        type: 'input',
+                        name: 'volumeName',
+                        default: `data-${Math.random().toString(36).substring(7)}`,  //could also use mountPath to name it
+                        message: 'What would you like to name this volume?',
                     }
                 ])
 
-                const volume = { size: configResponses.storageSize, mountPath: configResponses.mountPath, name: 'data' }
-                volume.name = `data-${Math.random().toString(36).substring(7)}`
+                const volume = { size: configResponses.storageSize, mountPath: configResponses.mountPath, name: configResponses.volumeName }
                 volumes.push(volume)
             }
         } while (responses.hasVolumes)

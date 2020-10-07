@@ -1,3 +1,3 @@
 export * from './StringApplier'
 export * from './DryRunApplier'
-export * from './ObjectApplier'
+export * from './objectApplier'

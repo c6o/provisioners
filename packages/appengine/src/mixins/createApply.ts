@@ -1,9 +1,10 @@
 import { baseProvisionerType } from '../index'
 import { ApplierFactory as applierFactory } from '../applying/'
-
+import createDebug from 'debug'
 import jsyaml from 'js-yaml'
 import fs from 'fs'
 
+const debug = createDebug('@appengine:createApply')
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -20,8 +21,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async createApply() {
-
-        if(this.spec.verbose) console.log('Verbose is on\n')
 
         await this.ensureServiceNamespacesExist()
         await this.installApp()

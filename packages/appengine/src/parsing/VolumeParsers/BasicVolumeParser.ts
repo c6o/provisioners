@@ -12,6 +12,19 @@ class BasicVolumeParser implements VolumeParser {
 
     parseObject(args: any, verbose: boolean): Volume[] {
 
+//  provisioner:
+//    volume:
+//      - '10Gi:/foo'
+//      - '5Gi:/foo'
+
+//  provisioner:
+//    volume:
+//      -
+//          size: 10Gi
+//          path: /foo
+//      - '5Gi:/foo'
+
+
         const results = []
         const rawValues = args.volume
         if (!rawValues || rawValues == '') return []
