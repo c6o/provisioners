@@ -203,7 +203,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 {
                     type: 'input',
                     name: 'externalPort',
-                    default: 0,
+                    default: responses.port,
                     message: 'Which port would you like to use externally to the cluster (optional)?', //port to use when exposing the service externally to the cluster.  Will show up in the "Routes" section of the manifest
                     when: r => r.hasPorts,
                     validate: r => r === '' || this.isNumeric(r)  //validate that it is a Number()
