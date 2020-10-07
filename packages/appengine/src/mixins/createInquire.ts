@@ -30,14 +30,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 name: 'image',
                 message: 'Which docker image would you like to use?',
                 default: 'xperimental/goecho:v1.7',
-                validate: (image) => (image !== '' ? true : '')
+                validate: r => r !== '' //non empty string
             },
             {
                 type: 'input',
                 name: 'name',
                 message: 'What would you like to name this deployment?',
                 default: 'echoserver',
-                validate: (name) => (name !== '' ? true : '')
+                validate: r => r !== '' //non empty string
             }
         ], answers)
 
@@ -50,11 +50,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.ports = await this.askPorts(args, automated)
         this.spec.volumes = await this.askVolumes(args, automated)
 
-        this.spec.out = args['out']
-
         debug('Inquire Completed\n', 'spec:\n', this.spec, 'args:\n', args)
-
-
     }
 
 
@@ -78,13 +74,15 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'input',
                     name: 'configName',
                     message: 'What is configuration parameter name?',
-                    when: r => r.hasConfig
+                    when: r => r.hasConfig,
+                    validate: r => r !== '' //non empty string
                 },
                 {
                     type: 'input',
                     name: 'configValue',
                     message: 'What is configuration parameter value?',
-                    when: r => r.hasConfig
+                    when: r => r.hasConfig,
+                    validate: r => r !== '' //non empty string
                 },
                 {
                     type: 'input',
@@ -117,26 +115,27 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     type: 'confirm',
                     name: 'hasSecret',
                     message: 'Would you like to add a secret?',
-                    default: false,
+                    default: false
                 },
                 {
                     type: 'input',
                     name: 'secretName',
                     message: 'What is secret name?',
-                    when: r => r.hasSecret
+                    when: r => r.hasSecret,
+                    validate: r => r !== '' //non empty string
                 },
                 {
                     type: 'input',
                     name: 'secretValue',
                     message: 'What is secret value?',
-                    when: r => r.hasSecret
+                    when: r => r.hasSecret,
+                    validate: r => r !== '' //non empty string
                 },
                 {
                     type: 'input',
                     name: 'envName',
                     message: 'Container environment variable name (optional)?',
                     when: r => r.hasSecret
-
                 }
             ])
 
@@ -155,49 +154,73 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const ports = parserFactory.getPortParser(portParserType).parse(args, this.spec, debug)
         if (ports && ports.length > 0 || automated) return ports
 
-        let responses = { hasPorts: false, number: 80, name: '', targetPort: '' }
+        let responses = { hasPorts: false, name: '', protocol: 'TCP', port: 8080, targetPort: 0, externalPort: 8080 }
 
         do {
+
+            //https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
+
             responses = await this.manager.inquirer?.prompt([
                 {
                     type: 'confirm',
                     name: 'hasPorts',
-                    message: 'Would you like to add an exposed port?',
+                    message: 'Would you like to expose a port?',
                     default: false,
-                },
-                {
-                    type: 'input',
-                    name: 'number',
-                    default: 8080,
-                    message: 'What is the internal port number on the container?',
-                    when: r => r.hasPorts
                 },
                 {
                     type: 'input',
                     name: 'name',
                     default: 'http',
-                    message: 'What is port name?',
-                    when: r => r.hasPorts
+                    message: 'What is the port name?',
+                    when: r => r.hasPorts,
+                    validate: r => r !== '' //non empty string
+                },
+                {
+                    type: 'list',
+                    name: 'protocol',
+                    default: 'HTTP',
+                    choices: ['HTTP', 'TCP'],
+                    message: 'What protocol shall this port use?',
+                    when: r => r.hasPorts,
+                },
+                {
+                    type: 'input',
+                    name: 'port',
+                    default: 8080,
+                    message: 'What is the internal port on the container (port)?',
+                    when: r => r.hasPorts,
+                    validate: r => this.isNumeric(r)  //validate that it is a Number()
                 },
                 {
                     type: 'input',
                     name: 'targetPort',
-                    default: '80|http',  //should be a number....  need to research
-                    message: 'What is targetPort?',
-                    when: r => r.hasPorts
-                    //validate: a => a...  //validate that it is a Number()
-                //do you want to expose this outside of the cluster?   need to expose via the R#outes/nodes in the manifest
-            }
+                    default: responses.port,
+                    //# By default and for convenience, the `targetPort` is set to the same value as the `port` field
+                    message: 'Which port would you like to use within the cluster (optional)?',
+                    when: r => r.hasPorts,
+                    validate: r => this.isNumeric(r)  //validate that it is a Number()
+                },
+                {
+                    type: 'input',
+                    name: 'externalPort',
+                    default: 0,
+                    message: 'Which port would you like to use externally to the cluster (optional)?', //port to use when exposing the service externally to the cluster.  Will show up in the "Routes" section of the manifest
+                    when: r => r.hasPorts,
+                    validate: r => r === '' || this.isNumeric(r)  //validate that it is a Number()
+                }
             ])
 
             if (responses.hasPorts) {
-                ports.push({ number: responses.number, name: responses.name, targetPort: responses.targetPort })
+                ports.push({ name: responses.name, protocol: responses.protocol, port: responses.port, targetPort: responses.targetPort, externalPort: responses.externalPort })
             }
         } while (responses.hasPorts)
 
         return ports
 
 
+    }
+    isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n)
     }
 
     async askVolumes(args, automated) {
@@ -224,20 +247,25 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     name: 'storageSize',
                     message: 'What size data volume would you like to provision?',
                     choices: storageChoices,
-                    default: '5Gi'
-                },//╰─$ czctl install --local --n testing appengine --name foo --image foo --verbose --applier ObjectApplier --secret foo:bar --config d:fff  --out yaml
+                    default: '5Gi',
+                    when: r => r.hasVolumes
 
+                },
                 {
                     type: 'input',
                     name: 'mountPath',
                     default: '/var',
                     message: 'What path do you want this volume mounted at?',
+                    when: r => r.hasVolumes,
+                    validate: r => r !== '' //non empty string
                 },
                 {
                     type: 'input',
                     name: 'volumeName',
-                    default: `data-${Math.random().toString(36).substring(7)}`,  //could also use mountPath to name it
+                    default: 'data-var',
                     message: 'What would you like to name this volume?',
+                    when: r => r.hasVolumes,
+                    validate: r => r !== '' //non empty string
                 }
             ])
 
@@ -249,5 +277,4 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return volumes
 
     }
-
 }

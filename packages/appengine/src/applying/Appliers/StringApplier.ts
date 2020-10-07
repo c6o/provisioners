@@ -51,8 +51,8 @@ export class StringApplier implements Applier {
             spec.servicePortContent = '  ports:\n'   //service/nodePort
 
             for (const item of spec.ports) {
-                spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.number}\n`
-                spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'\n`
+                spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.port}\n`
+                spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.port}\n      targetPort: '${item.targetPort}'\n`
             }
             debug(`portsContent:\n${spec.portsContent}`)
             debug(`servicePortContent:\n${spec.servicePortContent}`)

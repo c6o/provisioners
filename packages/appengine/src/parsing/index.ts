@@ -33,9 +33,11 @@ export interface Setting {
 }
 
 export interface Port {
-    number: number
     name: string
-    targetPort: string
+    protocol: string
+    port: number
+    targetPort: number
+    externalPort: number
 }
 
 export interface Volume {

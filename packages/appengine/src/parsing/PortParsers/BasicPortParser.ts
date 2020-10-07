@@ -27,12 +27,14 @@ class BasicPortParser implements PortParser {
     }
 
     parseSinglePort(portSpec) : Port {
-        //portNumber/portName/targetPort
-        //80/http/http
+
+        //name/protocol/port/targetPort/externalPort
         const items = portSpec.split('/')
-        if (items.length == 1) return { number: Number(items[0]), name: 'http', targetPort: 'http' }
-        if (items.length == 2) return { number: Number(items[0]), name: items[1], targetPort: items[1] }
-        if (items.length >= 3) return { number: Number(items[0]), name: items[1], targetPort: items[2] }
+        if (items.length == 1) return { name: items[0], protocol: 'HTTP', port: 80, targetPort: 80, externalPort: 0 }
+        if (items.length == 2) return { name: items[0], protocol: items[0], port: 80, targetPort: 80, externalPort: 0 }
+        if (items.length == 3) return { name: items[0], protocol: items[0], port: items[1], targetPort: 80, externalPort: 0 }
+        if (items.length == 4) return { name: items[0], protocol: items[0], port: items[1], targetPort: items[2], externalPort: 0 }
+        if (items.length >= 5) return { name: items[0], protocol: items[0], port: items[1], targetPort: items[3], externalPort: items[4] }
     }
 }
 
