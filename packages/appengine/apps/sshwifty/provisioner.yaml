@@ -27,7 +27,7 @@ app:
         - content                         #for example..
         - content management system       #for example..
 
-    provisionerSourceCode: 'url of source code for the provisioner'
+    provisionerSourceCode: 'https://github.com/nirui/sshwifty'
     provisionerLicense:
       url for provisioners license
       this is actually markdown
