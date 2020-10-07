@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: alertmanager
             image: 'prom/alertmanager:latest'
-            port: 9093/http
+            port: 9093
             automated: true
           marina:
             launch:

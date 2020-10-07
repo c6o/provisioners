@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: airsonic
             image: 'airsonic/airsonic:latest'
-            port: 4040/http
+            port: 4040
             automated: true
           marina:
             launch:

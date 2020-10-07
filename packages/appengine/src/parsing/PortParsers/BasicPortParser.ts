@@ -28,13 +28,35 @@ class BasicPortParser implements PortParser {
 
     parseSinglePort(portSpec) : Port {
 
-        //name/protocol/port/targetPort/externalPort
+        //Defaults:
+        //Port:  NONE
+        //PROTOCOL: HTTP
+        //TargetPort: PORT
+        //ExternalPort: PORT
+        //Name: PROTOCOL
+
+        //port
+        //port/protocol
+        //port/protocol/targetPort
+        //port/protocol/targetPort/externalPort
+        //port/protocol/targetPort/externalPort/name
+
         const items = portSpec.split('/')
-        if (items.length == 1) return { name: items[0], protocol: 'HTTP', port: 80, targetPort: 80, externalPort: 0 }
-        if (items.length == 2) return { name: items[0], protocol: items[0], port: 80, targetPort: 80, externalPort: 0 }
-        if (items.length == 3) return { name: items[0], protocol: items[0], port: items[1], targetPort: 80, externalPort: 0 }
-        if (items.length == 4) return { name: items[0], protocol: items[0], port: items[1], targetPort: items[2], externalPort: 0 }
-        if (items.length >= 5) return { name: items[0], protocol: items[0], port: items[1], targetPort: items[3], externalPort: items[4] }
+        //port
+        if (items.length == 1) return { name: 'http',   protocol: 'HTTP',   port: Number(items[0]), targetPort: Number(items[0]), externalPort: Number(items[0]) }
+
+        //port/protocol
+        if (items.length == 2) return { name: items[1], protocol: items[1], port: Number(items[0]), targetPort: Number(items[0]), externalPort: Number(items[0]) }
+
+        //port/protocol/targetPort
+        if (items.length == 3) return { name: items[1], protocol: items[1], port: Number(items[0]), targetPort: Number(items[2]), externalPort: Number(items[0]) }
+
+        //port/protocol/targetPort/externalPort
+        if (items.length == 4) return { name: items[4], protocol: items[1], port: Number(items[0]), targetPort: Number(items[2]), externalPort: Number(items[3]) }
+
+        //port/protocol/targetPort/externalPort/name
+        if (items.length > 4)  return { name: items[4], protocol: items[1], port: Number(items[0]), targetPort: Number(items[2]), externalPort: Number(items[3]) }
+
     }
 }
 
