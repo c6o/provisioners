@@ -1,17 +1,18 @@
+import { IDebugger } from 'debug'
 import { SettingsParser, Setting } from '..'
 
 class BasicSettingParser implements SettingsParser {
 
 
-    parse(args: any, spec: any, type: string, verbose: boolean): Setting[] {
-        if(verbose) console.log(`Settings Inputs: ${type}\n`, args, spec)
-        let results = this.parseObject(args, type, verbose)
-        results = results.concat(this.parseObject(spec, type, verbose))
-        if(verbose) console.log(`Settings Outputs: ${type}\n`, results)
+    parse(args: any, spec: any, type: string, debug: IDebugger): Setting[] {
+        debug(`Settings Inputs: ${type}\n`, args, spec)
+        let results = this.parseObject(args, type, debug)
+        results = results.concat(this.parseObject(spec, type, debug))
+        debug(`Settings Outputs: ${type}\n`, results)
         return results
     }
 
-    parseObject(args: any, type: string, verbose: boolean): Setting[] {
+    parseObject(args: any, type: string, debug: IDebugger): Setting[] {
 
         const results = []
         if(!args || !args[type]) return []

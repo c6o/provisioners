@@ -1,10 +1,11 @@
 import { ProvisionerManager } from '@provisioner/common'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
+import { IDebugger } from 'debug'
 
 export class StringApplier implements Applier {
 
-    async apply(namespace: string, spec: any, manager : ProvisionerManager, verbose: boolean) {
+    async apply(namespace: string, spec: any, manager : ProvisionerManager, debug: IDebugger) {
 
         spec.env = ''
 
@@ -17,7 +18,7 @@ export class StringApplier implements Applier {
                 spec.env += `        - name: ${item.env}\n          valueFrom:\n            secretKeyRef:\n                name: ${spec.name}secrets\n                key: ${item.name}\n`
             }
 
-            if(verbose) console.log(`secretsContent:\n${spec.secretsContent}`)
+            debug(`secretsContent:\n${spec.secretsContent}`)
 
             await manager.cluster
                 .begin('Installing the Secrets')
@@ -33,7 +34,7 @@ export class StringApplier implements Applier {
                 spec.configsContent += `    ${item.name}: '${item.value}'\n`
                 spec.env += `        - name: ${item.env}\n          valueFrom:\n            configMapKeyRef:\n              name: ${spec.name}configs\n              key: ${item.name}\n`
             }
-            if(verbose) console.log(`configsContent:\n${spec.configsContent}`)
+            debug(`configsContent:\n${spec.configsContent}`)
 
             await manager.cluster
                 .begin('Installing the Configuration Settings')
@@ -53,8 +54,8 @@ export class StringApplier implements Applier {
                 spec.portsContent += `            - name: '${item.name}'\n              containerPort: ${item.number}\n`
                 spec.servicePortContent += `    - name: '${item.name}'\n      port: ${item.number}\n      targetPort: '${item.targetPort}'\n`
             }
-            if(verbose) console.log(`portsContent:\n${spec.portsContent}`)
-            if(verbose) console.log(`servicePortContent:\n${spec.servicePortContent}`)
+            debug(`portsContent:\n${spec.portsContent}`)
+            debug(`servicePortContent:\n${spec.servicePortContent}`)
 
             await manager.cluster
                 .begin('Installing Networking Services')
@@ -84,8 +85,8 @@ export class StringApplier implements Applier {
                 }
             }
         }
-        if(verbose) console.log(`volumeMounts:\n${spec.volumeMounts}`)
-        if(verbose) console.log(`deployVolumes:\n${spec.deployVolumes}`)
+        debug(`volumeMounts:\n${spec.volumeMounts}`)
+        debug(`deployVolumes:\n${spec.deployVolumes}`)
 
         await manager.cluster
             .begin('Installing the Deployment')

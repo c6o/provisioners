@@ -1,16 +1,17 @@
+import { IDebugger } from 'debug'
 import { Port, PortParser } from '..'
 
 class BasicPortParser implements PortParser {
 
-    parse(args: any, spec: any, verbose: boolean): Port[] {
-        if(verbose) console.log('Port Inputs:\n', args, spec)
-        let results = this.parseObject(args, verbose)
-        results = results.concat(this.parseObject(spec, verbose))
-        if(verbose) console.log('Port Outputs:\n', results)
+    parse(args: any, spec: any, debug: IDebugger): Port[] {
+        debug('Port Inputs:\n', args, spec)
+        let results = this.parseObject(args, debug)
+        results = results.concat(this.parseObject(spec, debug))
+        debug('Port Outputs:\n', results)
         return results
     }
 
-    parseObject(args: any, verbose: boolean): Port[] {
+    parseObject(args: any, debug: IDebugger): Port[] {
         const results = []
         const rawValues = args.port
         if (!rawValues || rawValues == '') return []

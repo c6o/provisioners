@@ -1,16 +1,17 @@
+import { IDebugger } from 'debug'
 import { VolumeParser, Volume } from '..'
 
 class BasicVolumeParser implements VolumeParser {
 
-    parse(args: any, spec: any, verbose: boolean): Volume[] {
-        if(verbose) console.log('Volume Inputs:\n', args, spec)
-        let results = this.parseObject(args, verbose)
-        results = results.concat(this.parseObject(spec, verbose))
-        if(verbose) console.log('Volume Outputs:\n', results)
+    parse(args: any, spec: any, debug: IDebugger): Volume[] {
+        debug('Volume Inputs:\n', args, spec)
+        let results = this.parseObject(args, debug)
+        results = results.concat(this.parseObject(spec, debug))
+        debug('Volume Outputs:\n', results)
         return results
     }
 
-    parseObject(args: any, verbose: boolean): Volume[] {
+    parseObject(args: any, debug: IDebugger): Volume[] {
 
 //  provisioner:
 //    volume:

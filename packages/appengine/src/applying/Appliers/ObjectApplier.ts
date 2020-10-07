@@ -1,20 +1,22 @@
 import { ProvisionerManager } from '@provisioner/common'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
+import { IDebugger } from 'debug'
+
 
 export class ObjectApplier implements Applier {
 
     spec: any
 
-    async apply(namespace: string, spec: any, manager: ProvisionerManager, verbose: boolean) {
+    async apply(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger) {
 
         this.spec = spec
-        await this.applySecrets(namespace, spec, manager, verbose)
-        await this.applyConfigs(namespace, spec, manager, verbose)
+        await this.applySecrets(namespace, spec, manager, debug)
+        await this.applyConfigs(namespace, spec, manager, debug)
 
     }
 
-    async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, verbose: boolean) {
+    async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger) {
 
         if (spec.configs?.length) {
 
@@ -40,7 +42,7 @@ export class ObjectApplier implements Applier {
                 this.spec.envVariables.push({ name: item.env, valueFrom: { secretKeyRef: { name: `${spec.name}configs`, key: item.name } } })
             }
 
-            if (verbose) console.log('Applying configs:\n', spec.configs, '\n', config)
+            debug('Applying configs:\n', spec.configs, '\n', config)
 
             if (!spec.dryRun) {
                 await manager.cluster
@@ -53,7 +55,7 @@ export class ObjectApplier implements Applier {
     }
 
 
-    async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, verbose: boolean) {
+    async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger) {
 
         this.spec.envVariables = []
 
@@ -83,7 +85,7 @@ export class ObjectApplier implements Applier {
                 this.spec.envVariables.push({ name: item.env, valueFrom: { secretKeyRef: { name: `${spec.name}secrets`, key: item.name } } })
             }
 
-            if (verbose) console.log('Applying secrets:\n', spec.secrets, '\n', secret)
+            debug('Applying secrets:\n', spec.secrets, '\n', secret)
 
             if (!spec.dryRun) {
                 await manager.cluster

@@ -1,7 +1,7 @@
+import { IDebugger } from 'debug'
 import * as portParsers from './PortParsers/'
 import * as settingsParsers from './SettingParsers/'
 import * as volumeParsers from './VolumeParsers/'
-
 
 export class ParserFactory{
     static getPortParser(type: string) : PortParser {
@@ -17,13 +17,13 @@ export class ParserFactory{
 
 
 export interface PortParser {
-    parse(args: any, spec: any, verbose: boolean): Port[];
+    parse(args: any, spec: any, debug: IDebugger): Port[];
 }
 export interface SettingsParser {
-    parse(args: any, spec: any, type: string, verbose: boolean): Setting[];
+    parse(args: any, spec: any, type: string, debug: IDebugger): Setting[];
 }
 export interface VolumeParser {
-    parse(args: any, spec: any, verbose: boolean): Volume[];
+    parse(args: any, spec: any, debug: IDebugger): Volume[];
 }
 
 export interface Setting {
@@ -39,7 +39,7 @@ export interface Port {
 }
 
 export interface Volume {
-    size: number
+    size: string
     mountPath: string
     name: string
 }

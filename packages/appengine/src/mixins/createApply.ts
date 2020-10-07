@@ -30,7 +30,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async installApp() {
 
         const applierType = this.spec.applier || 'StringApplier'
-        await applierFactory.getApplier(applierType).apply(this.serviceNamespace, this.spec, this.manager, this.spec.verbose)
+        await applierFactory.getApplier(applierType).apply(this.serviceNamespace, this.spec, this.manager, debug)
 
         this.emitYamlManifest()
     }
