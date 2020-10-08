@@ -6,11 +6,8 @@ import { IDebugger } from 'debug'
 
 export class ObjectApplier implements Applier {
 
-    spec: any
-
     async apply(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger) {
 
-        this.spec = spec
         const deployment = await this.getDeployment(namespace, spec, debug)
         await this.applySecrets(namespace, spec, manager, debug, deployment)
         await this.applyConfigs(namespace, spec, manager, debug, deployment)
@@ -151,6 +148,7 @@ export class ObjectApplier implements Applier {
             }
 
             deployment.spec.template.spec.containers[0].ports = []
+
             for (const item of spec.ports) {
 
                 // # Inside the cluster, what port does the service expose?
