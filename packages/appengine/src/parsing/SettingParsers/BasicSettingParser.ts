@@ -17,14 +17,21 @@ class BasicSettingParser implements SettingsParser {
         const results = []
         if(!args || !args[type]) return []
         const rawValues = args[type]
+        if (!rawValues || rawValues == '') return []
 
-        if (rawValues) {
-            if (typeof rawValues == 'string') {
-                results.push(this.parseSingle(rawValues))
-            } else {
-                for (const single of rawValues) {
-                    results.push(this.parseSingle(single))
+        if (Array.isArray(rawValues)) {
+            for (const p of rawValues) {
+                if (p as Setting) {
+                    results.push(rawValues)
+                } else {
+                    results.push(this.parseSingle(p))
                 }
+            }
+        } else {
+            if (rawValues as Setting) {
+                results.push(rawValues)
+            } else {
+                results.push(this.parseSingle(rawValues))
             }
         }
         return results

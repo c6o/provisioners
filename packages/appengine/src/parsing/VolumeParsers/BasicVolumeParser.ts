@@ -25,19 +25,28 @@ class BasicVolumeParser implements VolumeParser {
 //          path: /foo
 //      - '5Gi:/foo'
 
-
         const results = []
         const rawValues = args.volume
         if (!rawValues || rawValues == '') return []
+        if (!rawValues || rawValues == '') return []
 
-        if (typeof (rawValues) == 'string') {
-            results.push(this.parseSingleVolume(rawValues))
-        } else {
+        if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
-                results.push(this.parseSingleVolume(p))
+                if (p as Volume) {
+                    results.push(rawValues)
+                } else {
+                    results.push(this.parseSingleVolume(p))
+                }
+            }
+        } else {
+            if (rawValues as Volume) {
+                results.push(rawValues)
+            } else {
+                results.push(this.parseSingleVolume(rawValues))
             }
         }
         return results
+
     }
 
     parseSingleVolume(volumeSpec) : Volume {

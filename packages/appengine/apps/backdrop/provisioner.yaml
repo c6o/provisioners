@@ -73,12 +73,18 @@ app:
             port: 80
             automated: true
             secret:
-              - 'BACKDROP_DB_HOST:mysql'
-              - 'BACKDROP_DB_USER:root'
-              - 'BACKDROP_DB_PASSWORD:admin'
-              - 'BACKDROP_DB_NAME:backdrop'
-              - 'BACKDROP_DB_PORT:3306'
-              - 'BACKDROP_DB_DRIVER:mysql'
+              - name: BACKDROP_DB_HOST
+                value: mysql
+              - name: BACKDROP_DB_USER
+                value: root
+              - name: BACKDROP_DB_PASSWORD
+                value: admin
+              - name: BACKDROP_DB_NAME
+                value: backdrop
+              - name: BACKDROP_DB_PORT
+                value: 3306
+              - name: BACKDROP_DB_DRIVER
+                value: mysql
           marina:
             launch:
               type: inline

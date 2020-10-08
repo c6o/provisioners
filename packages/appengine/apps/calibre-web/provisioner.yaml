@@ -72,10 +72,15 @@ app:
             image: linuxserver/calibre-web
             port: 8083
             volume:
-              - '5Gi:/config'
-              - '100Gi:/books'
+              - size: 5Gi
+                mountPath: /config
+                name: calibre-web-config
+              - size: 50Gi
+                mountPath: /books
+                name: calibre-web-books
             config:
-              - 'TZ:America/Vancouver'
+              - name: TZ
+                value: America/Vancouver
             automated: true
           marina:
             launch:

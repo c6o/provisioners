@@ -72,13 +72,23 @@ app:
             image: linuxserver/booksonic-air
             port: 4040
             volume:
-              - '5Gi:/config'
-              - '50Gi:/audiobooks'
-              - '50Gi:/podcasts'
-              - '50Gi:/othermedia'
+              - size: 5Gi
+                mountPath: /config
+                name: booksonic-config
+              - size: 50Gi
+                mountPath: /audiobooks
+                name: booksonic-audiobooks
+              - size: 50Gi
+                mountPath: /podcasts
+                name: booksonic-podcasts
+              - size: 5Gi
+                mountPath: /othermedia
+                name: booksonic-othermedia
             config:
-              - 'TZ:America/Vancouver'
-              - 'AUTO_UPDATE:true'
+              - name: TZ
+                value: America/Vancouver
+              - name: AUTO_UPDATE
+                value: true
             automated: true
           marina:
             launch:

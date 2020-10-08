@@ -18,10 +18,18 @@ class BasicPortParser implements PortParser {
 
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
-                results.push(this.parseSinglePort(p))
+                if (p as Port) {
+                    results.push(p)
+                } else {
+                    results.push(this.parseSinglePort(p))
+                }
             }
         } else {
-            results.push(this.parseSinglePort(rawValues))
+            if (rawValues as Port) {
+                results.push(rawValues)
+            } else {
+                results.push(this.parseSinglePort(rawValues))
+            }
         }
         return results
     }
