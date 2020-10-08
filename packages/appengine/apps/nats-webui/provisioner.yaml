@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: nats-webui
             image: 'sphqxe/nats-webui:latest'
-            port: 80/http
+            port: 80
             automated: true
           marina:
             launch:

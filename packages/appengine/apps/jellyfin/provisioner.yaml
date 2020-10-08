@@ -71,7 +71,7 @@ app:
             name: jellyfin
             image: jellyfin/jellyfin
             port:
-              - 8096/http
+              - 8096
             automated: true
             volume:
               - '5Gi:/config'

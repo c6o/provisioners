@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: pylon
             image: 'linuxserver/pylon:latest'
-            port: 3131/http
+            port: 3131
             automated: true
           marina:
             launch:

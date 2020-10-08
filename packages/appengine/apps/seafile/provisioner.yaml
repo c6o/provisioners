@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: seafile
             image: 'seafileltd/seafile:latest'
-            port: 80/http
+            port: 80
             automated: true
             volume:
               - '500Gi:/shared'

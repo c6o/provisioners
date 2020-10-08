@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: booksonic-air
             image: linuxserver/booksonic-air
-            port: 4040/http
+            port: 4040
             volume:
               - '5Gi:/config'
               - '50Gi:/audiobooks'

@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: recorder
             image: 'owntracks/recorder:latest'
-            port: 8083/http
+            port: 8083
             automated: true
             config:
               - 'OTR_HOST:mosquitto'

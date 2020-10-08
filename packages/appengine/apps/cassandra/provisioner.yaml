@@ -74,9 +74,9 @@ app:
             name: cassandra
             image: 'cassandra:latest'
             port:
-              - 7000/tcp
-              - 9160/tcp
-              - 9042/tcp
+              - 7000/jmx/tcp
+              - 9160/client/tcp
+              - 9042/cqlnative/tcp
             volume:
               - '10Gi:/var/lib/cassandra'
             automated: true

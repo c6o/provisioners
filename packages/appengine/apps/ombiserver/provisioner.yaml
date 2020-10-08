@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: ombi
             image: 'linuxserver/ombi:latest'
-            port: 3579/http
+            port: 3579
             automated: true
           marina:
             launch:

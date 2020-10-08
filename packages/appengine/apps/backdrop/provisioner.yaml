@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: backdrop
             image: 'backdrop:latest'
-            port: 80/http
+            port: 80
             automated: true
             secret:
               - 'BACKDROP_DB_HOST:mysql'

@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: embyserver
             image: 'linuxserver/emby:latest'
-            port: 8096/http
+            port: 8096
             automated: true
           marina:
             launch:

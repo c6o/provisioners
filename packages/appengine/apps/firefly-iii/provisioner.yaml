@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: firefly-iii
             image: 'jc5x/firefly-iii:latest'
-            port: 8080/http
+            port: 8080
             automated: true
           marina:
             launch:

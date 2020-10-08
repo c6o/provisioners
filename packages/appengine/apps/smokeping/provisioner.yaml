@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: smokeping
             image: linuxserver/smokeping
-            port: 80/http
+            port: 80
             automated: true
             volume:
               - '1Gi:/config'

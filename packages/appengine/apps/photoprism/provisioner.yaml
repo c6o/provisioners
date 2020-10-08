@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: photoprism
             image: photoprism/photoprism
-            port: 2342/http
+            port: 2342
             automated: true
             config:
               - 'PHOTOPRISM_UPLOAD_NSFW:true'

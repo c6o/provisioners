@@ -63,16 +63,16 @@ app:
         default: true           #proposed: default edition used for installation
         spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
           routes:
-	    - type: http
-	      targetService: sshwifty
-	  provisioner:
-	    package: '@provisioner/appengine'
-	    ui: ignore
-	    name: sshwifty
-	    image: 'niruix/sshwifty:lates'
-	    port: 8182/http
-	    automated: true
-	  marina:
-	    launch:
-	      type: inline
-	      popUp: true
+          - type: http
+            targetService: sshwifty
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: sshwifty
+            image: 'niruix/sshwifty:lates'
+            port: 8182
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true

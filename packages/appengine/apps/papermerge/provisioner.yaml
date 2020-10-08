@@ -67,7 +67,7 @@ app:
           ui: ignore
           name: papermerge
           image: linuxserver/papermerge
-          port: 8000/http
+          port: 8000
           volume:
             - '5Gi:/config'
             - '10Gi:/data'

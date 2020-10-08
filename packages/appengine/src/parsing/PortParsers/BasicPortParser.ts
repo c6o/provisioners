@@ -26,40 +26,35 @@ class BasicPortParser implements PortParser {
         return results
     }
 
-    parseSinglePort(portSpec) : Port {
+    parseSinglePort(portSpec): Port {
 
         //Defaults:
         //Port:  NONE
         //PROTOCOL: TCP : "SCTP", "TCP", "UDP"
         //TargetPort: PORT
-        //ExternalPort: PORT
         //Name: PROTOCOL
 
         //port
-        //port/protocol
-        //port/protocol/targetPort
-        //port/protocol/targetPort/externalPort
-        //port/protocol/targetPort/externalPort/name
+        //port/name
+        //port/name/protocol
+        //port/name/protocol/targetPort
 
-        if(typeof portSpec === 'number') {
-            return { name: 'http',   protocol: 'TCP',   port: portSpec, targetPort: portSpec, externalPort: portSpec }
+        if (typeof portSpec === 'number') {
+            return { name: 'http', protocol: 'TCP', port: portSpec, targetPort: portSpec }
         }
 
         const items = portSpec.split('/')
         //port
-        if (items.length == 1) return { name: 'http',   protocol: 'TCP',   port: Number(items[0]), targetPort: Number(items[0]), externalPort: Number(items[0]) }
+        if (items.length == 1) return { name: 'http', protocol: 'TCP', port: Number(items[0]), targetPort: Number(items[0]) }
 
-        //port/protocol
-        if (items.length == 2) return { name: items[1].toLowerCase(), protocol: items[1].toUpperCase(), port: Number(items[0]), targetPort: Number(items[0]), externalPort: Number(items[0]) }
+        //port/name
+        if (items.length == 2) return { name: items[1].toLowerCase(), protocol: 'TCP', port: Number(items[0]), targetPort: Number(items[0]) }
 
-        //port/protocol/targetPort
-        if (items.length == 3) return { name: items[1].toLowerCase(), protocol: items[1].toUpperCase(), port: Number(items[0]), targetPort: Number(items[2]), externalPort: Number(items[0]) }
+        //port/name/protocol
+        if (items.length == 3) return { name: items[1].toLowerCase(), protocol: items[2].toUpperCase(), port: Number(items[0]), targetPort: Number(items[0]) }
 
-        //port/protocol/targetPort/externalPort
-        if (items.length == 4) return { name: items[4].toLowerCase(), protocol: items[1].toUpperCase(), port: Number(items[0]), targetPort: Number(items[2]), externalPort: Number(items[3]) }
-
-        //port/protocol/targetPort/externalPort/name
-        if (items.length > 4)  return { name: items[4].toLowerCase(), protocol: items[1].toUpperCase(), port: Number(items[0]), targetPort: Number(items[2]), externalPort: Number(items[3]) }
+        //port/name/protocol/targetPort
+        if (items.length == 4) return { name: items[1].toLowerCase(), protocol: items[2].toUpperCase(), port: Number(items[0]), targetPort: Number(items[3]) }
 
     }
 }

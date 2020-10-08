@@ -37,7 +37,6 @@ export interface Port {
     protocol: string
     port: number
     targetPort: number
-    externalPort: number
 }
 
 export interface Volume {

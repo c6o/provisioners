@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: checkmk
             image: 'checkmk/check-mk-raw:latest'
-            port: 5000/http
+            port: 5000
             automated: true
           marina:
             launch:

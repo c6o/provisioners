@@ -73,7 +73,7 @@ app:
             ui: ignore
             name: rdesktop-xfcefocal
             image: 'linuxserver/rdesktop:latest'
-            port: 3389/tcp
+            port: 3389/tcp/TCP
             volume:
               - '5Gi:/config'
             config:

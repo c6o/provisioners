@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: duplicati
             image: 'duplicati/duplicati:latest'
-            port: 8200/http
+            port: 8200
             automated: true
           marina:
             launch:

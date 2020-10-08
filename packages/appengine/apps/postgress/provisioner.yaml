@@ -70,7 +70,7 @@ app:
           ui: ignore
           name: postgress
           image: ananthhh/postgress
-          port: 5432/tcp
+          port: 5432/tcp/TCP
           volume:
             - '5Gi:/data'
           secret:
@@ -87,7 +87,7 @@ app:
           ui: ignore
           name: postgress
           image: ananthhh/postgress
-          port: 5432/tcp
+          port: 5432/tcp/TCP
           volume:
             - '5Gi:/data'
           secret:

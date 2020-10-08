@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: codeserver
             image: 'linuxserver/code-server:latest'
-            port: 8443/http
+            port: 8443
             automated: true
           marina:
             launch:

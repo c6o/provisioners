@@ -70,7 +70,7 @@ app:
           ui: ignore
           name: mysql
           image: 'mysql:latest'
-          port: 3306/tcp
+          port: 3306
           volume:
             - '5Gi:/data'
           config:
@@ -86,7 +86,7 @@ app:
           ui: ignore
           name: mysql
           image: 'mysql:latest'
-          port: 3306/tcp
+          port: 3306
           volume:
             - '5Gi:/data'
           secret:

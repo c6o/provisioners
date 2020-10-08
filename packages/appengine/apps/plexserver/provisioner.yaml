@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: plexserver
             image: 'plexinc/pms-docker:latest'
-            port: 32400/http
+            port: 32400
             volume:
               - '500Gi:/config'
               - '100Gi:/data'

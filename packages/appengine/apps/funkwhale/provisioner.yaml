@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: funkwhale
             image: thetarkus/funkwhale
-            port: 80/http
+            port: 80
             automated: true
             volume:
               - '5Gi:/data'

@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: zimbra
             image: jorgedlcruz/zimbra
-            port: 80/http
+            port: 80
             automated: true
             config:
               - 'PASSWORD:Zimbra2017'

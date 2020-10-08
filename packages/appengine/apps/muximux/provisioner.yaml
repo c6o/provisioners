@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: muximux
             image: linuxserver/muximux
-            port: 80/http
+            port: 80
             volume:
               - '500Gi:/config'
             config:

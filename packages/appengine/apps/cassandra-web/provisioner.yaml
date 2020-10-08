@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: cassandra-web
             image: ipushc/cassandra-web
-            port: 80/http
+            port: 80
             config:
               - 'HOST_PORT:80'
               - 'CASSANDRA_HOST:cassandra'

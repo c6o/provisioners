@@ -70,7 +70,7 @@ app:
           ui: ignore
           name: mongo
           image: 'mongo:latest'
-          port: 27017/tcp
+          port: 27017
           volume:
             - '5Gi:/data'
           secret:
@@ -87,7 +87,7 @@ app:
           ui: ignore
           name: mongo
           image: 'mongo:latest'
-          port: 27017/tcp
+          port: 27017
           volume:
             - '5Gi:/data'
           secret:

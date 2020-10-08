@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: lidarr
             image: 'linuxserver/lidarr:latest'
-            port: 8686/http
+            port: 8686
             automated: true
             volume:
               - '5Gi:/config'

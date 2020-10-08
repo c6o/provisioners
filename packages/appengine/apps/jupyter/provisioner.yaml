@@ -70,7 +70,7 @@ app:
             ui: ignore
             name: scipy
             image: jupyter/scipy-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -93,7 +93,7 @@ app:
             ui: ignore
             name: datascience
             image: jupyter/datascience-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -117,7 +117,7 @@ app:
             ui: ignore
             name: tensorflow
             image: jupyter/tensorflow-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -141,7 +141,7 @@ app:
             ui: ignore
             name: basenotebook
             image: jupyter/base-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -165,7 +165,7 @@ app:
             ui: ignore
             name: all-spark
             image: jupyter/all-spark-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -189,7 +189,7 @@ app:
             ui: ignore
             name: minimal
             image: jupyter/minimal-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -237,7 +237,7 @@ app:
             ui: ignore
             name: r-notebook
             image: jupyter/r-notebook
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:
@@ -262,7 +262,7 @@ app:
             ui: ignore
             name: nature-demo
             image: jupyter/nature-demo
-            port: 8888/http
+            port: 8888
             volume:
               - '10Gi:/home/jovyan/work'
             config:

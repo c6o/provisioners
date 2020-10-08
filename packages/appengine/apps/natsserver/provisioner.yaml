@@ -68,9 +68,9 @@ app:
             name: natsserver
             image: 'nats:latest'
             port:
-              - 4222/tcp
-              - 6222/cluster/tcp
-              - 8222/client/tcp
+              - 4222/clients/tcp
+              - 6222/routing/tcp
+              - 8222/http/tcp
             automated: true
           marina:
             launch:
