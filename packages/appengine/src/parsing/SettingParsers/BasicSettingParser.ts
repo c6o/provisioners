@@ -42,7 +42,7 @@ class BasicSettingParser implements SettingsParser {
         const value = { name: '', value: '', env: '' }
 
         if (pos > 0) {
-            value.name = single.substr(0, pos)
+            value.name = single.substr(0, pos).toLowerCase()
             const right = single.substr(pos + 1)
             const comma = right.indexOf(',')
             if (comma > 0) {

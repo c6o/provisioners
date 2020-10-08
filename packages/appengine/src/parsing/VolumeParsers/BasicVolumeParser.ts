@@ -43,9 +43,11 @@ class BasicVolumeParser implements VolumeParser {
     parseSingleVolume(volumeSpec) : Volume {
         //size:path
         //5Gi:/etc/config/
+        //5Gi:/etc/config/:name
         const items = volumeSpec.split(':')
-        const volume = { size: items[0], mountPath: items[1], name: 'data' }
-        volume.name = `data-${Math.random().toString(36).substring(7)}`
+        const volume = { size: items[0], mountPath: items[1], name: `data-${Math.random().toString(36).substring(7)}` }
+        if(items.length >= 2) volume.name = items[2]
+        volume.name = volume.name.toLowerCase()
         return volume
 
     }
