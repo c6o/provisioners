@@ -13,37 +13,26 @@ class BasicVolumeParser implements VolumeParser {
 
     parseObject(args: any, debug: IDebugger): Volume[] {
 
-//  provisioner:
-//    volume:
-//      - '10Gi:/foo'
-//      - '5Gi:/foo'
-
-//  provisioner:
-//    volume:
-//      -
-//          size: 10Gi
-//          path: /foo
-//      - '5Gi:/foo'
-
         const results = []
         const rawValues = args.volume
-        if (!rawValues || rawValues == '') return []
         if (!rawValues || rawValues == '') return []
 
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
-                if (p as Volume) {
+
+                if (p as Volume)
                     results.push(rawValues)
-                } else {
+                else
                     results.push(this.parseSingleVolume(p))
-                }
+
             }
         } else {
-            if (rawValues as Volume) {
+
+            if (rawValues as Volume)
                 results.push(rawValues)
-            } else {
+            else
                 results.push(this.parseSingleVolume(rawValues))
-            }
+
         }
         return results
 
@@ -54,8 +43,12 @@ class BasicVolumeParser implements VolumeParser {
         //5Gi:/etc/config/
         //5Gi:/etc/config/:name
         const items = volumeSpec.split(':')
+
         const volume = { size: items[0], mountPath: items[1], name: `data-${Math.random().toString(36).substring(7)}` }
-        if(items.length >= 2) volume.name = items[2]
+
+        if(items.length >= 2)
+            volume.name = items[2]
+
         volume.name = volume.name.toLowerCase()
         return volume
 

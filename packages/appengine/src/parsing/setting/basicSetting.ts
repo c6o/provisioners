@@ -21,18 +21,20 @@ class BasicSettingParser implements SettingsParser {
 
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
-                if (p as Setting) {
+
+                if (p as Setting)
                     results.push(rawValues)
-                } else {
+                else
                     results.push(this.parseSingle(p))
-                }
+
             }
         } else {
-            if (rawValues as Setting) {
+
+            if (rawValues as Setting)
                 results.push(rawValues)
-            } else {
+            else
                 results.push(this.parseSingle(rawValues))
-            }
+
         }
         return results
     }
@@ -52,14 +54,17 @@ class BasicSettingParser implements SettingsParser {
             value.name = single.substr(0, pos).toLowerCase()
             const right = single.substr(pos + 1)
             const comma = right.indexOf(',')
+
             if (comma > 0) {
                 value.value = right.substr(0, comma)
                 value.env = right.substr(comma + 1)
-            } else {
+            } else
                 value.value = right
-            }
+
         }
-        if(!value.env || value.env === '') value.env = value.name
+        if(!value.env || value.env === '')
+            value.env = value.name
+
         return value
     }
 }
