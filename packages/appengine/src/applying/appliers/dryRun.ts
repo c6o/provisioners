@@ -1,6 +1,6 @@
 import { ProvisionerManager } from '@provisioner/common'
 import { IDebugger } from 'debug'
-import { Applier } from '../'
+import { Applier } from '..'
 
 export class DryRunApplier implements Applier {
 

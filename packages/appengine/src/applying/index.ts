@@ -1,6 +1,6 @@
 import { ProvisionerManager } from '@provisioner/common'
 import { IDebugger } from 'debug'
-import * as appliers from './Appliers/'
+import * as appliers from './appliers'
 
 
 export class ApplierFactory{

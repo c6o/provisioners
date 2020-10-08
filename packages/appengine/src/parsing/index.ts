@@ -1,7 +1,7 @@
 import { IDebugger } from 'debug'
-import * as portParsers from './PortParsers/'
-import * as settingsParsers from './SettingParsers/'
-import * as volumeParsers from './VolumeParsers/'
+import * as portParsers from './port'
+import * as settingsParsers from './setting'
+import * as volumeParsers from './volume'
 
 export class ParserFactory{
     static getPortParser(type: string) : PortParser {
