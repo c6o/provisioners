@@ -1,9 +1,9 @@
 version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
 app:
-    name: 'adminer'         # display name
-    id: adminer                    #App internal name (all lower, no spaces); minimum 5 characters
-    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
-    icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'                   #see 'art' section for rules for the values here
+    name: 'adminer'
+    appId: 'adminer'
+    package: '@provisioner/appengine'
+    icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'
 
     editions:
       - name: preview
