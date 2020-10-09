@@ -2,9 +2,6 @@ parserVersion: v1   #this will change when the YAML parser itself cant parse the
 appId: plexserver                 #App internal name (all lower, no spaces); minimum 5 characters
 name: Plex Server         # display name
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
-icon: icon.svg
-description:
-summary:
 
 editions:
   - name: preview

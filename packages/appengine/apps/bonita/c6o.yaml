@@ -1,6 +1,6 @@
-version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
-name: 'adminer'
-appId: 'adminer'
+parserVersion: v1
+name: bonita
+appId: bonita
 package: '@provisioner/appengine'
 icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'
 

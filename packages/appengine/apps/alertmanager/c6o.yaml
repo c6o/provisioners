@@ -1,26 +1,25 @@
-version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
-app:
-    name: 'alertmanager'         # display name
-    id: alertmanager                   #App internal name (all lower, no spaces); minimum 5 characters
-    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
-    icon: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg'                   #see 'art' section for rules for the values here
+parserVersion: v1
+name: 'alertmanager'         # display name
+id: alertmanager                   #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+icon: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg'                   #see 'art' section for rules for the values here
 
-    editions:
-      - name: preview
-        scope: public           #public|private|deprecated   public:everyone, private:org/person only
-        default: true           #proposed: default edition used for installation
-        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
-          routes:
-            - type: http
-              targetService: alertmanager
-          provisioner:
-            package: '@provisioner/appengine'
-            ui: ignore
-            name: alertmanager
-            image: 'prom/alertmanager:latest'
-            port: 9093
-            automated: true
-          marina:
-            launch:
-              type: inline
-              popUp: true
+editions:
+  - name: preview
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: alertmanager
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: alertmanager
+        image: 'prom/alertmanager:latest'
+        port: 9093
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

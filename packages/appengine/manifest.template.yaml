@@ -1,4 +1,4 @@
-version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+parserVersion: v1
 app:
     name: 'HTTP App Display Name'         # display name
     id: sample-service                    #App internal name (all lower, no spaces); minimum 5 characters
