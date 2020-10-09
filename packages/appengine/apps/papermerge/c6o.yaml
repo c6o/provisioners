@@ -1,0 +1,32 @@
+version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+app:
+    name: 'papermerge'         # display name
+    id: papermerge                    #App internal name (all lower, no spaces); minimum 5 characters
+    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+    editions:
+      - name: latest
+        routes:
+          - type: http
+            targetService: papermerge
+        provisioner:
+          package: '@provisioner/appengine'
+          ui: ignore
+          name: papermerge
+          image: linuxserver/papermerge
+          port: 8000
+          config:
+            - name: TZ
+              value: America/Vancouver
+          volume:
+            - size: 5Gi
+              mountPath: /config
+              name: config
+            - size: 10Gi
+              mountPath: /data
+              name: data
+          automated: true
+        marina:
+          launch:
+            type: inline
+            popUp: true

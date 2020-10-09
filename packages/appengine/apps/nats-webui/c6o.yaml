@@ -1,0 +1,25 @@
+version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+app:
+    name: 'nats-webui'         # display name
+    id: nats-webui                 #App internal name (all lower, no spaces); minimum 5 characters
+    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+    editions:
+      - name: preview
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: nats-webui
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: nats-webui
+            image: 'sphqxe/nats-webui:latest'
+            port: 80
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true

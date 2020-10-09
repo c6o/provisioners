@@ -1,0 +1,248 @@
+version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+app:
+    name: 'jupyter'         # display name
+    id: jupyter                 #App internal name (all lower, no spaces); minimum 5 characters
+    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+    editions:
+      - name: scipy
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: scipy
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: scipy
+            image: jupyter/scipy-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+      - name: datascience
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: datascience
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: datascience
+            image: jupyter/datascience-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+      - name: tensorflow
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: tensorflow
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: tensorflow
+            image: jupyter/tensorflow-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+      - name: basenotebook
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: basenotebook
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: basenotebook
+            image: jupyter/base-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+      - name: all-spark
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: all-spark
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: all-spark
+            image: jupyter/all-spark-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+      - name: minimal
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: minimal
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: minimal
+            image: jupyter/minimal-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+      - name: nbviewer
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: nbviewer
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: nbviewer
+            image: jupyter/nbviewer
+            port: 8080
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+      - name: r-notebook
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: r-notebook
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: r-notebook
+            image: jupyter/r-notebook
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true
+
+
+
+      - name: nature-demo
+        scope: public           #public|private|deprecated   public:everyone, private:org/person only
+        default: true           #proposed: default edition used for installation
+        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+          routes:
+            - type: http
+              targetService: nature-demo
+          provisioner:
+            package: '@provisioner/appengine'
+            ui: ignore
+            name: nature-demo
+            image: jupyter/nature-demo
+            port: 8888
+            volume:
+              - size: 10Gi
+                mountPath: /home/jovyan/work
+                name: work
+            config:
+              - name: JUPYTER_ENABLE_LAB
+                value: yes
+            automated: true
+          marina:
+            launch:
+              type: inline
+              popUp: true

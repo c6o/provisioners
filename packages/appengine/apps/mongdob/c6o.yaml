@@ -1,0 +1,55 @@
+version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+app:
+    name: 'mongodb'         # display name
+    id: mongodb                    #App internal name (all lower, no spaces); minimum 5 characters
+    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+    editions:
+      - name: developer
+        routes:
+          - type: tcp
+            targetService: mongo
+            tcp:
+              port: 27017
+              name: mongo
+        provisioner:
+          package: '@provisioner/appengine'
+          ui: ignore
+          name: mongo
+          image: 'mongo:latest'
+          port: 27017
+          volume:
+            - size: 5Gi
+              mountPath: /data
+              name: data
+          secret:
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: admin
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+          automated: true
+        marina:
+          launch:
+            type: inline
+            popUp: true
+      - name: developerinternal
+        provisioner:
+          package: '@provisioner/appengine'
+          ui: ignore
+          name: mongo
+          image: 'mongo:latest'
+          port: 27017
+          volume:
+            - size: 5Gi
+              mountPath: /data
+              name: data
+          secret:
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: admin
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: root
+          automated: true
+        marina:
+          launch:
+            type: inline
+            popUp: true
