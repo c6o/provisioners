@@ -1,17 +1,20 @@
 import { IDebugger } from 'debug'
 import { VolumeParser, Volume } from '..'
+import createDebug from 'debug'
+
+const debug = createDebug('@appengine:createInquire')
 
 class BasicVolumeParser implements VolumeParser {
 
-    parse(args: any, spec: any, debug: IDebugger): Volume[] {
+    parse(args: any, spec: any): Volume[] {
         debug('Volume Inputs:\n', args, spec)
-        let results = this.parseObject(args, debug)
-        results = results.concat(this.parseObject(spec, debug))
-        debug('Volume Outputs:\n', results)
+        let results = this.parseObject(args)
+        results = results.concat(this.parseObject(spec))
+        debug('Volume Outputs:\n',  JSON.stringify(results))
         return results
     }
 
-    parseObject(args: any, debug: IDebugger): Volume[] {
+    parseObject(args: any): Volume[] {
 
         const results = []
         const rawValues = args.volume
@@ -20,7 +23,9 @@ class BasicVolumeParser implements VolumeParser {
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
 
-                if (p as Volume)
+                if(p === null) continue
+
+                if (typeof p === 'object')
                     results.push(rawValues)
                 else
                     results.push(this.parseSingleVolume(p))
@@ -28,7 +33,7 @@ class BasicVolumeParser implements VolumeParser {
             }
         } else {
 
-            if (rawValues as Volume)
+            if (typeof rawValues === 'object')
                 results.push(rawValues)
             else
                 results.push(this.parseSingleVolume(rawValues))

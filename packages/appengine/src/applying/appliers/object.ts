@@ -1,25 +1,28 @@
 import { ProvisionerManager } from '@provisioner/common'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
-import { IDebugger } from 'debug'
+import { inspect } from 'util'
+import { templates } from '../../templates/latest'
+import createDebug from 'debug'
 
+const debug = createDebug('@appengine:createInquire')
 
 export class ObjectApplier implements Applier {
 
-    async apply(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger) {
+    async apply(namespace: string, spec: any, manager: ProvisionerManager) {
 
-        const deployment = await this.getDeployment(namespace, spec, debug)
-        await this.applySecrets(namespace, spec, manager, debug, deployment)
-        await this.applyConfigs(namespace, spec, manager, debug, deployment)
-        await this.applyPorts(namespace, spec, manager, debug, deployment)
-        await this.applyVolumes(namespace, spec, manager, debug, deployment)
-        await this.applyDeployment(spec, manager, debug, deployment)
+        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image)
+        await this.applySecrets(namespace, spec, manager, deployment)
+        await this.applyConfigs(namespace, spec, manager, deployment)
+        await this.applyPorts(namespace, spec, manager, deployment)
+        await this.applyVolumes(namespace, spec, manager, deployment)
+        await this.applyDeployment(spec, manager, deployment)
 
     }
 
-    async applyDeployment(spec: any, manager: ProvisionerManager, debug: IDebugger, deployment: any) {
+    async applyDeployment(spec: any, manager: ProvisionerManager, deployment: any) {
 
-        debug('Installing the Deployment', deployment)
+        debug('Installing the Deployment', inspect(deployment))
 
         await manager.cluster
             .begin('Installing the Deployment')
@@ -28,52 +31,7 @@ export class ObjectApplier implements Applier {
             .end()
     }
 
-    async getDeployment(namespace: string, spec: any, debug: IDebugger) {
-        return {
-            apiVersion: 'apps/v1',
-            kind: 'Deployment',
-            metadata: {
-                namespace: namespace,
-                name: spec.name,
-                labels: {
-                    app: spec.name,
-                    'app.kubernetes.io/managed-by': 'codezero',
-                    'system.codezero.io/app': spec.name,
-                    'system.codezero.io/appengine': 'v1'
-                }
-            },
-            spec: {
-                selector: {
-                    matchLabels: {
-                        app: spec.name
-                    }
-                },
-                template: {
-                    metadata: {
-                        labels: {
-                            app: spec.name,
-                            'app.kubernetes.io/managed-by': 'codezero',
-                            'system.codezero.io/app': 'name',
-                            'system.codezero.io/appengine': 'v1'
-                        }
-                    },
-                    spec: {
-                        containers: [
-                            {
-                                name: spec.name,
-                                image: spec.image,
-                                imagePullPolicy: 'IfNotPresent',
-                                env: []
-                            }
-                        ]
-                    }
-                }
-            }
-        }
-    }
-
-
-    async applyVolumes(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger, deployment: any) {
+    async applyVolumes(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.volumes?.length) {
 
@@ -81,31 +39,10 @@ export class ObjectApplier implements Applier {
             deployment.spec.template.spec.volumes = []
 
             for (const item of spec.volumes) {
-                const pvc = {
-                    kind: 'PersistentVolumeClaim',
-                    apiVersion: 'v1',
-                    metadata: {
-                        name: item.name.toLowerCase(),
-                        namespace: namespace,
-                        labels: {
-                            app: spec.name,
-                            'system.codezero.io/app': spec.name,
-                            'system.codezero.io/appengine': 'v1'
-                        }
-                    },
-                    spec: {
-                        accessModes: [
-                            'ReadWriteOnce'
-                        ],
-                        resources: {
-                            requests: {
-                                storage: item.size
-                            }
-                        }
-                    }
-                }
 
-                debug('Installing Volume Claim', pvc)
+                const pvc = templates.getPVCTemplate(item.name, spec.name, namespace)
+
+                debug('Installing Volume Claim', inspect(pvc))
 
                 await manager.cluster
                     .begin(`Installing Volume Claim: '${item.name}'`)
@@ -121,31 +58,11 @@ export class ObjectApplier implements Applier {
         }
     }
 
-    async applyPorts(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger, deployment: any) {
+    async applyPorts(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.ports?.length) {
-            const service = {
-                apiVersion: 'v1',
-                kind: 'Service',
-                metadata: {
-                    name: spec.name,
-                    namespace: namespace,
-                    labels: {
-                        app: spec.name,
-                        'app.kubernetes.io/managed-by': 'codezero',
-                        'system.codezero.io/app': spec.name,
-                        'system.codezero.io/appengine': 'v1'
-                    }
-                },
-                spec: {
-                    type: 'NodePort',
-                    externalTrafficPolicy: 'Cluster',
-                    ports: [],
-                    selector: {
-                        app: spec.name
-                    }
-                }
-            }
+
+            const service = templates.getPortTemplate(spec.name, namespace)
 
             deployment.spec.template.spec.containers[0].ports = []
 
@@ -170,7 +87,7 @@ export class ObjectApplier implements Applier {
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
             }
 
-            debug('Installing Networking Services', service)
+            debug('Installing Networking Services', inspect(service))
 
             await manager.cluster
                 .begin('Installing Networking Services')
@@ -182,25 +99,11 @@ export class ObjectApplier implements Applier {
 
     }
 
-    async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger, deployment: any) {
+    async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.configs?.length) {
 
-            const config = {
-                apiVersion: 'v1',
-                kind: 'ConfigMap',
-                metadata: {
-                    name: `${spec.name}configs`,
-                    namespace: namespace,
-                    labels: {
-                        app: spec.name,
-                        'system.codezero.io/app': spec.name,
-                        'system.codezero.io/appengine': 'v1'
-                    }
-                },
-                data: {}
-            }
-
+            const config = templates.getConfigTemplate(spec.name, namespace)
 
             for (const item of spec.configs) {
                 if (!item.env || item.env === '') item.env = item.name
@@ -217,7 +120,7 @@ export class ObjectApplier implements Applier {
                     })
             }
 
-            debug('Applying configs:\n', deployment.spec.template.spec.containers[0].env)
+            debug('Installing configs:\n', inspect(deployment.spec.template.spec.containers[0].env))
 
             await manager.cluster
                 .begin('Installing the Configuration Settings')
@@ -228,28 +131,14 @@ export class ObjectApplier implements Applier {
     }
 
 
-    async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, debug: IDebugger, deployment: any) {
+    async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.secrets && spec.secrets.length > 0) {
 
-            const secret = {
-                apiVersion: 'v1',
-                kind: 'Secret',
-                metadata: {
-                    name: `${spec.name}secrets`,
-                    namespace: namespace,
-                    labels: {
-                        app: spec.name,
-                        'system.codezero.io/app': spec.name,
-                        'system.codezero.io/appengine': 'v1'
-                    }
-                },
-                type: 'Opaque',
-                data: {}
-            }
+            const secret = templates.getSecretTemplate(spec.name, namespace)
 
 
-            for (const item of spec.secrets) {
+            for (const item of spec.secret) {
                 if (!item.env || item.env === '') item.env = item.name
                 const value = Buffer.from(item.value).toString('base64')
                 secret.data[item.name] = value
@@ -265,7 +154,7 @@ export class ObjectApplier implements Applier {
                     })
             }
 
-            debug('Applying secrets:\n', deployment.spec.template.spec.containers[0].env)
+            debug('Installing secrets:\n', inspect(deployment.spec.template.spec.containers[0].env))
 
             await manager.cluster
                 .begin('Installing the Secrets')

@@ -1,19 +1,22 @@
 import { IDebugger } from 'debug'
 import { Port, PortParser } from '..'
+import createDebug from 'debug'
+
+const debug = createDebug('@appengine:createInquire')
 
 class BasicPortParser implements PortParser {
 
-    parse(args: any, spec: any, debug: IDebugger): Port[] {
+    parse(args: any, spec: any): Port[] {
 
         debug('Port Inputs:\n', args, spec)
-        let results = this.parseObject(args, debug)
-        results = results.concat(this.parseObject(spec, debug))
-        debug('Port Outputs:\n', results)
+        let results = this.parseObject(args)
+        results = results.concat(this.parseObject(spec))
+        debug('Port Outputs:\n',  JSON.stringify(results))
 
         return results
     }
 
-    parseObject(args: any, debug: IDebugger): Port[] {
+    parseObject(args: any): Port[] {
 
         const results = []
         const rawValues = args.port
@@ -23,15 +26,17 @@ class BasicPortParser implements PortParser {
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
 
-                if (p as Port)
-                    results.push(p)
+                if(p === null) continue
+
+                if (typeof p === 'object')
+                    results.push(p as Port)
                 else
                     results.push(this.parseSinglePort(p))
 
             }
         } else {
 
-            if (rawValues as Port)
+            if (typeof rawValues == 'object')
                 results.push(rawValues)
             else
                 results.push(this.parseSinglePort(rawValues))

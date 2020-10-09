@@ -1,18 +1,21 @@
 import { IDebugger } from 'debug'
 import { SettingsParser, Setting } from '..'
+import createDebug from 'debug'
+
+const debug = createDebug('@appengine:createInquire')
 
 class BasicSettingParser implements SettingsParser {
 
 
-    parse(args: any, spec: any, type: string, debug: IDebugger): Setting[] {
+    parse(args: any, spec: any, type: string): Setting[] {
         debug(`Settings Inputs: ${type}\n`, args, spec)
-        let results = this.parseObject(args, type, debug)
-        results = results.concat(this.parseObject(spec, type, debug))
-        debug(`Settings Outputs: ${type}\n`, results)
+        let results = this.parseObject(args, type)
+        results = results.concat(this.parseObject(spec, type))
+        debug(`Settings Outputs: ${type}\n`,  JSON.stringify(results))
         return results
     }
 
-    parseObject(args: any, type: string, debug: IDebugger): Setting[] {
+    parseObject(args: any, type: string): Setting[] {
 
         const results = []
         if(!args || !args[type]) return []
@@ -22,7 +25,9 @@ class BasicSettingParser implements SettingsParser {
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
 
-                if (p as Setting)
+                if(p === null) continue
+
+                if (typeof p === 'object')
                     results.push(rawValues)
                 else
                     results.push(this.parseSingle(p))
@@ -30,7 +35,7 @@ class BasicSettingParser implements SettingsParser {
             }
         } else {
 
-            if (rawValues as Setting)
+            if (typeof rawValues === 'object')
                 results.push(rawValues)
             else
                 results.push(this.parseSingle(rawValues))

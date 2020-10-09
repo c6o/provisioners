@@ -1,38 +1,40 @@
-version: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
-app:
-    name: 'plexserver'         # display name
-    id: plexserver                 #App internal name (all lower, no spaces); minimum 5 characters
-    package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+parserVersion: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+appId: plexserver                 #App internal name (all lower, no spaces); minimum 5 characters
+name: Plex Server         # display name
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+icon: icon.svg
+description:
+summary:
 
-    editions:
-      - name: preview
-        scope: public           #public|private|deprecated   public:everyone, private:org/person only
-        default: true           #proposed: default edition used for installation
-        spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
-          routes:
-            - type: http
-              targetService: plexserver
-          provisioner:
-            package: '@provisioner/appengine'
-            ui: ignore
-            name: plexserver
-            image: 'plexinc/pms-docker:latest'
-            port: 32400
-            config:
-              - name: TZ
-                value: America/Vancouver
-            volume:
-              - size: 500Gi
-                mountPath: /config
-                name: config
-              - size: 100Gi
-                mountPath: /data
-                name: data
-              - size: 50Gi
-                mountPath: /transcode
-                name: transcode
-            automated: true
-          marina:
-            launch:
-              type: inline
-              popUp: true
+editions:
+  - name: preview
+    status: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: plexserver
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: plexserver
+        image: 'plexinc/pms-docker:latest'
+        port: 32400
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 500Gi
+            mountPath: /config
+            name: config
+          - size: 100Gi
+            mountPath: /data
+            name: data
+          - size: 50Gi
+            mountPath: /transcode
+            name: transcode
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -11,14 +11,23 @@ editions:
     spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
       routes:
         - type: http
-          targetService: adminer
+          targetService: bonita
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
-        name: adminer
-        image: 'adminer:latest'
+        name: bonita
+        image: 'bonita:latest'
         port: 8080
         automated: true
+        secret:
+          - name: TENANT_LOGIN
+            value: tech_user
+          - name: TENANT_PASSWORD
+            value: secret
+          - name: PLATFORM_LOGIN
+            value: pfadmin
+          - name: PLATFORM_PASSWORD
+            value: pfsecret
       marina:
         launch:
           type: inline

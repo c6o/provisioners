@@ -1,8 +1,6 @@
 import { baseProvisionerType } from '../index'
-import createDebug from 'debug'
 import { ParserFactory as parserFactory } from '../parsing'
-
-
+import createDebug from 'debug'
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -51,6 +49,17 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.volumes = await this.askVolumes(args, automated)
 
         debug('Inquire Completed\n', 'spec:\n', this.spec, 'args:\n', args)
+
+        //czctl install appengine --local -n testing --image redis --name redis --port "6379/TCP/TCP"  --automated
+        //czctl install redis --local -n testing
+
+        //czctl install redis --local -n testing  --specOnly > foo.yaml
+        //czctl provision foo.yaml
+
+        //appEngine -> provisions docker containers
+        //appStudio -> UI to manage appEngine based configuration  (czctl and webui -> icon in marina)
+        //appSuite  -> provisioner for provisioners
+
     }
 
 
@@ -178,8 +187,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 {
                     type: 'list',
                     name: 'protocol',
-                    default: 'HTTP',
-                    choices: ['HTTP', 'TCP'],
+                    default: 'TCP',
+                    choices: ['SCTP', 'TCP', 'UDP'],
                     message: 'What protocol shall this port use?',
                     when: r => r.hasPorts,
                 },
@@ -202,9 +211,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 }
             ])
 
-            if (responses.hasPorts) {
-                ports.push({ name: responses.name, protocol: responses.protocol, port: responses.port, targetPort: responses.targetPort })
-            }
+            if (responses.hasPorts)
+                ports.push({ name: responses.name, protocol: responses.protocol, port: Number(responses.port), targetPort: Number(responses.targetPort) })
+
         } while (responses.hasPorts)
 
         return ports
