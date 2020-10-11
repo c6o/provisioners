@@ -1,0 +1,91 @@
+_id: system
+name: System
+appId: c6o-system
+system: true
+icon: systemIcon.svg
+summary: This is the CodeZero Operating System
+editions:
+  - name: latest
+    status: public
+    spec:
+      navstation: true
+      provisioner:
+        tag: latest
+        namespace: c6o-system
+        services:
+          - istio:
+              namespace: istio-system
+              httpsRedirect: false
+              autoInjectEnabled: false
+              citadelEnabled: false
+              coreDnsEnabled: false
+              galleyEnabled: false
+              policyEnabled: false
+              telemetryEnabled: false
+              grafanaEnabled: false
+              kialiEnabled: false
+              prometheusEnabled: false
+---
+_id: store
+name: Store
+appId: store
+system: true
+icon: storeIcon.
+summary: Discover and Install other CodeZero Applications in the Store
+editions:
+  - name: latest
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: system-store
+          http:
+            prefix: /store/
+            rewrite: /
+      marina:
+        launch:
+          type: inline
+          port: 1236
+          tag: c6o-store-app
+          path: /index.html
+      provisioner: ignore
+---
+_id: navstation
+appId: navstation
+name: Nav Station
+icon: navStationIcon.svg
+system: true
+summary: The Nav Station is the Settings Application where you can manage preferences and configuration of installed Applications.
+editions:
+  - name: latest
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: system-navstation
+          http:
+            prefix: /navstation/
+            rewrite: /
+      provisioner: ignore
+      marina:
+        launch:
+          type: inline
+          port: 1237
+          tag: c6o-navstation-app
+          path: /index.html
+        menus:
+          - type: apps
+            display: Settings...
+            action: settings
+---
+_id: marinax
+appId: marina
+name: Marina
+system: true
+icon: marinaIcon.svg
+summary: The Marina is the CodeZero desktop UI for Kubernetes. It is the first Application that launches when you navigate to a CodeZero Cloud.
+editions:
+  - name: latest
+    status: public
+    spec:
+      provisioner: ignore
