@@ -1,6 +1,5 @@
-format: v1
 name: 'adminer'
-appId: 'adminer'
+appId:  'adminer'
 package: '@provisioner/appengine'
 icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'
 

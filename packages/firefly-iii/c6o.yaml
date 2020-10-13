@@ -1,6 +1,6 @@
 format: v1
 name: 'firefly-iii'         # display name
-id: firefly-iii                   #App internal name (all lower, no spaces); minimum 5 characters
+appId: firefly-iii                   #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:

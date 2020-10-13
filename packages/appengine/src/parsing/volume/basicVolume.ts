@@ -26,7 +26,7 @@ class BasicVolumeParser implements VolumeParser {
                 if(p === null) continue
 
                 if (typeof p === 'object')
-                    results.push(rawValues)
+                    results.push(p as Volume)
                 else
                     results.push(this.parseSingleVolume(p))
 
@@ -34,7 +34,7 @@ class BasicVolumeParser implements VolumeParser {
         } else {
 
             if (typeof rawValues === 'object')
-                results.push(rawValues)
+                results.push(rawValues as Volume)
             else
                 results.push(this.parseSingleVolume(rawValues))
 
@@ -53,6 +53,8 @@ class BasicVolumeParser implements VolumeParser {
 
         if(items.length >= 2)
             volume.name = items[2]
+
+        if(!volume.name) volume.name = `data-${Math.random().toString(36).substring(7)}`
 
         volume.name = volume.name.toLowerCase()
         return volume

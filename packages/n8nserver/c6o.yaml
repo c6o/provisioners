@@ -1,6 +1,6 @@
 format: v1
 name: 'n8nserver'         # display name
-id: n8nserver                  #App internal name (all lower, no spaces); minimum 5 characters
+appId: n8nserver                  #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:

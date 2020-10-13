@@ -37,7 +37,7 @@ class BasicPortParser implements PortParser {
         } else {
 
             if (typeof rawValues == 'object')
-                results.push(rawValues)
+                results.push(rawValues as Port)
             else
                 results.push(this.parseSinglePort(rawValues))
 

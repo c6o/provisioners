@@ -1,6 +1,5 @@
-format: v1
 name: 'calibre-web'         # display name
-id: calibre-web                 #App internal name (all lower, no spaces); minimum 5 characters
+appId: calibre-web                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:

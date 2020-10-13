@@ -1,6 +1,5 @@
-format: v1
 name: 'alertmanager'         # display name
-id: alertmanager                   #App internal name (all lower, no spaces); minimum 5 characters
+appId: alertmanager                   #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 icon: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg'                   #see 'art' section for rules for the values here
 

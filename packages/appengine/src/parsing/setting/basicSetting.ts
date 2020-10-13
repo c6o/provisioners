@@ -28,7 +28,7 @@ class BasicSettingParser implements SettingsParser {
                 if(p === null) continue
 
                 if (typeof p === 'object')
-                    results.push(rawValues)
+                    results.push(p as Setting)
                 else
                     results.push(this.parseSingle(p))
 
@@ -36,7 +36,7 @@ class BasicSettingParser implements SettingsParser {
         } else {
 
             if (typeof rawValues === 'object')
-                results.push(rawValues)
+                results.push(rawValues as Setting)
             else
                 results.push(this.parseSingle(rawValues))
 

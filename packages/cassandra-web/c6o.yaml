@@ -1,6 +1,5 @@
-format: v1
 name: 'cassandra-web'         # display name
-id: cassandra-web                 #App internal name (all lower, no spaces); minimum 5 characters
+appId: cassandra-web                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:
@@ -19,7 +18,7 @@ editions:
         port: 80
         secret:
           - name: HOST_PORT
-            value: 80
+            value: ":80"
           - name: CASSANDRA_HOST
             value: cassandra
           - name: CASSANDRA_PORT

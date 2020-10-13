@@ -1,50 +1,52 @@
-format: v1
 name: 'mysql'         # display name
-id: mysql                    #App internal name (all lower, no spaces); minimum 5 characters
+appId: mysql                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:
   - name: developer
-    routes:
-      - type: tcp
-        targetService: mysql
-        tcp:
-          port: 3306
-          name: mysql
-    provisioner:
-      package: '@provisioner/appengine'
-      ui: ignore
-      name: mysql
-      image: 'mysql:latest'
-      port: 3306
-      volume:
-        - size: 5Gi
-          mountPath: /data
-          name: data
-      secret:
-        - name: MYSQL_ROOT_PASSWORD
-          value: admin
-      automated: true
-    marina:
-      launch:
-        type: inline
-        popUp: true
+    spec:
+      routes:
+        - type: tcp
+          targetService: mysql
+          tcp:
+            port: 3306
+            name: mysql
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: mysql
+        image: 'mysql:latest'
+        port: 3306
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+        secret:
+          - name: MYSQL_ROOT_PASSWORD
+            value: admin
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
   - name: developerinternal
-    provisioner:
-      package: '@provisioner/appengine'
-      ui: ignore
-      name: mysql
-      image: 'mysql:latest'
-      port: 3306
-      volume:
-        - size: 5Gi
-          mountPath: /data
-          name: data
-      secret:
-        - name: MYSQL_ROOT_PASSWORD
-          value: admin
-      automated: true
-    marina:
-      launch:
-        type: inline
-        popUp: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: mysql
+        image: 'mysql:latest'
+        port: 3306
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+        secret:
+          - name: MYSQL_ROOT_PASSWORD
+            value: admin
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

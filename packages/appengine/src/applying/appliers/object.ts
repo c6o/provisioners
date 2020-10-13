@@ -40,7 +40,7 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.volumes) {
 
-                const pvc = templates.getPVCTemplate(item.name, spec.name, namespace)
+                const pvc = templates.getPVCTemplate(item.name, item.size, spec.name, namespace)
 
                 debug('Installing Volume Claim', inspect(pvc))
 
@@ -107,7 +107,7 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.configs) {
                 if (!item.env || item.env === '') item.env = item.name
-                config.data[item.name] = item.value
+                config.data[item.name] = new String(item.value)
                 deployment.spec.template.spec.containers[0].env.push(
                     {
                         name: item.env,
@@ -140,7 +140,7 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.secret) {
                 if (!item.env || item.env === '') item.env = item.name
-                const value = Buffer.from(item.value).toString('base64')
+                const value = Buffer.from(new String(item.value)).toString('base64')
                 secret.data[item.name] = value
                 deployment.spec.template.spec.containers[0].env.push(
                     {

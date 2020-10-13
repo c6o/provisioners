@@ -1,7 +1,7 @@
 
 import { getLabels } from './labels'
 
-export function getPVCTemplate(volumeName: string, name: string, namespace: string) {
+export function getPVCTemplate(volumeName: string, volumeSize: string, name: string, namespace: string) {
 
     return {
         kind: 'PersistentVolumeClaim',
@@ -17,7 +17,7 @@ export function getPVCTemplate(volumeName: string, name: string, namespace: stri
             ],
             resources: {
                 requests: {
-                    storage: volumeName
+                    storage: volumeSize
                 }
             }
         }

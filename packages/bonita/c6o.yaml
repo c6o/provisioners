@@ -1,6 +1,5 @@
-format: v1
 name: bonita
-appId: bonita
+appId:  bonita
 package: '@provisioner/appengine'
 icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'
 
@@ -19,15 +18,10 @@ editions:
         image: 'bonita:latest'
         port: 8080
         automated: true
-        secret:
-          - name: TENANT_LOGIN
-            value: tech_user
-          - name: TENANT_PASSWORD
-            value: secret
-          - name: PLATFORM_LOGIN
-            value: pfadmin
-          - name: PLATFORM_PASSWORD
-            value: pfsecret
+        volume:
+          - size: 5Gi
+            mountPath: /opt/bonita
+            name: bonita
       marina:
         launch:
           type: inline
