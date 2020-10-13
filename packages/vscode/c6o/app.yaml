@@ -1,0 +1,10 @@
+name: Visual Studio Code
+appId: vscode
+icon: icon.svg
+editions:
+  - name: stable
+    status: public
+    spec:
+      marina: {}
+      provisioner:
+        storage: 4Gi

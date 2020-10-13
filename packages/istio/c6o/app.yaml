@@ -1,0 +1,22 @@
+_id: istio
+name: Istio
+appId: istio
+system: true
+icon: icon.svg
+editions:
+  - name: stable
+    status: public
+    spec:
+      navstation: true
+      provisioner:
+        package: '@provisioner/istio'
+        httpsRedirect: true
+        autoInjectEnabled: false
+        citadelEnabled: false
+        coreDnsEnabled: false
+        galleyEnabled: false
+        policyEnabled: false
+        telemetryEnabled: false
+        grafanaEnabled: false
+        kialiEnabled: false
+        prometheusEnabled: false

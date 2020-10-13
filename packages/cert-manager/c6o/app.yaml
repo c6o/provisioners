@@ -1,0 +1,11 @@
+name: Certificate Manager
+appId: cert-manager
+icon: icon.svg
+editions:
+    - name: stable
+      status: private
+      spec:
+        provisioner:
+          package: '@provisioner/cert-manager'
+          environment: staging
+          notifyEmail: ''

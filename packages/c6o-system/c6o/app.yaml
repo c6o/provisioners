@@ -78,7 +78,7 @@ editions:
             display: Settings...
             action: settings
 ---
-_id: marinax
+_id: marina
 appId: marina
 name: Marina
 system: true

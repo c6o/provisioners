@@ -1,0 +1,24 @@
+name: 'Logging (ELK)'
+appId: logging-elk
+icon: icon.svg
+editions:
+  - name: stable
+    status: public
+    interfaces:
+      - logstash
+    spec:
+      routes:
+          - type: http
+            targetService: kibana
+      provisioner:
+        package: '@provisioner/logging-elk'
+        storage: 1Gi
+        k8sLogIndexPrefix: cloud
+      marina:
+        launch:
+          type: inline
+      services:
+        logstash:
+          protocol: http
+          service: elasticsearch
+          port: 9200

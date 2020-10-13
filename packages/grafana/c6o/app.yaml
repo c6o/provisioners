@@ -1,0 +1,18 @@
+name: Grafana
+appId: grafana
+icon: icon.svg
+editions:
+  - name: stable
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: grafana
+      provisioner:
+        package: '@provisioner/grafana'
+        storage: 1Gi
+        adminUsername: admin
+        adminPassword: admin
+      marina:
+        launch:
+          type: inline

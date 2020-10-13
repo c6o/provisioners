@@ -1,0 +1,17 @@
+name: Node-RED
+appId: node-red
+icon: icon.svg
+editions:
+  - name: dragon
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: node-red
+      provisioner:
+        storage: 1Gi
+        projects: false
+        package: '@provisioner/node-red'
+      marina:
+        launch:
+          type: inline

@@ -1,0 +1,42 @@
+<svg width="690" height="690" xmlns="http://www.w3.org/2000/svg">
+    <metadata id="metadata839">image/svg+xml</metadata>
+    <defs>
+        <linearGradient x1="0.07102" y1="0.89906" x2="0.98258" y2="-0.07054" spreadMethod="pad" id="linearGradient993">
+            <stop stop-color="#5a43c9" offset="0" id="stop987" />
+            <stop stop-color="#5a43c9" offset="0.64305" id="stop989" />
+            <stop stop-color="#220b60" offset="1" id="stop991" />
+        </linearGradient>
+        <linearGradient x1="1.04249" y1="0.13431" x2="0.0667" y2="0.94376" spreadMethod="pad" id="linearGradient1015">
+            <stop stop-color="#a16bd9" offset="0" id="stop1009" />
+            <stop stop-color="#a16bd9" offset="0.23238" id="stop1011" />
+            <stop stop-color="#6d3dd4" offset="1" id="stop1013" />
+        </linearGradient>
+    </defs>
+    <g>
+        <title>background</title>
+        <rect fill="none" id="canvas_background" height="692" width="692" y="-1" x="-1" />
+    </g>
+    <g>
+        <title>Layer 1</title>
+        <g id="svg_1">
+            <g transform="matrix(1.3333333,0,0,-1.3333333,-174.15066,1441.9173) " id="g975">
+                <g id="g977">
+                    <g id="g983">
+                        <g id="g985">
+                            <path fill="url(#linearGradient993)" d="m132.113,813.041c155.07,-167.956 251.457,-148.554 304.222,-52.74l0,0c-16.967,-3.507 -35.104,-1.551 -53.479,4.081l0,0c-72.047,22.027 -147.864,100.516 -172.134,127.268l0,0l-78.609,-78.609z" id="path995" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g transform="matrix(1.3333333,0,0,-1.3333333,-174.15066,1441.9173) " id="g997">
+                <g id="g999">
+                    <g id="g1005">
+                        <g id="g1007">
+                            <path fill="url(#linearGradient1015)" d="m341.13,855.507c16.967,3.508 35.104,1.551 53.455,-4.104l0,0c72.072,-22.003 147.912,-100.517 172.158,-127.245l0,0l78.585,78.585c-82.482,89.363 -148.384,125.689 -199.931,125.695l0,0c-45.348,0.01 -79.584,-28.099 -104.267,-72.931" id="path1017" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+name: Precog
+appId: precog
+icon: icon.svg
+editions:
+  - name: stable
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: precog
+      provisioner:
+        package: '@provisioner/precog'
+        storage: 1Gi
+      marina:
+        launch:
+          type: inline
