@@ -18,6 +18,10 @@ editions:
         image: 'duplicati/duplicati:latest'
         port: 8200
         automated: true
+        volume:
+          - name: data
+            size: 5Gi
+            mountPath: /data
       marina:
         launch:
           type: inline

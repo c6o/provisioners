@@ -16,8 +16,27 @@ editions:
         ui: ignore
         name: embyserver
         image: 'linuxserver/emby:latest'
-        port: 8096
+        config:
+          - name: TZ
+            value: America/Vancouver
+        port:
+          - name: http
+            port: 8096
+            protocol: TCP
         automated: true
+        volume:
+          - name: config
+            size: 1Gi
+            mountPath: /config
+          - name: tvshows
+            size: 100Gi
+            mountPath: /data/tvshows
+          - name: movies
+            size: 100Gi
+            mountPath: /data/movies
+          - name: transcode
+            size: 50Gi
+            mountPath: /transcode
       marina:
         launch:
           type: inline
