@@ -1,23 +1,129 @@
-format: v1
 name: 'cloud9'         # display name
 appId: cloud9                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:
-  - name: preview
+  - name: python
     scope: public           #public|private|deprecated   public:everyone, private:org/person only
     default: true           #proposed: default edition used for installation
     spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
       routes:
         - type: http
-          targetService: cloud9
+          targetService: cloud9python
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
-        name: cloud9
-        image: 'linuxserver/cloud9:latest'
+        name: cloud9python
+        image: 'linuxserver/cloud9:python'
         port: 8000
         automated: true
+        volume:
+          - name: code
+            mountPath: /code
+            size: 5Gi
+        config:
+          - name: TZ
+            value: America/Vancouver
+        secret:
+          - name: USERNAME
+            value: admin
+          - name: PASSWORD
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: nodejs
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: cloud9nodejs
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: cloud9nodejs
+        image: 'linuxserver/cloud9:nodejs'
+        port: 8000
+        automated: true
+        volume:
+          - name: code
+            mountPath: /code
+            size: 5Gi
+        config:
+          - name: TZ
+            value: America/Vancouver
+        secret:
+          - name: USERNAME
+            value: admin
+          - name: PASSWORD
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: go
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: cloud9go
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: cloud9go
+        image: 'linuxserver/cloud9:go'
+        port: 8000
+        automated: true
+        volume:
+          - name: code
+            mountPath: /code
+            size: 5Gi
+        config:
+          - name: TZ
+            value: America/Vancouver
+        secret:
+          - name: USERNAME
+            value: admin
+          - name: PASSWORD
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: ruby
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: cloud9ruby
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: cloud9ruby
+        image: 'linuxserver/cloud9:ruby'
+        port: 8000
+        automated: true
+        volume:
+          - name: code
+            mountPath: /code
+            size: 5Gi
+        config:
+          - name: TZ
+            value: America/Vancouver
+        secret:
+          - name: USERNAME
+            value: admin
+          - name: PASSWORD
+            value: admin
       marina:
         launch:
           type: inline
