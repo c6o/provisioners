@@ -1,4 +1,4 @@
-parserVersion: v1
+format: v1
 app:
     name: 'HTTP App Display Name'         # display name
     id: sample-service                    #App internal name (all lower, no spaces); minimum 5 characters

@@ -1,0 +1,36 @@
+format: v1
+name: 'rdesktop'         # display name
+id: rdesktop               #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+editions:
+  - name: xfce-focal
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: tcp
+          targetService: rdesktop-xfce-focal
+          tcp:
+            port: 3389
+            name: rdesktop-xfce-focal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: rdesktop-xfcefocal
+        image: 'linuxserver/rdesktop:latest'
+        port: 3389/tcp/TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,34 @@
+format: v1
+name: 'recorder'         # display name
+id: recorder               #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+editions:
+  - name: preview
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: recorder
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: recorder
+        image: 'owntracks/recorder:latest'
+        port: 8083
+        automated: true
+        config:
+          - name: OTR_HOST
+            value: mosquitto
+          - name: OTR_PORT
+            value: 1883
+        secret:
+          - name: OTR_USER
+            value: admin
+          - name: OTR_PASS
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,19 @@
+format: v1
+name: 'appengine'         # display name
+id: appengine                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+editions:
+  - name: preview
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: appengine
+      provisioner:
+        package: '@provisioner/appengine'
+      marina:
+        launch:
+          type: inline
+          popUp: true

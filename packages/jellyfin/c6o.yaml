@@ -1,0 +1,35 @@
+format: v1
+name: 'jellyfin'         # display name
+id: jellyfin                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+editions:
+  - name: preview
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: http
+          targetService: jellyfin
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: jellyfin
+        image: jellyfin/jellyfin
+        port:
+          - 8096
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+          - size: 5Gi
+            mountPath: /cache
+            name: cache
+          - size: 5Gi
+            mountPath: /media
+            name: media
+      marina:
+        launch:
+          type: inline
+          popUp: true

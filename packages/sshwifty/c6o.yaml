@@ -1,0 +1,24 @@
+format: v1
+name: 'sshwifty'         # display name
+id: sshwifty                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+editions:
+  - name: preview
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    default: true           #proposed: default edition used for installation
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+      - type: http
+        targetService: sshwifty
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: sshwifty
+        image: 'niruix/sshwifty:lates'
+        port: 8182
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
