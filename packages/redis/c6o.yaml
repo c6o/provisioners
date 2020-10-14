@@ -1,0 +1,57 @@
+name: 'redis'         # display name
+appId: redis               #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+
+editions:
+  - name: preview
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      routes:
+        - type: tcp
+          targetService: redis
+          tcp:
+            port: 6379
+            name: redis
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: redis
+        image: 'redis'
+        config:
+          - name: appendonly
+            value: yes
+        port:
+          - port: 6379
+            name: tcp
+            protocol: TCP
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: previewinternal
+    scope: public           #public|private|deprecated   public:everyone, private:org/person only
+    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: redis
+        image: 'redis'
+        port:
+          - port: 6379
+            name: tcp
+            protocol: TCP
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
