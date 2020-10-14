@@ -6,7 +6,6 @@ metadata:
   labels:
     app: vscode
     system.codezero.io/app: vscode
-    spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
