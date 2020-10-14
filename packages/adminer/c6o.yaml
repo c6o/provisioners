@@ -1,6 +1,8 @@
-name: 'adminer'
-appId:  'adminer'
+name: adminer
+appId:  adminer
 package: '@provisioner/appengine'
+# https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg
+# t3adminer_9.4.1.svg
 icon: https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg
 description:
   Adminer (formerly phpMinAdmin) is a full-featured database management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. Adminer is available for MySQL, MariaDB, PostgreSQL, SQLite, MS SQL, Oracle, Firebird, SimpleDB, Elasticsearch and MongoDB.
@@ -12,6 +14,15 @@ keywords:
   - Tools
   - Database
   - Database Management
+
+repo: https://github.com/vrana/adminer/
+license: https://www.apache.org/licenses/LICENSE-2.0.html
+support: https://sourceforge.net/p/adminer/bugs-and-features/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
 editions:
   - name: preview
     status: public
