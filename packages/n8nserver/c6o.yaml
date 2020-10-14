@@ -1,0 +1,23 @@
+name: 'n8nserver'
+appId: n8nserver                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: n8nserver
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: n8nserver
+        image: 'n8nio/n8n:0.43.0-ubuntu'
+        port: 5678
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

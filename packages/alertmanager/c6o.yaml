@@ -1,0 +1,24 @@
+name: 'alertmanager'
+appId: alertmanager                   #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+icon: 'https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg'                   #see 'art' section for rules for the values here
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: alertmanager
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: alertmanager
+        image: 'prom/alertmanager:latest'
+        port: 9093
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

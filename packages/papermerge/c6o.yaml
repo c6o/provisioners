@@ -1,0 +1,30 @@
+name: 'papermerge'
+appId: papermerge                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: latest
+    routes:
+      - type: http
+        targetService: papermerge
+    provisioner:
+      package: '@provisioner/appengine'
+      ui: ignore
+      name: papermerge
+      image: linuxserver/papermerge
+      port: 8000
+      config:
+        - name: TZ
+          value: America/Vancouver
+      volume:
+        - size: 5Gi
+          mountPath: /config
+          name: config
+        - size: 10Gi
+          mountPath: /data
+          name: data
+      automated: true
+    marina:
+      launch:
+        type: inline
+        popUp: true

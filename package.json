@@ -21,6 +21,7 @@
     "packages/prometheus/",
     "packages/wordpress/",
     "packages/docker-registry/",
+    "packages/appengine/",
     "packages/verdaccio/",
     "packages/foldingathome/",
     "packages/odoo/",

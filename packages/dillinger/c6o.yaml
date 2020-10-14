@@ -1,0 +1,33 @@
+name: 'dillinger'
+appId: dillinger                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: dillinger
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: dillinger
+        image: linuxserver/dillinger
+        port: 8080
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+          - size: 50Gi
+            mountPath: /data
+            name: data
+        config:
+          - name: TZ
+            value: America/Vancouver
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

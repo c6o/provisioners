@@ -1,0 +1,38 @@
+name: 'codeserver'
+appId: codeserver                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: codeserver
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: codeserver
+        image: 'linuxserver/code-server:latest'
+        port: 8443
+        automated: true
+        volume:
+          - name: config
+            mountPath: /config
+            size: 1Gi
+          - name: code
+            mountPath: /code
+            size: 5Gi
+        config:
+          - name: TZ
+            value: America/Vancouver
+        secret:
+          - name: PASSWORD
+            value: admin
+          - name: SUDO_PASSWORD
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true

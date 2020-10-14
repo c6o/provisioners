@@ -1,0 +1,50 @@
+name: 'firefly-iii'
+appId: firefly-iii                   #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: firefly-iii
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: firefly-iii
+        image: 'jc5x/firefly-iii:latest'
+        port: 8080
+        automated: true
+        volume:
+          - name: export
+            size: 20Gi
+            mountPath: /var/www/firefly-iii/storage/export
+          - name: upload
+            size: 20Gi
+            mountPath: /var/www/firefly-iii/storage/upload
+        secret:
+          - name: APP_KEY
+            value: pNvU3HiHst8UKoWJ1xHQ5zFhpaxyHSUM
+          - name: DB_USERNAME
+            value: root
+          - name: DB_PASSWORD
+            value: admin
+        config:
+          - name: APP_ENV
+            value: local
+          - name: DB_HOST
+            value: mysql
+          - name: DB_PORT
+            value: "3306"
+          - name: DB_CONNECTION
+            value: mysql.testing
+          - name: DB_DATABASE
+            value: firefly
+          - name: TRUSTED_PROXIES
+            value: '**'
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,60 @@
+name: 'nodered'
+appId: nodered                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: nodered
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: nodered
+        image: nodered/node-red
+        port: 1880
+        automated: true
+        config:
+          - name: NODE_RED_CREDENTIAL_SECRET
+            value: admin
+          - name: NODE_RED_ENABLE_PROJECTS
+            value: 'false'
+        volumes:
+          - name: data
+            mountPath: /data
+            size: 1Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: preview-projects
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: nodered
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: nodered
+        image: nodered/node-red
+        port: 1880
+        automated: true
+        config:
+          - name: NODE_RED_CREDENTIAL_SECRET
+            value: admin
+          - name: NODE_RED_ENABLE_PROJECTS
+            value: 'true'
+        volumes:
+          - name: data
+            mountPath: /data
+            size: 1Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true

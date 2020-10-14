@@ -1,0 +1,30 @@
+name: 'muximux'
+appId: muximux                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: muximux
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: muximux
+        image: linuxserver/muximux
+        port: 80
+        volume:
+          - size: 500Gi
+            mountPath: /config
+            name: config
+        config:
+          - name: TZ
+            value: America/Vancouver
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

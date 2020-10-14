@@ -1,0 +1,29 @@
+name: 'natsserver'
+appId: natsserver                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: previewinternal
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: natsserver
+        image: 'nats:latest'
+        port:
+          - name: clients
+            port: 4222
+            protocol: TCP
+          - name: routing
+            port: 6222
+            protocol: TCP
+          - name: http
+            port: 8222
+            protocol: TCP
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

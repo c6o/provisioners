@@ -1,0 +1,415 @@
+name: 'rdesktop'
+appId: rdesktop               #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: xfcefocal
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: xfcefocal
+          tcp:
+            port: 3389
+            name: xfcefocal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: xfcefocal
+        image: 'linuxserver/rdesktop:latest'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: xfcebionic
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: xfcebionic
+          tcp:
+            port: 3389
+            name: xfcebionic
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: xfcebionic
+        image: 'linuxserver/rdesktop:xfce-bionic'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+
+  - name: kdefocal
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: kdefocal
+          tcp:
+            port: 3389
+            name: kdefocal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: kdefocal
+        image: 'linuxserver/rdesktop:kde-focal'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: kdebionic
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: kdebionic
+          tcp:
+            port: 3389
+            name: kdebionic
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: kdebionic
+        image: 'linuxserver/rdesktop:kde-bionic'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+
+  - name: matefocal
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: matefocal
+          tcp:
+            port: 3389
+            name: matefocal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: matefocal
+        image: 'linuxserver/rdesktop:mate-focal'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+
+  - name: matebionic
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: matebionic
+          tcp:
+            port: 3389
+            name: matebionic
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: matebionic
+        image: 'linuxserver/rdesktop:mate-bionic'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+
+  - name: i3focal
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: i3focal
+          tcp:
+            port: 3389
+            name: i3focal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: i3focal
+        image: 'linuxserver/rdesktop:i3-focal'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+
+  - name: i3bionic
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: i3bionic
+          tcp:
+            port: 3389
+            name: i3bionic
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: i3bionic
+        image: 'linuxserver/rdesktop:i3-bionic'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: openboxfocal
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: openboxfocal
+          tcp:
+            port: 3389
+            name: openboxfocal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: openboxfocal
+        image: 'linuxserver/rdesktop:openbox-focal'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: openboxbionic
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: openboxbionic
+          tcp:
+            port: 3389
+            name: openboxbionic
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: openboxbionic
+        image: 'linuxserver/rdesktop:openbox-bionic'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: icewmfocal
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: icewmfocal
+          tcp:
+            port: 3389
+            name: icewmfocal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: icewmfocal
+        image: 'linuxserver/rdesktop:icewm-focal'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: icewmbionic
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: icewmbionic
+          tcp:
+            port: 3389
+            name: icewmbionic
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: icewmbionic
+        image: 'linuxserver/rdesktop:icewm-bionic'
+        port:
+          - port: 3389
+            name: tcp
+            protocol: TCP
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

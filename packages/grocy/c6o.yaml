@@ -1,0 +1,30 @@
+name: 'grocy'
+appId: grocy             #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: grocy
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: grocy
+        image: 'linuxserver/grocy:latest'
+        port: 80
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - name: config
+            size: 1Gi
+            mountPath: /config
+      marina:
+        launch:
+          type: inline
+          popUp: true

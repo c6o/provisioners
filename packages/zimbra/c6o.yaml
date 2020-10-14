@@ -1,0 +1,30 @@
+name: 'zimbra'
+appId: zimbra                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: zimbra
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: zimbra
+        image: jorgedlcruz/zimbra
+        port: 80
+        automated: true
+        config:
+          - name: PASSWORD
+            value: Zimbra2017
+        volume:
+          - size: 5Gi
+            mountPath: /opt/zimbra
+            name: zimbra
+      marina:
+        launch:
+          type: inline
+          popUp: true

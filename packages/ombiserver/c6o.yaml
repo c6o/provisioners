@@ -1,0 +1,23 @@
+name: 'ombiserver'
+appId: ombiserver                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: ombiserver
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: ombi
+        image: 'linuxserver/ombi:latest'
+        port: 3579
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

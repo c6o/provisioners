@@ -1,0 +1,23 @@
+name: 'nats-webui'
+appId: nats-webui                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: nats-webui
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: nats-webui
+        image: 'sphqxe/nats-webui:latest'
+        port: 80
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,35 @@
+name: 'photoprism'
+appId: photoprism                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: photoprism
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: photoprism
+        image: photoprism/photoprism
+        port: 2342
+        automated: true
+        config:
+          - name: PHOTOPRISM_UPLOAD_NSFW
+            value: true
+          - name: PHOTOPRISM_ADMIN_PASSWORD
+            value: admin
+        volume:
+          - size: 500Gi
+            mountPath: /photoprism/storage
+            name: storage
+          - size: 100Gi
+            mountPath: /photoprism/originals
+            name: originals
+      marina:
+        launch:
+          type: inline
+          popUp: true

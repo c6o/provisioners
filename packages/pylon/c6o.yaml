@@ -1,0 +1,30 @@
+name: 'pylon'
+appId: pylon                   #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: pylon
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: pylon
+        image: 'linuxserver/pylon:latest'
+        port: 3131
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - name: code
+            mountPath: /code
+            size: 5Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true

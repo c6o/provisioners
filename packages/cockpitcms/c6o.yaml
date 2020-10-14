@@ -1,0 +1,24 @@
+name: 'cockpitcms'
+appId: cockpitcms                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: cockpitcms
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: cockpitcms
+        image: aheinze/cockpit
+        port: 80
+        automated: true
+
+      marina:
+        launch:
+          type: inline
+          popUp: true

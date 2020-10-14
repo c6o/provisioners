@@ -1,0 +1,32 @@
+name: 'rsnapshot'
+appId: rsnapshot                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: rsnapshot
+        image: linuxserver/rsnapshot
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+          - size: 100Gi
+            mountPath: /data
+            name: data
+          - size: 50Gi
+            mountPath: /.snapshots
+            name: snapshots
+        automated: true
+      marina:
+        launch:
+          type: none
+          popUp: false

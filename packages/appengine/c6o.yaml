@@ -1,0 +1,18 @@
+name: 'appengine'
+appId: appengine                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: appengine
+      provisioner:
+        package: '@provisioner/appengine'
+      marina:
+        launch:
+          type: inline
+          popUp: true

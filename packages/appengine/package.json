@@ -1,7 +1,7 @@
 {
-  "name": "@provisioner/node-red",
-  "version": "0.0.9",
-  "description": "CodeZero provisioner for node-red",
+  "name": "@provisioner/appengine",
+  "version": "0.0.8",
+  "description": "CodeZero provisioner for appengine",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -18,7 +18,8 @@
   },
   "files": [
     "lib",
-    "k8s"
+    "k8s",
+    "manifest.template.yaml"
   ],
   "publishConfig": {
     "access": "public"
@@ -26,9 +27,9 @@
   "keywords": [
     "codezero",
     "provisioner",
-    "node-red"
+    "appengine"
   ],
-  "author": "Mike Blackstock",
+  "author": "Rob Chartier",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/c6o/provisioners/issues"
@@ -36,11 +37,12 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@c6o/kubeclient": "^0.0.6",
-    "@provisioner/common": "^0.0.9",
+    "@provisioner/common": "^0.0.8",
+    "debug": "^4.2.0",
+    "js-yaml": "^3.14.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",
-    "tslib": "^1.10.0"
-  },
-  "gitHead": "06f7728f2ac17ce89292faa1da4849bd839c268d"
+    "tslib": "^1.11.1"
+  }
 }

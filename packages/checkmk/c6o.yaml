@@ -1,0 +1,62 @@
+name: 'checkmk'
+appId: checkmk                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: checkmk
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: checkmk
+        image: 'checkmk/check-mk-raw:latest'
+        port: 5000
+        automated: true
+        secret:
+          - name: CMK_PASSWORD
+            value: admin
+        volume:
+          - size: 5Gi
+            name: sites
+            mountPath: /omd/sites
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: live-stats
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: checkmk
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: checkmk
+        image: 'checkmk/check-mk-raw:latest'
+        port:
+          - port: 5000
+            name: http
+            protocol: TCP
+          - port: 6557
+            name: live-stats
+            protocol: TCP
+        automated: true
+        secret:
+          - name: CMK_PASSWORD
+            value: admin
+        volume:
+          - size: 5Gi
+            name: sites
+            mountPath: /omd/sites
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,33 @@
+name: 'smokeping'
+appId: smokeping                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: smokeping
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: smokeping
+        image: linuxserver/smokeping
+        port: 80
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 1Gi
+            mountPath: /config
+            name: config
+          - size: 5Gi
+            mountPath: /data
+            name: dat
+      marina:
+        launch:
+          type: inline
+          popUp: true

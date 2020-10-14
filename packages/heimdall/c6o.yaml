@@ -1,0 +1,30 @@
+name: 'heimdall'
+appId: heimdall                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: heimdall
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: heimdall
+        image: 'linuxserver/heimdall:latest'
+        port: 80
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - name: config
+            size: 1Gi
+            mountPath: /config
+      marina:
+        launch:
+          type: inline
+          popUp: true

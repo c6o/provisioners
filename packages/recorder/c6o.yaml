@@ -1,0 +1,33 @@
+name: 'recorder'
+appId: recorder               #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: recorder
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: recorder
+        image: 'owntracks/recorder:latest'
+        port: 8083
+        automated: true
+        config:
+          - name: OTR_HOST
+            value: mosquitto
+          - name: OTR_PORT
+            value: 1883
+        secret:
+          - name: OTR_USER
+            value: admin
+          - name: OTR_PASS
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true

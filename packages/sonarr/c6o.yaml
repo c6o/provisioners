@@ -1,0 +1,36 @@
+name: 'sonarr'
+appId: sonarr                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: sonarr
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: sonarr
+        image: 'linuxserver/sonarr:latest'
+        port: 8989
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+          - size: 500Gi
+            mountPath: /tv
+            name: tvshows
+          - size: 50Gi
+            mountPath: /downloads
+            name: downloads
+      marina:
+        launch:
+          type: inline
+          popUp: true

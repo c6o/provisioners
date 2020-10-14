@@ -1,0 +1,64 @@
+name: 'couchdb'
+appId: couchdb               #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    spec:
+      routes:
+        - type: tcp
+          targetService: couchdb
+          tcp:
+            port: 5984
+            name: couchdb
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: couchdb
+        image: couchdb
+        secret:
+          - name: COUCHDB_USER
+            value: admin
+          - name: COUCHDB_PASSWORD
+            value: admin
+        port:
+          - port: 6379
+            name: tcp
+            protocol: TCP
+        volume:
+          - size: 5Gi
+            mountPath: /opt/couchdb/data
+            name: data
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: previewinternal
+    scope: public
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: couchdb
+        image: couchdb
+        secret:
+          - name: COUCHDB_USER
+            value: admin
+          - name: COUCHDB_PASSWORD
+            value: admin
+        port:
+          - port: 5984
+            name: tcp
+            protocol: TCP
+        volume:
+          - size: 5Gi
+            mountPath: /opt/couchdb/data
+            name: data
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

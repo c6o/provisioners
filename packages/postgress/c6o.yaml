@@ -1,0 +1,64 @@
+name: 'postgress'
+appId: postgress                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: developer
+    status: public
+    spec:
+      routes:
+          - type: tcp
+            targetService: postgress
+            tcp:
+              port: 5432
+              name: postgress
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: postgress
+        image: ananthhh/postgress
+        port:
+          name: tcp
+          protocol: TCP
+          port: 5432
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+        secret:
+          - name: POSTGRES_USER
+            value: root
+          - name: POSTGRES_PASSWORD
+            value: admin
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: developer-internal
+    status: public
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: postgress
+        image: ananthhh/postgress
+        port:
+          name: tcp
+          protocol: TCP
+          port: 5432
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+        secret:
+          - name: POSTGRES_USER
+            value: root
+          - name: POSTGRES_PASSWORD
+            value: admin
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

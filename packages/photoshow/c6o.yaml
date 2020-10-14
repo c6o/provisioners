@@ -1,0 +1,36 @@
+name: 'photoshow'
+appId: photoshow                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: photoshow
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: photoshow
+        image: linuxserver/photoshow
+        port: 80
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 1Gi
+            mountPath: /config
+            name: config
+          - size: 10Gi
+            mountPath: /Pictures
+            name: Pictures
+          - size: 5Gi
+            mountPath: /Thumbs
+            name: thumbs
+      marina:
+        launch:
+          type: inline
+          popUp: true

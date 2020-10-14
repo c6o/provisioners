@@ -1,0 +1,33 @@
+name: 'calibre-web'
+appId: calibre-web                 #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: calibre-web
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: calibre-web
+        image: linuxserver/calibre-web
+        port: 8083
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: calibre-web-config
+          - size: 50Gi
+            mountPath: /books
+            name: calibre-web-books
+        config:
+          - name: TZ
+            value: America/Vancouver
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

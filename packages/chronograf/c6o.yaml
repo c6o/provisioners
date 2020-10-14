@@ -1,0 +1,23 @@
+name: 'chronograf'
+appId: chronograf                   #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: chronograf
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: chronograf
+        image: chronograf
+        port: 8888
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

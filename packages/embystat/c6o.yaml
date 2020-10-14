@@ -1,0 +1,27 @@
+name: 'embystat'
+appId: embystat                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: embystat
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: embystat
+        image: 'linuxserver/embystat:latest'
+        port: 6555
+        automated: true
+        volume:
+          - name: config
+            size: 1Gi
+            mountPath: /config
+      marina:
+        launch:
+          type: inline
+          popUp: true

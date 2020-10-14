@@ -1,0 +1,36 @@
+name: 'lidarr'
+appId: lidarr                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: lidarr
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: lidarr
+        image: 'linuxserver/lidarr:latest'
+        port: 8686
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+          - size: 500Gi
+            mountPath: /music
+            name: music
+          - size: 50Gi
+            mountPath: /downloads
+            name: downloads
+      marina:
+        launch:
+          type: inline
+          popUp: true

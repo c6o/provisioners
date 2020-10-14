@@ -1,0 +1,30 @@
+name: 'peertube'
+appId: peertube              #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: peertube
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: peertube
+        image: chocobozzz/peertube
+        port: 9000
+        automated: true
+        volume:
+          - size: 500Gi
+            mountPath: /data
+            name: data
+          - size: 1Gi
+            mountPath: /config
+            name: config
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,35 @@
+name: 'jackett'
+appId: jackett                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: jackett
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: jackett
+        image: linuxserver/jackett
+        port: 9117
+        volume:
+          - size: 5Gi
+            mountPath: /config
+            name: config
+          - size: 500Gi
+            mountPath: /downloads
+            name: downloads
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: AUTO_UPDATE
+            value: true
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

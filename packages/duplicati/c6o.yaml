@@ -1,0 +1,27 @@
+name: 'duplicati'
+appId: duplicati                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: duplicati
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: duplicati
+        image: 'duplicati/duplicati:latest'
+        port: 8200
+        automated: true
+        volume:
+          - name: data
+            size: 5Gi
+            mountPath: /data
+      marina:
+        launch:
+          type: inline
+          popUp: true

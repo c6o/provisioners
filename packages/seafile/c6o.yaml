@@ -1,0 +1,34 @@
+name: 'seafile'
+appId: seafile                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: seafile
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: seafile
+        image: 'seafileltd/seafile:latest'
+        port: 80
+        automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+          - name: SEAFILE_ADMIN_EMAIL
+            value: admin@example.com
+          - name: SEAFILE_ADMIN_PASSWORD
+            value: admin
+        volume:
+          - size: 500Gi
+            mountPath: /shared
+            name: shared
+      marina:
+        launch:
+          type: inline
+          popUp: true

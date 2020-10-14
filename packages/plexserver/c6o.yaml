@@ -1,0 +1,37 @@
+format: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
+appId:  plexserver                 #App internal name (all lower, no spaces); minimum 5 characters
+name: Plex Server
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: plexserver
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: plexserver
+        image: 'plexinc/pms-docker:latest'
+        port: 32400
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - size: 500Gi
+            mountPath: /config
+            name: config
+          - size: 100Gi
+            mountPath: /data
+            name: data
+          - size: 50Gi
+            mountPath: /transcode
+            name: transcode
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

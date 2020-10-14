@@ -1,0 +1,30 @@
+name: 'funkwhale'
+appId: funkwhale                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: funkwhale
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: funkwhale
+        image: thetarkus/funkwhale
+        port: 80
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+          - size: 500Gi
+            mountPath: /music
+            name: music
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,28 @@
+name: bonita
+appId:  bonita
+package: '@provisioner/appengine'
+icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: bonita
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: bonita
+        image: 'bonita:latest'
+        port: 8080
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /opt/bonita
+            name: bonita
+      marina:
+        launch:
+          type: inline
+          popUp: true
