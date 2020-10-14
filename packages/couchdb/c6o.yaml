@@ -1,5 +1,5 @@
-name: 'redis'         # display name
-appId: redis               #App internal name (all lower, no spaces); minimum 5 characters
+name: 'couchdb'         # display name
+appId: couchdb               #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
 
 editions:
@@ -8,25 +8,27 @@ editions:
     spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
       routes:
         - type: tcp
-          targetService: redis
+          targetService: couchdb
           tcp:
-            port: 6379
-            name: redis
+            port: 5984
+            name: couchdb
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
-        name: redis
-        image: 'redis'
-        config:
-          - name: appendonly
-            value: yes
+        name: couchdb
+        image: couchdb
+        secret:
+          - name: COUCHDB_USER
+            value: admin
+          - name: COUCHDB_PASSWORD
+            value: admin
         port:
           - port: 6379
             name: tcp
             protocol: TCP
         volume:
           - size: 5Gi
-            mountPath: /data
+            mountPath: /opt/couchdb/data
             name: data
         automated: true
       marina:
@@ -40,18 +42,20 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
-        name: redis
-        image: 'redis'
-        config:
-          - name: appendonly
-            value: yes
+        name: couchdb
+        image: couchdb
+        secret:
+          - name: COUCHDB_USER
+            value: admin
+          - name: COUCHDB_PASSWORD
+            value: admin
         port:
-          - port: 6379
+          - port: 5984
             name: tcp
             protocol: TCP
         volume:
           - size: 5Gi
-            mountPath: /data
+            mountPath: /opt/couchdb/data
             name: data
         automated: true
       marina:
