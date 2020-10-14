@@ -108,16 +108,18 @@ export class ObjectApplier implements Applier {
             for (const item of spec.configs) {
                 if (!item.env || item.env === '') item.env = item.name
                 config.data[item.name] = new String(item.value)
-                deployment.spec.template.spec.containers[0].env.push(
-                    {
-                        name: item.env,
-                        valueFrom: {
-                            configMapKeyRef: {
-                                name: `${spec.name}configs`,
-                                key: item.name
+                if (item.env && item.env !== '' && item.env !== 'NONE') {
+                    deployment.spec.template.spec.containers[0].env.push(
+                        {
+                            name: item.env,
+                            valueFrom: {
+                                configMapKeyRef: {
+                                    name: `${spec.name}configs`,
+                                    key: item.name
+                                }
                             }
-                        }
-                    })
+                        })
+                }
             }
 
             debug('Installing configs:\n', inspect(deployment.spec.template.spec.containers[0].env))
@@ -142,16 +144,18 @@ export class ObjectApplier implements Applier {
                 if (!item.env || item.env === '') item.env = item.name
                 const value = Buffer.from(new String(item.value)).toString('base64')
                 secret.data[item.name] = value
-                deployment.spec.template.spec.containers[0].env.push(
-                    {
-                        name: item.env,
-                        valueFrom: {
-                            secretKeyRef: {
-                                name: `${spec.name}secrets`,
-                                key: item.name
+                if (item.env && item.env !== '' && item.env !== 'NONE') {
+                    deployment.spec.template.spec.containers[0].env.push(
+                        {
+                            name: item.env,
+                            valueFrom: {
+                                secretKeyRef: {
+                                    name: `${spec.name}secrets`,
+                                    key: item.name
+                                }
                             }
-                        }
-                    })
+                        })
+                }
             }
 
             debug('Installing secrets:\n', inspect(deployment.spec.template.spec.containers[0].env))
