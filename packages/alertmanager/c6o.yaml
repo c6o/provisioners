@@ -1,7 +1,8 @@
 name: Alertmanager
 appId: alertmanager
 package: '@provisioner/appengine'
-icon: https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg
+#icon: https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg
+icon: icon.svg
 description:
   The Alertmanager handles alerts sent by client applications such as the Prometheus server. It takes care of deduplicating, grouping, and routing them to the correct receiver integration such as email, PagerDuty, or OpsGenie. It also takes care of silencing and inhibition of alerts.
 
