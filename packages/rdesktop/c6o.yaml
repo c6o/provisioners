@@ -1,11 +1,11 @@
-name: 'rdesktop'         # display name
+name: 'rdesktop'
 appId: rdesktop               #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+package: '@provisioner/appengine'
 
 editions:
   - name: xfcefocal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: xfcefocal
@@ -37,8 +37,8 @@ editions:
           popUp: true
 
   - name: xfcebionic
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: xfcebionic
@@ -72,8 +72,8 @@ editions:
 
 
   - name: kdefocal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: kdefocal
@@ -106,8 +106,8 @@ editions:
 
 
   - name: kdebionic
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: kdebionic
@@ -141,8 +141,8 @@ editions:
 
 
   - name: matefocal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: matefocal
@@ -176,8 +176,8 @@ editions:
 
 
   - name: matebionic
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: matebionic
@@ -211,8 +211,8 @@ editions:
 
 
   - name: i3focal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: i3focal
@@ -246,8 +246,8 @@ editions:
 
 
   - name: i3bionic
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: i3bionic
@@ -280,8 +280,8 @@ editions:
 
 
   - name: openboxfocal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: openboxfocal
@@ -314,8 +314,8 @@ editions:
 
 
   - name: openboxbionic
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: openboxbionic
@@ -348,8 +348,8 @@ editions:
 
 
   - name: icewmfocal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: icewmfocal
@@ -382,8 +382,8 @@ editions:
 
 
   - name: icewmbionic
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: icewmbionic

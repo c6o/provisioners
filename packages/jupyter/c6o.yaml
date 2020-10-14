@@ -1,12 +1,12 @@
-name: 'jupyter'         # display name
+name: 'jupyter'
 appId: jupyter                 #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+package: '@provisioner/appengine'
 
 editions:
   - name: scipy
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: scipy
@@ -30,9 +30,9 @@ editions:
           popUp: true
 
   - name: datascience
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: datascience
@@ -57,9 +57,9 @@ editions:
 
 
   - name: tensorflow
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: tensorflow
@@ -83,9 +83,9 @@ editions:
           popUp: true
 
   - name: pyspark
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: pyspark
@@ -110,9 +110,9 @@ editions:
 
 
   - name: basenotebook
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: basenotebook
@@ -137,9 +137,9 @@ editions:
 
 
   - name: all-spark
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: all-spark
@@ -164,9 +164,9 @@ editions:
 
 
   - name: minimal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: minimal
@@ -191,9 +191,9 @@ editions:
 
 
   - name: nbviewer
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: nbviewer
@@ -218,9 +218,9 @@ editions:
 
 
   - name: r-notebook
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: r-notebook
@@ -246,9 +246,9 @@ editions:
 
 
   - name: nature-demo
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: nature-demo

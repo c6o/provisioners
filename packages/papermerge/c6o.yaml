@@ -1,6 +1,6 @@
-name: 'papermerge'         # display name
+name: 'papermerge'
 appId: papermerge                    #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+package: '@provisioner/appengine'
 
 editions:
   - name: latest

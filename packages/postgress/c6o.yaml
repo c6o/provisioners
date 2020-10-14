@@ -1,11 +1,11 @@
-name: 'postgress'         # display name
+name: 'postgress'
 appId: postgress                    #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+package: '@provisioner/appengine'
 
 editions:
   - name: developer
-    status: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    status: public
+    spec:
       routes:
           - type: tcp
             targetService: postgress
@@ -37,8 +37,8 @@ editions:
           popUp: true
 
   - name: developer-internal
-    status: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    status: public
+    spec:
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore

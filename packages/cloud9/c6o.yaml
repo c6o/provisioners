@@ -1,12 +1,12 @@
-name: 'cloud9'         # display name
+name: 'cloud9'
 appId: cloud9                    #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+package: '@provisioner/appengine'
 
 editions:
   - name: python
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: cloud9python
@@ -35,9 +35,9 @@ editions:
           popUp: true
 
   - name: nodejs
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: cloud9nodejs
@@ -67,9 +67,9 @@ editions:
 
 
   - name: go
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: cloud9go
@@ -99,9 +99,9 @@ editions:
 
 
   - name: ruby
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    default: true           #proposed: default edition used for installation
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    default: true
+    spec:
       routes:
         - type: http
           targetService: cloud9ruby

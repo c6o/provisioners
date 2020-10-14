@@ -1,11 +1,11 @@
-name: 'couchdb'         # display name
+name: 'couchdb'
 appId: couchdb               #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'  #the NPM package name.  Typically id and package-name are the same, but not required.
+package: '@provisioner/appengine'
 
 editions:
   - name: preview
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       routes:
         - type: tcp
           targetService: couchdb
@@ -37,8 +37,8 @@ editions:
           popUp: true
 
   - name: previewinternal
-    scope: public           #public|private|deprecated   public:everyone, private:org/person only
-    spec:                   #https://docs.codezero.io/#/reference/appspec?id=spec-section
+    scope: public
+    spec:
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
