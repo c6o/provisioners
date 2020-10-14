@@ -18,6 +18,13 @@ editions:
         image: 'linuxserver/heimdall:latest'
         port: 80
         automated: true
+        config:
+          - name: TZ
+            value: America/Vancouver
+        volume:
+          - name: config
+            size: 1Gi
+            mountPath: /config
       marina:
         launch:
           type: inline
