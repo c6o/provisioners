@@ -108,6 +108,7 @@ export class ObjectApplier implements Applier {
             for (const item of spec.configs) {
                 if (!item.env || item.env === '') item.env = item.name
                 config.data[item.name] = new String(item.value)
+
                 if (item.env && item.env !== '' && item.env !== 'NONE') {
                     deployment.spec.template.spec.containers[0].env.push(
                         {
