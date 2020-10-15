@@ -1,0 +1,48 @@
+name: 'appengine'
+appId: appengine                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  AppEngine is a key component in the simplification of leveraging Kubernetes for your Docker Images, within the c6o system.  It allows DevOps staff to quickly and easily wrap docker images for deployment onto Kubernetes.
+
+  Currently we support the use of a single docker image, exposing ports (internally and externally on the cluster).  Volumes (Persistent Volume Claims), ConfigMaps and Secrets.  Both ConfigMaps and Secrets can be used as enviornment variables on the container.
+
+summary: AppEngine is a key component in the simplification of leveraging Kubernetes for your Docker Images, within the c6o system.  It allows DevOps staff to quickly and easily wrap docker images for deployment onto Kubernetes.
+category: dev-tools
+keywords:
+  - Developer Tools
+  - Docker
+  - Images
+  - Kubernetes
+  - AppEngine
+  - AppSuite
+  - AppStudio
+  - Volume
+  - Persistent Volume Claims
+  - Secrets
+  - Automation
+  - Deployment
+  - dev-tools
+
+repo: https://github.com/c6o/provisioners
+license: https://github.com/c6o/provisioners
+support: https://github.com/c6o/provisioners/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: appengine
+      provisioner:
+        package: '@provisioner/appengine'
+      marina:
+        launch:
+          type: inline
+          popUp: true

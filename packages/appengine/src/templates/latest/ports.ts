@@ -1,7 +1,8 @@
 
+import { LabelsMetadata } from '../../parsing'
 import { getLabels } from './labels'
 
-export function getPortTemplate(name: string, namespace: string) {
+export function getPortTemplate(name: string, namespace: string, metaData: LabelsMetadata) {
 
     return {
         apiVersion: 'v1',
@@ -9,7 +10,7 @@ export function getPortTemplate(name: string, namespace: string) {
         metadata: {
             name: name,
             namespace: namespace,
-            labels: getLabels(name)
+            labels: getLabels(name, metaData)
         },
         spec: {
             type: 'NodePort',

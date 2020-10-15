@@ -4,14 +4,20 @@ import { Buffer } from 'buffer'
 import { inspect } from 'util'
 import { templates } from '../../templates/latest'
 import createDebug from 'debug'
-
+import { LabelsMetadata } from '../../parsing'
 const debug = createDebug('@appengine:createInquire')
 
 export class ObjectApplier implements Applier {
 
     async apply(namespace: string, spec: any, manager: ProvisionerManager) {
 
-        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image)
+        if (!spec.metaData) {
+            spec.metaData = {
+                id: Math.random().toString(36).substring(6),
+            } as LabelsMetadata
+        }
+
+        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
         await this.applySecrets(namespace, spec, manager, deployment)
         await this.applyConfigs(namespace, spec, manager, deployment)
         await this.applyPorts(namespace, spec, manager, deployment)
@@ -40,7 +46,7 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.volumes) {
 
-                const pvc = templates.getPVCTemplate(item.name, item.size, spec.name, namespace)
+                const pvc = templates.getPVCTemplate(item.name, item.size, spec.name, namespace, spec.metaData)
 
                 debug('Installing Volume Claim', inspect(pvc))
 
@@ -62,7 +68,7 @@ export class ObjectApplier implements Applier {
 
         if (spec.ports?.length) {
 
-            const service = templates.getPortTemplate(spec.name, namespace)
+            const service = templates.getPortTemplate(spec.name, namespace, spec.metaData)
 
             deployment.spec.template.spec.containers[0].ports = []
 
@@ -103,7 +109,7 @@ export class ObjectApplier implements Applier {
 
         if (spec.configs?.length) {
 
-            const config = templates.getConfigTemplate(spec.name, namespace)
+            const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
 
             for (const item of spec.configs) {
                 if (!item.env || item.env === '') item.env = item.name
@@ -138,7 +144,7 @@ export class ObjectApplier implements Applier {
 
         if (spec.secrets && spec.secrets.length > 0) {
 
-            const secret = templates.getSecretTemplate(spec.name, namespace)
+            const secret = templates.getSecretTemplate(spec.name, namespace, spec.metaData)
 
 
             for (const item of spec.secret) {
