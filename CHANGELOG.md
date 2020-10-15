@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.10](https://github.com/c6o/node-monorepo/compare/v0.0.9...v0.0.10) (2020-10-15)
+
+
+### 🐛 Bug Fixes
+
+* VSCode spec errors ([538087f](https://github.com/c6o/node-monorepo/commit/538087f02878f90dafcbf6786d32f75acfdf0011))
+
+
+### ♻️ Chores
+
+* **adminer:** Minor edits ([f5025c3](https://github.com/c6o/node-monorepo/commit/f5025c3196b02ada5d7b142f495b8378a26b2e3d))
+* Added provisioning manifests to all apps ([f2cec4a](https://github.com/c6o/node-monorepo/commit/f2cec4a84c984885819cc93b6d781927885d7429))
+* Added publish-manifests script ([8b6bd9f](https://github.com/c6o/node-monorepo/commit/8b6bd9f9e656514352fb33c5fc9e5a72ae65174f))
+* Created provisioning manifest ([c56f1fe](https://github.com/c6o/node-monorepo/commit/c56f1feebb54281fd895a320563184917447057c))
+
+
+
+
+
 ## [0.0.9](https://github.com/c6o/node-monorepo/compare/v0.0.8...v0.0.9) (2020-09-30)
 
 

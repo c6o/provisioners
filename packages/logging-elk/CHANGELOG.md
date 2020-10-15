@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.10](https://github.com/c6o/provisioners/compare/v0.0.9...v0.0.10) (2020-10-15)
+
+
+### ♻️ Chores
+
+* Added provisioning manifests to all apps ([f2cec4a](https://github.com/c6o/provisioners/commit/f2cec4a84c984885819cc93b6d781927885d7429))
+
+
+
+
+
 ## [0.0.9](https://github.com/c6o/provisioners/compare/v0.0.8...v0.0.9) (2020-09-30)
 
 **Note:** Version bump only for package @provisioner/logging-elk
