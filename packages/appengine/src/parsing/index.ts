@@ -26,6 +26,14 @@ export interface VolumeParser {
     parse(args: any, spec: any, debug: IDebugger): Volume[];
 }
 
+//https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+export interface LabelsMetadata {
+    id: string
+    partOf: string
+    component: string
+    version: string
+}
+
 export interface Setting {
     name: string
     value: string
