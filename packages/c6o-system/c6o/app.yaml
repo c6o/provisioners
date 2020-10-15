@@ -30,7 +30,7 @@ _id: store
 name: Store
 appId: store
 system: true
-icon: storeIcon.
+icon: storeIcon.svg
 summary: Discover and Install other CodeZero Applications in the Store
 editions:
   - name: latest
