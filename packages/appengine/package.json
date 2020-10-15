@@ -37,7 +37,7 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@c6o/kubeclient": "^0.0.6",
-    "@provisioner/common": "^0.0.8",
+    "@provisioner/common": "^0.0.9",
     "debug": "^4.2.0",
     "js-yaml": "^3.14.0",
     "lit-element": "^2.3.1",
