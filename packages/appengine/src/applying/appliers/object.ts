@@ -73,27 +73,11 @@ export class ObjectApplier implements Applier {
             deployment.spec.template.spec.containers[0].ports = []
 
             for (const item of spec.ports) {
-
-                // # Inside the cluster, what port does the service expose?
-                // - port: 8080
-                //Expose the service on the specified port internally within the cluster. That is, the service becomes visible on this port, and will send requests made to this port to the pods selected by the service.
-
-                // # Which port do pods selected by this service expose?
-                // - targetPort: 8080
-                //This is the port on the pod that the request gets sent to. Your application needs to be listening for network requests on this port for the service to work.
-
-                // export interface Port {
-                //     name: string
-                //     protocol: string
-                //     port: number
-                //     targetPort: number
-                //     externalPort: number
-                // }
                 service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol })
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
             }
 
-            debug('Installing Networking Services', inspect(service))
+            debug('Installing Networking Services', inspect(service), inspect(deployment.spec.template.spec.containers[0].ports))
 
             await manager.cluster
                 .begin('Installing Networking Services')
