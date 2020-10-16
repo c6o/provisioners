@@ -1,7 +1,7 @@
 {
-  "name": "@provisioner/appengine",
+  "name": "@provisioner/appsuite",
   "version": "0.0.10",
-  "description": "CodeZero provisioner for appengine",
+  "description": "CodeZero provisioner for appsuite",
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
@@ -17,8 +17,7 @@
     "url": "git+https://github.com/c6o/provisioners.git"
   },
   "files": [
-    "lib",
-    "k8s"
+    "lib"
   ],
   "publishConfig": {
     "access": "public"
@@ -26,7 +25,7 @@
   "keywords": [
     "codezero",
     "provisioner",
-    "appengine"
+    "appsuite"
   ],
   "author": "Rob Chartier",
   "license": "Apache-2.0",

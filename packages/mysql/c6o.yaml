@@ -1,4 +1,4 @@
-name: 'mysql'
+name: 'MySql'
 appId: mysql                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 

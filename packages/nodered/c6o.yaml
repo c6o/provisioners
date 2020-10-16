@@ -5,7 +5,6 @@ package: '@provisioner/appengine'
 editions:
   - name: preview
     scope: public
-    default: true
     spec:
       routes:
         - type: http

@@ -1,0 +1,42 @@
+name: 'App Suite'
+appId: appsuite                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appsuite'
+icon: icon.svg
+description:
+  App Suite is a key component in the simplification of leveraging Kubernetes for your existing Provisioners, within the c6o system.  It allows DevOps staff to quickly and easily wrap multiple apps (provisioners) for deployment onto Kubernetes in an automated fashion.
+
+summary:
+  App Suite is a key component in the simplification of leveraging Kubernetes for your existing Provisioners, within the c6o system.  It allows DevOps staff to quickly and easily wrap multiple apps (provisioners) for deployment onto Kubernetes in an automated fashion.
+
+category: dev-tools
+keywords:
+  - Developer Tools
+  - Apps
+  - Provisioner
+  - Kubernetes
+  - AppEngine
+  - AppSuite
+  - AppStudio
+  - Automation
+  - Deployment
+  - dev-tools
+
+repo: https://github.com/c6o/provisioners
+license: https://github.com/c6o/provisioners
+support: https://github.com/c6o/provisioners/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: latest
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appsuite'
+      marina:
+        launch:
+          type: inline
+          popUp: true

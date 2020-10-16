@@ -1,0 +1,41 @@
+name: 'Adminer and Mysql Developer Edition'
+appId: adminermysql
+package: '@provisioner/appsuite'
+icon: icon.svg
+description:
+  Install both adminer and mysql developer edition
+
+summary:
+  Install both adminer and mysql developer edition
+
+category: dev-tools
+keywords:
+  - Developer Tools
+  - mysql
+  - adminer
+
+editions:
+  - name: latest
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appsuite'
+        app:
+          - appId: mysql
+            edition: developerinternal
+            name: mysql
+          - appId: adminer
+            edition: preview
+            name: adminer
+        config:
+          - namePath: adminer.secret.ADMINER_DEFAULT_SERVER
+            valuePath: {mysql.hostname}
+          - namePath: adminer.secret.username
+            valuePath: root  //raw value, will override what is in the provisioner spec
+          - namePath: adminer.secret.username
+            valuePath: {mysql.secret.MYSQL_ROOT_PASSWORD}
+      marina:
+        launch:
+          type: inline
+          popUp: true

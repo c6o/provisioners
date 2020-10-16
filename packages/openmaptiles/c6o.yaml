@@ -1,0 +1,46 @@
+name: 'OpenMapTiles'
+appId: openmaptiles                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  World maps you can deploy on your own
+
+
+description:
+  The easiest way how to deploy world basemap powered by OpenStreetMap and Kubernetes.
+
+
+  Setup your own zoomable map of the whole world or of a selected region in a few basic steps. Maps are powered by the OpenStreetMap data and vector tiles from the OpenMapTiles project. This is the easiest way how to launch your own mapping platform with global base maps for your products.
+
+
+  Data are loaded automatically from OpenMapTiles Downloads during the installation. The server can be used with Production package or any dataset downloadable from Downloads. Simply copy the downloaded files into the data directory before starting the server.
+
+
+  Support is provided separately.
+
+repo: https://github.com/openmaptiles/openmaptiles
+license: https://openmaptiles.com/terms/
+support: https://openmaptiles.com/support/
+
+editions:
+  - name: latest
+    scope: public
+    spec:
+      routes:
+        - type: http
+          targetService: openmaptiles
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: openmaptiles
+        image: 'klokantech/openmaptiles-server'
+        port: 80
+        automated: true
+        volume:
+          - name: data
+            mountPath: /data
+            size: 100Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true
