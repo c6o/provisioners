@@ -1,0 +1,26 @@
+name: 'nextcloud'
+appId: next-cloud                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    spec:
+      routes:
+        - type: http
+          targetService: nextcloud
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: nextcloud
+        image: nextcloud
+        port: 80
+        automated: true
+        volumes:
+          - name: data
+            mountPath: /var/www/html/
+            size: 10Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true

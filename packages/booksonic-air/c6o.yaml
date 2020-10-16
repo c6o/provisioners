@@ -1,6 +1,38 @@
 name: 'booksonic-air'
 appId: booksonic-air                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  First of all, credit where credit is due, Booksonic Air is not built from scratch, instead it is building on top of the amazing work done by the people over at Airsonic .
+
+
+  Now then, Booksonic Air is a server for hosting the audiobooks you own and reach them from wherever you are. Perfect for those boring bus rides!
+
+
+  It is designed to handle very large collections (hundreds of gigabytes). Although optimized for MP3 streaming, it works for any audio or video format that can stream over HTTP, for instance AAC and OGG. By using transcoder plug-ins, Booksonic supports on-the-fly conversion and streaming of virtually any audio format, including WMA, FLAC, APE, Musepack, WavPack and Shorten.
+
+
+  If you have constrained bandwidth, you may set an upper limit for the bitrate of the streams. Booksonic will then automatically resample to a suitable bitrate.
+
+
+  Based on Java technology, Booksonic runs on most platforms, including Windows, Mac, Linux and Unix variants.
+
+
+summary:
+   Booksonic Air is a server for hosting the audiobooks you own and reach them from wherever you are. Perfect for those boring bus rides!
+category: media
+keywords:
+  - media
+  - audiobooks
+  - audio
+
+repo: https://github.com/popeen/Booksonic-Air
+license: http://www.gnu.org/copyleft/gpl.html
+support: https://github.com/popeen/Booksonic-Air/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
