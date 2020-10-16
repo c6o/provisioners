@@ -1,0 +1,18 @@
+name: Suite CRM
+appId: suitecrm
+icon: icon.svg
+package: '@provisioner/suitecrm'
+editions:
+  - name: stable
+    status: public
+    spec:
+    routes:
+      - type: http
+        targetService: suitecrm
+    provisioner:
+      package: "@provisioner/suitecrm"
+      ui: ignore
+    marina:
+      launch:
+      type: inline
+      popUp: true
