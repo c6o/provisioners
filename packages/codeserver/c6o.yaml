@@ -38,9 +38,16 @@ description:
 summary:
   Run VS Code on any machine anywhere and access it in the browser.
 
-category: cms
+category: dev-tools
 keywords:
-  - Content Management System
+  - VSCode
+  - Visual Studio Code
+  - Develop
+  - Integrated Development Environment
+  - IDE
+  - VS Code
+  - Code
+
 
 
 repo: https://github.com/cdr/code-server
