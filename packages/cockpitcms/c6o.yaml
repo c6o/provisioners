@@ -1,6 +1,29 @@
-name: 'cockpitcms'
+name: Cockpit CMS
 appId: cockpitcms                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+    Cockpit is awesome if you need a flexible content structure but don't want to be limited in how to use the content. Cockpit is a perfect match if you want to support multiple devices or need a content management UI for static site builders. Build unique applications and let Cockpit feed them with content.
+
+summary:
+  Simple Content Platform to manage any structured content.
+
+  A self-hosted headless and api-driven CMS
+
+  Build. Connect. Deliver.
+
+category: cms
+keywords:
+  - Content Management System
+
+
+repo: https://github.com/agentejo/cockpit
+license: https://github.com/agentejo/cockpit/blob/next/LICENSE
+support: https://getcockpit.com/support
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
