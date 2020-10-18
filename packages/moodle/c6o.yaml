@@ -1,0 +1,39 @@
+name: 'Moodle'
+appId: moodle
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: moodle
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: moodle
+        image: 'bitnami/moodle:latest'
+        port: 8080
+        automated: true
+        config:
+          - name: MOODLE_DATABASE_TYPE
+            value: mysqli
+          - name: MOODLE_DATABASE_HOST
+            value: mysql.testing
+          - name: MOODLE_DATABASE_NAME
+            value: moodle
+        secret:
+          - name: MOODLE_DATABASE_USER
+            value: root
+          - name: MOODLE_DATABASE_PASSWORD
+            value: admin
+        volume:
+          - size: 5Gi
+            mountPath: /bitnami/moodle
+            name: moodle-data
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,58 @@
+name: 'Maria DB'
+appId: mariadb
+package: '@provisioner/appengine'
+
+editions:
+  - name: developer
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: tcp
+          targetService: mysql
+          tcp:
+            port: 3306
+            name: mariadb
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: mariadb
+        image: 'mariadb'
+        port: 3306
+        automated: true
+        config:
+        secret:
+          - name: MYSQL_ROOT_PASSWORD
+            value: admin
+        volume:
+          - size: 5Gi
+            mountPath: /bitnami/moodle
+            name: moodledata
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: developerinternal
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: mariadb
+        image: 'mariadb'
+        port: 3306
+        automated: true
+        config:
+        secret:
+          - name: MYSQL_ROOT_PASSWORD
+            value: admin
+        volume:
+          - size: 5Gi
+            mountPath: /bitnami/moodle
+            name: moodledata
+      marina:
+        launch:
+          type: inline
+          popUp: true

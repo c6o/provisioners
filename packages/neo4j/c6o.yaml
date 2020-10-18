@@ -1,0 +1,30 @@
+name: neo4j
+appId: neo4j                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: neo4j
+        image: neo4j
+        port:
+          - port: 7474
+            name: http
+            protocol: TCP
+          - port: 7687
+            name: bolt
+            protocol: TCP
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: data
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,30 @@
+name:  Kapacitor
+appId: kapacitor                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: kapacitor
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: kapacitor
+        image: kapacitor
+        port: 9092
+        automated: true
+        config:
+          - name: KAPACITOR_INFLUXDB_0_URLS_0
+            value: http://influxdb:8086
+        volume:
+          - name: kapacitor-data
+            size: 5Gi
+            mountPath: /var/lib/kapacitor
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,33 @@
+name:  Joomla!
+appId: joomla                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: joomla
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: joomla
+        image: joomla
+        port: 80
+        automated: true
+        config:
+          - name: JOOMLA_DB_HOST
+            value: mysql.testing
+          - name: JOOMLA_DB_NAME
+            value: joomla
+        secret:
+          - name: JOOMLA_DB_USER
+            value: root
+          - name: JOOMLA_DB_PASSWORD
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true

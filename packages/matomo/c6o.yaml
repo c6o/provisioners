@@ -1,0 +1,27 @@
+name: matomo
+appId:  matomo
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: matomo
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: matomo
+        image: matomo
+        port: 80
+        automated: true
+        volume:
+          - name: matomo-data
+            size: 5Gi
+            mountPath: /var/www/html
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,0 +1,30 @@
+name:  Syncthing
+appId: syncthing                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: syncthing
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: syncthing
+        image: 'syncthing/syncthing:latest'
+        port: 8384
+        automated: true
+        config:
+          - name: TX
+            value: America/Vancouver
+        volume:
+          - name: syncthing-data
+            size: 100Gi
+            mountPath: /data
+      marina:
+        launch:
+          type: inline
+          popUp: true

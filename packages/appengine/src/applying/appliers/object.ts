@@ -91,11 +91,11 @@ export class ObjectApplier implements Applier {
 
     async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
-        if (spec.configs?.length) {
+        if (spec.config?.length) {
 
             const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
 
-            for (const item of spec.configs) {
+            for (const item of spec.config) {
                 if (!item.env || item.env === '') item.env = item.name
                 config.data[item.name] = new String(item.value)
 
@@ -126,7 +126,7 @@ export class ObjectApplier implements Applier {
 
     async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
-        if (spec.secrets && spec.secrets.length > 0) {
+        if (spec.secret && spec.secrets.length > 0) {
 
             const secret = templates.getSecretTemplate(spec.name, namespace, spec.metaData)
 
