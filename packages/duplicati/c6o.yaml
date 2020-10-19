@@ -1,6 +1,29 @@
-name: 'duplicati'
+name: Duplicati
 appId: duplicati                  #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Duplicati is a backup client that securely stores encrypted, incremental, compressed remote backups of local files on cloud storage services and remote file servers. Duplicati supports not only various online backup services like OneDrive, Amazon S3, Backblaze, Rackspace Cloud Files, Tahoe LAFS, and Google Drive, but also any servers that support SSH/SFTP, WebDAV, or FTP.
+
+
+  Duplicati uses standard components such as rdiff, zip, AESCrypt, and GnuPG. This allows users to recover backup files even if Duplicati is not available. Released under the terms of the GNU Lesser General Public License (LGPL), Duplicati is free software.
+
+
+summary:
+  Duplicati is a backup client that securely stores encrypted, incremental, compressed remote backups of local files on cloud storage services and remote file servers.
+
+category: dms
+keywords:
+  - Backup
+  - Encryption
+
+repo: https://github.com/duplicati/duplicati
+license: https://github.com/duplicati/duplicati/blob/master/LICENSE.txt
+support: https://github.com/duplicati/duplicati/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
