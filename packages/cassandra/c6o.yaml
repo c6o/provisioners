@@ -63,7 +63,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /var/lib/cassandra
-            name: data
+            name: cassandra-data
         automated: true
         secret:
           - name: CASSANDRA_USERNAME

@@ -1,4 +1,4 @@
-name: 'Moodle'
+name: Moodle
 appId: moodle
 package: '@provisioner/appengine'
 

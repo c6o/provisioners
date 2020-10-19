@@ -1,4 +1,4 @@
-name: 'Rocket.Chat'
+name: Rocket.Chat
 appId: rocketchat
 package: '@provisioner/appengine'
 

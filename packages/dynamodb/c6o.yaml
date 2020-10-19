@@ -1,5 +1,5 @@
 name: DynamoDB
-appId: dynamodb                #App internal name (all lower, no spaces); minimum 5 characters
+appId: dynamodb
 package: '@provisioner/appengine'
 # https://hub.docker.com/r/amazon/dynamodb-local
 

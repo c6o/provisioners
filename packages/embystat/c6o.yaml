@@ -1,5 +1,5 @@
-name: 'embystat'
-appId: embystat                    #App internal name (all lower, no spaces); minimum 5 characters
+name: Emby Stats
+appId: embystat
 package: '@provisioner/appengine'
 
 editions:
@@ -18,7 +18,7 @@ editions:
         port: 6555
         automated: true
         volume:
-          - name: config
+          - name: embystat-config
             size: 1Gi
             mountPath: /config
       marina:

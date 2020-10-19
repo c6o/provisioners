@@ -1,5 +1,5 @@
-name: 'seafile'
-appId: seafile                    #App internal name (all lower, no spaces); minimum 5 characters
+name: Seafile
+appId: seafile
 package: '@provisioner/appengine'
 
 editions:
@@ -27,7 +27,7 @@ editions:
         volume:
           - size: 500Gi
             mountPath: /shared
-            name: shared
+            name: seafile-shared
       marina:
         launch:
           type: inline

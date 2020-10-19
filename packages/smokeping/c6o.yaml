@@ -1,5 +1,5 @@
-name: 'smokeping'
-appId: smokeping                  #App internal name (all lower, no spaces); minimum 5 characters
+name: Smoke Ping
+appId: smokeping
 package: '@provisioner/appengine'
 
 editions:
@@ -23,10 +23,10 @@ editions:
         volume:
           - size: 1Gi
             mountPath: /config
-            name: config
+            name: smokeping-config
           - size: 5Gi
             mountPath: /data
-            name: dat
+            name: smokeping-data
       marina:
         launch:
           type: inline

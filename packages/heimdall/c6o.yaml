@@ -1,4 +1,4 @@
-name: 'heimdall'
+name: Heimdall
 appId: heimdall                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -21,7 +21,7 @@ editions:
           - name: TZ
             value: America/Vancouver
         volume:
-          - name: config
+          - name: heimdall-config
             size: 1Gi
             mountPath: /config
       marina:

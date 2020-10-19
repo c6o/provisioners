@@ -1,5 +1,5 @@
-name:  influxdb
-appId: influxdb                  #App internal name (all lower, no spaces); minimum 5 characters
+name:  InfluxDB
+appId: influxdb
 package: '@provisioner/appengine'
 
 editions:

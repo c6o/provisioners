@@ -1,5 +1,5 @@
 name: LibreSpeed - Speed Test
-appId: speedtest                #App internal name (all lower, no spaces); minimum 5 characters
+appId: speedtest
 package: '@provisioner/appengine'
 # https://hub.docker.com/r/adolfintel/speedtest
 

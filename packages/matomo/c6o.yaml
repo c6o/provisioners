@@ -1,4 +1,4 @@
-name: matomo
+name: Matomo
 appId:  matomo
 package: '@provisioner/appengine'
 

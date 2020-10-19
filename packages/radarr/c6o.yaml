@@ -1,5 +1,5 @@
-name: 'radarr'
-appId: radarr                #App internal name (all lower, no spaces); minimum 5 characters
+name: Radarr
+appId: radarr
 package: '@provisioner/appengine'
 
 editions:
@@ -23,13 +23,13 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: radarr-config
           - size: 500Gi
             mountPath: /movies
-            name: movies
+            name: radarr-movies
           - size: 50Gi
             mountPath: /downloads
-            name: downloads
+            name: radarr-downloads
       marina:
         launch:
           type: inline

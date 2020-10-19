@@ -1,5 +1,5 @@
-name: 'ombiserver'
-appId: ombiserver                  #App internal name (all lower, no spaces); minimum 5 characters
+name: Ombi Server
+appId: ombiserver
 package: '@provisioner/appengine'
 
 editions:

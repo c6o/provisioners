@@ -1,5 +1,5 @@
-name: 'nodered'
-appId: nodered                  #App internal name (all lower, no spaces); minimum 5 characters
+name: Node Red
+appId: nodered
 package: '@provisioner/appengine'
 
 editions:
@@ -22,7 +22,7 @@ editions:
           - name: NODE_RED_ENABLE_PROJECTS
             value: 'false'
         volumes:
-          - name: data
+          - name: nodered-data
             mountPath: /data
             size: 1Gi
       marina:
@@ -50,7 +50,7 @@ editions:
           - name: NODE_RED_ENABLE_PROJECTS
             value: 'true'
         volumes:
-          - name: data
+          - name: nodered-data
             mountPath: /data
             size: 1Gi
       marina:

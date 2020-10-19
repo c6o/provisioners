@@ -1,5 +1,5 @@
-name: 'n8nserver'
-appId: n8nserver                  #App internal name (all lower, no spaces); minimum 5 characters
+name: N8N Server
+appId: n8nserver
 package: '@provisioner/appengine'
 
 editions:

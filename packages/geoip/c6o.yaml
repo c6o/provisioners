@@ -1,5 +1,5 @@
 name: GeoIP Service
-appId: geoip                #App internal name (all lower, no spaces); minimum 5 characters
+appId: geoip
 package: '@provisioner/appengine'
 # https://hub.docker.com/r/splunk/splunk
 

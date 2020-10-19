@@ -1,5 +1,5 @@
-name: 'OpenMapTiles'
-appId: openmaptiles                    #App internal name (all lower, no spaces); minimum 5 characters
+name: Open Map Tiles
+appId: openmaptiles
 package: '@provisioner/appengine'
 icon: icon.svg
 summary:
@@ -37,7 +37,7 @@ editions:
         port: 80
         automated: true
         volume:
-          - name: data
+          - name: openmaptiles-data
             mountPath: /data
             size: 100Gi
       marina:

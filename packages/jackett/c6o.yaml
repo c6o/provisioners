@@ -1,4 +1,4 @@
-name: 'jackett'
+name: Jackett
 appId: jackett                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -19,10 +19,10 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: jackett-config
           - size: 500Gi
             mountPath: /downloads
-            name: downloads
+            name: jackett-downloads
         config:
           - name: TZ
             value: America/Vancouver

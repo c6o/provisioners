@@ -1,5 +1,5 @@
 name: Splunk
-appId: splunk                #App internal name (all lower, no spaces); minimum 5 characters
+appId: splunk
 package: '@provisioner/appengine'
 # https://hub.docker.com/r/splunk/splunk
 

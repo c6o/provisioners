@@ -17,6 +17,10 @@ editions:
         image: drupal
         port: 80
         automated: true
+        volume:
+          - size: 50Gi
+            mountPath: /var/www/html
+            name: drupal-data
       marina:
         launch:
           type: inline

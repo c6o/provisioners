@@ -1,4 +1,4 @@
-name: 'Maria DB'
+name: Maria DB
 appId: mariadb
 package: '@provisioner/appengine'
 
@@ -27,7 +27,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /bitnami/moodle
-            name: moodledata
+            name: mariadb-moodledata
       marina:
         launch:
           type: inline

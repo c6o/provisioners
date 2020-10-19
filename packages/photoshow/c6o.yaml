@@ -1,5 +1,5 @@
-name: 'photoshow'
-appId: photoshow                 #App internal name (all lower, no spaces); minimum 5 characters
+name: Photo Show
+appId: photoshow
 package: '@provisioner/appengine'
 
 editions:
@@ -23,13 +23,13 @@ editions:
         volume:
           - size: 1Gi
             mountPath: /config
-            name: config
+            name: photoshow-config
           - size: 10Gi
             mountPath: /Pictures
-            name: Pictures
+            name: photoshow-pictures
           - size: 5Gi
             mountPath: /Thumbs
-            name: thumbs
+            name: photoshow-thumbs
       marina:
         launch:
           type: inline

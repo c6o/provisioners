@@ -1,4 +1,4 @@
-name: 'jellyfin'
+name: Jellyfin
 appId: jellyfin                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -21,13 +21,13 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: jellyfin-config
           - size: 5Gi
             mountPath: /cache
-            name: cache
+            name: jellyfin-cache
           - size: 5Gi
             mountPath: /media
-            name: media
+            name: jellyfin-media
       marina:
         launch:
           type: inline

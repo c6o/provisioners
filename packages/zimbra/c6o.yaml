@@ -1,5 +1,5 @@
-name: 'zimbra'
-appId: zimbra                 #App internal name (all lower, no spaces); minimum 5 characters
+name: Zimbra
+appId: zimbra
 package: '@provisioner/appengine'
 
 editions:
@@ -23,7 +23,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /opt/zimbra
-            name: zimbra
+            name: zimbra-data
       marina:
         launch:
           type: inline

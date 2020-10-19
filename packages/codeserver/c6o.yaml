@@ -74,10 +74,10 @@ editions:
         port: 8443
         automated: true
         volume:
-          - name: config
+          - name: codeserver-config
             mountPath: /config
             size: 1Gi
-          - name: code
+          - name: codeserver-code
             mountPath: /code
             size: 5Gi
         config:

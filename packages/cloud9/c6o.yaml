@@ -44,7 +44,7 @@ editions:
         port: 8000
         automated: true
         volume:
-          - name: code
+          - name: cloud9-code
             mountPath: /code
             size: 5Gi
         config:
@@ -75,7 +75,7 @@ editions:
         port: 8000
         automated: true
         volume:
-          - name: code
+          - name: cloud9-code
             mountPath: /code
             size: 5Gi
         config:
@@ -107,7 +107,7 @@ editions:
         port: 8000
         automated: true
         volume:
-          - name: code
+          - name: cloud9-code
             mountPath: /code
             size: 5Gi
         config:
@@ -139,7 +139,7 @@ editions:
         port: 8000
         automated: true
         volume:
-          - name: code
+          - name: cloud9-code
             mountPath: /code
             size: 5Gi
         config:

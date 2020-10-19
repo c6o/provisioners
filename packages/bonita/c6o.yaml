@@ -39,7 +39,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /opt/bonita
-            name: bonita
+            name: bonita-data
       marina:
         launch:
           type: inline

@@ -1,5 +1,5 @@
-name: 'sshwifty'
-appId: sshwifty                #App internal name (all lower, no spaces); minimum 5 characters
+name: SSHwifty
+appId: sshwifty
 package: '@provisioner/appengine'
 
 editions:

@@ -1,5 +1,5 @@
-name: 'photoprism'
-appId: photoprism                #App internal name (all lower, no spaces); minimum 5 characters
+name: Photo Prism
+appId: photoprism
 package: '@provisioner/appengine'
 
 editions:
@@ -25,10 +25,10 @@ editions:
         volume:
           - size: 500Gi
             mountPath: /photoprism/storage
-            name: storage
+            name: photoprism-storage
           - size: 100Gi
             mountPath: /photoprism/originals
-            name: originals
+            name: photoprism-originals
       marina:
         launch:
           type: inline

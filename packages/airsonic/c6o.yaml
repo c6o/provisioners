@@ -57,16 +57,16 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: airsonic-config
           - size: 100Gi
             mountPath: /music
             name: music
           - size: 5Gi
             mountPath: /playlists
-            name: playlists
+            name: airsonic-playlists
           - size: 100Gi
             mountPath: /podcasts
-            name: podcasts
+            name: airsonic-podcasts
           - size: 100Gi
             mountPath: /media
             name: media

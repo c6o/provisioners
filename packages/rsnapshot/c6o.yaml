@@ -1,5 +1,5 @@
-name: 'rsnapshot'
-appId: rsnapshot                #App internal name (all lower, no spaces); minimum 5 characters
+name: RSnapshot
+appId: rsnapshot
 package: '@provisioner/appengine'
 
 editions:
@@ -18,13 +18,13 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rsnapshot-config
           - size: 100Gi
             mountPath: /data
-            name: data
+            name: rsnapshot-data
           - size: 50Gi
             mountPath: /.snapshots
-            name: snapshots
+            name: rsnapshot-snapshots
         automated: true
       marina:
         launch:

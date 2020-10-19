@@ -1,5 +1,5 @@
 name: Next Cloud
-appId: next-cloud                  #App internal name (all lower, no spaces); minimum 5 characters
+appId: next-cloud
 package: '@provisioner/appengine'
 icon: icon.svg
 description:
@@ -43,7 +43,7 @@ editions:
             protocol: TCP
         automated: true
         volumes:
-          - name: data
+          - name: nextcloud-data
             mountPath: /var/www/html/
             size: 10Gi
       marina:

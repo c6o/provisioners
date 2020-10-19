@@ -1,5 +1,5 @@
-name: 'pylon'
-appId: pylon                   #App internal name (all lower, no spaces); minimum 5 characters
+name: Pylon
+appId: pylon
 package: '@provisioner/appengine'
 
 editions:
@@ -21,7 +21,7 @@ editions:
           - name: TZ
             value: America/Vancouver
         volume:
-          - name: code
+          - name: pylon-code
             mountPath: /code
             size: 5Gi
       marina:

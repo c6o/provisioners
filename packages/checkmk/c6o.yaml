@@ -77,10 +77,10 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: admin
+            value: checkmk-admin
         volume:
           - size: 5Gi
-            name: sites
+            name: checkmk-sites
             mountPath: /omd/sites
       marina:
         launch:
@@ -112,7 +112,7 @@ editions:
             value: admin
         volume:
           - size: 5Gi
-            name: sites
+            name: checkmk-sites
             mountPath: /omd/sites
       marina:
         launch:
