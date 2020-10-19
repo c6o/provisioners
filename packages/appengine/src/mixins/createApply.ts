@@ -24,7 +24,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.ensureServiceNamespacesExist()
         await this.installApp()
-        if(!this.spec.dryRun) await this.ensureAppIsRunning()
+        await this.ensureAppIsRunning()
     }
 
     async installApp() {

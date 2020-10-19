@@ -38,6 +38,22 @@ editions:
         image: promasu/cryptpad:latest
         port: 3000
         automated: true
+        # volume:
+        #   - name: cryptpad-blob
+        #     mountPath: /cryptpad/blob
+        #     size: 10Gi
+        #   - name: cryptpad-block
+        #     mountPath: /cryptpad/block
+        #     size: 10Gi
+        #   - name: cryptpad-customize
+        #     mountPath: /cryptpad/customize
+        #     size: 10Gi
+        #   - name: cryptpad-data
+        #     mountPath: /cryptpad/data
+        #     size: 10Gi
+        #   - name: cryptpad-datastore
+        #     mountPath: /cryptpad/datastore
+        #     size: 10Gi
       marina:
         launch:
           type: inline

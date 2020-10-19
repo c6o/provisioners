@@ -7,13 +7,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(args) {
 
-        this.spec.dryRun = false
-        if(args['dry-run']) {
-            args.applier = 'DryRunApplier'
-        }
-        if(args.applier) this.spec.applier = args.applier
-        if(this.spec.applier === 'DryRunApplier') this.spec.dryRun = true
-
         const answers = {
             image: args['image'] || this.spec.image,
             name: args['name'] || this.spec.name,
