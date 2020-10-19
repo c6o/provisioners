@@ -133,7 +133,21 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.secret) {
                 if (!item.env || item.env === '') item.env = item.name
-                const value = Buffer.from(new String(item.value)).toString('base64')
+
+                let val = new String(item.value)
+                if (val.substr(0, 7) === '%RANDOM') {
+                    if (val === '%RANDOM')
+                        val = this.makeRandom(10)
+                    else {
+                        if (val.indexOf(':') > 0) {
+                            const len = Number(val.substr(val.indexOf(':') + 1))
+                            val = this.makeRandom(len)
+
+
+                        }
+                    }
+                }
+                const value = Buffer.from(val).toString('base64')
                 secret.data[item.name] = value
                 if (item.env && item.env !== '' && item.env !== 'NONE') {
                     deployment.spec.template.spec.containers[0].env.push(
@@ -157,5 +171,16 @@ export class ObjectApplier implements Applier {
                 .upsert(secret)
                 .end()
         }
+
+    }
+
+    makeRandom(len) {
+        let text = ''
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+        for (let i = 0; i < len; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length))
+
+        return text
     }
 }

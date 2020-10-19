@@ -1,0 +1,40 @@
+name: DynamoDB
+appId: dynamodb                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+# https://hub.docker.com/r/amazon/dynamodb-local
+
+editions:
+  - name: local
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: dynamodb
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: dynamodb
+        image: amazon/dynamodb-local
+        port: 8000
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: localinternal
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: dynamodb
+        image: amazon/dynamodb-local
+        port: 8000
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

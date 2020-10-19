@@ -1,0 +1,30 @@
+name: Splunk
+appId: splunk                #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+# https://hub.docker.com/r/splunk/splunk
+
+editions:
+  - name: local
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: splunk
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: splunk
+        image: splunk/splunk
+        port: 8000
+        automated: true
+        config:
+          - name: SPLUNK_START_ARGS
+            value: --accept-license
+        secret:
+          - name: SPLUNK_PASSWORD
+            value: splunkpassword
+      marina:
+        launch:
+          type: inline
+          popUp: true
