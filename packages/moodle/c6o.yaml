@@ -19,9 +19,9 @@ editions:
         automated: true
         config:
           - name: MOODLE_DATABASE_TYPE
-            value: mysqli
+            value: mariadb
           - name: MOODLE_DATABASE_HOST
-            value: mysql.testing
+            value: mariadb.testing
           - name: MOODLE_DATABASE_NAME
             value: moodle
         secret:
