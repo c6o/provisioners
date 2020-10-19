@@ -1,0 +1,57 @@
+name: MongoDB
+appId: mongodb                    #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: developer
+    spec:
+      routes:
+        - type: tcp
+          targetService: mongodb
+          tcp:
+            port: 27017
+            name: mongodb
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: mongodb
+        image: 'mongo:latest'
+        port: 27017
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: mongodb-data
+        secret:
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: admin
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: root
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: developerinternal
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: mongodb
+        image: 'mongo:latest'
+        port: 27017
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: mongodb-data
+        secret:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: root
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: admin
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

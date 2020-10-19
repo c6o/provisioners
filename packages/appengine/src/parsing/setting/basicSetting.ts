@@ -12,7 +12,7 @@ class BasicSettingParser implements SettingsParser {
         let results = this.parseObject(args, type)
         results = results.concat(this.parseObject(spec, type))
         debug(`Settings Outputs: ${type}\n`,  JSON.stringify(results))
-        return results
+        return results as Setting[]
     }
 
     parseObject(args: any, type: string): Setting[] {
@@ -24,14 +24,12 @@ class BasicSettingParser implements SettingsParser {
 
         if (Array.isArray(rawValues)) {
             for (const p of rawValues) {
-
                 if(p === null) continue
 
                 if (typeof p === 'object')
-                    results.push(rawValues)
+                    results.push(p as Setting)
                 else
                     results.push(this.parseSingle(p))
-
             }
         } else {
 
@@ -41,7 +39,8 @@ class BasicSettingParser implements SettingsParser {
                 results.push(this.parseSingle(rawValues))
 
         }
-        return results
+
+        return results as Setting[]
     }
 
 
@@ -70,7 +69,7 @@ class BasicSettingParser implements SettingsParser {
         if(!value.env || value.env === '')
             value.env = value.name
 
-        return value
+        return value as Setting
     }
 }
 export { BasicSettingParser }

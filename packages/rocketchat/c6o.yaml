@@ -1,0 +1,32 @@
+name: 'Rocket.Chat'
+appId: rocketchat
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: private
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: rocketchat
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: rocketchat
+        image: rocket.chat
+        port: 3000
+        automated: true
+        secret:
+          - name: MONGO_OPLOG_URL
+            value: mongodb://root:admin@mongodb/local
+          - name: MONGO_URL
+            value: mongodb://root:admin@mongodb/rocketchat
+        volume:
+          - name: rocketchat-uploads
+            size: 50Gi
+            mountPath: /app/uploads
+      marina:
+        launch:
+          type: inline
+          popUp: true
