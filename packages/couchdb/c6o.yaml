@@ -29,14 +29,14 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /opt/couchdb/data
-            name: data
+            name: couchdb-data
         automated: true
       marina:
         launch:
           type: inline
           popUp: true
 
-  - name: previewinternal
+  - name: preview-internal
     scope: public
     spec:
       provisioner:
@@ -56,7 +56,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /opt/couchdb/data
-            name: data
+            name: couchdb-data
         automated: true
       marina:
         launch:

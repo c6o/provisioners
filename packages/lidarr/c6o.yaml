@@ -1,4 +1,4 @@
-name: 'lidarr'
+name: Lidarr
 appId: lidarr                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -23,13 +23,13 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: lidarr-config
           - size: 500Gi
             mountPath: /music
-            name: music
+            name: lidarr-music
           - size: 50Gi
             mountPath: /downloads
-            name: downloads
+            name: lidarr-downloads
       marina:
         launch:
           type: inline

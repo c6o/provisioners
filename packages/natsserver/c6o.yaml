@@ -1,4 +1,4 @@
-name: 'natsserver'
+name: NATS Server
 appId: natsserver                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 

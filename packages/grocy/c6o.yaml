@@ -1,4 +1,4 @@
-name: 'grocy'
+name: Grocy
 appId: grocy             #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -21,7 +21,7 @@ editions:
           - name: TZ
             value: America/Vancouver
         volume:
-          - name: config
+          - name: grocy-config
             size: 1Gi
             mountPath: /config
       marina:

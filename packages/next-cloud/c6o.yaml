@@ -1,0 +1,52 @@
+name: Next Cloud
+appId: next-cloud
+package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Share and collaborate on documents, send and receive email, manage your calendar and have video chats without data leaks
+
+
+  As fully on-premises solution, Nextcloud Hub provides the benefits of online collaboration without the compliance and security risks.
+
+summary:
+  Powering collaboration - the most popular self-hosted collaboration solution for tens of millions of users at thousands of organizations across the globe
+
+category: dms
+keywords:
+  - Collaborate
+  - Document
+  - Document Management
+
+repo: https://github.com/nextcloud
+license: https://github.com/nextcloud/server/blob/master/COPYING
+support: https://nextcloud.com/support/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    spec:
+      routes:
+        - type: http
+          targetService: nextcloud
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: nextcloud
+        image: nextcloud
+        port:
+          - port: 80
+            name: http
+            protocol: TCP
+        automated: true
+        volumes:
+          - name: nextcloud-data
+            mountPath: /var/www/html/
+            size: 10Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true

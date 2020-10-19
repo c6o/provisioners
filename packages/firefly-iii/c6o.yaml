@@ -1,5 +1,5 @@
-name: 'firefly-iii'
-appId: firefly-iii                   #App internal name (all lower, no spaces); minimum 5 characters
+name: FireFly-iii
+appId: firefly-iii
 package: '@provisioner/appengine'
 
 editions:
@@ -18,10 +18,10 @@ editions:
         port: 8080
         automated: true
         volume:
-          - name: export
+          - name: firefly-iii-export
             size: 20Gi
             mountPath: /var/www/firefly-iii/storage/export
-          - name: upload
+          - name: firefly-iii-upload
             size: 20Gi
             mountPath: /var/www/firefly-iii/storage/upload
         secret:

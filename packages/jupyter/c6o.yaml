@@ -1,4 +1,4 @@
-name: 'jupyter'
+name: Jupyter
 appId: jupyter                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -19,7 +19,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -45,7 +45,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -72,7 +72,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -98,7 +98,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -125,7 +125,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -152,7 +152,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -179,7 +179,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -206,7 +206,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -233,7 +233,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
@@ -261,7 +261,7 @@ editions:
         volume:
           - size: 10Gi
             mountPath: /home/jovyan/work
-            name: work
+            name: jupyter-work
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes

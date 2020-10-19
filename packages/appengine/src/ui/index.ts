@@ -1,13 +1,13 @@
 import { LitElement, html, customElement } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
-@customElement('dockerweb-install-main')
-export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
+@customElement('appengine-install-main')
+export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
 
     get serviceSpec() {
-        return this.mediator.getServiceSpec('dockerweb')
+        return this.mediator.getServiceSpec('appengine')
     }
     render() {
         return html`

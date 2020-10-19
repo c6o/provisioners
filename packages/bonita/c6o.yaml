@@ -1,7 +1,25 @@
-name: bonita
+name: Bonita BPM
 appId:  bonita
 package: '@provisioner/appengine'
-icon: 'https://extensions.typo3.org/fileadmin/ter/t/3/t3adminer_9.4.1.svg'
+#icon: https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg
+icon: icon.svg
+description:
+  Bonita is an open-source business process management and Low-code development platform created in 2001. Bonita technology was developed originally in 2001 by Miguel Valdés Faura, at the French Institute for Research in Computer Science and Automation, and subsequently transferred to Groupe Bull. In 2009, the Director of the BPM division, Miguel Valdes Faura founded Bonitasoft a French open-source software vendor.
+
+summary:
+  Bonita is an open-source business process management and Low-code development platform created in 2001.
+category: comm
+keywords:
+  - Business Process Management
+  - Open Source
+  - Bonitasoft
+
+repo: https://github.com/bonitasoft/bonita-web
+support: https://bonita.atlassian.net/jira/software/c/projects/BBPMC/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -21,7 +39,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /opt/bonita
-            name: bonita
+            name: bonita-data
       marina:
         launch:
           type: inline

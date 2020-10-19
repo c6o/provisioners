@@ -1,5 +1,5 @@
-name: 'rdesktop'
-appId: rdesktop               #App internal name (all lower, no spaces); minimum 5 characters
+name: RDesktop
+appId: rdesktop
 package: '@provisioner/appengine'
 
 editions:
@@ -29,7 +29,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -62,7 +62,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -97,7 +97,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -131,7 +131,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -166,7 +166,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -201,7 +201,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -236,7 +236,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -271,7 +271,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -305,7 +305,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -339,7 +339,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -373,7 +373,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:
@@ -407,7 +407,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: rdesktop-work
         automated: true
       marina:
         launch:

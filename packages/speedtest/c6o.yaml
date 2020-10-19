@@ -1,0 +1,24 @@
+name: LibreSpeed - Speed Test
+appId: speedtest
+package: '@provisioner/appengine'
+# https://hub.docker.com/r/adolfintel/speedtest
+
+editions:
+  - name: local
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: speedtest
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: speedtest
+        image: adolfintel/speedtest
+        port: 80
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -1,6 +1,34 @@
-name: 'chronograf'
+name: 'Chronograf'
 appId: chronograf                   #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Chronograf is the complete interface for the InfluxDB 1.x Platform
+
+
+  Why use Chronograf?
+
+  Chronograf allows you to quickly see the data that you have stored in InfluxDB so you can build robust queries and alerts. It is simple to use and includes templates and libraries to allow you to rapidly build dashboards with real-time visualizations of your data.
+
+
+  Access control is only available in InfluxDB Enterprise and InfluxDB Cloud
+summary:
+  Chronograf is the complete interface for the InfluxDB 1.x Platform
+category: databases
+keywords:
+  - Database
+  - Influx
+  - Time Series
+  - User Interface
+  - InfluxDB
+
+repo: https://github.com/influxdata/chronograf
+license: https://github.com/influxdata/chronograf/blob/master/LICENSE
+support: https://github.com/influxdata/chronograf/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview

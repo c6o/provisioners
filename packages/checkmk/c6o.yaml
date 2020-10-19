@@ -1,6 +1,64 @@
 name: 'checkmk'
 appId: checkmk                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Checkmk combines three types of IT monitoring
+
+
+  * Status-based monitoring, which (via thresholds) records the "health" of a device or application.
+
+  * Metric-based monitoring that enables the recording and analysis of time series graphs. For the CEE both an HTML5-based graphing system and an integration with Grafana are available.
+
+  * Log-based and event-based monitoring, in which key events can be filtered out and actions can be triggered based on these events.
+
+
+  In order to ensure a very broad monitoring, Checkmk currently has 1700+ plug-ins in each edition – all of which are licensed under GPLv2. These plug-ins are maintained as part of the product and are regularly supplemented with additional plug-ins or extensions. Connecting existing legacy Nagios plug-ins is possible as well.
+
+
+  To simplify setup and operation, all components of Checkmk are delivered fully integrated. A rule-based 1:n configuration, as well as a high degree of automation significantly accelerate workflows. This includes
+
+
+  * Auto-discovery of hosts (where applicable)
+
+  * Auto-discovery of services
+
+  * Automated configuration of plug-ins via preconfigured thresholds and rules
+
+  * Automated agent updates (a CEE feature)
+
+  * Automatic and dynamic configuration that enables the monitoring of volatile services with a lifespan of just a few seconds, such as in the Kubernetes environment (starting from CEE v1.6)
+
+  * Automated discovery of tags and labels from sources such as Kubernetes, AWS and Azure (starting from CEE v1.6)
+
+
+  In addition, there are also playbooks for the use of configuration and deployment tools such as Ansible or Salt.
+
+
+  Checkmk is often used in very large distributed environments where a high number of sites (e.g. 300 locations of Faurecia) and/or well over 100.000 devices (e.g. Edeka) are monitored. This is possible, among other things, because Checkmk's microcore consumes much less CPU resources than, for example Nagios, and therefore offers a significantly higher performance on the same hardware. Furthermore the non-persistent data is stored in-memory in RAM which significantly improves the access time.
+
+summary:
+  Best-in-class infrastructure & application monitoring
+
+
+  Helping you stay up and running from simple to the most complex environments
+category: monitoring
+keywords:
+  - Infrastructure
+  - Monitoring
+  - Application
+  - Agents
+  - Plugins
+  - Plug-ins
+  - Reporting
+
+repo: https://github.com/tribe29/checkmk
+license: https://github.com/tribe29/checkmk/blob/master/COPYING
+support: https://checkmk.com/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -19,10 +77,10 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: admin
+            value: checkmk-admin
         volume:
           - size: 5Gi
-            name: sites
+            name: checkmk-sites
             mountPath: /omd/sites
       marina:
         launch:
@@ -54,7 +112,7 @@ editions:
             value: admin
         volume:
           - size: 5Gi
-            name: sites
+            name: checkmk-sites
             mountPath: /omd/sites
       marina:
         launch:

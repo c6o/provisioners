@@ -1,0 +1,38 @@
+name: Monica
+appId: monica
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: private  #SSL issue
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: monica
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: monica
+        image: monica
+        port: 80
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /var/www/html/storage
+            name: monica-data
+        secret:
+          - name: DB_HOST
+            value: mariadb.testing
+          - name: DB_DATABASE
+            value: monica
+          - name: DB_USERNAME
+            value: root
+          - name: DB_PASSWORD
+            value: admin
+          - name: APP_KEY
+            value: "%RANDOM:32"
+      marina:
+        launch:
+          type: inline
+          popUp: true

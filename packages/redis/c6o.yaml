@@ -1,5 +1,5 @@
-name: 'redis'
-appId: redis               #App internal name (all lower, no spaces); minimum 5 characters
+name: Redis
+appId: redis
 package: '@provisioner/appengine'
 
 editions:
@@ -27,7 +27,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: redis-data
         automated: true
       marina:
         launch:
@@ -52,7 +52,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: redis-data
         automated: true
       marina:
         launch:

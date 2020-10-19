@@ -1,5 +1,5 @@
-name: 'sonarr'
-appId: sonarr                #App internal name (all lower, no spaces); minimum 5 characters
+name: Sonarr
+appId: sonarr
 package: '@provisioner/appengine'
 
 editions:
@@ -23,13 +23,13 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: sonarr-config
           - size: 500Gi
             mountPath: /tv
-            name: tvshows
+            name: sonarr-tvshows
           - size: 50Gi
             mountPath: /downloads
-            name: downloads
+            name: sonarr-downloads
       marina:
         launch:
           type: inline

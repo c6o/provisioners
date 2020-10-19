@@ -1,5 +1,5 @@
-name: 'recorder'
-appId: recorder               #App internal name (all lower, no spaces); minimum 5 characters
+name: Recorder
+appId: recorder
 package: '@provisioner/appengine'
 
 editions:

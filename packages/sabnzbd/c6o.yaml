@@ -1,5 +1,5 @@
-name: 'sabnzbd'
-appId: sabnzbd                 #App internal name (all lower, no spaces); minimum 5 characters
+name: SabNzbd
+appId: sabnzbd
 package: '@provisioner/appengine'
 
 editions:
@@ -24,13 +24,13 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /config
-            name: config
+            name: sabnzbd-config
           - size: 500Gi
             mountPath: /downloads
-            name: downloads
+            name: sabnzbd-downloads
           - size: 50Gi
             mountPath: /incomplete-downloads
-            name: incomplete-downloads
+            name: sabnzbd-incomplete-downloads
       marina:
         launch:
           type: inline

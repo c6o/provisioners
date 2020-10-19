@@ -73,27 +73,11 @@ export class ObjectApplier implements Applier {
             deployment.spec.template.spec.containers[0].ports = []
 
             for (const item of spec.ports) {
-
-                // # Inside the cluster, what port does the service expose?
-                // - port: 8080
-                //Expose the service on the specified port internally within the cluster. That is, the service becomes visible on this port, and will send requests made to this port to the pods selected by the service.
-
-                // # Which port do pods selected by this service expose?
-                // - targetPort: 8080
-                //This is the port on the pod that the request gets sent to. Your application needs to be listening for network requests on this port for the service to work.
-
-                // export interface Port {
-                //     name: string
-                //     protocol: string
-                //     port: number
-                //     targetPort: number
-                //     externalPort: number
-                // }
                 service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol })
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
             }
 
-            debug('Installing Networking Services', inspect(service))
+            debug('Installing Networking Services', inspect(service), inspect(deployment.spec.template.spec.containers[0].ports))
 
             await manager.cluster
                 .begin('Installing Networking Services')
@@ -146,10 +130,24 @@ export class ObjectApplier implements Applier {
 
             const secret = templates.getSecretTemplate(spec.name, namespace, spec.metaData)
 
+            for (const item of spec.secrets) {
 
-            for (const item of spec.secret) {
                 if (!item.env || item.env === '') item.env = item.name
-                const value = Buffer.from(new String(item.value)).toString('base64')
+
+                let val = new String(item.value)
+                if (val.substr(0, 7) === '%RANDOM') {
+                    if (val === '%RANDOM')
+                        val = this.makeRandom(10)
+                    else {
+                        if (val.indexOf(':') > 0) {
+                            const len = Number(val.substr(val.indexOf(':') + 1))
+                            val = this.makeRandom(len)
+
+
+                        }
+                    }
+                }
+                const value = Buffer.from(val).toString('base64')
                 secret.data[item.name] = value
                 if (item.env && item.env !== '' && item.env !== 'NONE') {
                     deployment.spec.template.spec.containers[0].env.push(
@@ -173,5 +171,16 @@ export class ObjectApplier implements Applier {
                 .upsert(secret)
                 .end()
         }
+
+    }
+
+    makeRandom(len) {
+        let text = ''
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+
+        for (let i = 0; i < len; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length))
+
+        return text
     }
 }

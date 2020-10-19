@@ -1,0 +1,25 @@
+name: Mongo Express
+appId: mongo-express
+package: '@provisioner/appengine'
+
+editions:
+  - name: developer
+    routes:
+      - type: http
+        targetService: mongoexpress
+    provisioner:
+      package: '@provisioner/appengine'
+      ui: ignore
+      name: mongoexpress
+      image: mongo-express
+      port: 8081
+      secret:
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          value: admin
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          value: root
+      automated: true
+    marina:
+      launch:
+        type: inline
+        popUp: true

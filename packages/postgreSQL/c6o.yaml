@@ -1,5 +1,5 @@
-name: 'postgress'
-appId: postgress                    #App internal name (all lower, no spaces); minimum 5 characters
+name: PostgreSQL
+appId: postgreSQL
 package: '@provisioner/appengine'
 
 editions:
@@ -8,14 +8,14 @@ editions:
     spec:
       routes:
           - type: tcp
-            targetService: postgress
+            targetService: postgreSQL
             tcp:
               port: 5432
-              name: postgress
+              name: postgreSQL
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
-        name: postgress
+        name: postgreSQL
         image: ananthhh/postgress
         port:
           name: tcp
@@ -24,7 +24,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: postgresql-data
         secret:
           - name: POSTGRES_USER
             value: root
@@ -42,7 +42,7 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         ui: ignore
-        name: postgress
+        name: postgreSQL
         image: ananthhh/postgress
         port:
           name: tcp
@@ -51,7 +51,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: postgresql-data
         secret:
           - name: POSTGRES_USER
             value: root

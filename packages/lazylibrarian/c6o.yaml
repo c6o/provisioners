@@ -1,0 +1,45 @@
+name:  Lazy Librarian
+appId: lazylibrarian                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+
+editions:
+  - name: calibre
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: lazylibrarian
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: lazylibrarian
+        image: 'thraxis/lazylibrarian-calibre'
+        port: 5299
+        automated: true
+        config:
+          - name: TX
+            value: America/Vancouver
+        volume:
+          - name: lazylibrarian-config
+            size: 5Gi
+            mountPath: /config
+          - name: lazylibrarian-downloads
+            size: 5Gi
+            mountPath: /downloads
+          - name: lazylibrarian-books
+            size: 5Gi
+            mountPath: /books
+          - name: lazylibrarian-audiobooks
+            size: 5Gi
+            mountPath: /audiobooks
+          - name: lazylibrarian-magazines
+            size: 5Gi
+            mountPath: /magazines
+          - name: lazylibrarian-comics
+            size: 5Gi
+            mountPath: /comics
+      marina:
+        launch:
+          type: inline
+          popUp: true

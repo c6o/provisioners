@@ -1,4 +1,4 @@
-name: 'funkwhale'
+name: Funk Whale
 appId: funkwhale                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 
@@ -20,10 +20,10 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: funkwhale-data
           - size: 500Gi
             mountPath: /music
-            name: music
+            name: funkwhale-music
       marina:
         launch:
           type: inline

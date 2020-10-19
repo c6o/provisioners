@@ -1,0 +1,40 @@
+name: GeoIP Service
+appId: geoip
+package: '@provisioner/appengine'
+# https://hub.docker.com/r/splunk/splunk
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: geoip
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: geoip
+        image: supermasita/geoip.supermasita.com
+        port: 8888
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: previewinternal
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: geoip
+        image: supermasita/geoip.supermasita.com
+        port: 8888
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

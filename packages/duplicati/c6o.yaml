@@ -1,5 +1,5 @@
-name: 'duplicati'
-appId: duplicati                  #App internal name (all lower, no spaces); minimum 5 characters
+name: Duplicati
+appId: duplicati
 package: '@provisioner/appengine'
 
 editions:
@@ -18,7 +18,7 @@ editions:
         port: 8200
         automated: true
         volume:
-          - name: data
+          - name: duplicati-data
             size: 5Gi
             mountPath: /data
       marina:

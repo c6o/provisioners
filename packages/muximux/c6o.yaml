@@ -1,5 +1,5 @@
-name: 'muximux'
-appId: muximux                  #App internal name (all lower, no spaces); minimum 5 characters
+name: Muximux
+appId: muximux
 package: '@provisioner/appengine'
 
 editions:
@@ -19,7 +19,7 @@ editions:
         volume:
           - size: 500Gi
             mountPath: /config
-            name: config
+            name: muximux-config
         config:
           - name: TZ
             value: America/Vancouver

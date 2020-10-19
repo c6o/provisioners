@@ -1,5 +1,5 @@
-name: 'mysql'
-appId: mysql                    #App internal name (all lower, no spaces); minimum 5 characters
+name: MySql
+appId: mysql
 package: '@provisioner/appengine'
 
 editions:
@@ -20,7 +20,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: mysql-data
         secret:
           - name: MYSQL_ROOT_PASSWORD
             value: admin
@@ -41,7 +41,7 @@ editions:
         volume:
           - size: 5Gi
             mountPath: /data
-            name: data
+            name: mysql-data
         secret:
           - name: MYSQL_ROOT_PASSWORD
             value: admin

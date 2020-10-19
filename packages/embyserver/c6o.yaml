@@ -1,5 +1,5 @@
-name: embyserver'
-appId: embyserver                    #App internal name (all lower, no spaces); minimum 5 characters
+name: Emby Server
+appId: embyserver
 package: '@provisioner/appengine'
 
 editions:
@@ -24,16 +24,16 @@ editions:
             protocol: TCP
         automated: true
         volume:
-          - name: config
+          - name: embyserver-config
             size: 1Gi
             mountPath: /config
-          - name: tvshows
+          - name: embyserver-tvshows
             size: 100Gi
             mountPath: /data/tvshows
-          - name: movies
+          - name: embyserver-movies
             size: 100Gi
             mountPath: /data/movies
-          - name: transcode
+          - name: embyserver-transcode
             size: 50Gi
             mountPath: /transcode
       marina:

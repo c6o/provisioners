@@ -1,5 +1,5 @@
-name: 'nats-webui'
-appId: nats-webui                 #App internal name (all lower, no spaces); minimum 5 characters
+name: NATS WebUI
+appId: nats-webui
 package: '@provisioner/appengine'
 
 editions:

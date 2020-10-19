@@ -1,6 +1,5 @@
-format: v1   #this will change when the YAML parser itself cant parse the next version.  For example renaming a field name entirely...
-appId:  plexserver                 #App internal name (all lower, no spaces); minimum 5 characters
 name: Plex Server
+appId:  plexserver
 package: '@provisioner/appengine'
 
 editions:
@@ -23,13 +22,13 @@ editions:
         volume:
           - size: 500Gi
             mountPath: /config
-            name: config
+            name: plexserver-config
           - size: 100Gi
             mountPath: /data
-            name: data
+            name: plexserver-data
           - size: 50Gi
             mountPath: /transcode
-            name: transcode
+            name: plexserver-transcode
         automated: true
       marina:
         launch:

@@ -18,8 +18,7 @@
   },
   "files": [
     "lib",
-    "k8s",
-    "manifest.template.yaml"
+    "k8s"
   ],
   "publishConfig": {
     "access": "public"

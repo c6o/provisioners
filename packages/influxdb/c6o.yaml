@@ -1,0 +1,33 @@
+name:  InfluxDB
+appId: influxdb
+package: '@provisioner/appengine'
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: influxdb
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: influxdb
+        image: influxdb
+        port:
+          - port: 8086
+            name: http
+            protocol: TCP
+          - port: 2003
+            name: graphite
+            protocol: TCP
+        automated: true
+        volume:
+          - name: influxdb-data
+            size: 50Gi
+            mountPath: /var/lib/influxdb
+      marina:
+        launch:
+          type: inline
+          popUp: true

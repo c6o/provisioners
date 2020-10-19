@@ -1,0 +1,47 @@
+name: Strapi
+appId: strapi
+package: '@provisioner/appengine'
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: strapi
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: strapi
+        image: strapi/strapi
+        port: 1337
+        automated: true
+        volume:
+          - name: yarn-cache
+            mountPath: /usr/local/share/.cache/
+            size: 50Gi
+          - name: strapi-data
+            mountPath: /srv/app
+            size: 50Gi
+        secret:
+          - DATABASE_CLIENT: PASSWORD
+            value: postgres
+          - name: DATABASE_NAME
+            value: strapi
+          - name: DATABASE_HOST
+            value: postgress.testing
+          - name: DATABASE_PORT
+            value: 5432
+          - name: DATABASE_USERNAME
+            value: root
+          - name: DATABASE_PASSWORD
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true
