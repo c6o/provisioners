@@ -8,7 +8,7 @@ description:
 summary:
   CryptPad is a private-by-design alternative to popular office tools and cloud services. All the content stored on CryptPad is encrypted before being sent, which means nobody can access your data unless you give them the keys (not even us).
 
-category: dev-toolsdms
+category: dms
 keywords:
   - Office
   - Encryption

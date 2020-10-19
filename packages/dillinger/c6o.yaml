@@ -1,6 +1,34 @@
-name: 'dillinger'
-appId: dillinger                #App internal name (all lower, no spaces); minimum 5 characters
+name: Dillinger
+appId: dillinger
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
+
+  * Type some Markdown on the left
+
+  * See HTML in the right
+
+  * Magic
+
+summary:
+  Dillinger is a cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
+
+category: dms
+keywords:
+  - Office
+  - Cloud Enabled
+  - Mobile ready
+  - Offline storage
+  - Markdown
+
+repo: https://github.com/xwiki-labs/cryptpad
+license: https://github.com/xwiki-labs/cryptpad/blob/main/LICENSE
+support: https://github.com/xwiki-labs/cryptpad/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
