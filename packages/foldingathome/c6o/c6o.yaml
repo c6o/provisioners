@@ -1,0 +1,63 @@
+name: Folding@Home
+appId: foldingathome
+package: '@provisioner/foldingathome'
+icon: icon.svg
+description:
+  Folding@home (FAH or F@h) is a distributed computing project aimed to help scientists develop new therapeutics to a variety of diseases by the means of simulating protein dynamics. This includes the process of protein folding and the movements of proteins, and is reliant on the simulations run on the volunteers' personal computers. Folding@home is currently based at Washington University in St. Louis and led by Greg Bowman, a former student of Vijay Pande.
+summary:
+  Folding@home (FAH or F@h) is a distributed computing project aimed to help scientists develop new therapeutics to a variety of diseases by the means of simulating protein dynamics.
+category: analytics
+keywords:
+  - folding
+  - science
+  - research
+  - covid
+  - distributed computing
+  - theraputics
+  - diseases
+  - volunteering
+
+repo: https://github.com/FoldingAtHome/containers
+license: https://github.com/FoldingAtHome/containers/blob/master/LICENSE
+support: https://github.com/FoldingAtHome/containers/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: cpu
+    scope: public
+    default: true
+    spec:
+      marina:
+        launch:
+          popUp: false
+          type: none
+      provisioner:
+        package: '@provisioner/foldingathome'
+        teamNumber: 267252
+
+  - name: gpu-cpu
+    scope: public
+    default: true
+    spec:
+      marina:
+        launch:
+          popUp: false
+          type: none
+      provisioner:
+        package: '@provisioner/foldingathome'
+        teamNumber: 267252
+
+  - name: gpu
+    scope: public
+    default: true
+    spec:
+      marina:
+        launch:
+          popUp: false
+          type: none
+      provisioner:
+        package: '@provisioner/foldingathome'
+        teamNumber: 267252
