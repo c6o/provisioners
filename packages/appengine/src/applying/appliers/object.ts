@@ -97,6 +97,11 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.configs) {
                 if (!item.env || item.env === '') item.env = item.name
+
+                if(item.value === '%PUBLIC_DNS') {
+                    item.value = ''
+                }
+
                 config.data[item.name] = new String(item.value)
 
                 if (item.env && item.env !== '' && item.env !== 'NONE') {

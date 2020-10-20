@@ -1,6 +1,27 @@
-name: 'cryptpad'
-appId: cryptpad                #App internal name (all lower, no spaces); minimum 5 characters
+name: 'CryptPad: Zero Knowledge, Collaborative Real Time Editing'
+appId: cryptpad
 package: '@provisioner/appengine'
+#https://upload.wikimedia.org/wikipedia/commons/f/f8/CryptpadLogo.png
+icon: icon.svg
+description:
+  CryptPad is a private-by-design alternative to popular office tools and cloud services. All the content stored on CryptPad is encrypted before being sent, which means nobody can access your data unless you give them the keys (not even us).
+summary:
+  CryptPad is a private-by-design alternative to popular office tools and cloud services. All the content stored on CryptPad is encrypted before being sent, which means nobody can access your data unless you give them the keys (not even us).
+
+category: dms
+keywords:
+  - Office
+  - Encryption
+  - Private by design
+  - Security
+
+repo: https://github.com/xwiki-labs/cryptpad
+license: https://github.com/xwiki-labs/cryptpad/blob/main/LICENSE
+support: https://github.com/xwiki-labs/cryptpad/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: latest
@@ -17,6 +38,22 @@ editions:
         image: promasu/cryptpad:latest
         port: 3000
         automated: true
+        # volume:
+        #   - name: cryptpad-blob
+        #     mountPath: /cryptpad/blob
+        #     size: 10Gi
+        #   - name: cryptpad-block
+        #     mountPath: /cryptpad/block
+        #     size: 10Gi
+        #   - name: cryptpad-customize
+        #     mountPath: /cryptpad/customize
+        #     size: 10Gi
+        #   - name: cryptpad-data
+        #     mountPath: /cryptpad/data
+        #     size: 10Gi
+        #   - name: cryptpad-datastore
+        #     mountPath: /cryptpad/datastore
+        #     size: 10Gi
       marina:
         launch:
           type: inline
