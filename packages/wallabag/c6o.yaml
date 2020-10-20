@@ -1,0 +1,79 @@
+name: Wallabag
+appId:  wallabag
+package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Save and classify articles. Read them later. Freely.
+
+
+  Comfortable reading
+
+  ----
+
+  wallabag extracts the article's content (and only its content!) and displays it in a comfortable view.
+
+
+  Migrate from other services
+
+  ----
+
+  If you already have an account on Pocket, Readability, Instapaper or Pinboard, you can import your data into wallabag.
+
+
+  API
+
+  ----
+
+  If you're a developer and you want to connect your application to wallabag, we offer you an API.
+
+
+  wallabag everywhere
+
+  ----
+
+  You can use wallabag on your computer, thanks to our web application. But you can also take wallabag everywhere. For example, it's possible to save an article on your laptop at work, start to read it on your smartphone in the subway and finish reading it on your ereader in your bed.
+summary:
+   Save and classify articles. Read them later. Freely.
+
+category: dms
+keywords:
+  - Backup
+  - Encryption
+
+repo: https://github.com/wallabag/wallabag
+license: https://github.com/wallabag/wallabag/blob/master/COPYING.md
+support: https://github.com/wallabag/wallabag/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: private
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: wallabag
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: wallabag
+        image: 'wallabag/wallabag'
+        port: 80
+        automated: true
+        config:
+          - name: SYMFONY__ENV__DOMAIN_NAME
+            value: https://wallabag-testing.chartier.develop.codezero.dev
+        volume:
+          - size: 5Gi
+            mountPath: /var/www/wallabag/data
+            name: wallabag-data
+          - size: 5Gi
+            mountPath: /var/www/wallabag/web/assets/images
+            name: wallabag-assets
+      marina:
+        launch:
+          type: inline
+          popUp: true
