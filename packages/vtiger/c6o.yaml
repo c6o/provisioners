@@ -1,0 +1,103 @@
+name: vTiger CRM
+appId: vtiger
+package: '@provisioner/appengine'
+#icon: https://raw.githubusercontent.com/airsonic/airsonic/master/contrib/assets/logos/airsonic_dark_1400x400.svg
+icon: icon.svg
+description:
+
+  Keeping your teams in sync is no longer difficult.
+
+  ----
+
+  We know how to help you with hard parts of keeping your marketing, sales, and support teams organized, productive, and in sync. With Vtiger, you can quickly get back to control you always wanted.
+
+
+
+  Get all your data in one place
+
+  ----
+
+  Ever imagined a 360-degree view of your customers? With Vtiger, enhance your team's ability to collaborate, craft an engaging customer experience and grow revenue.
+
+
+  Sales CRM
+
+  ----
+
+  Efficient sales software for everything you need to increase sales and manage your team, find the best leads, and understand customers better.
+
+
+  Help Desk
+
+  ----
+
+  An efficient platform to craft delightful customer experiences, engage across channels, auto-assign cases, escalate urgent cases.
+
+
+  Marketing Automation
+
+  ----
+
+  Marketing software helps you capture and track leads faster, launch campaigns to onboard new leads. Tracking across digital channels made easy with Vtiger.
+
+
+  All in One CRM
+
+  ----
+
+  Vtiger one gives you a live 360-degree view of your customer, without the need for integrations. It helps your marketing, sales, and support teams to increase engagement, win more deals, and foster brand loyalty.
+
+summary:
+  Get the full picture with 'One View' of customers
+
+
+  Vtiger CRM breaks SILOs and enables Sales, Marketing and Support teams to collaborate seamlessly.
+
+category: crm
+keywords:
+  - Customers
+  - CRM
+
+repo: https://github.com/airsonic/airsonic
+license: https://airsonic.github.io/
+support: https://github.com/airsonic/airsonic/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: private  #need to edit vtigercrm/includes/http/Request.php remove the throw.  only use mariadb
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: vtiger
+      provisioner:
+        package: "@provisioner/appengine"
+        ui: ignore
+        name: vtiger
+        image: pimuzzo/vtiger
+        port: 80
+        automated: true
+        secret:
+          - name: DB_HOSTNAME
+            value: 'mysql'
+          - name: DB_USERNAME
+            value: 'root'
+          - name: DB_PASSWORD
+            value: 'admin'
+          - name: DB_NAME
+            value: 'vtiger'
+          # - name: BASE_URL
+          #   value: https://vtiger-testing.chartier.develop.codezero.dev/vtigercrm/
+
+        volume:
+          - size: 10Gi
+            mountPath: /www-data
+            name: vtiger-www-data
+      marina:
+        launch:
+          type: inline
+          popUp: true
