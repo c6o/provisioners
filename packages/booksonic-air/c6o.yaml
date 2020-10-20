@@ -1,4 +1,4 @@
-name: 'booksonic-air'
+name: Booksonic Air
 appId: booksonic-air                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg
