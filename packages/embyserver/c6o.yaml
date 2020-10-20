@@ -1,5 +1,5 @@
-appId: embyserver
 name: Emby - The open media solution
+appId: embyserver                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg
 description:
