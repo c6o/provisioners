@@ -1,6 +1,63 @@
-name: 'funkwhale'
+name: Funkwhale
 appId: funkwhale                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  A social platform to enjoy and share music
+
+
+  Funkwhale is a community-driven project that lets you listen and share music and audio within a decentralized, open network.
+
+
+  Listen to your music, everywhere
+
+  ----
+
+  Upload your personal library to your pod, share it with friends and family, and discover talented creators.
+
+
+  Funkwhale gives you access to your playlists, favorite tracks, and artists everywhere, from our web interface or the wide range of compatible apps for every platform.
+
+
+  A decentralized and open platform
+
+  ----
+
+  Funkwhale consists of many independent pods which can communicate together using standard, free and open source technology.
+
+
+  The network is not tied to any corporation or entity, which gives you independance and choice.
+
+
+  Made by people, for people
+
+  ----
+
+
+  Funkwhale is built from the ground up by a friendly community of contributors.
+
+
+  Because of that, we can offer you an experience free of tracking and ads, and focus on what you need
+
+summary:
+  A social platform to enjoy and share music
+
+
+  Funkwhale is a community-driven project that lets you listen and share music and audio within a decentralized, open network.
+category: media
+keywords:
+  - Music management
+  - Social
+  - decentralized
+  - Playlists
+
+repo: https://dev.funkwhale.audio/funkwhale
+license: https://funkwhale.audio/en_US/collective
+support: https://dev.funkwhale.audio/groups/funkwhale/-/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
