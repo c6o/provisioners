@@ -1,6 +1,48 @@
-name: embyserver'
+name: Emby - The open media solution
 appId: embyserver                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Bringing all of your home videos, music, and photos together into one place has never been easier. Your personal Emby Server automatically converts and streams your media on-the-fly to play on any device.
+
+
+  Easy Access
+
+  ----
+
+  Emby Connect makes it easy to enjoy your personal media while away from home. No more fumbling with IP addresses. Just sign in and play.
+
+
+  Live TV
+
+  ----
+
+  Stream Live TV to any device, manage your DVR, and enjoy your library of recordings.
+
+
+  Manage Your Home
+
+  ----
+
+  Easily control content access for your children. Monitor and remote control their sessions as you need to.
+
+summary:
+   Your personal media on any device
+category: media
+keywords:
+  - Emby
+  - Media Server
+  - Live TV
+  - Streaming
+  - Remote Control
+
+repo: https://github.com/MediaBrowser/Emby
+license: https://github.com/MediaBrowser/Emby/blob/master/LICENSE.md
+support: https://github.com/MediaBrowser/Emby/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
