@@ -1,7 +1,67 @@
 name: LibreSpeed - Speed Test
 appId: speedtest
 package: '@provisioner/appengine'
-# https://hub.docker.com/r/adolfintel/speedtest
+icon: icon.svg
+summary:
+  No Flash, No Java, No Websocket, No Bullshit.
+
+  This is a very lightweight Speedtest implemented in Javascript, using XMLHttpRequest and Web Workers.
+description:
+  Compatibility
+
+  ----
+
+  * IE11
+
+  * latest Edge
+
+  * latest Chrome
+
+  * latest Firefox
+
+  * latest Safari.
+
+  Works with mobile versions too.
+
+
+  Features
+
+  ----
+
+    * Download
+
+    * Upload
+
+    * Ping
+
+    * Jitter
+
+    * IP Address, ISP, distance from server (optional)
+
+    * Telemetry (optional)
+
+    * Results sharing (optional)
+
+    * Multiple Points of Test (optional)
+
+category: analytics
+keywords:
+  - Data Analytics
+  - Data Platform
+  - Real-time data
+  - Graphing
+  - Reporting
+  - Alerting
+  - Dashboard
+  - Visualization
+
+repo: https://github.com/librespeed/speedtest
+license: https://github.com/librespeed/speedtest/blob/master/LICENSE
+support: https://github.com/librespeed/speedtest/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: local
