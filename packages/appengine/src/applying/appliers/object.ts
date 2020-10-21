@@ -91,41 +91,44 @@ export class ObjectApplier implements Applier {
 
     async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
-        if (spec.configs?.length) {
+        if (!spec.configs?.length) spec.configs = []
 
-            const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
+        //provide some basic codezero app details to the provisioner
+        spec.configs.push({ name: 'name', value: spec.name, env: 'CZ_APP' } )
+        spec.configs.push({ name: 'edition', value: spec.edition, env: 'CZ_EDITION' } )
 
-            for (const item of spec.configs) {
-                if (!item.env || item.env === '') item.env = item.name
+        const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
 
-                if(item.value === '%PUBLIC_DNS') {
-                    item.value = ''
-                }
+        for (const item of spec.configs) {
+            if (!item.env || item.env === '') item.env = item.name
 
-                config.data[item.name] = new String(item.value)
-
-                if (item.env && item.env !== '' && item.env !== 'NONE') {
-                    deployment.spec.template.spec.containers[0].env.push(
-                        {
-                            name: item.env,
-                            valueFrom: {
-                                configMapKeyRef: {
-                                    name: `${spec.name}configs`,
-                                    key: item.name
-                                }
-                            }
-                        })
-                }
+            if (item.value === '%PUBLIC_DNS') {
+                item.value = ''
             }
 
-            debug('Installing configs:\n', inspect(deployment.spec.template.spec.containers[0].env))
+            config.data[item.name] = new String(item.value)
 
-            await manager.cluster
-                .begin('Installing the Configuration Settings')
-                .addOwner(manager.document)
-                .upsert(config)
-                .end()
+            if (item.env && item.env !== '' && item.env !== 'NONE') {
+                deployment.spec.template.spec.containers[0].env.push(
+                    {
+                        name: item.env,
+                        valueFrom: {
+                            configMapKeyRef: {
+                                name: `${spec.name}configs`,
+                                key: item.name
+                            }
+                        }
+                    })
+            }
         }
+
+        debug('Installing configs:\n', inspect(deployment.spec.template.spec.containers[0].env))
+
+        await manager.cluster
+            .begin('Installing the Configuration Settings')
+            .addOwner(manager.document)
+            .upsert(config)
+            .end()
     }
 
 

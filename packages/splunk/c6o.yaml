@@ -1,7 +1,36 @@
 name: Splunk
 appId: splunk
 package: '@provisioner/appengine'
-# https://hub.docker.com/r/splunk/splunk
+icon: icon.svg
+summary:
+  The Data-to-Everything Platform - Drive outcomes across Security, IT and DevOps with the data platform built for the cloud.
+description:
+  Splunk Inc. is an American public multinational corporation based in San Francisco, California, that produces software for searching, monitoring, and analyzing machine-generated big data via a Web-style interface.
+
+
+  Splunk (the product) captures, indexes and correlates real-time data in a searchable repository from which it can generate graphs, reports, alerts, dashboards and visualizations.
+
+
+  Splunk makes machine data accessible across an organization by identifying data patterns, providing metrics, diagnosing problems and providing intelligence for business operations. Splunk is a horizontal technology used for application management, security and compliance, as well as business and web analytics. As of late 2019, Splunk had over 15,000 customers.
+
+category: analytics
+keywords:
+  - Data Analytics
+  - Data Platform
+  - Real-time data
+  - Graphing
+  - Reporting
+  - Alerting
+  - Dashboard
+  - Visualization
+
+repo: https://github.com/splunk/docker-splunk
+license: https://github.com/splunk/docker-splunk#license
+support: https://github.com/splunk/docker-splunk/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: local

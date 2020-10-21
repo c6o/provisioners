@@ -1,7 +1,26 @@
 name: DynamoDB
 appId: dynamodb
 package: '@provisioner/appengine'
-# https://hub.docker.com/r/amazon/dynamodb-local
+icon: icon.svg
+summary:
+  DynamoDB local is a downloadable version of DynamoDB that enables developers to develop and test applications using a version of DynamoDB running in your own development environment.
+description:
+  The new DynamoDB local Docker image enables you to get started with DynamoDB local quickly by using a docker image with all the DynamoDB local dependencies and necessary configuration built in. The new Docker image also enables you to include DynamoDB local in your containerized builds and as part of your continuous integration testing.
+
+
+  Using DynamoDB local does not require an internet connection and DynamoDB local works with your existing DynamoDB API calls. There are no provisioned throughput, data storage, or data transfer costs with DynamoDB local.
+
+category: dev-tools
+keywords:
+  - AWS
+  - Database
+  - DynamoDB
+
+repo: https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: local

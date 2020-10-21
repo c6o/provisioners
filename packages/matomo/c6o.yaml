@@ -1,6 +1,36 @@
-name: Matomo
+name: Matomo (formerly Piwik)
 appId:  matomo
 package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Matomo (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics
+
+  * Free open-source software
+
+  * 100% data ownership
+
+  * User privacy protection
+
+  * User-centric insights
+
+  * Customisable and extensible
+
+summary:
+  Matomo (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics
+category: analytics
+keywords:
+  - Analytics
+  - Google Analytics
+  - Web Tracking
+  - User Insights
+
+repo: https://github.com/matomo-org/docker
+license: https://github.com/matomo-org/docker/blob/master/license.md
+support: https://github.com/matomo-org/docker/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview

@@ -1,9 +1,29 @@
-name: Neo4j
+name: Neo4j - Graphs for Everyone
 appId: neo4j                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Neo4j is the world’s leading Graph Database.
+description:
+  Neo4j is the world’s leading Graph Database. It is a high performance graph store with all the features expected of a mature and robust database, like a friendly query language and ACID transactions. The programmer works with a flexible network structure of nodes and relationships rather than static tables — yet enjoys all the benefits of enterprise-quality database. For many applications, Neo4j offers orders of magnitude performance benefits compared to relational DBs.
+
+
+  Learn more on the [Neo4j website](https://neo4j.com/).
+
+category: databases
+keywords:
+  - Graph
+
+repo: https://github.com/neo4j/neo4j
+license: https://github.com/neo4j/neo4j/blob/4.2/LICENSE.txt
+support: https://github.com/neo4j/neo4j/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
+  - name: preview-internal
     scope: public
     default: true
     spec:
