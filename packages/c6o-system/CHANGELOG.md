@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/c6o/provisioners/compare/v0.0.10...v0.0.11) (2020-10-21)
+
+
+### 🐛 Bug Fixes
+
+* **store:** Incorrect icon ([01484d1](https://github.com/c6o/provisioners/commit/01484d135d1b5545d65980823e115103b26b01c7))
+
+
+
+
+
 ## [0.0.10](https://github.com/c6o/provisioners/compare/v0.0.9...v0.0.10) (2020-10-15)
 
 

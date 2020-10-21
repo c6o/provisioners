@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/c6o/provisioners/compare/v0.0.10...v0.0.11) (2020-10-21)
+
+
+### ♻️ Chores
+
+* **suitecrm:** Added provisioning manifest ([99eab01](https://github.com/c6o/provisioners/commit/99eab0155f8f7485d047f24aa73d846ecc7d8326))
+
+
+
+
+
 ## [0.0.10](https://github.com/c6o/provisioners/compare/v0.0.9...v0.0.10) (2020-10-15)
 
 **Note:** Version bump only for package @provisioner/suitecrm
