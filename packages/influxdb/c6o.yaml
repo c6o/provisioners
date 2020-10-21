@@ -1,6 +1,29 @@
 name:  InfluxDB
 appId: influxdb
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  InfluxDB is an open source time series database for recording metrics, events, and analytics.
+description:
+  Real-time visibility into stacks, sensors and systems
+
+
+  InfluxDB is the open source time series database
+
+category: databases
+keywords:
+  - InfluxData
+  - Metrics
+  - Events
+  - Analytics
+
+repo: https://github.com/syncthing/syncthing
+license: https://github.com/syncthing/syncthing/blob/main/LICENSE
+support: https://github.com/syncthing/syncthing/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
