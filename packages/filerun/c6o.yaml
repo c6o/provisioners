@@ -1,0 +1,118 @@
+name:  FileRun
+appId: filerun
+package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Self-Hosted File Sync and Sharing
+
+  =====
+
+
+  No import required
+
+  ----
+
+  Just like you do with an FTP server, point FileRun to where you keep the files on your server and you will get instant web access to them.
+
+
+  Want to access your files also by FTP, SMB or WebDAV (server included)? No problem. Upload, download or manage the same files.
+
+
+  All changes made to the files using FTP or other method reflect via FileRun without delay.
+
+
+  Send file requests
+
+  ----
+
+
+  File requests allow you to collect and receive files from anyone, right into your FileRun user account, with just a link.
+
+
+  File requests are ideal for receiving a large file or collection of files, collecting photos after a special event, and requesting submissions from coworkers and clients.
+
+
+  Guest users
+
+  ----
+
+
+  Collaborate with other people without creating accounts for them.
+
+
+  Getting feedback on documents, photos or any type of file has never been this easy.
+
+
+  Your files everywhere
+
+  ----
+
+
+  Access your files from wherever you are using the free mobile apps.
+
+
+  Sync files from your desktop using the free desktop apps.
+
+
+  Access via WebDAV. FileRun comes with its own embedded WebDAV server. No server configuration needed.
+
+
+
+summary:
+   Self-Hosted File Sync and Sharing
+category: media
+keywords:
+  - media
+  - files
+  - documents
+  - photos
+  - music
+  - sync
+  - remote access
+  - WebDAV
+
+repo: https://github.com/filerun/docker
+license: https://sourceforge.net/directory/license:other/
+support: https://sourceforge.net/projects/filerun/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: filerun
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: filerun
+        image: afian/filerun
+        port: 80
+        automated: true
+        volume:
+          - name: filerun-html
+            mountPath: /var/www/html
+            size: 5Gi
+          - name: filerun-user-files
+            mountPath: /user-files
+            size: 10Gi
+        secret:
+          - name: FR_DB_HOST
+            value: mariadb
+          - name: FR_DB_PORT
+            value: 3306
+          - name: FR_DB_NAME
+            value: filerun
+          - name: FR_DB_USER
+            value: root
+          - name: FR_DB_PASS
+            value: admin
+      marina:
+        launch:
+          type: inline
+          popUp: true
