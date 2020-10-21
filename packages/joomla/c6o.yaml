@@ -1,6 +1,29 @@
 name:  Joomla!
-appId: joomla                  #App internal name (all lower, no spaces); minimum 5 characters
+appId: joomla
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Joomla! is a Content Management System (CMS) which enables you to build websites and powerful online applications.
+description:
+  Joomla! is a Content Management System (CMS) which enables you to build websites and powerful online applications.
+
+
+  It is a simple and powerful web server application which requires a server with PHP and either MySQL, PostgreSQL or SQL Server to run. You can find full technical requirements here.
+
+
+  Joomla! is free and Open Source software distributed under the GNU General Public License version 2 or later.
+
+category: cms
+keywords:
+  - Content Management System
+
+repo: https://github.com/joomla/joomla-cms
+license: https://github.com/joomla/joomla-cms/blob/staging/LICENSE.txt
+support: https://github.com/joomla/joomla-cms/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
