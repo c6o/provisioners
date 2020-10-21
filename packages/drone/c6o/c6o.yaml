@@ -1,0 +1,42 @@
+name:  Drone
+appId: drone                  #App internal name (all lower, no spaces); minimum 5 characters
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+description:
+
+category: dev-tools
+keywords:
+  - Content Management System
+
+repo: https://github.com/drupal/drupal
+license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+support: https://www.drupal.org/project/issues/search/drupal
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: drupal
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        name: drupal
+        image: drupal
+        port: 80
+        automated: true
+        volume:
+          - size: 50Gi
+            mountPath: /var/www/html
+            name: drupal-data
+      marina:
+        launch:
+          type: inline
+          popUp: true
