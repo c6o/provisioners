@@ -1,7 +1,27 @@
 name: GeoIP Service
 appId: geoip
 package: '@provisioner/appengine'
-# https://hub.docker.com/r/splunk/splunk
+icon: icon.svg
+summary:
+  GeoLite2 City service
+description:
+  A microservice to translate an IP Address to a City.  Based on the database from [MaxMind](http://www.maxmind.com/)
+category: analytics
+keywords:
+  - GeoIP
+  - Geo IP
+  - GeoLite
+  - IP to City
+  - IP Address
+  - City
+
+repo: https://github.com/supermasita/geoip.supermasita.com
+license: https://github.com/supermasita/geoip.supermasita.com/blob/master/LICENSE
+support: https://github.com/supermasita/geoip.supermasita.com/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -15,7 +35,7 @@ editions:
         package: '@provisioner/appengine'
         ui: ignore
         name: geoip
-        image: supermasita/geoip.supermasita.com
+        image: supermasita/geoip-flask
         port: 8888
         automated: true
       marina:
@@ -31,7 +51,7 @@ editions:
         package: '@provisioner/appengine'
         ui: ignore
         name: geoip
-        image: supermasita/geoip.supermasita.com
+        image:  supermasita/geoip-flask
         port: 8888
         automated: true
       marina:
