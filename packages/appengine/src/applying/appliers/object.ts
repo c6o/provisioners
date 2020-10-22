@@ -14,10 +14,12 @@ export class ObjectApplier implements Applier {
         if (!spec.metaData) {
             spec.metaData = {
                 id: Math.random().toString(36).substring(6),
+                edition: spec.edition
             } as LabelsMetadata
         }
 
         const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
+
         await this.applySecrets(namespace, spec, manager, deployment)
         await this.applyConfigs(namespace, spec, manager, deployment)
         await this.applyPorts(namespace, spec, manager, deployment)
@@ -114,7 +116,7 @@ export class ObjectApplier implements Applier {
                         name: item.env,
                         valueFrom: {
                             configMapKeyRef: {
-                                name: `${spec.name}configs`,
+                                name: config.metadata.name,
                                 key: item.name
                             }
                         }
@@ -163,7 +165,7 @@ export class ObjectApplier implements Applier {
                             name: item.env,
                             valueFrom: {
                                 secretKeyRef: {
-                                    name: `${spec.name}secrets`,
+                                    name: secret.metadata.name,
                                     key: item.name
                                 }
                             }

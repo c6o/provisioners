@@ -36,11 +36,18 @@ class BasicPortParser implements PortParser {
             }
         } else {
 
-            if (typeof rawValues == 'object')
-                results.push(rawValues as Port)
-            else
-                results.push(this.parseSinglePort(rawValues))
-
+            //one of the primary use cases:
+            // port: 8080
+            //lets short cut the parsing, if the value is just a number or a parsable number.
+            const port = Number(rawValues)
+            if(port && port > 0) {
+                results.push({ name: 'http', protocol: 'TCP', port: port, targetPort: port })
+            } else {
+                if (typeof rawValues == 'object')
+                    results.push(rawValues as Port)
+                else
+                    results.push(this.parseSinglePort(rawValues))
+            }
         }
 
         return results
@@ -59,11 +66,12 @@ class BasicPortParser implements PortParser {
         //port/name/protocol
         //port/name/protocol/targetPort
 
+        //in case our previous check missed the basic port value
         if (typeof portSpec === 'number')
             return { name: 'http', protocol: 'TCP', port: portSpec, targetPort: portSpec }
 
-
         const items = portSpec.split('/')
+
         //port
         if (items.length == 1)
             return { name: 'http', protocol: 'TCP', port: Number(items[0]), targetPort: Number(items[0]) }
