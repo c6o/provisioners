@@ -8,7 +8,7 @@ export function getSecretTemplate(name: string, namespace: string, metaData: Lab
         apiVersion: 'v1',
         kind: 'Secret',
         metadata: {
-            name: `${name}secrets`,
+            name: `${name}-secret`,
             namespace: namespace,
             labels: getLabels(name, metaData)
         },

@@ -8,7 +8,7 @@ export function getConfigTemplate(name: string, namespace: string, metaData: Lab
         apiVersion: 'v1',
         kind: 'ConfigMap',
         metadata: {
-            name: `${name}configs`,
+            name: `${name}-config`,
             namespace: namespace,
             labels: getLabels(name, metaData)
         },

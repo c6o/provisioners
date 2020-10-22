@@ -1,4 +1,4 @@
-name: 'appengine'
+name: App Engine
 appId: appengine                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg

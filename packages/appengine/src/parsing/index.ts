@@ -32,6 +32,7 @@ export interface LabelsMetadata {
     partOf: string
     component: string
     version: string
+    edition: string
 }
 
 export interface Setting {
