@@ -5,7 +5,8 @@ import { inspect } from 'util'
 import { templates } from '../../templates/latest'
 import createDebug from 'debug'
 import { LabelsMetadata } from '../../parsing'
-const debug = createDebug('@appengine:createInquire')
+
+const debug = createDebug('@appengine:ObjectApplier')
 
 export class ObjectApplier implements Applier {
 
@@ -18,19 +19,29 @@ export class ObjectApplier implements Applier {
             } as LabelsMetadata
         }
 
-        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
+        debug(`BOOSTRAP:${JSON.stringify(spec)}`)
 
+
+        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
+        debug(`deployment:${JSON.stringify(deployment)}`)
+
+        debug('applying secrets')
         await this.applySecrets(namespace, spec, manager, deployment)
+        debug('applying configs')
         await this.applyConfigs(namespace, spec, manager, deployment)
+        debug('applying ports')
         await this.applyPorts(namespace, spec, manager, deployment)
+        debug('applying volumes')
         await this.applyVolumes(namespace, spec, manager, deployment)
+        debug('applying deployment')
         await this.applyDeployment(spec, manager, deployment)
+        debug('done')
 
     }
 
     async applyDeployment(spec: any, manager: ProvisionerManager, deployment: any) {
 
-        debug('Installing the Deployment', inspect(deployment))
+        debug(`Installing the Deployment:${JSON.stringify(deployment)}`)
 
         await manager.cluster
             .begin('Installing the Deployment')
@@ -50,7 +61,7 @@ export class ObjectApplier implements Applier {
 
                 const pvc = templates.getPVCTemplate(item.name, item.size, spec.name, namespace, spec.metaData)
 
-                debug('Installing Volume Claim', inspect(pvc))
+                debug(`Installing Volume Claim:${JSON.stringify(pvc)}`)
 
                 await manager.cluster
                     .begin(`Installing Volume Claim: '${item.name}'`)
@@ -79,7 +90,7 @@ export class ObjectApplier implements Applier {
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
             }
 
-            debug('Installing Networking Services', inspect(service), inspect(deployment.spec.template.spec.containers[0].ports))
+            debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`, )
 
             await manager.cluster
                 .begin('Installing Networking Services')
@@ -124,7 +135,7 @@ export class ObjectApplier implements Applier {
             }
         }
 
-        debug('Installing configs:\n', inspect(deployment.spec.template.spec.containers[0].env))
+        debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`, )
 
         await manager.cluster
             .begin('Installing the Configuration Settings')
@@ -173,7 +184,7 @@ export class ObjectApplier implements Applier {
                 }
             }
 
-            debug('Installing secrets:\n', inspect(deployment.spec.template.spec.containers[0].env))
+            debug(`Installing secrets:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
 
             await manager.cluster
                 .begin('Installing the Secrets')

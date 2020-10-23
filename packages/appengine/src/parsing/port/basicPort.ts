@@ -1,17 +1,16 @@
-import { IDebugger } from 'debug'
 import { Port, PortParser } from '..'
 import createDebug from 'debug'
 
-const debug = createDebug('@appengine:createInquire')
+const debug = createDebug('@appengine:BasicPortParser')
 
 class BasicPortParser implements PortParser {
 
     parse(args: any, spec: any): Port[] {
 
-        debug('Port Inputs:\n', args, spec)
+        debug(`Port Inputs:${JSON.stringify(spec)}`, args, spec)
         let results = this.parseObject(args)
         results = results.concat(this.parseObject(spec))
-        debug('Port Outputs:\n',  JSON.stringify(results))
+        debug(`Port Outputs:${JSON.stringify(results)}`)
 
         return results
     }

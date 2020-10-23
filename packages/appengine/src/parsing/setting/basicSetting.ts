@@ -1,17 +1,16 @@
-import { IDebugger } from 'debug'
 import { SettingsParser, Setting } from '..'
 import createDebug from 'debug'
 
-const debug = createDebug('@appengine:createInquire')
+const debug = createDebug('@appengine:BasicSettingParser')
 
 class BasicSettingParser implements SettingsParser {
 
 
     parse(args: any, spec: any, type: string): Setting[] {
-        debug(`Settings Inputs: ${type}\n`, args, spec)
+        debug(`Settings Inputs: ${type} ${JSON.stringify(spec)}`)
         let results = this.parseObject(args, type)
         results = results.concat(this.parseObject(spec, type))
-        debug(`Settings Outputs: ${type}\n`,  JSON.stringify(results))
+        debug(`Settings Outputs: ${type} ${JSON.stringify(results)}`)
         return results as Setting[]
     }
 

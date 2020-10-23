@@ -1,16 +1,15 @@
-import { IDebugger } from 'debug'
 import { VolumeParser, Volume } from '..'
 import createDebug from 'debug'
 
-const debug = createDebug('@appengine:createInquire')
+const debug = createDebug('@appengine:BasicVolumeParser')
 
 class BasicVolumeParser implements VolumeParser {
 
     parse(args: any, spec: any): Volume[] {
-        debug('Volume Inputs:\n', args, spec)
+        debug(`Volume Inputs:${JSON.stringify(spec)}`)
         let results = this.parseObject(args)
         results = results.concat(this.parseObject(spec))
-        debug('Volume Outputs:\n',  JSON.stringify(results))
+        debug(`Volume Outputs:${JSON.stringify(results)}`)
         return results
     }
 
