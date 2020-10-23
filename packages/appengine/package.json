@@ -38,7 +38,6 @@
     "@c6o/kubeclient": "^0.0.6",
     "@provisioner/common": "^0.0.13",
     "debug": "^4.2.0",
-    "js-yaml": "^3.14.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",
