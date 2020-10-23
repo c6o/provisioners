@@ -1,4 +1,3 @@
-import { IDebugger } from 'debug'
 import * as portParsers from './port'
 import * as settingsParsers from './setting'
 import * as volumeParsers from './volume'
@@ -17,13 +16,13 @@ export class ParserFactory{
 
 
 export interface PortParser {
-    parse(args: any, spec: any, debug: IDebugger): Port[];
+    parse(args: any, spec: any): Port[];
 }
 export interface SettingsParser {
-    parse(args: any, spec: any, type: string, debug: IDebugger): Setting[];
+    parse(args: any, spec: any, type: string): Setting[];
 }
 export interface VolumeParser {
-    parse(args: any, spec: any, debug: IDebugger): Volume[];
+    parse(args: any, spec: any): Volume[];
 }
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/

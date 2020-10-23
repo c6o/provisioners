@@ -1,5 +1,4 @@
 import { baseProvisionerType } from '../index'
-import { ParserFactory as parserFactory } from '../parsing'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:createInquire')
 
@@ -36,6 +35,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.name = responses.name
         this.spec.edition = this.edition
 
+        this.parseInputsToSpec(args)
+
         this.spec.configs = await this.askConfig(args, automated)
         this.spec.secrets = await this.askSecrets(args, automated)
         this.spec.ports = await this.askPorts(args, automated)
@@ -58,8 +59,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async askConfig(args, automated) {
 
-        const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
-        const configs = parserFactory.getSettingsParser(secretsParserType).parse(args, this.spec, 'config', debug)
+        const configs = this.spec.configs
         if (configs.length > 0 || automated) return configs
 
         let responses = { hasConfig: false, configName : '', configValue : '', envName : '' }
@@ -105,8 +105,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async askSecrets(args, automated) {
 
-        const secretsParserType = this.spec.secretParser || 'BasicSettingParser'
-        const secrets = parserFactory.getSettingsParser(secretsParserType).parse(args, this.spec, 'secret', debug)
+        const secrets = this.spec.configs
         if (secrets && secrets.length > 0 || automated) return secrets
 
         let responses = { hasSecret: false, secretName: '', secretValue: '', envName: '' }
@@ -152,8 +151,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async askPorts(args, automated) {
 
-        const portParserType = this.spec.portParser || 'BasicPortParser'
-        const ports = parserFactory.getPortParser(portParserType).parse(args, this.spec, debug)
+        const ports = this.spec.ports
         if (ports && ports.length > 0 || automated) return ports
 
         let responses = { hasPorts: false, name: '', protocol: 'TCP', port: 8080, targetPort: 0, externalPort: 8080 }
@@ -219,13 +217,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async askVolumes(args, automated) {
 
-        const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
-
-
-        const volumeParserType = this.spec.volumeParser || 'BasicVolumeParser'
-        const volumes = parserFactory.getVolumeParser(volumeParserType).parse(args, this.spec, debug)
+        const volumes = this.spec.volumes
         if (volumes && volumes.length > 0 || automated) return volumes
 
+        const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
         let responses = { hasVolumes: false, storageSize: '', mountPath: '', volumeName: '' }
 
         do {
