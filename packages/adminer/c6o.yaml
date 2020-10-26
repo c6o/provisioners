@@ -42,11 +42,14 @@ editions:
           targetService: adminer
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
         name: adminer
         image: 'adminer:latest'
         port: 8080
         automated: true
+        config:
+          - name: username
+            value: $USERNAME
+            env: DB_USERNAME
       marina:
         launch:
           type: inline

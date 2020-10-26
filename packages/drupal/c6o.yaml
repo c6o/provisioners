@@ -1,4 +1,4 @@
-name:  drupal
+name:  Drupal
 appId: drupal                  #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg
@@ -52,10 +52,6 @@ editions:
         image: drupal
         port: 80
         automated: true
-        volume:
-          - size: 50Gi
-            mountPath: /var/www/html
-            name: drupal-data
       marina:
         launch:
           type: inline
