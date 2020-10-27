@@ -12,6 +12,7 @@ editions:
           targetService: jackett
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: jackett
         image: linuxserver/jackett

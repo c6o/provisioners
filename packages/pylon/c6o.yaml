@@ -12,6 +12,7 @@ editions:
           targetService: pylon
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: pylon
         image: 'linuxserver/pylon:latest'

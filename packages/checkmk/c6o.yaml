@@ -1,4 +1,4 @@
-name: 'checkmk'
+name: Checkmk
 appId: checkmk                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg
@@ -70,6 +70,7 @@ editions:
           targetService: checkmk
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: checkmk
         image: 'checkmk/check-mk-raw:latest'
@@ -77,7 +78,7 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: checkmk-admin
+            value: $PASSWORD
         volume:
           - size: 5Gi
             name: checkmk-sites
@@ -96,6 +97,7 @@ editions:
           targetService: checkmk
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: checkmk
         image: 'checkmk/check-mk-raw:latest'
@@ -109,7 +111,7 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: admin
+            value: $PASSWORD
         volume:
           - size: 5Gi
             name: checkmk-sites

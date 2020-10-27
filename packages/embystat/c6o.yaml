@@ -38,6 +38,7 @@ editions:
           targetService: embystat
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: embystat
         image: 'linuxserver/embystat:latest'

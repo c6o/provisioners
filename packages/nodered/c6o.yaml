@@ -11,6 +11,7 @@ editions:
           targetService: nodered
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: nodered
         image: nodered/node-red
@@ -18,7 +19,7 @@ editions:
         automated: true
         config:
           - name: NODE_RED_CREDENTIAL_SECRET
-            value: admin
+            value: $PASSWORD
           - name: NODE_RED_ENABLE_PROJECTS
             value: 'false'
         volumes:
@@ -39,6 +40,7 @@ editions:
           targetService: nodered
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: nodered
         image: nodered/node-red
@@ -46,7 +48,7 @@ editions:
         automated: true
         config:
           - name: NODE_RED_CREDENTIAL_SECRET
-            value: admin
+            value: $PASSWORD
           - name: NODE_RED_ENABLE_PROJECTS
             value: 'true'
         volumes:

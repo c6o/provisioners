@@ -12,6 +12,7 @@ editions:
           targetService: plexserver
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: plexserver
         image: 'plexinc/pms-docker:latest'

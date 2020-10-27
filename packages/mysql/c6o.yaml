@@ -13,6 +13,7 @@ editions:
             name: mysql
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: mysql
         image: 'mysql:latest'
@@ -23,7 +24,7 @@ editions:
             name: mysql-data
         secret:
           - name: MYSQL_ROOT_PASSWORD
-            value: admin
+            value: $PASSWORD
         automated: true
       marina:
         launch:
@@ -34,6 +35,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: mysql
         image: 'mysql:latest'
@@ -44,7 +46,7 @@ editions:
             name: mysql-data
         secret:
           - name: MYSQL_ROOT_PASSWORD
-            value: admin
+            value: $PASSWORD
         automated: true
       marina:
         launch:

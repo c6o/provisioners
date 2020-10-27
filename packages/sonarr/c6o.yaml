@@ -12,6 +12,7 @@ editions:
           targetService: sonarr
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: sonarr
         image: 'linuxserver/sonarr:latest'

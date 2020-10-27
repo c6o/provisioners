@@ -12,6 +12,7 @@ editions:
           targetService: sabnzbd
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: sabnzbd
         image: linuxserver/sabnzbd

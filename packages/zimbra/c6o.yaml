@@ -12,6 +12,7 @@ editions:
           targetService: zimbra
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: zimbra
         image: jorgedlcruz/zimbra
@@ -19,7 +20,7 @@ editions:
         automated: true
         config:
           - name: PASSWORD
-            value: Zimbra2017
+            value: $PASSWORD
         volume:
           - size: 5Gi
             mountPath: /opt/zimbra

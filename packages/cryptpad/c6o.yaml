@@ -33,6 +33,7 @@ editions:
           targetService: cryptpad
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cryptpad
         image: promasu/cryptpad:latest

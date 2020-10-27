@@ -1,59 +1,66 @@
-name: MongoDB
-appId: mongodb                    #App internal name (all lower, no spaces); minimum 5 characters
+name: PostgreSQL
+appId: postgresql
 package: '@provisioner/appengine'
 
 editions:
   - name: developer
+    status: public
     spec:
       routes:
-        - type: tcp
-          targetService: mongodb
-          tcp:
-            port: 27017
-            name: mongodb
+          - type: tcp
+            targetService: postgresql
+            tcp:
+              port: 5432
+              name: postgresql
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         ui: ignore
-        name: mongodb
-        image: 'mongo:latest'
-        port: 27017
+        name: postgresql
+        image: ananthhh/postgress
+        port:
+          name: tcp
+          protocol: TCP
+          port: 5432
         volume:
           - size: 5Gi
             mountPath: /data
-            name: mongodb-data
+            name: postgresql-data
         secret:
-          - name: MONGO_INITDB_ROOT_PASSWORD
-            value: $PASSWORD
-          - name: MONGO_INITDB_ROOT_USERNAME
+          - name: POSTGRES_USER
             value: $USERNAME
+          - name: POSTGRES_PASSWORD
+            value: $PASSWORD
         automated: true
       marina:
         launch:
           type: inline
           popUp: true
 
-  - name: developerinternal
+  - name: developer-internal
+    status: public
     spec:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         ui: ignore
-        name: mongodb
-        image: 'mongo:latest'
-        port: 27017
+        name: postgresql
+        image: ananthhh/postgress
+        port:
+          name: tcp
+          protocol: TCP
+          port: 5432
         volume:
           - size: 5Gi
             mountPath: /data
-            name: mongodb-data
+            name: postgresql-data
         secret:
-          - name: MONGO_INITDB_ROOT_USERNAME
+          - name: POSTGRES_USER
             value: root
-          - name: MONGO_INITDB_ROOT_PASSWORD
+          - name: POSTGRES_PASSWORD
             value: admin
         automated: true
       marina:
         launch:
           type: inline
           popUp: true
-

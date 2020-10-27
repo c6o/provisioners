@@ -32,6 +32,7 @@ editions:
           targetService: dynamodb
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: dynamodb
         image: amazon/dynamodb-local
@@ -48,6 +49,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: dynamodb
         image: amazon/dynamodb-local

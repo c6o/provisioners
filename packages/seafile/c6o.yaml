@@ -12,6 +12,7 @@ editions:
           targetService: seafile
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: seafile
         image: 'seafileltd/seafile:latest'
@@ -23,7 +24,7 @@ editions:
           - name: SEAFILE_ADMIN_EMAIL
             value: admin@example.com
           - name: SEAFILE_ADMIN_PASSWORD
-            value: admin
+            value: $PASSWORD
         volume:
           - size: 500Gi
             mountPath: /shared

@@ -42,6 +42,7 @@ editions:
           targetService: splunk
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: splunk
         image: splunk/splunk
@@ -52,7 +53,7 @@ editions:
             value: --accept-license
         secret:
           - name: SPLUNK_PASSWORD
-            value: splunkpassword
+            value: $PASSWORD
       marina:
         launch:
           type: inline

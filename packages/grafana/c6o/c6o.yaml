@@ -1,0 +1,53 @@
+name: Grafana
+appId: grafana
+icon: icon.svg
+summary:
+    The open-source platform for monitoring and observability.
+description:
+
+  Grafana allows you to query, visualize, alert on and understand your metrics no matter where they are stored. Create, explore, and share dashboards with your team and foster a data driven culture.
+
+  **Visualize** Fast and flexible client side graphs with a multitude of options. Panel plugins for many different way to visualize metrics and logs.
+
+  **Dynamic Dashboards** Create dynamic & reusable dashboards with template variables that appear as dropdowns at the top of the dashboard.
+
+  **Explore Metrics** Explore your data through ad-hoc queries and dynamic drilldown. Split view and compare different time ranges, queries and data sources side by side.
+
+  **Explore Logs** Experience the magic of switching from metrics to logs with preserved label filters. Quickly search through all your logs or streaming them live.
+
+  **Alerting** Visually define alert rules for your most important metrics. Grafana will continuously evaluate and send notifications to systems like Slack, PagerDuty, VictorOps, OpsGenie.
+
+  **Mixed Data Sources** Mix different data sources in the same graph! You can specify a data source on a per-query basis. This works for even custom datasources.
+
+category: analytics
+keywords:
+  - Query
+  - Visualize
+  - Metrics
+  - Dashboards
+  - Logs
+  - Alerting
+
+repo: https://github.com/grafana/grafana
+license: https://github.com/grafana/grafana/blob/master/LICENSE
+support: https://github.com/grafana/grafana/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: stable
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: grafana
+      provisioner:
+        package: '@provisioner/grafana'
+        storage: 1Gi
+        adminUsername: admin
+        adminPassword: admin
+      marina:
+        launch:
+          type: inline

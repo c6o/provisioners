@@ -88,13 +88,14 @@ editions:
           targetService: syncthing
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: syncthing
         image: 'syncthing/syncthing:latest'
         port: 8384
         automated: true
         config:
-          - name: TX
+          - name: TZ
             value: America/Vancouver
         volume:
           - name: syncthing-data

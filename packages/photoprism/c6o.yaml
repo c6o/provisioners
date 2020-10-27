@@ -12,6 +12,7 @@ editions:
           targetService: photoprism
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: photoprism
         image: photoprism/photoprism
@@ -21,7 +22,7 @@ editions:
           - name: PHOTOPRISM_UPLOAD_NSFW
             value: true
           - name: PHOTOPRISM_ADMIN_PASSWORD
-            value: admin
+            value: $PASSWORD
         volume:
           - size: 500Gi
             mountPath: /photoprism/storage

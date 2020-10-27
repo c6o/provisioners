@@ -44,6 +44,7 @@ editions:
           targetService: cassandra-web
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cassandra-web
         image: ipushc/cassandra-web
@@ -52,13 +53,13 @@ editions:
           - name: HOST_PORT
             value: ":80"
           - name: CASSANDRA_HOST
-            value: cassandra
+            value: $SERVERNAME
           - name: CASSANDRA_PORT
             value: 9042
           - name: CASSANDRA_USERNAME
-            value: cassandra
+            value: $USERNAME
           - name: CASSANDRA_PASSWORD
-            value: cassandra
+            value: $PASSWORD
         automated: true
       marina:
         launch:

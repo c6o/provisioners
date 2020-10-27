@@ -12,6 +12,7 @@ editions:
           targetService: heimdall
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: heimdall
         image: 'linuxserver/heimdall:latest'

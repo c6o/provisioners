@@ -14,6 +14,7 @@ editions:
             name: xfcefocal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: xfcefocal
         image: 'linuxserver/rdesktop:latest'
@@ -47,6 +48,7 @@ editions:
             name: xfcebionic
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: xfcebionic
         image: 'linuxserver/rdesktop:xfce-bionic'
@@ -82,6 +84,7 @@ editions:
             name: kdefocal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: kdefocal
         image: 'linuxserver/rdesktop:kde-focal'
@@ -116,6 +119,7 @@ editions:
             name: kdebionic
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: kdebionic
         image: 'linuxserver/rdesktop:kde-bionic'
@@ -151,6 +155,7 @@ editions:
             name: matefocal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: matefocal
         image: 'linuxserver/rdesktop:mate-focal'
@@ -186,6 +191,7 @@ editions:
             name: matebionic
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: matebionic
         image: 'linuxserver/rdesktop:mate-bionic'
@@ -221,6 +227,7 @@ editions:
             name: i3focal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: i3focal
         image: 'linuxserver/rdesktop:i3-focal'
@@ -256,6 +263,7 @@ editions:
             name: i3bionic
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: i3bionic
         image: 'linuxserver/rdesktop:i3-bionic'
@@ -290,6 +298,7 @@ editions:
             name: openboxfocal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: openboxfocal
         image: 'linuxserver/rdesktop:openbox-focal'
@@ -324,6 +333,7 @@ editions:
             name: openboxbionic
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: openboxbionic
         image: 'linuxserver/rdesktop:openbox-bionic'
@@ -358,6 +368,7 @@ editions:
             name: icewmfocal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: icewmfocal
         image: 'linuxserver/rdesktop:icewm-focal'
@@ -392,6 +403,7 @@ editions:
             name: icewmbionic
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: icewmbionic
         image: 'linuxserver/rdesktop:icewm-bionic'

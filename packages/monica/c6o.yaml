@@ -48,6 +48,7 @@ editions:
           targetService: monica
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: monica
         image: monica
@@ -59,13 +60,13 @@ editions:
             name: monica-data
         secret:
           - name: DB_HOST
-            value: mariadb.testing
+            value: $SERVERNAME
           - name: DB_DATABASE
             value: monica
           - name: DB_USERNAME
-            value: root
+            value: $USERNAME
           - name: DB_PASSWORD
-            value: admin
+            value: $PASSWORD
           - name: APP_KEY
             value: "%RANDOM:32"
       marina:

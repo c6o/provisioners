@@ -44,6 +44,7 @@ editions:
           targetService: booksonic-air
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: booksonic-air
         image: linuxserver/booksonic-air

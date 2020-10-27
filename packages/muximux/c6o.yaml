@@ -12,6 +12,7 @@ editions:
           targetService: muximux
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: muximux
         image: linuxserver/muximux

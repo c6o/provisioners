@@ -54,6 +54,7 @@ editions:
           targetService: embyserver
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: embyserver
         image: 'linuxserver/emby:latest'

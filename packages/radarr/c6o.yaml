@@ -12,6 +12,7 @@ editions:
           targetService: radarr
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: radarr
         image: 'linuxserver/radarr:latest'

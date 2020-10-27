@@ -46,10 +46,21 @@ editions:
         image: 'adminer:latest'
         port: 8080
         automated: true
+        tag-prefix: appengine
+        secret:
+          - name: PASSWORD
+            value: $PASSWORD
         config:
-          - name: username
+          - name: USERNAME
             value: $USERNAME
-            env: DB_USERNAME
+            hint: The username used to login to your database.
+            label: Database Username
+            required: true
+            autoselect: true
+          - name: SERVERNAME
+            value: $SERVERNAME
+            hint: The host name of your database.
+            label: Database Host Name
       marina:
         launch:
           type: inline

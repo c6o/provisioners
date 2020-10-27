@@ -47,6 +47,7 @@ editions:
             name: cassandra
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cassandra
         image: 'cassandra:latest'
@@ -67,9 +68,9 @@ editions:
         automated: true
         secret:
           - name: CASSANDRA_USERNAME
-            value: cassandra
+            value: $USERNAME
           - name: CASSANDRA_PASSWORD
-            value: cassandra
+            value: $PASSWORD
       marina:
         launch:
           type: inline

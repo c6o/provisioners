@@ -33,6 +33,7 @@ editions:
         - type: http
           targetService: alertmanager
       provisioner:
+        tag-prefix: appengine
         package: '@provisioner/appengine'
         ui: ignore
         name: alertmanager

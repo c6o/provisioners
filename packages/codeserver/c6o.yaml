@@ -68,6 +68,7 @@ editions:
           targetService: codeserver
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: codeserver
         image: 'linuxserver/code-server:latest'
@@ -85,9 +86,9 @@ editions:
             value: America/Vancouver
         secret:
           - name: PASSWORD
-            value: admin
+            value: $PASSWORD
           - name: SUDO_PASSWORD
-            value: admin
+            value: "%RANDOM"
       marina:
         launch:
           type: inline

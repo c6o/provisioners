@@ -36,6 +36,7 @@ editions:
           targetService: strapi
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: strapi
         image: strapi/strapi
@@ -50,17 +51,17 @@ editions:
             size: 50Gi
         secret:
           - DATABASE_CLIENT: PASSWORD
-            value: postgres
+            value: $PASSWORD
           - name: DATABASE_NAME
             value: strapi
           - name: DATABASE_HOST
-            value: postgress.testing
+            value: $SERVERNAME
           - name: DATABASE_PORT
             value: 5432
           - name: DATABASE_USERNAME
-            value: root
+            value: $PASSWORD
           - name: DATABASE_PASSWORD
-            value: admin
+            value: $PASSWORD
       marina:
         launch:
           type: inline

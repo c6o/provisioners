@@ -45,6 +45,7 @@ editions:
         - type: http
           targetService: airsonic
       provisioner:
+        tag-prefix: appengine
         package: "@provisioner/appengine"
         ui: ignore
         name: airsonic

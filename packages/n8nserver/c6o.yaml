@@ -12,6 +12,7 @@ editions:
           targetService: n8nserver
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: n8nserver
         image: 'n8nio/n8n:0.43.0-ubuntu'

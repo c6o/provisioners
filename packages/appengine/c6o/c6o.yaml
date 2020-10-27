@@ -42,6 +42,7 @@ editions:
           targetService: appengine
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
       marina:
         launch:
           type: inline

@@ -35,6 +35,7 @@ editions:
           targetService: moodle
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: moodle
         image: 'bitnami/moodle:latest'
@@ -44,14 +45,14 @@ editions:
           - name: MOODLE_DATABASE_TYPE
             value: mariadb
           - name: MOODLE_DATABASE_HOST
-            value: mariadb.testing
+            value: $SERVERNAME
           - name: MOODLE_DATABASE_NAME
             value: moodle
         secret:
           - name: MOODLE_DATABASE_USER
-            value: root
+            value: $USERNAME
           - name: MOODLE_DATABASE_PASSWORD
-            value: admin
+            value: $PASSWORD
         volume:
           - size: 5Gi
             mountPath: /bitnami/moodle

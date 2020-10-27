@@ -12,6 +12,7 @@ editions:
           targetService: lidarr
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: lidarr
         image: 'linuxserver/lidarr:latest'

@@ -52,14 +52,15 @@ editions:
             name: couchdb
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: couchdb
         image: couchdb
         secret:
           - name: COUCHDB_USER
-            value: admin
+            value: $USERNAME
           - name: COUCHDB_PASSWORD
-            value: admin
+            value: $PASSWORD
         port:
           - port: 6379
             name: tcp
@@ -79,14 +80,15 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: couchdb
         image: couchdb
         secret:
           - name: COUCHDB_USER
-            value: admin
+            value: $USERNAME
           - name: COUCHDB_PASSWORD
-            value: admin
+            value: $PASSWORD
         port:
           - port: 5984
             name: tcp

@@ -38,6 +38,7 @@ editions:
           targetService: cloud9python
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cloud9python
         image: 'linuxserver/cloud9:python'
@@ -52,9 +53,9 @@ editions:
             value: America/Vancouver
         secret:
           - name: USERNAME
-            value: admin
+            value: $USERNAME
           - name: PASSWORD
-            value: admin
+            value: $PASSWORD
       marina:
         launch:
           type: inline
@@ -69,6 +70,7 @@ editions:
           targetService: cloud9nodejs
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cloud9nodejs
         image: 'linuxserver/cloud9:nodejs'
@@ -101,6 +103,7 @@ editions:
           targetService: cloud9go
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cloud9go
         image: 'linuxserver/cloud9:go'
@@ -133,6 +136,7 @@ editions:
           targetService: cloud9ruby
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cloud9ruby
         image: 'linuxserver/cloud9:ruby'

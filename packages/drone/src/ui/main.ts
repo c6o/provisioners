@@ -51,8 +51,6 @@ export class DroneSettingsMain extends LitElement implements StoreFlowStep {
 
         //our scm provider names are templated based on the dropdown list, just replace the spaces in the name with -
         const flow = `drone-install-${this.serviceSpec.scmChoice.replace(/ /g, '-').toLowerCase()}` //fix spaces, tolower
-
-        console.log('appending flow', flow)
         //add the custom/specific scm provider to the flow
         this.mediator.appendFlow(flow)
 

@@ -12,6 +12,7 @@ editions:
           targetService: smokeping
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: smokeping
         image: linuxserver/smokeping

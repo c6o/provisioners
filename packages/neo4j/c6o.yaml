@@ -29,6 +29,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: neo4j
         image: neo4j

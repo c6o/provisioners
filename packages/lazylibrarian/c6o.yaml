@@ -12,13 +12,14 @@ editions:
           targetService: lazylibrarian
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: lazylibrarian
         image: 'thraxis/lazylibrarian-calibre'
         port: 5299
         automated: true
         config:
-          - name: TX
+          - name: TZ
             value: America/Vancouver
         volume:
           - name: lazylibrarian-config

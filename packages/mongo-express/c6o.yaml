@@ -15,9 +15,9 @@ editions:
       port: 8081
       secret:
         - name: ME_CONFIG_MONGODB_ADMINPASSWORD
-          value: admin
+          value: $PASSWORD
         - name: ME_CONFIG_MONGODB_ADMINUSERNAME
-          value: root
+          value: $USERNAME
       automated: true
     marina:
       launch:
