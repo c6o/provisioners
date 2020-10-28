@@ -53,7 +53,17 @@ editions:
             mountPath: /data
             name: dillinger-data
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         automated: true
       marina:

@@ -68,7 +68,7 @@ editions:
           - name: DB_PASSWORD
             value: $PASSWORD
           - name: APP_KEY
-            value: "%RANDOM:32"
+            value: $RANDOM:32
       marina:
         launch:
           type: inline

@@ -14,7 +14,17 @@ editions:
         name: rsnapshot
         image: linuxserver/rsnapshot
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         volume:
           - size: 5Gi

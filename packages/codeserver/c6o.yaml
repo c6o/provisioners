@@ -69,7 +69,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: codeserver
         image: 'linuxserver/code-server:latest'
         port: 8443
@@ -82,13 +81,39 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
+
         secret:
+
           - name: PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: Password
+            hint: Specify the password to use for the UI
+            required: true
+            autoselect: true
+            fieldType: password
+
+          # - name: SUDO_PASSWORD
+          #   type: TEXT
+          #   label: Root Password (abc)
+          #   hint: Specify the password to use for the sudo user
+          #   required: true
+          #   autoselect: true
+          #   fieldType: password
+
           - name: SUDO_PASSWORD
-            value: "%RANDOM"
+            value: '$RANDOM'
       marina:
         launch:
           type: inline

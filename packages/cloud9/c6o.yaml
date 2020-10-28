@@ -48,14 +48,10 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
-          - name: TZ
-            type: TEXT
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            autoselect: true
-            fieldType: text
-            value: America/Vancouver
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
 
           - name: USERNAME
             type: TEXT
@@ -65,6 +61,15 @@ editions:
             autoselect: true
             fieldType: text
             value: root
+
+          - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: America/Vancouver
 
         secret:
           - name: PASSWORD
@@ -98,6 +103,11 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: TZ
             type: TEXT
             label: Timezone
@@ -149,6 +159,12 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: TZ
             type: TEXT
             label: Timezone
@@ -200,6 +216,11 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: TZ
             type: TEXT
             label: Timezone

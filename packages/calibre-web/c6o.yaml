@@ -76,6 +76,10 @@ editions:
             mountPath: /books
             name: calibre-web-books
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
             type: TEXT
             label: Timezone
