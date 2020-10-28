@@ -43,6 +43,7 @@ export interface Setting {
     hint: string
     required: boolean
     autoselect: boolean
+    fieldType: string
 }
 
 export interface Port {

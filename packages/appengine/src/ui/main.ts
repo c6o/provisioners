@@ -8,13 +8,9 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     mediator: StoreFlowMediator
 
     get spec() {
-        return this.mediator.getServiceSpec(this.mediator.applicationSpec.metadata.name)
+        return this.mediator.applicationSpec.spec.provisioner
     }
 
-
-    get appEngineSpec() {
-        return this.mediator.getServiceSpec('appengine')
-    }
 
     render() {
         return html`
@@ -29,6 +25,10 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
+
+        console.log('ROBX applicationSpec', this.mediator.applicationSpec)
+        console.log('ROBX spec', this.spec)
+
 
         this.handleMetaData()
 
@@ -50,39 +50,31 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
             this.spec.metaData.display = this.spec.metaData.annotations['system.codezero.io/display']
             this.spec.metaData.iconUrl = this.spec.metaData.annotations['system.codezero.io/iconUrl']
             this.spec.metaData.screenshots = this.spec.metaData.annotations['system.codezero.io/screenshots']
+            this.spec.metaData.edition = this.spec.metaData.labels['system.codezero.io/edition']
         }
         if (!this.spec.metaData.display) this.spec.metaData.display = this.spec.name
+
 
     }
 
     inspectFieldsForInputs() {
 
-        const fieldTypes = ['$USERNAME', '$PASSWORD', '$SERVERNAME']
+        const fieldTypes = ['TEXT']
         this.spec._ui = { configs: false, secrets: false }
 
         if (this.spec.configs) {
             for (const config of this.spec.configs) {
-                if (fieldTypes.includes(config.value) || fieldTypes.includes(config.type)) {
-                    if (!config.input || config.input === '')
-                        config.input = config.value
-
-                    if (fieldTypes.includes(config.value))
-                        config.value = ''
-
+                if (fieldTypes.includes(config.type)) {
                     this.spec._ui.configs = true
+                    break
                 }
             }
         }
         if (this.spec.secrets) {
             for (const secret of this.spec.secrets) {
-                if (fieldTypes.includes(secret.value) || fieldTypes.includes(secret.type)) {
-                    if (!secret.input || secret.input === '')
-                        secret.input = secret.value
-
-                    if (fieldTypes.includes(secret.value))
-                        secret.value = ''
-
+                if (fieldTypes.includes(secret.type)) {
                     this.spec._ui.secrets = true
+                    break
                 }
             }
         }

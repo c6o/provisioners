@@ -48,7 +48,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: cassandra
         image: 'cassandra:latest'
         port:
@@ -68,9 +67,20 @@ editions:
         automated: true
         secret:
           - name: CASSANDRA_USERNAME
-            value: $USERNAME
+            type: TEXT
+            label: Database Username
+            hint: The Username used to login to your database.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
           - name: CASSANDRA_PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: Database Password
+            hint: The Password used to login to your database.
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline

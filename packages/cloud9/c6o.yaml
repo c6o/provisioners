@@ -39,7 +39,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: cloud9python
         image: 'linuxserver/cloud9:python'
         port: 8000
@@ -50,12 +49,31 @@ editions:
             size: 5Gi
         config:
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: $USERNAME
+            type: TEXT
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
@@ -71,7 +89,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: cloud9nodejs
         image: 'linuxserver/cloud9:nodejs'
         port: 8000
@@ -82,12 +99,31 @@ editions:
             size: 5Gi
         config:
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: admin
+            type: TEXT
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: admin
+            type: TEXT
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
@@ -104,7 +140,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: cloud9go
         image: 'linuxserver/cloud9:go'
         port: 8000
@@ -115,12 +150,31 @@ editions:
             size: 5Gi
         config:
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: admin
+            type: TEXT
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: admin
+            type: TEXT
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
@@ -137,7 +191,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: cloud9ruby
         image: 'linuxserver/cloud9:ruby'
         port: 8000
@@ -148,12 +201,31 @@ editions:
             size: 5Gi
         config:
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: admin
+            type: TEXT
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: admin
+            type: TEXT
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline

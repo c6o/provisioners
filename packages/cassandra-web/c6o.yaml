@@ -45,21 +45,43 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: cassandra-web
         image: ipushc/cassandra-web
         port: 80
+        config:
+          - name: CASSANDRA_USERNAME
+            type: TEXT
+            label: Database User name
+            hint: The Username used to login to your database.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+          - name: CASSANDRA_HOST
+            type: TEXT
+            label: Database Host name
+            hint: The host name of your cassandra server
+            required: true
+            autoselect: true
+            fieldType: text
+            value: cassandra
+
         secret:
+          - name: CASSANDRA_PASSWORD
+            type: TEXT
+            label: Database Password
+            hint: The Password used to login to your database.
+            required: true
+            autoselect: true
+            fieldType: password
+
+
           - name: HOST_PORT
             value: ":80"
-          - name: CASSANDRA_HOST
-            value: $SERVERNAME
           - name: CASSANDRA_PORT
             value: 9042
-          - name: CASSANDRA_USERNAME
-            value: $USERNAME
-          - name: CASSANDRA_PASSWORD
-            value: $PASSWORD
+
         automated: true
       marina:
         launch:

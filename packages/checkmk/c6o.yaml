@@ -71,14 +71,18 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: checkmk
         image: 'checkmk/check-mk-raw:latest'
         port: 5000
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: The password for the cmkadmin user account
+            hint: The password for the cmkadmin user account
+            required: true
+            autoselect: true
+            fieldType: password
         volume:
           - size: 5Gi
             name: checkmk-sites
@@ -87,6 +91,7 @@ editions:
         launch:
           type: inline
           popUp: true
+          path: /cmk/check_mk/
 
   - name: live-stats
     scope: public
@@ -111,7 +116,12 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: The password for the cmkadmin user account
+            hint: The password for the cmkadmin user account
+            required: true
+            autoselect: true
+            fieldType: password
         volume:
           - size: 5Gi
             name: checkmk-sites

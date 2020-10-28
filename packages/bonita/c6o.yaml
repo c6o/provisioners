@@ -32,7 +32,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: bonita
         image: 'bonita:latest'
         port: 8080
@@ -41,7 +40,181 @@ editions:
           - size: 5Gi
             mountPath: /opt/bonita
             name: bonita-data
+        config:
+          - name: DB_HOST
+            type: TEXT
+            label: Postgres Server Host
+            hint: Typically the name of the Service for the Postgres instance
+            required: true
+            autoselect: true
+            fieldType: text
+          - name: DB_VENDOR
+            type: TEXT
+            label: Database Vendor
+            hint: The type of database to use (postgres or mysql)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: postgres
+          - name: DB_NAME
+            type: TEXT
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: bonitadb
+          - name: DB_USER
+            type: TEXT
+            label: Database user
+            hint: The username of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: bonitauser
+
+        secret:
+          - name: DB_PASS
+            type: TEXT
+            label: Postgres Password
+            hint: The password used to login to your postgress database.
+            required: true
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline
           popUp: true
+
+  - name: preview-detailed
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: bonita
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: bonita
+        image: 'bonita:latest'
+        port: 8080
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /opt/bonita
+            name: bonita-data
+        config:
+          - name: DB_HOST
+            type: TEXT
+            label: Postgres Server Host
+            hint: Typically the name of the Service for the Postgres instance
+            required: true
+            autoselect: true
+            fieldType: text
+          - name: DB_VENDOR
+            type: TEXT
+            label: Database Vendor
+            hint: The type of database to use (postgres or mysql)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: postgres
+          - name: DB_NAME
+            type: TEXT
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: bonitadb
+          - name: DB_USER
+            type: TEXT
+            label: Database user
+            hint: The username of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: bonitauser
+
+
+          - name: TENANT_LOGIN
+            type: TEXT
+            label: Tenant Username
+            hint: The username for the tenant user
+            required: true
+            fieldType: text
+            value: install
+          - name: PLATFORM_LOGIN
+            type: TEXT
+            label: Platform Admin Username
+            hint: The username for the platform adminstrator
+            required: true
+            autoselect: true
+            fieldType: text
+            value: platformAdmin
+
+
+
+          - name: BIZ_DB_NAME
+            type: TEXT
+            label: Business Database Name
+            hint: The name of the database for the Business
+            required: true
+            autoselect: true
+            fieldType: text
+            value: businessdb
+
+
+          - name: BIZ_DB_USER
+            type: TEXT
+            label: Business Database Username
+            hint: The name of the user for the database for the Business
+            required: true
+            autoselect: true
+            fieldType: text
+            value: businessuser
+
+
+        secret:
+          - name: DB_PASS
+            type: TEXT
+            label: Postgres Password
+            hint: The password used to login to your postgress database.
+            required: true
+            autoselect: true
+            fieldType: password
+          - name: TENANT_PASSWORD
+            type: TEXT
+            label: Tenant password
+            hint: The Password used to login to the system as the Tenant.
+            required: true
+            autoselect: true
+            fieldType: password
+            value: install
+
+          - name: PLATFORM_PASSWORD
+            type: TEXT
+            label: Platform admin password
+            hint: The Password used to login to the system as the platform administrator.
+            required: true
+            autoselect: true
+            fieldType: password
+            value: platform
+
+
+          - name: BIZ_DB_PASS
+            type: TEXT
+            label: Business Database Password
+            hint: The password of the user for the database for the Business
+            required: true
+            autoselect: true
+            fieldType: password
+            value: businesspass
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

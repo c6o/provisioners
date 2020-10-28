@@ -7,12 +7,7 @@ export class AppEngineFinishedSettings extends LitElement implements StoreFlowSt
     mediator: StoreFlowMediator
 
     get spec() {
-        return this.mediator.getServiceSpec(this.mediator.applicationSpec.metadata.name)
-    }
-
-
-    get appEngineSpec() {
-        return this.mediator.getServiceSpec('appengine')
+        return this.mediator.applicationSpec.spec.provisioner
     }
 
     render() {

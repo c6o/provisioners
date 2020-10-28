@@ -1,4 +1,4 @@
-name: PostgreSQL
+name: PostgreSQL Database
 appId: postgresql
 package: '@provisioner/appengine'
 
@@ -15,9 +15,9 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: postgresql
         image: ananthhh/postgress
+        automated: true
         port:
           name: tcp
           protocol: TCP
@@ -26,12 +26,25 @@ editions:
           - size: 5Gi
             mountPath: /data
             name: postgresql-data
-        secret:
+        config:
           - name: POSTGRES_USER
-            value: $USERNAME
+            type: TEXT
+            label: Admin Username
+            hint: The Username used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: POSTGRES_PASSWORD
-            value: $PASSWORD
-        automated: true
+            type: TEXT
+            label: Admin Password
+            hint: The Password used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline
@@ -43,7 +56,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: postgresql
         image: ananthhh/postgress
         port:
@@ -54,11 +66,25 @@ editions:
           - size: 5Gi
             mountPath: /data
             name: postgresql-data
-        secret:
+        config:
           - name: POSTGRES_USER
+            type: TEXT
+            label: Admin Username
+            hint: The Username used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: text
             value: root
+
+        secret:
           - name: POSTGRES_PASSWORD
-            value: admin
+            type: TEXT
+            label: Admin Password
+            hint: The Password used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: password
+
         automated: true
       marina:
         launch:

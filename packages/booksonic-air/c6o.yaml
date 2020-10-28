@@ -64,6 +64,12 @@ editions:
             name: booksonic-othermedia
         config:
           - name: TZ
+            type: TEXT
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
           - name: AUTO_UPDATE
             value: true
