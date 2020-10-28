@@ -26,10 +26,6 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
 
-        console.log('ROBX applicationSpec', this.mediator.applicationSpec)
-        console.log('ROBX spec', this.spec)
-
-
         this.handleMetaData()
 
         if (!this.spec.parsed)
@@ -79,7 +75,6 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
             }
         }
 
-        console.log('ROBX', 'AppEngine Main', this.spec)
     }
 
     async end() {

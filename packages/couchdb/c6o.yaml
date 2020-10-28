@@ -56,11 +56,25 @@ editions:
         ui: ignore
         name: couchdb
         image: couchdb
-        secret:
+        config:
           - name: COUCHDB_USER
-            value: $USERNAME
+            type: TEXT
+            label: Username
+            hint: Specify the username to use for the database
+            required: true
+            autoselect: true
+            fieldType: text
+
+        secret:
+
           - name: COUCHDB_PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: Password
+            hint: Specify the password to use for the database
+            required: true
+            autoselect: true
+            fieldType: password
+
         port:
           - port: 6379
             name: tcp
@@ -84,11 +98,25 @@ editions:
         ui: ignore
         name: couchdb
         image: couchdb
-        secret:
+        config:
           - name: COUCHDB_USER
-            value: $USERNAME
+            type: TEXT
+            label: Username
+            hint: Specify the username to use for the database
+            required: true
+            autoselect: true
+            fieldType: text
+
+        secret:
+
           - name: COUCHDB_PASSWORD
-            value: $PASSWORD
+            type: TEXT
+            label: Password
+            hint: Specify the password to use for the database
+            required: true
+            autoselect: true
+            fieldType: password
+
         port:
           - port: 5984
             name: tcp

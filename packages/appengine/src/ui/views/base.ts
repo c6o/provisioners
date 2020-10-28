@@ -14,13 +14,9 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
     }
 
     render() {
-        console.log('ROBX', 'render', this.pageLayout)
-
         return this.pageLayout
     }
     handleLayout(items, type) {
-
-        console.log('ROBX', 'handleLayout', items)
 
         const fieldTypes = ['TEXT']
 
@@ -54,7 +50,6 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         for (const item of items) {
             if (item.required && item.required === true) {
                 if (!item.value || item.value === '') {
-                    console.log('ROBX', 'FAILED VALIDATION', item)
                     const validationFailedField = document.createElement('p')
                     validationFailedField.innerHTML = 'Validation has failed, try again.'
                     this.bodyLayout.appendChild(validationFailedField)
