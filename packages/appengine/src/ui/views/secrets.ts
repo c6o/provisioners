@@ -18,9 +18,6 @@ export class AppEngineSecretsSettings extends BaseViewSettings implements StoreF
 
         if(!super.validateItems(super.spec.secrets)) return false
 
-        //intenionally not super
-        this.mediator.appendFlow('appengine-install-finished')
-
         return true
     }
 

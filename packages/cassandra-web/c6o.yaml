@@ -50,7 +50,6 @@ editions:
         port: 80
         config:
           - name: CASSANDRA_USERNAME
-            type: TEXT
             label: Database User name
             hint: The Username used to login to your database.
             required: true
@@ -59,7 +58,6 @@ editions:
             value: root
 
           - name: CASSANDRA_HOST
-            type: TEXT
             label: Database Host name
             hint: The host name of your cassandra server
             required: true
@@ -69,7 +67,6 @@ editions:
 
         secret:
           - name: CASSANDRA_PASSWORD
-            type: TEXT
             label: Database Password
             hint: The Password used to login to your database.
             required: true

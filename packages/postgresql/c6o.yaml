@@ -28,7 +28,6 @@ editions:
             name: postgresql-data
         config:
           - name: POSTGRES_USER
-            type: TEXT
             label: Admin Username
             hint: The Username used to login to the system as the  administrator.
             required: true
@@ -38,7 +37,6 @@ editions:
 
         secret:
           - name: POSTGRES_PASSWORD
-            type: TEXT
             label: Admin Password
             hint: The Password used to login to the system as the  administrator.
             required: true
@@ -68,7 +66,6 @@ editions:
             name: postgresql-data
         config:
           - name: POSTGRES_USER
-            type: TEXT
             label: Admin Username
             hint: The Username used to login to the system as the  administrator.
             required: true
@@ -78,7 +75,6 @@ editions:
 
         secret:
           - name: POSTGRES_PASSWORD
-            type: TEXT
             label: Admin Password
             hint: The Password used to login to the system as the  administrator.
             required: true

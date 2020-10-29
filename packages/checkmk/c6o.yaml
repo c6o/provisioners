@@ -77,7 +77,6 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            type: TEXT
             label: The password for the cmkadmin user account
             hint: The password for the cmkadmin user account
             required: true
@@ -116,7 +115,6 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            type: TEXT
             label: The password for the cmkadmin user account
             hint: The password for the cmkadmin user account
             required: true

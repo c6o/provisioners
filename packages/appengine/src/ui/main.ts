@@ -55,12 +55,13 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
     inspectFieldsForInputs() {
 
-        const fieldTypes = ['TEXT']
+        const fieldTypes = ['text', 'password']
         this.spec._ui = { configs: false, secrets: false }
 
         if (this.spec.configs) {
             for (const config of this.spec.configs) {
-                if (fieldTypes.includes(config.type)) {
+                if (fieldTypes.includes(config.fieldType?.toLowerCase())) {
+                    config.fieldType = config.fieldType.toLowerCase()
                     this.spec._ui.configs = true
                     break
                 }
@@ -68,7 +69,8 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
         }
         if (this.spec.secrets) {
             for (const secret of this.spec.secrets) {
-                if (fieldTypes.includes(secret.type)) {
+                if (fieldTypes.includes(secret.fieldType.toLowerCase())) {
+                    secret.fieldType = secret.fieldType.toLowerCase()
                     this.spec._ui.secrets = true
                     break
                 }
@@ -84,8 +86,6 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
             this.mediator.appendFlow('appengine-install-configs')
         else if (this.spec._ui.secrets)
             this.mediator.appendFlow('appengine-install-secrets')
-        else
-            this.mediator.appendFlow('appengine-install-finished')
 
         return true
 

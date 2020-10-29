@@ -16,9 +16,10 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
     render() {
         return this.pageLayout
     }
+
     handleLayout(items, type) {
 
-        const fieldTypes = ['TEXT']
+        const fieldTypes = ['text', 'password']
 
         const headingLayout = document.createElement('c6o-form-layout')
         const headingField = document.createElement('p')
@@ -35,9 +36,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
 
         if (items) {
             for (const item of items) {
-                if (item.type && item.type !== '' && fieldTypes.includes(item.type)) {
-                    if (!item.fieldType) item.fieldType = 'text'
-                    item.fieldType = item.fieldType.toLowerCase()
+                if (fieldTypes.includes(item.fieldType?.toLowerCase())) {
                     this.renderInputField(type, item)
                 }
             }
@@ -65,15 +64,16 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         if (!item.fieldType) item.fieldType = 'text'
         const field = document.createElement(`c6o-${item.fieldType}-field`)
         field['label'] = item.name
-        if (item.label && item.label !== '') {
+
+        if (item.label && item.label !== '')
             field['label'] = item.label
-        }
-        if (item.required && item.required === true) {
+
+        if (item.required && item.required === true)
             field['required'] = ''
-        }
-        if (item.autoselect && item.autoselect === true) {
+
+        if (item.autoselect && item.autoselect === true)
             field['autoselect'] = ''
-        }
+
         field['value'] = item.value
         field['_id'] = item.name
         if (item.hint) {

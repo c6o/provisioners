@@ -58,7 +58,6 @@ editions:
         image: couchdb
         config:
           - name: COUCHDB_USER
-            type: TEXT
             label: Username
             hint: Specify the username to use for the database
             required: true
@@ -68,7 +67,6 @@ editions:
         secret:
 
           - name: COUCHDB_PASSWORD
-            type: TEXT
             label: Password
             hint: Specify the password to use for the database
             required: true
@@ -100,7 +98,6 @@ editions:
         image: couchdb
         config:
           - name: COUCHDB_USER
-            type: TEXT
             label: Username
             hint: Specify the username to use for the database
             required: true
@@ -110,7 +107,6 @@ editions:
         secret:
 
           - name: COUCHDB_PASSWORD
-            type: TEXT
             label: Password
             hint: Specify the password to use for the database
             required: true

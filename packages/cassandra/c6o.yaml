@@ -67,7 +67,6 @@ editions:
         automated: true
         secret:
           - name: CASSANDRA_USERNAME
-            type: TEXT
             label: Database Username
             hint: The Username used to login to your database.
             required: true
@@ -75,7 +74,6 @@ editions:
             fieldType: text
             value: root
           - name: CASSANDRA_PASSWORD
-            type: TEXT
             label: Database Password
             hint: The Password used to login to your database.
             required: true

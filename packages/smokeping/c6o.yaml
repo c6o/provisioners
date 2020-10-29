@@ -24,7 +24,6 @@ editions:
           - name: PGID
             value: 0
           - name: TZ
-            type: TEXT
             label: Timezone
             hint: Specify a timezone to use.
             required: true

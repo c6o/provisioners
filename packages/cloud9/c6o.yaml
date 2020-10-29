@@ -54,7 +54,6 @@ editions:
             value: 0
 
           - name: USERNAME
-            type: TEXT
             label: Username
             hint: The Username to login to the IDE
             required: true
@@ -63,7 +62,6 @@ editions:
             value: root
 
           - name: TZ
-            type: TEXT
             label: Timezone
             hint: Specify a timezone to use.
             required: true
@@ -73,7 +71,6 @@ editions:
 
         secret:
           - name: PASSWORD
-            type: TEXT
             label: Password
             hint: The Password to login to the IDE
             required: true
@@ -109,7 +106,6 @@ editions:
             value: 0
 
           - name: TZ
-            type: TEXT
             label: Timezone
             hint: Specify a timezone to use.
             required: true
@@ -118,7 +114,6 @@ editions:
             value: America/Vancouver
 
           - name: USERNAME
-            type: TEXT
             label: Username
             hint: The Username to login to the IDE
             required: true
@@ -128,7 +123,6 @@ editions:
 
         secret:
           - name: PASSWORD
-            type: TEXT
             label: Password
             hint: The Password to login to the IDE
             required: true
@@ -166,7 +160,6 @@ editions:
             value: 0
 
           - name: TZ
-            type: TEXT
             label: Timezone
             hint: Specify a timezone to use.
             required: true
@@ -175,7 +168,6 @@ editions:
             value: America/Vancouver
 
           - name: USERNAME
-            type: TEXT
             label: Username
             hint: The Username to login to the IDE
             required: true
@@ -185,7 +177,6 @@ editions:
 
         secret:
           - name: PASSWORD
-            type: TEXT
             label: Password
             hint: The Password to login to the IDE
             required: true
@@ -222,7 +213,6 @@ editions:
             value: 0
 
           - name: TZ
-            type: TEXT
             label: Timezone
             hint: Specify a timezone to use.
             required: true
@@ -231,7 +221,6 @@ editions:
             value: America/Vancouver
 
           - name: USERNAME
-            type: TEXT
             label: Username
             hint: The Username to login to the IDE
             required: true
@@ -241,7 +230,6 @@ editions:
 
         secret:
           - name: PASSWORD
-            type: TEXT
             label: Password
             hint: The Password to login to the IDE
             required: true

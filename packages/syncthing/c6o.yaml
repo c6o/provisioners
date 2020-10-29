@@ -89,7 +89,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: syncthing
         image: 'syncthing/syncthing:latest'
         port: 8384
@@ -100,7 +99,6 @@ editions:
           - name: PGID
             value: 0
           - name: TZ
-            type: TEXT
             label: Timezone
             hint: Specify a timezone to use.
             required: true

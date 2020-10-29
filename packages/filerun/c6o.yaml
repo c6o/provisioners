@@ -102,17 +102,38 @@ editions:
           - name: filerun-user-files
             mountPath: /user-files
             size: 10Gi
-        secret:
+        config:
+
           - name: FR_DB_HOST
-            value: $SERVERNAME
+            label: Database Server
+            hint: Specify the host name of your database server service
+            required: true
+            autoselect: true
+            fieldType: text
+
           - name: FR_DB_PORT
             value: 3306
+
           - name: FR_DB_NAME
             value: filerun
+
           - name: FR_DB_USER
-            value: $USERNAME
+            label: Database User name
+            hint: Specify the username of your database server service
+            required: true
+            autoselect: true
+            fieldType: text
+
+
+        secret:
+
           - name: FR_DB_PASS
-            value: $PASSWORD
+            label: Database Password
+            hint: Specify the password of your database server service
+            required: true
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline
