@@ -73,6 +73,7 @@ editions:
           targetService: speedtest
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: speedtest
         image: adolfintel/speedtest

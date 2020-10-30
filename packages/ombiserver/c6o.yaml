@@ -12,6 +12,7 @@ editions:
           targetService: ombiserver
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: ombi
         image: 'linuxserver/ombi:latest'

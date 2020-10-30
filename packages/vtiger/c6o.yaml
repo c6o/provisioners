@@ -83,11 +83,11 @@ editions:
         automated: true
         secret:
           - name: DB_HOSTNAME
-            value: 'mysql'
+            value: $SERVERNAME
           - name: DB_USERNAME
-            value: 'root'
+            value: $USERNAME
           - name: DB_PASSWORD
-            value: 'admin'
+            value: $PASSWORD
           - name: DB_NAME
             value: 'vtiger'
           # - name: BASE_URL

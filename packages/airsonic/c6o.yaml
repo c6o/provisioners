@@ -46,13 +46,22 @@ editions:
           targetService: airsonic
       provisioner:
         package: "@provisioner/appengine"
-        ui: ignore
         name: airsonic
         image: "linuxserver/airsonic"
         port: 4040
         automated: true
+        tag-prefix: appengine
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         volume:
           - size: 5Gi

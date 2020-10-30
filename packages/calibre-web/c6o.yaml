@@ -63,6 +63,7 @@ editions:
           targetService: calibre-web
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: calibre-web
         image: linuxserver/calibre-web
@@ -75,7 +76,16 @@ editions:
             mountPath: /books
             name: calibre-web-books
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         automated: true
       marina:

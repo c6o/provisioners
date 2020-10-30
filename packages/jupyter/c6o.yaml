@@ -12,6 +12,7 @@ editions:
           targetService: scipy
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: scipy
         image: jupyter/scipy-notebook
@@ -38,6 +39,7 @@ editions:
           targetService: datascience
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: datascience
         image: jupyter/datascience-notebook
@@ -65,6 +67,7 @@ editions:
           targetService: tensorflow
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: tensorflow
         image: jupyter/tensorflow-notebook
@@ -91,6 +94,7 @@ editions:
           targetService: pyspark
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: pyspark
         image: jupyter/pyspark-notebook
@@ -118,6 +122,7 @@ editions:
           targetService: basenotebook
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: basenotebook
         image: jupyter/base-notebook
@@ -145,6 +150,7 @@ editions:
           targetService: all-spark
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: all-spark
         image: jupyter/all-spark-notebook
@@ -172,6 +178,7 @@ editions:
           targetService: minimal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: minimal
         image: jupyter/minimal-notebook
@@ -199,6 +206,7 @@ editions:
           targetService: nbviewer
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: nbviewer
         image: jupyter/nbviewer
@@ -226,6 +234,7 @@ editions:
           targetService: r-notebook
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: r-notebook
         image: jupyter/r-notebook
@@ -254,6 +263,7 @@ editions:
           targetService: nature-demo
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: nature-demo
         image: jupyter/nature-demo

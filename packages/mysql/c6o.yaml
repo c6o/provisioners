@@ -13,7 +13,7 @@ editions:
             name: mysql
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: mysql
         image: 'mysql:latest'
         port: 3306
@@ -23,7 +23,12 @@ editions:
             name: mysql-data
         secret:
           - name: MYSQL_ROOT_PASSWORD
-            value: admin
+            label: Root Password
+            hint: Specify the password for the root user
+            required: true
+            autoselect: true
+            fieldType: password
+
         automated: true
       marina:
         launch:
@@ -34,7 +39,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: mysql
         image: 'mysql:latest'
         port: 3306
@@ -44,7 +49,11 @@ editions:
             name: mysql-data
         secret:
           - name: MYSQL_ROOT_PASSWORD
-            value: admin
+            label: Root Password
+            hint: Specify the password for the root user
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:

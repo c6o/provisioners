@@ -44,6 +44,7 @@ editions:
           targetService: booksonic-air
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: booksonic-air
         image: linuxserver/booksonic-air
@@ -62,7 +63,16 @@ editions:
             mountPath: /othermedia
             name: booksonic-othermedia
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
           - name: AUTO_UPDATE
             value: true

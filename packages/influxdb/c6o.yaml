@@ -35,6 +35,7 @@ editions:
           targetService: influxdb
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: influxdb
         image: influxdb

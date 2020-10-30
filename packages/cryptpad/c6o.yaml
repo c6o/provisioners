@@ -1,4 +1,4 @@
-name: 'CryptPad: Zero Knowledge, Collaborative Real Time Editing'
+name: CryptPad
 appId: cryptpad
 package: '@provisioner/appengine'
 #https://upload.wikimedia.org/wikipedia/commons/f/f8/CryptpadLogo.png
@@ -6,7 +6,10 @@ icon: icon.svg
 description:
   CryptPad is a private-by-design alternative to popular office tools and cloud services. All the content stored on CryptPad is encrypted before being sent, which means nobody can access your data unless you give them the keys (not even us).
 summary:
-  CryptPad is a private-by-design alternative to popular office tools and cloud services. All the content stored on CryptPad is encrypted before being sent, which means nobody can access your data unless you give them the keys (not even us).
+  Zero Knowledge, Collaborative Real Time Editing
+
+
+  CryptPad is a private-by-design alternative to popular office tools and cloud services.
 
 category: dms
 keywords:
@@ -33,11 +36,17 @@ editions:
           targetService: cryptpad
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: cryptpad
         image: promasu/cryptpad:latest
         port: 3000
         automated: true
+        config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
         # volume:
         #   - name: cryptpad-blob
         #     mountPath: /cryptpad/blob

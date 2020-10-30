@@ -1,0 +1,42 @@
+name: Ghost CMS
+appId: ghost
+package: '@provisioner/ghost'
+icon: icon.svg
+summary:
+  Ghost is the world's most popular open source headless Node.js CMS — it ships with a default admin client and front-end, but you can also swap them out with your own JAMstack.
+description:
+  Ghost is a free and open source blogging platform written in JavaScript and distributed under the MIT License, designed to simplify the process of online publishing for individual bloggers as well as online publications.
+
+  The concept of the Ghost platform was first floated publicly in November 2012 in a blog post by project founder John O'Nolan, which generated enough response to justify coding a prototype version with collaborator Hannah Wolfe.
+
+  The first public version of Ghost, released October 2013, was financed by a successful Kickstarter campaign which achieved its initial funding goal of £25,000 in 11 hours and went on to raise a final total of £196,362 during the 29-day campaign.
+category: cms
+keywords:
+  - Headless
+  - Blogging
+  - Content Management
+
+repo: https://github.com/TryGhost/Ghost
+license: https://github.com/TryGhost/Ghost/blob/master/LICENSE
+support: https://github.com/TryGhost/Ghost/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: latest
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: ghost
+      provisioner:
+        package: '@provisioner/ghost'
+        ui: ignore
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

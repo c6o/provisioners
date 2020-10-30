@@ -31,6 +31,7 @@ editions:
           targetService: openmaptiles
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: openmaptiles
         image: 'klokantech/openmaptiles-server'

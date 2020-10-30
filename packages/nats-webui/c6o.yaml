@@ -12,6 +12,7 @@ editions:
           targetService: nats-webui
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: nats-webui
         image: 'sphqxe/nats-webui:latest'

@@ -1,4 +1,4 @@
-name: 'checkmk'
+name: Checkmk
 appId: checkmk                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg
@@ -70,14 +70,18 @@ editions:
           targetService: checkmk
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: checkmk
         image: 'checkmk/check-mk-raw:latest'
         port: 5000
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: checkmk-admin
+            label: The password for the cmkadmin user account
+            hint: The password for the cmkadmin user account
+            required: true
+            autoselect: true
+            fieldType: password
         volume:
           - size: 5Gi
             name: checkmk-sites
@@ -86,6 +90,7 @@ editions:
         launch:
           type: inline
           popUp: true
+          path: /cmk/check_mk/
 
   - name: live-stats
     scope: public
@@ -96,6 +101,7 @@ editions:
           targetService: checkmk
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: checkmk
         image: 'checkmk/check-mk-raw:latest'
@@ -109,7 +115,11 @@ editions:
         automated: true
         secret:
           - name: CMK_PASSWORD
-            value: admin
+            label: The password for the cmkadmin user account
+            hint: The password for the cmkadmin user account
+            required: true
+            autoselect: true
+            fieldType: password
         volume:
           - size: 5Gi
             name: checkmk-sites

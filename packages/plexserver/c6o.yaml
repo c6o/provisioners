@@ -12,12 +12,22 @@ editions:
           targetService: plexserver
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: plexserver
         image: 'plexinc/pms-docker:latest'
         port: 32400
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         volume:
           - size: 500Gi

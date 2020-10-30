@@ -1,5 +1,5 @@
-name: PostgreSQL
-appId: postgreSQL
+name: PostgreSQL Database
+appId: postgresql
 package: '@provisioner/appengine'
 
 editions:
@@ -8,15 +8,16 @@ editions:
     spec:
       routes:
           - type: tcp
-            targetService: postgreSQL
+            targetService: postgresql
             tcp:
               port: 5432
-              name: postgreSQL
+              name: postgresql
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
-        name: postgreSQL
+        tag-prefix: appengine
+        name: postgresql
         image: ananthhh/postgress
+        automated: true
         port:
           name: tcp
           protocol: TCP
@@ -25,12 +26,23 @@ editions:
           - size: 5Gi
             mountPath: /data
             name: postgresql-data
-        secret:
+        config:
           - name: POSTGRES_USER
+            label: Admin Username
+            hint: The Username used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: text
             value: root
+
+        secret:
           - name: POSTGRES_PASSWORD
-            value: admin
-        automated: true
+            label: Admin Password
+            hint: The Password used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline
@@ -41,8 +53,8 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
-        name: postgreSQL
+        tag-prefix: appengine
+        name: postgresql
         image: ananthhh/postgress
         port:
           name: tcp
@@ -52,11 +64,23 @@ editions:
           - size: 5Gi
             mountPath: /data
             name: postgresql-data
-        secret:
+        config:
           - name: POSTGRES_USER
+            label: Admin Username
+            hint: The Username used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: text
             value: root
+
+        secret:
           - name: POSTGRES_PASSWORD
-            value: admin
+            label: Admin Password
+            hint: The Password used to login to the system as the  administrator.
+            required: true
+            autoselect: true
+            fieldType: password
+
         automated: true
       marina:
         launch:

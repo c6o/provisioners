@@ -1,6 +1,28 @@
 name: Grocy
-appId: grocy             #App internal name (all lower, no spaces); minimum 5 characters
+appId: grocy
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+    ERP beyond your fridge - grocy is a web-based self-hosted groceries & household management solution for your home.
+
+description:
+
+category: analytics
+keywords:
+  - Query
+  - Visualize
+  - Metrics
+  - Dashboards
+  - Logs
+  - Alerting
+
+repo: https://github.com/grocy/grocy
+license: https://github.com/grocy/grocy/blob/master/LICENSE
+support: https://github.com/grocy/grocy/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -12,13 +34,23 @@ editions:
           targetService: grocy
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: grocy
         image: 'linuxserver/grocy:latest'
         port: 80
         automated: true
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         volume:
           - name: grocy-config

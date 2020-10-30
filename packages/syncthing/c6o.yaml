@@ -88,13 +88,22 @@ editions:
           targetService: syncthing
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: syncthing
         image: 'syncthing/syncthing:latest'
         port: 8384
         automated: true
         config:
-          - name: TX
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+          - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         volume:
           - name: syncthing-data

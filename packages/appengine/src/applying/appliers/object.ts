@@ -65,7 +65,7 @@ export class ObjectApplier implements Applier {
 
                 await manager.cluster
                     .begin(`Installing Volume Claim: '${item.name}'`)
-                    .addOwner(manager.document)
+                    //.addOwner(manager.document)  //chose to NOT include this, so the volumes do NOT delete at uninstall
                     .upsert(pvc)
                     .end()
 
@@ -90,7 +90,7 @@ export class ObjectApplier implements Applier {
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
             }
 
-            debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`, )
+            debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`,)
 
             await manager.cluster
                 .begin('Installing Networking Services')
@@ -107,21 +107,21 @@ export class ObjectApplier implements Applier {
         if (!spec.configs?.length) spec.configs = []
 
         //provide some basic codezero app details to the provisioner
-        spec.configs.push({ name: 'name', value: spec.name, env: 'CZ_APP' } )
-        spec.configs.push({ name: 'edition', value: spec.edition, env: 'CZ_EDITION' } )
+        spec.configs.push({ name: 'name', value: spec.name, env: 'CZ_APP' })
+        spec.configs.push({ name: 'edition', value: spec.edition, env: 'CZ_EDITION' })
 
         const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
 
         for (const item of spec.configs) {
             if (!item.env || item.env === '') item.env = item.name
 
-            if (item.value === '%PUBLIC_DNS') {
+            if (item.value === '$PUBLIC_DNS') {
                 item.value = ''
             }
 
-            config.data[item.name] = new String(item.value)
+            config.data[item.name] = String(item.value)
 
-            if (item.env && item.env !== '' && item.env !== 'NONE') {
+            if (item.env !== 'NONE') {
                 deployment.spec.template.spec.containers[0].env.push(
                     {
                         name: item.env,
@@ -135,7 +135,7 @@ export class ObjectApplier implements Applier {
             }
         }
 
-        debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`, )
+        debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
 
         await manager.cluster
             .begin('Installing the Configuration Settings')
@@ -155,32 +155,33 @@ export class ObjectApplier implements Applier {
 
                 if (!item.env || item.env === '') item.env = item.name
 
-                let val = new String(item.value)
-                if (val.substr(0, 7) === '%RANDOM') {
-                    if (val === '%RANDOM')
-                        val = this.makeRandom(10)
-                    else {
-                        if (val.indexOf(':') > 0) {
-                            const len = Number(val.substr(val.indexOf(':') + 1))
-                            val = this.makeRandom(len)
-
-
+                let val = String(item.value)?.trim()
+                if (val !== '') {
+                    if (val.startsWith('$RANDOM')) {
+                        if (val === '$RANDOM')
+                            val = this.makeRandom(10)
+                        else {
+                            if (val.indexOf(':') > 0) {
+                                const len = Number(val.substr(val.indexOf(':') + 1))
+                                val = this.makeRandom(len)
+                            }
                         }
                     }
-                }
-                const value = Buffer.from(val).toString('base64')
-                secret.data[item.name] = value
-                if (item.env && item.env !== '' && item.env !== 'NONE') {
-                    deployment.spec.template.spec.containers[0].env.push(
-                        {
-                            name: item.env,
-                            valueFrom: {
-                                secretKeyRef: {
-                                    name: secret.metadata.name,
-                                    key: item.name
+
+                    const value = Buffer.from(val).toString('base64')
+                    secret.data[item.name] = value
+                    if (item.env !== '$NONE') {
+                        deployment.spec.template.spec.containers[0].env.push(
+                            {
+                                name: item.env,
+                                valueFrom: {
+                                    secretKeyRef: {
+                                        name: secret.metadata.name,
+                                        key: item.name
+                                    }
                                 }
-                            }
-                        })
+                            })
+                    }
                 }
             }
 

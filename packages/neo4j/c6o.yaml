@@ -10,6 +10,17 @@ description:
 
   Learn more on the [Neo4j website](https://neo4j.com/).
 
+
+  Setup
+
+  ----
+
+  The default username and password is
+
+    * Username is 'neo4j'
+
+    * Password is 'neo4j'
+
 category: databases
 keywords:
   - Graph
@@ -29,7 +40,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: neo4j
         image: neo4j
         port:
@@ -44,6 +55,45 @@ editions:
           - size: 5Gi
             mountPath: /data
             name: neo4j-data
+          - size: 5Gi
+            mountPath: /logs
+            name: neo4j-logs
+        config:
+          - name: NEO4J_ACCEPT_LICENSE_AGREEMENT
+            value: yes
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: neo4j
+          targetPort: 7474
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: neo4j
+        image: neo4j
+        port:
+          - port: 7474
+            name: http
+            protocol: TCP
+          - port: 7687
+            name: bolt
+            protocol: http
+        automated: true
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: neo4j-data
+          - size: 5Gi
+            mountPath: /logs
+            name: neo4j-logs
       marina:
         launch:
           type: inline

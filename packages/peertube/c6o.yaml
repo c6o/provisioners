@@ -12,6 +12,7 @@ editions:
           targetService: peertube
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: peertube
         image: chocobozzz/peertube

@@ -14,8 +14,17 @@ editions:
       image: linuxserver/papermerge
       port: 8000
       config:
-        - name: TZ
-          value: America/Vancouver
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+          - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: America/Vancouver
       volume:
         - size: 5Gi
           mountPath: /config

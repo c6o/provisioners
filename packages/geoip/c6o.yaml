@@ -33,6 +33,7 @@ editions:
           targetService: geoip
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: geoip
         image: supermasita/geoip-flask
@@ -49,6 +50,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: geoip
         image:  supermasita/geoip-flask

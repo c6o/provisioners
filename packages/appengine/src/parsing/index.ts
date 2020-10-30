@@ -38,6 +38,12 @@ export interface Setting {
     name: string
     value: string
     env: string
+    type: string
+    label: string
+    hint: string
+    required: boolean
+    autoselect: boolean
+    fieldType: string
 }
 
 export interface Port {

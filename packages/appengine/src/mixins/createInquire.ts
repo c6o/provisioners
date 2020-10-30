@@ -1,5 +1,7 @@
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
+import { parser } from '../parser'
+
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -35,7 +37,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.name = responses.name
         this.spec.edition = this.edition
 
-        this.parseInputsToSpec(args)
+        parser.parseInputsToSpec(args, this.spec)
 
         this.spec.configs = await this.askConfig(args, automated)
         this.spec.secrets = await this.askSecrets(args, automated)

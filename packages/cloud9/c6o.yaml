@@ -38,7 +38,7 @@ editions:
           targetService: cloud9python
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: cloud9python
         image: 'linuxserver/cloud9:python'
         port: 8000
@@ -48,13 +48,34 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
-          - name: TZ
-            value: America/Vancouver
-        secret:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: USERNAME
-            value: admin
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+          - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: America/Vancouver
+
+        secret:
           - name: PASSWORD
-            value: admin
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
@@ -69,7 +90,7 @@ editions:
           targetService: cloud9nodejs
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: cloud9nodejs
         image: 'linuxserver/cloud9:nodejs'
         port: 8000
@@ -79,13 +100,34 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: admin
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: admin
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
@@ -101,7 +143,7 @@ editions:
           targetService: cloud9go
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: cloud9go
         image: 'linuxserver/cloud9:go'
         port: 8000
@@ -111,13 +153,35 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: admin
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: admin
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
@@ -133,7 +197,7 @@ editions:
           targetService: cloud9ruby
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
+        tag-prefix: appengine
         name: cloud9ruby
         image: 'linuxserver/cloud9:ruby'
         port: 8000
@@ -143,13 +207,34 @@ editions:
             mountPath: /code
             size: 5Gi
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
-        secret:
+
           - name: USERNAME
-            value: admin
+            label: Username
+            hint: The Username to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+        secret:
           - name: PASSWORD
-            value: admin
+            label: Password
+            hint: The Password to login to the IDE
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline

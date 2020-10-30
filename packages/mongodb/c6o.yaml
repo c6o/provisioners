@@ -13,6 +13,7 @@ editions:
             name: mongodb
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: mongodb
         image: 'mongo:latest'
@@ -23,9 +24,9 @@ editions:
             name: mongodb-data
         secret:
           - name: MONGO_INITDB_ROOT_PASSWORD
-            value: admin
+            value: $PASSWORD
           - name: MONGO_INITDB_ROOT_USERNAME
-            value: root
+            value: $USERNAME
         automated: true
       marina:
         launch:
@@ -36,6 +37,7 @@ editions:
     spec:
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: mongodb
         image: 'mongo:latest'

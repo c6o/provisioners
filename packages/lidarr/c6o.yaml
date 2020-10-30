@@ -12,13 +12,23 @@ editions:
           targetService: lidarr
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: lidarr
         image: 'linuxserver/lidarr:latest'
         port: 8686
         automated: true
         config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
           - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
             value: America/Vancouver
         volume:
           - size: 5Gi

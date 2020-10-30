@@ -58,6 +58,7 @@ editions:
           targetService: wallabag
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: wallabag
         image: 'wallabag/wallabag'

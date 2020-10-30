@@ -1,5 +1,6 @@
 import { LabelsMetadata } from '../../parsing'
 
+//https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 export function getLabels(name: string, metaData: LabelsMetadata) {
     const labels = {
         app: name,

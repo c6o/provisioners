@@ -69,6 +69,7 @@ editions:
           targetService: funkwhale
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: funkwhale
         image: thetarkus/funkwhale

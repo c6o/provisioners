@@ -27,6 +27,7 @@ editions:
           targetService: drupal
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: drupal
         image: drupal

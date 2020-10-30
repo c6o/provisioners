@@ -12,6 +12,7 @@ editions:
         targetService: sshwifty
       provisioner:
         package: '@provisioner/appengine'
+        tag-prefix: appengine
         ui: ignore
         name: sshwifty
         image: 'niruix/sshwifty:lates'
