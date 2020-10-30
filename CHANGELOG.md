@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.16](https://github.com/c6o/node-monorepo/compare/v0.0.15...v0.0.16) (2020-10-30)
+
+
+### ✨ Features
+
+* **app engine web ui:** Added more capabilities and bug fixes to app engine ([#91](https://github.com/c6o/node-monorepo/issues/91)) ([e6c4d41](https://github.com/c6o/node-monorepo/commit/e6c4d41965741be6f1641c9b99b8199d3a94617f))
+
+
+
+
+
 ## [0.0.15](https://github.com/c6o/node-monorepo/compare/v0.0.14...v0.0.15) (2020-10-23)
 
 **Note:** Version bump only for package provisioners-root
