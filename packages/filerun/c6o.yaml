@@ -57,6 +57,44 @@ description:
   Access via WebDAV. FileRun comes with its own embedded WebDAV server. No server configuration needed.
 
 
+  Setup
+
+  ----
+
+  FileRun requires access to a MySql database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE filerun;
+
+    CREATE USER 'filerun'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'filerun'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON filerun.* TO 'filerun'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+    Login
+
+    ----
+
+    The default FileRun credentials are as follows
+
+      * Username is 'superuser'
+
+      * Password is 'superuser'
 
 summary:
    Self-Hosted File Sync and Sharing
@@ -90,7 +128,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: filerun
         image: afian/filerun
         port: 80
@@ -106,16 +143,10 @@ editions:
 
           - name: FR_DB_HOST
             label: Database Server
-            hint: Specify the host name of your database server service
+            hint: Specify the host name of your database server service (mysql)
             required: true
             autoselect: true
             fieldType: text
-
-          - name: FR_DB_PORT
-            value: 3306
-
-          - name: FR_DB_NAME
-            value: filerun
 
           - name: FR_DB_USER
             label: Database User name
@@ -123,6 +154,19 @@ editions:
             required: true
             autoselect: true
             fieldType: text
+
+          - name: FR_DB_PORT
+            value: 3306
+          - name: FR_DB_NAME
+            value: filerun
+          - name: APACHE_RUN_USER
+            value: www-data
+          - name: APACHE_RUN_USER_ID
+            value: 33
+          - name: APACHE_RUN_GROUP
+            value: www-data
+          - name: APACHE_RUN_GROUP_ID
+            value: 33
 
 
         secret:
