@@ -1,6 +1,30 @@
-name: Photo Show
+name: PhotoShow
 appId: photoshow
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  PhotoShow, your web gallery. PhotoShow is a free and open source web gallery, that you can very easily install on your web server. It doesn't even require a database !
+
+description:
+  PhotoShow, your web gallery. PhotoShow is a free and open source web gallery, that you can very easily install on your web server. It doesn't even require a database !
+
+
+category: media
+keywords:
+  - Photography
+  - Photos
+  - Pictures
+  - Tagging
+  - Collection
+  - GeoCoding
+  - TensorFlow
+
+repo: https://github.com/thibaud-rohmer/PhotoShow
+support: https://github.com/thibaud-rohmer/PhotoShow/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
