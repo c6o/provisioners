@@ -1,0 +1,74 @@
+name:  TeamCity
+appId: teamcity
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Powerful Continuous Integration out of the box
+description:
+  TeamCity is a build management and continuous integration server from JetBrains. It was first released on October 2, 2006 and is commercial software and licensed under a proprietary license - a freemium license for up to 100 build configurations and three free Build Agent licenses are available. Open Source projects may request a free license.
+
+category: devops
+keywords:
+  - CI
+  - CD
+  - Build
+
+support: https://www.jetbrains.com/teamcity/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: server
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: teamcityserver
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: teamcityserver
+        image: 'jetbrains/teamcity-server'
+        port: 8111
+        automated: true
+        config:
+          - name: TEAMCITY_SERVER_MEM_OPTS
+            value: -Xmx750m
+        volume:
+          - name: teamcityserver-data
+            size: 10Gi
+            mountPath: /data/teamcity_server/datadir
+          - name: teamcityserver-logs
+            size: 1Gi
+            mountPath: /data/teamcity_server/logs
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: agent
+    scope: public
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: teamcityagent
+        image: 'jetbrains/teamcity-minimal-agent'
+        automated: true
+        config:
+          - name: SERVER_URL
+            value: http://teamcityserver:8111
+            label: Server Url
+            hint: The url to your TeamCity Server
+            required: true
+            autoselect: true
+            fieldType: text
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
