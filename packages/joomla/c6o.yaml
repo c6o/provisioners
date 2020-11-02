@@ -36,21 +36,42 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: joomla
         image: joomla
         port: 80
         automated: true
         config:
           - name: JOOMLA_DB_HOST
-            value: $SERVERNAME
+            label: Database Host
+            hint: Database Host Server Name (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+
           - name: JOOMLA_DB_NAME
+            label: Database Name
+            hint: Database Name
+            required: true
+            autoselect: true
+            fieldType: text
             value: joomla
-        secret:
+
           - name: JOOMLA_DB_USER
-            value: $USERNAME
+            label: Database Username
+            hint: Database Username
+            required: true
+            autoselect: true
+            fieldType: text
+
+
+        secret:
+
           - name: JOOMLA_DB_PASSWORD
-            value: $PASSWORD
+            label: Database Password
+            hint: Database Password
+            required: true
+            autoselect: true
+            fieldType: password
       marina:
         launch:
           type: inline
