@@ -13,7 +13,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: photoprism
         image: photoprism/photoprism
         port: 2342
@@ -21,8 +20,18 @@ editions:
         config:
           - name: PHOTOPRISM_UPLOAD_NSFW
             value: true
+            label: Allow NSFW Uploads
+            hint: Allow NSFW Uploads
+            required: true
+            autoselect: true
+            fieldType: text
+        secret:
           - name: PHOTOPRISM_ADMIN_PASSWORD
-            value: $PASSWORD
+            label: Admin Password
+            hint: Specify the admin users password
+            required: true
+            autoselect: true
+            fieldType: text
         volume:
           - size: 500Gi
             mountPath: /photoprism/storage

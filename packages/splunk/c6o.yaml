@@ -53,7 +53,12 @@ editions:
             value: --accept-license
         secret:
           - name: SPLUNK_PASSWORD
-            value: $PASSWORD
+            label: Password
+            hint: Splunk password
+            required: true
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline

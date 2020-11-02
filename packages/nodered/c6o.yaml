@@ -39,45 +39,29 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: nodered
         image: nodered/node-red
         port: 1880
         automated: true
         config:
-          - name: NODE_RED_CREDENTIAL_SECRET
-            value: $PASSWORD
-          - name: NODE_RED_ENABLE_PROJECTS
-            value: 'false'
-        volumes:
-          - name: nodered-data
-            mountPath: /data
-            size: 1Gi
-      marina:
-        launch:
-          type: inline
-          popUp: true
 
-  - name: preview-projects
-    scope: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: nodered
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        ui: ignore
-        name: nodered
-        image: nodered/node-red
-        port: 1880
-        automated: true
-        config:
-          - name: NODE_RED_CREDENTIAL_SECRET
-            value: $PASSWORD
           - name: NODE_RED_ENABLE_PROJECTS
-            value: 'true'
+            label: Enable Projects
+            hint: true or false
+            required: true
+            autoselect: true
+            fieldType: text
+            value: true
+
+          - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: America/Vancouver
+
+
         volumes:
           - name: nodered-data
             mountPath: /data

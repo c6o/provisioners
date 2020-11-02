@@ -13,14 +13,18 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: zimbra
         image: jorgedlcruz/zimbra
         port: 80
         automated: true
         config:
           - name: PASSWORD
-            value: $PASSWORD
+            label: Password
+            hint: Zimbra pssword
+            required: true
+            autoselect: true
+            fieldType: password
+
         volume:
           - size: 5Gi
             mountPath: /opt/zimbra

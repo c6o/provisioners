@@ -124,8 +124,8 @@ editions:
 
           - name: NEXTCLOUD_ADMIN_USER
             value: admin
-            label: Next Cloud Amin User
-            hint: Specify the name admin user
+            label: Next Cloud Admin User
+            hint: Specify the admin user name
             required: true
             autoselect: true
             fieldType: text
