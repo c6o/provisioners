@@ -30,10 +30,22 @@ editions:
             autoselect: true
             fieldType: text
             value: America/Vancouver
+
           - name: SEAFILE_ADMIN_EMAIL
-            value: admin@example.com
+            label: Admin Email
+            hint: Specify an email address to use for the admin account
+            required: true
+            autoselect: true
+            fieldType: text
+
+        secret:
           - name: SEAFILE_ADMIN_PASSWORD
-            value: $PASSWORD
+            label: Admin Password
+            hint: Specify the password for the aministrator account
+            required: true
+            autoselect: true
+            fieldType: password
+
         volume:
           - size: 500Gi
             mountPath: /shared

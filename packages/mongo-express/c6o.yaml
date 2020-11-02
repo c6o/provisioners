@@ -14,10 +14,23 @@ editions:
       image: mongo-express
       port: 8081
       secret:
-        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
-          value: $PASSWORD
-        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
-          value: $USERNAME
+          - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+            label: MongoDb Password
+            hint: Password for the admin user
+            required: true
+            autoselect: true
+            fieldType: password
+
+      config:
+          - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+            label: MongoDb Username
+            hint: Username for the admin user
+            required: true
+            autoselect: true
+            fieldType: text
+
+
+
       automated: true
     marina:
       launch:

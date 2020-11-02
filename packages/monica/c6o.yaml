@@ -58,17 +58,37 @@ editions:
           - size: 5Gi
             mountPath: /var/www/html/storage
             name: monica-data
-        secret:
-          - name: DB_HOST
-            value: $SERVERNAME
-          - name: DB_DATABASE
-            value: monica
-          - name: DB_USERNAME
-            value: $USERNAME
+
+
+      secret:
           - name: DB_PASSWORD
-            value: $PASSWORD
+            label: Database Password
+            hint: Password for the admin user
+            required: true
+            autoselect: true
+            fieldType: password
+
           - name: APP_KEY
             value: $RANDOM:32
+
+      config:
+          - name: DB_HOST
+            label: Database Host
+            hint: Host for the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: DB_USERNAME
+            label: Database Username
+            hint: Username for the admin user
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: DB_DATABASE
+            value: monica
+
       marina:
         launch:
           type: inline

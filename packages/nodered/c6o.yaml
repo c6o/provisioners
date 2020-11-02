@@ -1,6 +1,33 @@
-name: Node Red
+name: Node RED
 appId: nodered
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things.
+
+description:
+
+  Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things.
+
+
+  Node-RED provides a web browser-based flow editor, which can be used to create JavaScript functions. Elements of applications can be saved or shared for re-use. The runtime is built on Node.js. The flows created in Node-RED are stored using JSON. Since version 0.14, MQTT nodes can make properly configured TLS connections.
+
+
+  In 2016, IBM contributed Node-RED as an open source JS Foundation project.
+
+
+category: dev-tools
+keywords:
+  - IoT
+  - Visual Programming
+  - IBM
+  - Internet of Things
+  - APIs
+  - MQTT
+
+repo: https://github.com/node-red/node-red
+license: https://github.com/node-red/node-red/blob/master/LICENSE
+support: https://github.com/node-red/node-red/issues
 
 editions:
   - name: preview
@@ -12,45 +39,29 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: nodered
         image: nodered/node-red
         port: 1880
         automated: true
         config:
-          - name: NODE_RED_CREDENTIAL_SECRET
-            value: $PASSWORD
-          - name: NODE_RED_ENABLE_PROJECTS
-            value: 'false'
-        volumes:
-          - name: nodered-data
-            mountPath: /data
-            size: 1Gi
-      marina:
-        launch:
-          type: inline
-          popUp: true
 
-  - name: preview-projects
-    scope: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: nodered
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        ui: ignore
-        name: nodered
-        image: nodered/node-red
-        port: 1880
-        automated: true
-        config:
-          - name: NODE_RED_CREDENTIAL_SECRET
-            value: $PASSWORD
           - name: NODE_RED_ENABLE_PROJECTS
-            value: 'true'
+            label: Enable Projects
+            hint: true or false
+            required: true
+            autoselect: true
+            fieldType: text
+            value: true
+
+          - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            autoselect: true
+            fieldType: text
+            value: America/Vancouver
+
+
         volumes:
           - name: nodered-data
             mountPath: /data

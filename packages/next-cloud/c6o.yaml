@@ -5,8 +5,38 @@ icon: icon.svg
 description:
   Share and collaborate on documents, send and receive email, manage your calendar and have video chats without data leaks
 
-
   As fully on-premises solution, Nextcloud Hub provides the benefits of online collaboration without the compliance and security risks.
+
+
+  Setup
+
+  -----
+
+  The latest edition depends on MySql/MariaDB or PostgreSQL.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE nextcloud;
+
+    CREATE USER 'nextcloud'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'nextcloud'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
 
 summary:
   Powering collaboration - the most popular self-hosted collaboration solution for tens of millions of users at thousands of organizations across the globe
@@ -16,6 +46,8 @@ keywords:
   - Collaborate
   - Document
   - Document Management
+  - Next-Cloud
+  - NextCloud
 
 repo: https://github.com/nextcloud
 license: https://github.com/nextcloud/server/blob/master/COPYING
@@ -43,8 +75,82 @@ editions:
             name: http
             protocol: TCP
         automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: latest
+    scope: public
+    spec:
+      routes:
+        - type: http
+          targetService: nextcloud
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: nextcloud
+        image: nextcloud
+        port:
+          - port: 80
+            name: http
+            protocol: TCP
+        automated: true
+        config:
+          - name: MYSQL_DATABASE
+            value: nextcloud
+            label: Database name
+            hint: Specify the name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: MYSQL_USER
+            value: nextcloud
+            label: Database user name
+            hint: Specify the username for your database
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: MYSQL_HOST
+            value: nextcloud
+            label: Database Host (MySql or MariaDb)
+            hint: Specify the name of database host
+            required: true
+            autoselect: true
+            fieldType: text
+
+
+          - name: NEXTCLOUD_ADMIN_USER
+            value: admin
+            label: Next Cloud Admin User
+            hint: Specify the admin user name
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: NEXTCLOUD_TRUSTED_DOMAINS
+            value: $PUBLIC_DNS
+
+
+        secret:
+          - name: MYSQL_PASSWORD
+            label: Database password
+            hint: Specify the password for the database
+            required: true
+            autoselect: true
+            fieldType: password
+
+          - name: NEXTCLOUD_ADMIN_PASSWORD
+            label: Next Cloud Admin Password
+            hint: Specify the password for the admin user
+            required: true
+            autoselect: true
+            fieldType: password
+
         volumes:
-          - name: nextcloud-data
+          - name: nextcloud-file-data
             mountPath: /var/www/html/
             size: 10Gi
       marina:

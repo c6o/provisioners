@@ -19,15 +19,54 @@ editions:
         port: 8083
         automated: true
         config:
+
           - name: OTR_HOST
-            value: mosquitto
-          - name: OTR_PORT
-            value: 1883
-        secret:
+            label: MQTT Host
+            hint: Specify the hostname for your MQTT Server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+
+
           - name: OTR_USER
-            value: $USERNAME
+            label: MQTT User
+            hint: Specify the username for your MQTT instance
+            required: false
+            autoselect: true
+            fieldType: password
+
+          - name: OTR_PORT
+            label: MQTT Port
+            hint: Specify the port for your MQTT Server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: 1883
+
+
+          - name: OTR_GEOKEY
+            label: Reverse Geo API Key
+            hint: API key for reverse-geo lookups
+            required: false
+            autoselect: true
+            fieldType: text
+
+          - name: OTR_BROWSERAPIKEY
+            label: Google Maps Api Key
+            hint: Google maps browser API key
+            required: false
+            autoselect: true
+            fieldType: text
+
+        secret:
+
           - name: OTR_PASS
-            value: $PASSWORD
+            label: MQTT Password
+            hint: Specify the MQTT Password
+            required: false
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline

@@ -46,6 +46,11 @@ editions:
         automated: true
         config:
           - name: KAPACITOR_INFLUXDB_0_URLS_0
+            label: Influx Urls
+            hint: Influx Urls (Service)
+            required: true
+            autoselect: true
+            fieldType: text
             value: http://influxdb:8086
         volume:
           - name: kapacitor-data

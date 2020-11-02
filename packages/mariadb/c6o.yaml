@@ -21,14 +21,17 @@ editions:
         image: 'mariadb'
         port: 3306
         automated: true
-        config:
         secret:
           - name: MYSQL_ROOT_PASSWORD
-            value: $PASSWORD
+            label: Root password
+            hint: Password for the root user
+            required: true
+            autoselect: true
+            fieldType: password
         volume:
           - size: 5Gi
-            mountPath: /bitnami/moodle
-            name: mariadb-moodledata
+            mountPath: /data
+            name: mariadb-data
       marina:
         launch:
           type: inline
@@ -49,11 +52,15 @@ editions:
         config:
         secret:
           - name: MYSQL_ROOT_PASSWORD
-            value: admin
+            label: Root password
+            hint: Password for the root user
+            required: true
+            autoselect: true
+            fieldType: password
         volume:
           - size: 5Gi
-            mountPath: /bitnami/moodle
-            name: moodledata
+            mountPath: /data
+            name: mariadb-data
       marina:
         launch:
           type: inline

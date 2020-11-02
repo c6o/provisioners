@@ -18,16 +18,29 @@ editions:
         name: mongodb
         image: 'mongo:latest'
         port: 27017
+        automated: true
+
         volume:
           - size: 5Gi
             mountPath: /data
             name: mongodb-data
-        secret:
+
+      secret:
           - name: MONGO_INITDB_ROOT_PASSWORD
-            value: $PASSWORD
+            label: MongoDb Password
+            hint: Password for the admin user
+            required: true
+            autoselect: true
+            fieldType: password
+
+      config:
           - name: MONGO_INITDB_ROOT_USERNAME
-            value: $USERNAME
-        automated: true
+            label: MongoDb Username
+            hint: Username for the admin user
+            required: true
+            autoselect: true
+            fieldType: text
+
       marina:
         launch:
           type: inline

@@ -27,7 +27,28 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
+  - name: preview-sqlite
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: strapi
+      provisioner:
+        package: '@provisioner/appengine'
+        ui: ignore
+        tag-prefix: appengine
+        name: strapi
+        image: strapi/strapi
+        port: 1337
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: latest-strapi-postgresql
     scope: public
     default: true
     spec:
@@ -37,7 +58,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: strapi
         image: strapi/strapi
         port: 1337
@@ -49,19 +69,117 @@ editions:
           - name: strapi-data
             mountPath: /srv/app
             size: 50Gi
-        secret:
-          - DATABASE_CLIENT: PASSWORD
-            value: $PASSWORD
-          - name: DATABASE_NAME
-            value: strapi
+        config:
+
           - name: DATABASE_HOST
-            value: $SERVERNAME
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
           - name: DATABASE_PORT
             value: 5432
+
+          - name: DATABASE_CLIENT
+            value: postgres
+
+          - name: DATABASE_NAME
+            label: Database Name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
           - name: DATABASE_USERNAME
-            value: $PASSWORD
+            label: Database Name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+
+        secret:
+
           - name: DATABASE_PASSWORD
-            value: $PASSWORD
+            label: Admin Password
+            hint: The admin password
+            required: true
+            autoselect: true
+            fieldType: password
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: latest-strapi-mongo
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: strapi
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: strapi
+        image: strapi/strapi
+        port: 1337
+        automated: true
+        volume:
+          - name: yarn-cache
+            mountPath: /usr/local/share/.cache/
+            size: 50Gi
+          - name: strapi-data
+            mountPath: /srv/app
+            size: 50Gi
+        config:
+
+          - name: DATABASE_HOST
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+          - name: DATABASE_PORT
+            value: 27017
+
+          - name: DATABASE_CLIENT
+            value: mongo
+
+          - name: DATABASE_NAME
+            label: Database Name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+          - name: DATABASE_USERNAME
+            label: Database Name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+
+        secret:
+
+          - name: DATABASE_PASSWORD
+            label: Admin Password
+            hint: The admin password
+            required: true
+            autoselect: true
+            fieldType: password
+
       marina:
         launch:
           type: inline
