@@ -81,17 +81,42 @@ editions:
         image: pimuzzo/vtiger
         port: 80
         automated: true
-        secret:
+        config:
           - name: DB_HOSTNAME
-            value: $SERVERNAME
+            label: Database Host
+            hint: The database host (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+
           - name: DB_USERNAME
-            value: $USERNAME
-          - name: DB_PASSWORD
-            value: $PASSWORD
+            label: Database Username
+            hint: The database username
+            required: true
+            autoselect: true
+            fieldType: text
+            value: vtiger
+
           - name: DB_NAME
-            value: 'vtiger'
-          # - name: BASE_URL
-          #   value: https://vtiger-testing.chartier.develop.codezero.dev/vtigercrm/
+            value: vtiger
+
+          - name: BASE_URL
+            value: $PUBLIC_DNS
+
+        secret:
+          - name: DB_PASSWORD
+            label: Database Password
+            hint: The Database password
+            required: true
+            autoselect: true
+            fieldType: password
+
+          - name: DB_PASSWORD
+            label: Database Password
+            hint: The Database password
+            required: true
+            autoselect: true
+            fieldType: password
 
         volume:
           - size: 10Gi

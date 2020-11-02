@@ -17,7 +17,7 @@ editions:
         image: jorgedlcruz/zimbra
         port: 80
         automated: true
-        config:
+        secret:
           - name: PASSWORD
             label: Password
             hint: Zimbra pssword
