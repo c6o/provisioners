@@ -1,6 +1,53 @@
 name: Jupyter
 appId: jupyter                 #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  JupyterLab - Jupyter’s Next-Generation Notebook Interface
+
+description:
+  JupyterLab is a web-based interactive development environment for Jupyter notebooks, code, and data. JupyterLab is flexible - configure and arrange the user interface to support a wide range of workflows in data science, scientific computing, and machine learning. JupyterLab is extensible and modular - write plugins that add new components and integrate with existing ones.
+
+
+  Setup
+
+  ----
+
+  Once installed, you will need to retreive your token, which is in the logs for the pod.
+
+  Here is a sample command which you can use to retreive the logs for the pod
+
+  ```
+
+  kubectl logs pod/minimal-6bc754894f-nbgwv -n jupyter
+
+  ```
+
+
+  'minimal-6bc754894f-nbgwv' is the name of the pod,  you will need to change that to match the pod which was created in  your case.  To get a list of pods run
+
+
+  ```
+
+  kubectl get pods -n jupyter
+
+  ```
+
+  Also take note of the namespace 'jupyter'.  Ensure you use the namespace which you installed your notebook into.
+
+
+
+category: ai
+keywords:
+  - Machine Learning
+
+repo: https://github.com/jupyter/docker-stacks
+license: https://github.com/jupyter/docker-stacks/blob/master/LICENSE.md
+support: https://github.com/jupyter/docker-stacks/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: scipy

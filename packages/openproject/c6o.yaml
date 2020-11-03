@@ -23,7 +23,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: public
+    scope: private
     spec:
       routes:
         - type: http
@@ -39,14 +39,6 @@ editions:
         secret:
           - name: SECRET_KEY_BASE
             value: $RANDOM
-
-        volume:
-          - size: 50Gi
-            mountPath: /var/openproject/pgdata
-            name: openproject-pgdata
-          - size: 50Gi
-            mountPath: /var/openproject/assets
-            name: openproject-assets
 
       marina:
         launch:
