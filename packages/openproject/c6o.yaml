@@ -1,0 +1,54 @@
+name: OpenProject
+appId: openproject
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Collaborative Project Management - Open source project management software.  Powerful. Easy-to-use. Free.
+description:
+  OpenProject is the leading open source project management software.  Support your project management process along the entire project life cycle - From project initiation to closure.
+
+category: comm
+keywords:
+  - Project Management
+  - Lifecycle
+
+
+repo: https://github.com/opf/openproject
+license: https://github.com/opf/openproject/blob/dev/docs/COPYRIGHT.rdoc
+support: https://www.openproject.org/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    spec:
+      routes:
+        - type: http
+          targetService: openproject
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: openproject
+        image: 'openproject/community:11'
+        port: 80
+        automated: true
+
+        secret:
+          - name: SECRET_KEY_BASE
+            value: $RANDOM
+
+        volume:
+          - size: 50Gi
+            mountPath: /var/openproject/pgdata
+            name: openproject-pgdata
+          - size: 50Gi
+            mountPath: /var/openproject/assets
+            name: openproject-assets
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
