@@ -1,6 +1,25 @@
 name: Lidarr
 appId: lidarr                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Lidarr is a music collection manager for Usenet and BitTorrent users.
+
+description:
+  Lidarr is a music collection manager for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new tracks from your favorite artists and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
+
+category: media
+keywords:
+  - Music
+  - RSS
+
+repo: https://github.com/lidarr/Lidarr
+license: https://github.com/lidarr/Lidarr/blob/develop/LICENSE.md
+support: https://github.com/lidarr/Lidarr/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview

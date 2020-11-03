@@ -37,6 +37,14 @@ description:
 
   Checkmk is often used in very large distributed environments where a high number of sites (e.g. 300 locations of Faurecia) and/or well over 100.000 devices (e.g. Edeka) are monitored. This is possible, among other things, because Checkmk's microcore consumes much less CPU resources than, for example Nagios, and therefore offers a significantly higher performance on the same hardware. Furthermore the non-persistent data is stored in-memory in RAM which significantly improves the access time.
 
+
+  Setup
+
+  ----
+
+
+  The default username is 'cmkadmin', and you are able to specify the password during the installation.
+
 summary:
   Best-in-class infrastructure & application monitoring
 

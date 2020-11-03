@@ -1,6 +1,32 @@
 name: Jackett
 appId: jackett                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Jackett works as a proxy server - it translates queries from apps (Sonarr, Radarr, SickRage, CouchPotato, Mylar, Lidarr, DuckieTV, qBittorrent, Nefarious etc.).
+
+description:
+  Jackett works as a proxy server - it translates queries from apps (Sonarr, Radarr, SickRage, CouchPotato, Mylar, Lidarr, DuckieTV, qBittorrent, Nefarious etc.) into tracker-site-specific http queries, parses the html response, then sends results back to the requesting software. This allows for getting recent uploads (like RSS) and performing searches. Jackett is a single repository of maintained indexer scraping & translation logic - removing the burden from other apps.
+
+category: media
+keywords:
+  - Sonarr
+  - Radarr
+  - SickRage
+  - CouchPotato
+  - Mylar
+  - Lidarr
+  - DuckieTV
+  - qBittorrent
+  - Nefarious
+
+repo: https://github.com/Jackett/Jackett
+license: https://github.com/Jackett/Jackett/blob/master/LICENSE
+support: https://github.com/Jackett/Jackett/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,22 +39,25 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: jackett
         image: linuxserver/jackett
         port: 9117
+        automated: true
+
         volume:
-          - size: 5Gi
+          - size: 1Gi
             mountPath: /config
             name: jackett-config
           - size: 500Gi
             mountPath: /downloads
             name: jackett-downloads
+
         config:
           - name: PUID
-            value: 0
+            value: 1000
           - name: PGID
-            value: 0
+            value: 1000
+
           - name: TZ
             label: Timezone
             hint: Specify a timezone to use.
@@ -36,9 +65,9 @@ editions:
             autoselect: true
             fieldType: text
             value: America/Vancouver
+
           - name: AUTO_UPDATE
             value: true
-        automated: true
       marina:
         launch:
           type: inline

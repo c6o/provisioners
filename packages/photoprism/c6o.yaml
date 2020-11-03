@@ -1,6 +1,45 @@
 name: Photo Prism
 appId: photoprism
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  PhotoPrism - Browse Your Life in Pictures
+
+  PhotoPrism® is a server-based application for browsing, organizing and sharing your personal photo collection. It makes use of the latest technologies to automatically tag and find pictures without getting in your way. Say goodbye to solutions that force you to upload your visual memories to the cloud.
+
+description:
+  PhotoPrism - Browse Your Life in Pictures
+
+  PhotoPrism® is a server-based application for browsing, organizing and sharing your personal photo collection. It makes use of the latest technologies to automatically tag and find pictures without getting in your way. Say goodbye to solutions that force you to upload your visual memories to the cloud.
+
+  What to expect...
+
+  ----
+
+  * clearly structured Web interface for browsing, organizing and sharing your personal photo collection
+
+  * import everything without worrying about duplicates or RAW to JPEG conversion
+
+  * geocoding, XMP support and automated tagging based on Google TensorFlow
+
+
+category: media
+keywords:
+  - Photography
+  - Photos
+  - Pictures
+  - Tagging
+  - Collection
+  - GeoCoding
+  - TensorFlow
+
+repo: https://github.com/photoprism/photoprism
+license: https://github.com/photoprism/photoprism/blob/develop/LICENSE
+support: https://github.com/photoprism/photoprism/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview

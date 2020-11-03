@@ -48,7 +48,7 @@ editions:
           popUp: true
 
 
-  - name: latest-strapi-postgresql
+  - name: latest-postgresql
     scope: public
     default: true
     spec:
@@ -117,7 +117,7 @@ editions:
           popUp: true
 
 
-  - name: latest-strapi-mongo
+  - name: latest-mongo
     scope: public
     default: true
     spec:

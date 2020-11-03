@@ -1,17 +1,24 @@
 name:  Drone
-appId: drone                  #App internal name (all lower, no spaces); minimum 5 characters
+appId: drone
 package: '@provisioner/appengine'
 icon: icon.svg
 summary:
+  Drone is a Continuous Delivery system built on container technology. Drone uses a simple YAML configuration file, a superset of docker-compose, to define and execute Pipelines inside Docker containers.
+
 description:
-
+  Drone is a Continuous Delivery system built on container technology. Drone uses a simple YAML configuration file, a superset of docker-compose, to define and execute Pipelines inside Docker containers.
 category: dev-tools
-keywords:
-  - Content Management System
 
-repo: https://github.com/drupal/drupal
-license: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
-support: https://www.drupal.org/project/issues/search/drupal
+keywords:
+  - CI/CD
+  - Continuous Integration
+  - Continuous Deployment
+  - DevOps
+  - Docker
+
+repo: https://github.com/drone/drone
+license: https://github.com/drone/drone/blob/master/LICENSE
+support: https://github.com/drone/drone/issues
 
 provisioner:
   repo: https://github.com/c6o/provisioners
@@ -24,19 +31,9 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: drupal
+          targetService: server
       provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        ui: ignore
-        name: drupal
-        image: drupal
-        port: 80
-        automated: true
-        volume:
-          - size: 50Gi
-            mountPath: /var/www/html
-            name: drupal-data
+        package: '@provisioner/drone'
       marina:
         launch:
           type: inline

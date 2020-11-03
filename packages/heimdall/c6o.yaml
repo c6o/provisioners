@@ -1,6 +1,29 @@
 name: Heimdall
 appId: heimdall                #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Heimdall Application Dashboard is a dashboard for all your web applications.
+
+description:
+  As the name suggests Heimdall Application Dashboard is a dashboard for all your web applications. It doesn't need to be limited to applications though, you can add links to anything you like.
+
+  Heimdall is an elegant solution to organise all your web applications. It’s dedicated to this purpose so you won’t lose your links in a sea of bookmarks.
+
+  Why not use it as your browser start page? It even has the ability to include a search bar using either Google, Bing or DuckDuckGo.
+
+category: dashboards
+keywords:
+  - Bookmarks
+  - Home Page
+
+repo: https://github.com/linuxserver/Heimdall
+license: https://github.com/linuxserver/Heimdall/blob/master/LICENSE
+support: https://github.com/linuxserver/Heimdall/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -20,9 +43,9 @@ editions:
         automated: true
         config:
           - name: PUID
-            value: 0
+            value: 1000
           - name: PGID
-            value: 0
+            value: 1000
           - name: TZ
             label: Timezone
             hint: Specify a timezone to use.
