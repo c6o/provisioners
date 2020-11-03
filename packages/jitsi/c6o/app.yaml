@@ -33,17 +33,12 @@ editions:
       - logstash
     spec:
       routes:
-          - type: http
-            targetService: kibana
+        - type: http
+          targetService: jitsi-web
       provisioner:
-        package: '@provisioner/logging-elk'
-        storage: 1Gi
-        k8sLogIndexPrefix: cloud
+        package: '@provisioner/jitsi'
       marina:
         launch:
           type: inline
-      services:
-        logstash:
-          protocol: http
-          service: elasticsearch
-          port: 9200
+          popUp: true
+

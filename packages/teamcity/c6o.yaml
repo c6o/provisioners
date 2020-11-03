@@ -57,7 +57,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: teamcityagent
-        image: 'jetbrains/teamcity-minimal-agent'
+        image: 'jetbrains/teamcity-agent'
         automated: true
         config:
           - name: SERVER_URL
@@ -67,7 +67,6 @@ editions:
             required: true
             autoselect: true
             fieldType: text
-
       marina:
         launch:
           type: inline
