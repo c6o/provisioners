@@ -15,7 +15,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: redis
         image: 'redis'
         config:
@@ -41,7 +40,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: redis
         image: 'redis'
         config:

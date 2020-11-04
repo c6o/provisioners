@@ -34,7 +34,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: geoip
         image: supermasita/geoip-flask
         port: 8888
@@ -51,7 +50,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: geoip
         image:  supermasita/geoip-flask
         port: 8888

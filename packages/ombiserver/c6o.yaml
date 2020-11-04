@@ -1,6 +1,31 @@
 name: Ombi Server
 appId: ombiserver
+icon: icon.svg
 package: '@provisioner/appengine'
+
+summary:
+  Want a Movie or TV Show on Plex or Emby? Use Ombi!
+
+description:
+
+  Want a Movie or TV Show on Plex or Emby? Use Ombi!
+
+category: media
+keywords:
+  - Plex
+  - Emby
+  - Requests
+  - TV
+  - Movies
+
+
+repo: https://github.com/tidusjar/Ombi
+license: https://github.com/tidusjar/Ombi/blob/feature/v4/LICENSE
+support: https://github.com/tidusjar/Ombi/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +38,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: ombi
         image: 'linuxserver/ombi:latest'
         port: 3579

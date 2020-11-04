@@ -1,6 +1,25 @@
 name: Muximux
 appId: muximux
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Muximux - Lightweight portal to your webapps
+
+description:
+  This is a lightweight portal to view & manage your webapps without having to run anything more than a PHP enabled webserver. With Muximux you don't need to keep multiple tabs open, or bookmark the URL to all of your apps.
+
+category: media
+keywords:
+  - Bookmark
+  - Dashboard
+
+repo: https://github.com/mescon/Muximux
+license: https://github.com/mescon/Muximux/blob/master/LICENSE
+support: https://github.com/mescon/Muximux/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +32,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: muximux
         image: linuxserver/muximux
         port: 80

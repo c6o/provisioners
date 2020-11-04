@@ -49,7 +49,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: monica
         image: monica
         port: 80

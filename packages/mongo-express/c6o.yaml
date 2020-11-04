@@ -9,7 +9,6 @@ editions:
         targetService: mongoexpress
     provisioner:
       package: '@provisioner/appengine'
-      ui: ignore
       name: mongoexpress
       image: mongo-express
       port: 8081

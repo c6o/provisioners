@@ -1,6 +1,27 @@
-name: MongoDB
+name: Mongo DB
 appId: mongodb                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  MongoDB is a cross-platform document-oriented database program.
+
+description:
+
+  MongoDB is a cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. MongoDB is developed by MongoDB Inc. and licensed under the Server Side Public License (SSPL).
+
+category: databases
+keywords:
+  - Document
+  - NoSQL
+  - JSON
+
+repo: https://github.com/mongodb/mongo
+license: https://github.com/mongodb/mongo/blob/master/LICENSE-Community.txt
+support: https://www.mongodb.com/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: developer
@@ -14,7 +35,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: mongodb
         image: 'mongo:latest'
         port: 27017
@@ -51,7 +71,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: mongodb
         image: 'mongo:latest'
         port: 27017

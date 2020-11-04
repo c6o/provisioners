@@ -1,6 +1,21 @@
 name: Precog
 appId: precog
 icon: icon.svg
+summary:
+  Precog
+description:
+  Precog
+
+category: databases
+keywords:
+  - Precog
+
+repo: https://github.com/precog
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
 editions:
   - name: stable
     status: public

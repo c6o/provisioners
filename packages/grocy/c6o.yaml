@@ -36,7 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: grocy
         image: 'linuxserver/grocy:latest'
         port: 80

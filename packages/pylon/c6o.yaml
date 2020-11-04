@@ -1,6 +1,26 @@
 name: Pylon
 appId: pylon
 package: '@provisioner/appengine'
+summary:
+  Pylon is a web based integrated development environment.
+
+description:
+
+  Pylon is a web based integrated development environment built with Node.js as a backend and with a supercharged JavaScript/HTML5 frontend, licensed under GPL version 3. This project originates from Cloud9 v2 project.
+
+category: dev-tools
+keywords:
+  - Cloud
+  - Development
+
+
+repo: https://github.com/pylonide/pylon
+support: https://github.com/pylonide/pylon/issues
+license: https://github.com/pylonide/pylon/blob/master/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +33,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: pylon
         image: 'linuxserver/pylon:latest'
         port: 3131

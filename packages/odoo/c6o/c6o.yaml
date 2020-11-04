@@ -1,0 +1,66 @@
+name: Odoo
+appId: odoosuite
+icon: icon.svg
+package: '@provisioner/odoo'
+
+summary:
+  Odoo is a suite of web based open source business apps.
+
+description:
+
+  The main Odoo Apps include an Open Source CRM, Website Builder, eCommerce, Warehouse Management, Project Management, Billing & Accounting, Point of Sale, Human Resources, Marketing, Manufacturing, ...
+
+
+  Odoo Apps can be used as stand-alone applications, but they also integrate seamlessly so you get a full-featured Open Source ERP when you install several Apps.
+
+
+category: comm
+keywords:
+  - ERP
+  - CRM
+  - CMS
+  - eCommerce
+  - Warehouse Management
+  - Project Management
+  - Accounting
+  - Finance
+  - PoS
+  - Point of Sale
+  - HR
+  - Marketing
+  - Manufacturing
+
+repo: https://github.com/odoo/odoo
+license: https://github.com/odoo/odoo/blob/14.0/LICENSE
+support: https://github.com/odoo/odoo/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: odoo-shop
+      provisioner:
+        package: '@provisioner/odoo'
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: latest
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: odoo-shop
+      provisioner:
+        package: '@provisioner/odoo'
+      marina:
+        launch:
+          type: inline
+          popUp: true

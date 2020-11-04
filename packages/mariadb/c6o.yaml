@@ -16,7 +16,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: mariadb
         image: 'mariadb'
         port: 3306
@@ -44,7 +43,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: mariadb
         image: 'mariadb'
         port: 3306

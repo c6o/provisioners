@@ -15,7 +15,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: xfcefocal
         image: 'linuxserver/rdesktop:latest'
         port:
@@ -58,7 +57,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: xfcebionic
         image: 'linuxserver/rdesktop:xfce-bionic'
         port:
@@ -103,7 +101,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: kdefocal
         image: 'linuxserver/rdesktop:kde-focal'
         port:
@@ -147,7 +144,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: kdebionic
         image: 'linuxserver/rdesktop:kde-bionic'
         port:
@@ -192,7 +188,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: matefocal
         image: 'linuxserver/rdesktop:mate-focal'
         port:
@@ -237,7 +232,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: matebionic
         image: 'linuxserver/rdesktop:mate-bionic'
         port:
@@ -282,7 +276,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: i3focal
         image: 'linuxserver/rdesktop:i3-focal'
         port:
@@ -327,7 +320,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: i3bionic
         image: 'linuxserver/rdesktop:i3-bionic'
         port:
@@ -371,7 +363,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: openboxfocal
         image: 'linuxserver/rdesktop:openbox-focal'
         port:
@@ -415,7 +406,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: openboxbionic
         image: 'linuxserver/rdesktop:openbox-bionic'
         port:
@@ -459,7 +449,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: icewmfocal
         image: 'linuxserver/rdesktop:icewm-focal'
         port:
@@ -503,7 +492,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: icewmbionic
         image: 'linuxserver/rdesktop:icewm-bionic'
         port:

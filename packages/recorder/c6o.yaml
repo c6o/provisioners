@@ -13,7 +13,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: recorder
         image: 'owntracks/recorder:latest'
         port: 8083

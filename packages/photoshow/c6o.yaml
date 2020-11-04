@@ -37,7 +37,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: photoshow
         image: linuxserver/photoshow
         port: 80

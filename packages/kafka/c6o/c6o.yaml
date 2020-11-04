@@ -1,0 +1,42 @@
+name: Apache Kafka
+appId: kafka
+package: '@provisioner/kakfa'
+icon: icon.svg
+summary:
+  Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
+
+description:
+
+  Apache Kafka is an open-source stream-processing software platform developed by the Apache Software Foundation, written in Scala and Java. The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds. Kafka can connect to external systems (for data import/export) via Kafka Connect and provides Kafka Streams, a Java stream processing library. Kafka uses a binary TCP-based protocol that is optimized for efficiency and relies on a "message set" abstraction that naturally groups messages together to reduce the overhead of the network roundtrip. This "leads to larger network packets, larger sequential disk operations, contiguous memory blocks [...] which allows Kafka to turn a bursty stream of random message writes into linear writes."
+
+
+category: dev-tools
+keywords:
+  - Stream processing
+  - Apache
+  - Scala
+  - Java
+  - TCP
+
+repo: https://github.com/apache/kafka
+license: https://github.com/apache/kafka/blob/trunk/LICENSE
+support: https://kafka.apache.org/intro
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: dragon
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: kafka
+      provisioner:
+        storage: 1Gi
+        projects: false
+        package: '@provisioner/kafka'
+      marina:
+        launch:
+          type: inline

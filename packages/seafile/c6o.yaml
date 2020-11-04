@@ -13,7 +13,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: seafile
         image: 'seafileltd/seafile:latest'
         port: 80

@@ -67,7 +67,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: nextcloud
         image: nextcloud
         port:

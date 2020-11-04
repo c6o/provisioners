@@ -1,6 +1,25 @@
 name: N8N Server
 appId: n8nserver
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  n8n - Workflow Automation Tool
+
+description:
+  n8n is an extendable workflow automation tool. With a fair-code distribution model, n8n will always have visible source code, be available to self-host, and allow you to add your own custom functions, logic and apps. n8n's node-based approach makes it highly versatile, enabling you to connect anything to everything.
+
+category: iot
+keywords:
+  - workflow
+  - iot
+
+repo: https://github.com/n8n-io/n8n
+license: https://github.com/n8n-io/n8n/blob/master/LICENSE.md
+support: https://github.com/n8n-io/n8n/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +32,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: n8nserver
         image: 'n8nio/n8n:0.43.0-ubuntu'
         port: 5678

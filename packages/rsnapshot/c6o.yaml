@@ -10,7 +10,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: rsnapshot
         image: linuxserver/rsnapshot
         config:

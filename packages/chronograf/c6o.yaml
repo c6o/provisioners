@@ -41,7 +41,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: chronograf
         image: chronograf
         port: 8888

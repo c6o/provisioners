@@ -36,7 +36,6 @@ editions:
           targetService: strapi
       provisioner:
         package: '@provisioner/appengine'
-        ui: ignore
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
