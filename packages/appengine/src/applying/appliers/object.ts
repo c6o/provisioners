@@ -65,7 +65,7 @@ export class ObjectApplier implements Applier {
 
                 await manager.cluster
                     .begin(`Installing Volume Claim: '${item.name}'`)
-                    //.addOwner(manager.document)  //chose to NOT include this, so the volumes do NOT delete at uninstall
+                    .addOwner(manager.document)  //TODO: Advanced installer needs to choose the volumes to delete
                     .upsert(pvc)
                     .end()
 
