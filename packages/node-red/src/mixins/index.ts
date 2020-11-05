@@ -1,5 +1,0 @@
-export * from './removeInquire'
-export * from './removeApply'
-export * from './createApply'
-export * from './createInquire'
-export * from './help'
