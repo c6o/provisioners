@@ -76,7 +76,7 @@ editions:
           targetService: vtiger
       provisioner:
         package: "@provisioner/appengine"
-        
+
         name: vtiger
         image: pimuzzo/vtiger
         port: 80

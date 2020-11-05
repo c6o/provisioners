@@ -1,0 +1,44 @@
+name: RabbitMQ
+appId: rabbitmq
+icon: icon.svg
+summary:
+  RabbitMQ is a feature rich, multi-protocol messaging broker.
+
+description:
+  RabbitMQ is an open-source message-broker software (sometimes called message-oriented middleware) that originally implemented the Advanced Message Queuing Protocol (AMQP) and has since been extended with a plug-in architecture to support Streaming Text Oriented Messaging Protocol (STOMP), MQ Telemetry Transport (MQTT), and other protocols.
+
+
+  The RabbitMQ server program is written in the Erlang programming language and is built on the Open Telecom Platform framework for clustering and failover. Client libraries to interface with the broker are available for all major programming languages.
+
+
+category: dev-tools
+keywords:
+  - Cloud
+  - IoT
+  - Message broker
+  - MQTT
+  - STOMP
+  - AMQP
+  - Queue
+  - PubSub
+
+
+repo: https://github.com/rabbitmq/rabbitmq-server
+support: https://github.com/rabbitmq/rabbitmq-server/issues
+license: https://github.com/rabbitmq/rabbitmq-server/blob/master/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: stable
+    status: public
+    spec:
+      provisioner:
+        package: '@provisioner/prometheus'
+        simpleService: false
+        alertManagerEnabled: true
+        kubeMetricsEnabled: true
+        nodeExporterEnabled: true
+        pushGatewayEnabled: true

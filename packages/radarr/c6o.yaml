@@ -1,6 +1,28 @@
 name: Radarr
 appId: radarr
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Radarr is an independent fork of Sonarr reworked for automatically downloading movies via Usenet and BitTorrent.
+
+description:
+  Radarr is an independent fork of Sonarr reworked for automatically downloading movies via Usenet and BitTorrent.
+
+category: media
+keywords:
+  - Movies
+  - Usenet
+  - Torrent
+  - Media Management
+
+
+repo: https://github.com/Radarr/Radarr
+support: https://github.com/Radarr/Radarr/issues
+license: https://github.com/Radarr/Radarr/blob/develop/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview

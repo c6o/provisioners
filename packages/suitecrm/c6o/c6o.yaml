@@ -1,0 +1,55 @@
+name: SuiteCRM
+appId: suitecrm
+package: '@provisioner/suitecrm'
+icon: icon.svg
+summary:
+  SuiteCRM is the award-winning open-source, enterprise-ready Customer Relationship Management (CRM) software application.
+
+description:
+  SuiteCRM is the award-winning open-source, enterprise-ready Customer Relationship Management (CRM) software application.
+
+
+  Our vision is to be the most adopted open source enterprise CRM in the world, giving users full control of their data and freedom to own and customise their business solution.
+
+category: crm
+keywords:
+  - crm
+  - php
+  - agplv3
+  - accounts
+  - contacts
+  - workflow
+  - reports
+  - leads
+  - quotes
+  - opportunities
+  - contracts
+  - cases
+  - portal
+  - documents
+  - multi-language-support
+  - multi-currency
+  - suitecrm
+
+repo: https://github.com/salesagility/SuiteCRM
+support: https://github.com/salesagility/SuiteCRM/issues
+license: https://github.com/salesagility/SuiteCRM/blob/master/LICENSE.txt
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: stable
+    status: public
+    spec:
+    routes:
+      - type: http
+        targetService: suitecrm
+    provisioner:
+      package: "@provisioner/suitecrm"
+      ui: ignore
+    marina:
+      launch:
+      type: inline
+      popUp: true

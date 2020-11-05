@@ -1,6 +1,25 @@
 name: Sonarr
 appId: sonarr
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Sonarr is a PVR for Usenet and BitTorrent users.
+
+description:
+  Sonarr is a PVR for Usenet and BitTorrent users. It can monitor multiple RSS feeds for new episodes of your favorite shows and will grab, sort and rename them. It can also be configured to automatically upgrade the quality of files already downloaded when a better quality format becomes available.
+
+category: media
+keywords:
+  - tv
+  - management
+
+repo: https://github.com/Sonarr/Sonarr
+support: https://github.com/Sonarr/Sonarr/issues
+license: https://github.com/Sonarr/Sonarr/blob/phantom-develop/LICENSE.md
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview

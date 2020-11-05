@@ -1,6 +1,62 @@
 name: Visual Studio Code
 appId: vscode
 icon: icon.svg
+description:
+  Run VS Code on any machine anywhere and access it in the browser.
+
+
+  Highlights
+
+  ====
+
+
+  Code everywhere
+
+  ----
+
+    1. Code on your Chromebook, tablet, and laptop with a consistent development environment.
+
+
+    1. Develop on a Linux machine and pick up from any device with a web browser.
+
+
+  Server-powered
+
+  ----
+
+
+    1. Take advantage of large cloud servers to speed up tests, compilations, downloads, and more.
+
+
+    1. Preserve battery life when you're on the go as all intensive tasks run on your server.
+
+
+    1. Make use of a spare computer you have lying around and turn it into a full development environment.
+
+
+summary:
+  Run VS Code on any machine anywhere and access it in the browser.
+
+category: dev-tools
+keywords:
+  - VSCode
+  - Visual Studio Code
+  - Develop
+  - Integrated Development Environment
+  - IDE
+  - VS Code
+  - Code
+
+
+
+repo: https://github.com/cdr/code-server
+license: https://github.com/cdr/code-server/blob/v3.6.0/LICENSE.txt
+support: https://github.com/cdr/code-server/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
 editions:
   - name: stable
     status: public

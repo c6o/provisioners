@@ -1,0 +1,57 @@
+name: Verdaccio
+appId: verdaccio
+icon: icon.svg
+summary:
+  Verdaccio is a simple, zero-config-required local private npm registry.
+
+description:
+  Verdaccio is a simple, zero-config-required local private npm registry. No need for an entire database just to get started! Verdaccio comes out of the box with its own tiny database, and the ability to proxy other registries (eg. npmjs.org), caching the downloaded modules along the way. For those looking to extend their storage capabilities, Verdaccio supports various community-made plugins to hook into services such as Amazon's s3, Google Cloud Storage or create your own plugin.
+
+category: dev-tools
+keywords:
+  - nodejs
+  - npm
+  - registry
+  - private-npm
+  - verdaccio
+  - yarn
+  - docker-image
+  - registry-proxy
+  - docker
+  - npm-registry
+  - node
+  - javascript
+  - yarnpkg
+
+
+repo: https://github.com/verdaccio/verdaccio
+support: https://github.com/verdaccio/verdaccio/issues
+license: https://github.com/verdaccio/verdaccio/blob/master/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+
+editions:
+  - name: stable
+    status: public
+    interfaces:
+      - npm-registry
+    spec:
+      routes:
+        - type: http
+          targetService: verdaccio-service
+      provisioner:
+        ui: ignore
+        storage: 2Gi
+      marina:
+        launch:
+          type: inline
+          popUp: true
+      services:
+        npm-registry:
+          protocol: http
+          service: verdaccio-service
+          auth: [basic]
+          port: 80
