@@ -10,6 +10,7 @@ export function getLabels(name: string, metaData: LabelsMetadata) {
         'system.codezero.io/instance': fullAppName,
         'system.codezero.io/appengine': 'v1',
         'system.codezero.io/app': fullAppName,
+        'system.codezero.io/id': metaData.id,
         'app.kubernetes.io/name': name,
         'app.kubernetes.io/managed-by': 'codezero',
     }

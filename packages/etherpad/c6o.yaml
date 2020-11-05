@@ -1,0 +1,51 @@
+name: Etherpad
+appId: etherpad
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Etherpad - real-time collaborative document editor
+
+description:
+  Etherpad is a real-time collaborative editor scalable to thousands of simultaneous real time users. It provides full data export capabilities, and runs on your server, under your control.
+
+category: dms
+keywords:
+  - realtime
+  - collaboration
+
+repo: https://github.com/ether/etherpad-lite
+license: https://github.com/ether/etherpad-lite/blob/develop/LICENSE
+support: https://github.com/ether/etherpad-lite/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: etherpad
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: etherpad
+        image: etherpad/etherpad
+        port: 9001
+        automated: true
+
+        secret:
+          - name: ADMIN_PASSWORD
+            value: $RANDOM
+
+        config:
+          - name: TRUST_PROXY
+            value: true
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
