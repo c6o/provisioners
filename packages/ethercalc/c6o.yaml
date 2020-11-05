@@ -1,0 +1,46 @@
+name: Ethercalc
+appId: ethercalc
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  EtherCalc is a web spreadsheet.
+
+description:
+
+  Your data is saved on the web, and people can edit the same document at the same time. Everybody's changes are instantly reflected on all screens.
+
+
+  Work together on inventories, survey forms, list management, brainstorming sessions and more!
+
+category: dms
+keywords:
+  - realtime
+  - collaboration
+
+repo: https://github.com/audreyt/ethercalc
+license: https://github.com/audreyt/ethercalc/blob/master/LICENSE.txt
+support: https://github.com/audreyt/ethercalc/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    scope: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: ethercalc
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: ethercalc
+        image: audreyt/ethercalc
+        port: 8000
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

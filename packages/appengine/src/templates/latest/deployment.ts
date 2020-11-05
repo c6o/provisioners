@@ -27,7 +27,7 @@ export function getDeploymentTemplate(name: string, namespace: string, image: st
                         {
                             name: name,
                             image: image,
-                            imagePullPolicy: 'IfNotPresent',
+                            imagePullPolicy: 'Always',
                             env: []
                         }
                     ]
