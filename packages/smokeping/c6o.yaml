@@ -1,6 +1,28 @@
 name: Smoke Ping
 appId: smokeping
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  SmokePing is a latency logging and graphing and alerting system.
+
+description:
+  SmokePing is a latency logging and graphing and alerting system. It consists of a daemon process which organizes the latency measurements and a CGI which presents the graphs.
+
+category: monitoring
+keywords:
+  - latency
+  - logging
+  - graphing
+  - alerting
+
+repo: https://github.com/oetiker/SmokePing
+support: https://github.com/oetiker/SmokePing/issues
+license: https://github.com/oetiker/SmokePing/blob/master/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
 
 editions:
   - name: preview
@@ -13,7 +35,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: smokeping
         image: linuxserver/smokeping
         port: 80

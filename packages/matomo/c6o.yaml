@@ -70,7 +70,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: matomo
         image: matomo
         port: 80
@@ -95,7 +94,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: matomo
         image: matomo
         port: 80

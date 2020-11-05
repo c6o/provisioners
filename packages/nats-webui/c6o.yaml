@@ -1,6 +1,34 @@
 name: NATS WebUI
 appId: nats-webui
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  A Web UI for the NATS Server.
+
+
+  NATS is a simple, secure and performant communications system for digital systems, services and devices.
+
+description:
+  A Web UI for the NATS Server.
+
+
+  NATS is part of the Cloud Native Computing Foundation (CNCF). NATS has over 40 client language implementations, and its server can run on-premise, in the cloud, at the edge, and even on a Raspberry Pi. NATS can secure and simplify design and operation of modern distributed systems.
+
+category: messaging
+keywords:
+  - communications
+  - device
+  - server
+  - cloud
+  - edge
+
+repo: https://github.com/nats-io/nats-server
+license: https://github.com/nats-io/nats-server/blob/master/LICENSE
+support: https://github.com/nats-io/nats-server/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +41,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: nats-webui
         image: 'sphqxe/nats-webui:latest'
         port: 80

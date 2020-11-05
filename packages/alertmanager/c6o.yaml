@@ -35,7 +35,6 @@ editions:
       provisioner:
         tag-prefix: appengine
         package: '@provisioner/appengine'
-        ui: ignore
         name: alertmanager
         image: 'prom/alertmanager:latest'
         port: 9093

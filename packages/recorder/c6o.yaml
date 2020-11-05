@@ -1,6 +1,27 @@
 name: Recorder
 appId: recorder
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  The OwnTracks Recorder is a lightweight program for storing and accessing location data published via MQTT (or HTTP) by the OwnTracks apps.
+
+description:
+  The OwnTracks Recorder is a lightweight program for storing and accessing location data published via MQTT (or HTTP) by the OwnTracks apps. It is a compiled program which is easy to install and operate even on low-end hardware, and it doesn't require an external database.
+
+category: location
+keywords:
+  - OwnTracks
+  - Location Tracking
+  - MQTT
+
+
+repo: https://github.com/owntracks/recorder
+support: https://github.com/owntracks/recorder/issues
+license: https://github.com/owntracks/recorder/blob/master/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +34,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: recorder
         image: 'owntracks/recorder:latest'
         port: 8083

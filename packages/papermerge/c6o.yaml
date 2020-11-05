@@ -1,6 +1,49 @@
-name: Paper Merge
+name: Papermerge
 appId: papermerge
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Papermerge is an open source document management system (DMS) primarily designed for archiving and retrieving your digital documents.
+
+
+description:
+
+  Papermerge - Document Management System
+
+  ----
+
+
+  Papermerge is an open source document management system (DMS) primarily designed for archiving and retrieving your digital documents. Instead of having piles of paper documents all over your desk, office or drawers - you can quickly scan them and configure your scanner to directly upload to Papermerge DMS.
+
+
+  Papermerge DMS on its turn will OCR the document and index it. You will be able to quickly find any (scanned!) document using full text search capabilities.
+
+
+  It is built on Django 3.0.
+
+
+  Papermerge is actively developed and I release quite frequently.
+
+
+  This is web-based software. This means there is no executable file (aka no .exe files), and it must be run on a web server and accessed through a web browser.
+
+
+category: dms
+keywords:
+  - OCR
+  - Scanner
+  - Archiving
+  - Retrieving
+
+
+repo: https://github.com/ciur/papermerge
+license: https://github.com/ciur/papermerge/blob/master/LICENSE
+support: https://github.com/ciur/papermerge/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
 
 editions:
   - name: latest
@@ -9,7 +52,6 @@ editions:
         targetService: papermerge
     provisioner:
       package: '@provisioner/appengine'
-      ui: ignore
       name: papermerge
       image: linuxserver/papermerge
       port: 8000

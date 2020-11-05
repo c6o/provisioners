@@ -110,7 +110,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: checkmk
         image: 'checkmk/check-mk-raw:latest'
         port:

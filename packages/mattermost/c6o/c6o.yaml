@@ -1,0 +1,52 @@
+name: Mattermost
+appId: mattermost
+package: '@provisioner/mattermost'
+icon: icon.svg
+summary:
+  Mattermost is an open-source, self-hostable online chat service with file sharing, search, and integrations.
+
+description:
+
+  Mattermost is an open-source, self-hostable online chat service with file sharing, search, and integrations. It is designed as an internal chat for organisations and companies, and mostly markets itself as an open-source alternative to Slack and Microsoft Teams.
+
+
+category: comm
+keywords:
+  - Chat
+  - File Sharing
+  - Search
+  - Integrations
+
+repo: https://github.com/mattermost/mattermost-server
+license: https://github.com/mattermost/mattermost-server/blob/master/LICENSE.txt
+support: https://github.com/mattermost/mattermost-server/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: mattermost-preview
+      provisioner:
+        package: '@provisioner/mattermost'
+      marina:
+        launch:
+          type: inline
+          popUp: true
+  - name: enterprise
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: cz-mattermost-cluster
+      provisioner:
+        package: '@provisioner/mattermost'
+      marina:
+        launch:
+          type: inline
+          popUp: true

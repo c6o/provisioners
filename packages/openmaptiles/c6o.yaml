@@ -18,9 +18,20 @@ description:
 
   Support is provided separately.
 
+
+category: location
+keywords:
+  - Mapping
+  - Maps
+
+
 repo: https://github.com/openmaptiles/openmaptiles
 license: https://openmaptiles.com/terms/
 support: https://openmaptiles.com/support/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: latest
@@ -32,7 +43,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: openmaptiles
         image: 'klokantech/openmaptiles-server'
         port: 80

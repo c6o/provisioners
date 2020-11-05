@@ -36,7 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: influxdb
         image: influxdb
         port:

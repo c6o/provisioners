@@ -34,7 +34,6 @@ editions:
           targetService: ghost
       provisioner:
         package: '@provisioner/ghost'
-        ui: ignore
       marina:
         launch:
           type: inline

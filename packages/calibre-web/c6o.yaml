@@ -64,7 +64,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: calibre-web
         image: linuxserver/calibre-web
         port: 8083

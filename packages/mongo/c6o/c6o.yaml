@@ -1,0 +1,91 @@
+name: MongoDB
+appId: mongo
+package: '@provisioner/mongo'
+icon: icon.svg
+summary:
+  MongoDB is a cross-platform document-oriented database program.
+
+description:
+
+  MongoDB is a cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. MongoDB is developed by MongoDB Inc. and licensed under the Server Side Public License (SSPL).
+
+category: databases
+keywords:
+  - Document
+  - NoSQL
+  - JSON
+
+repo: https://github.com/mongodb/mongo
+license: https://github.com/mongodb/mongo/blob/master/LICENSE-Community.txt
+support: https://www.mongodb.com/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: developer
+    spec:
+      routes:
+        - type: tcp
+          targetService: mongodb
+          tcp:
+            port: 27017
+            name: mongodb
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: mongodb
+        image: 'mongo:latest'
+        port: 27017
+        automated: true
+
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: mongodb-data
+
+      secret:
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            label: MongoDb Password
+            hint: Password for the admin user
+            required: true
+            autoselect: true
+            fieldType: password
+
+      config:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            label: MongoDb Username
+            hint: Username for the admin user
+            required: true
+            autoselect: true
+            fieldType: text
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: developerinternal
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: mongodb
+        image: 'mongo:latest'
+        port: 27017
+        volume:
+          - size: 5Gi
+            mountPath: /data
+            name: mongodb-data
+        secret:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: root
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: admin
+        automated: true
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

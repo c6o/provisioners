@@ -1,6 +1,33 @@
-name: Peer Tube
+name: PeerTube
 appId: peertube
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  PeerTube is a free and open-source, decentralized, federated video platform powered by ActivityPub and WebTorrent, that uses peer-to-peer technology to reduce load on individual servers when viewing videos.
+
+description:
+
+  PeerTube is a free and open-source, decentralized, federated video platform powered by ActivityPub and WebTorrent, that uses peer-to-peer technology to reduce load on individual servers when viewing videos.
+
+
+  Started in 2015 by a programmer known as Chocobozzz, development of PeerTube is now supported by the French non-profit Framasoft. The aim is to provide an alternative to centralized platforms such as YouTube, Vimeo, and Dailymotion.
+
+
+category: media
+keywords:
+  - Streaming
+  - Video
+  - Torrent
+  - Peer to Peer
+
+
+repo: https://github.com/Chocobozzz/PeerTube
+license: https://github.com/Chocobozzz/PeerTube/blob/develop/LICENSE
+support: https://github.com/Chocobozzz/PeerTube/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +40,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: peertube
         image: chocobozzz/peertube
         port: 9000

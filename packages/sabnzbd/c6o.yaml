@@ -1,6 +1,31 @@
-name: SabNzbd
+name: SABnzbd
 appId: sabnzbd
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  SABnzbd - The automated Usenet download tool
+
+description:
+  SABnzbd is an Open Source Binary Newsreader written in Python.
+
+  It's totally free, easy to use, and works practically everywhere. SABnzbd makes Usenet as simple and streamlined as possible by automating everything we can. All you have to do is add an .nzb. SABnzbd takes over from there, where it will be automatically downloaded, verified, repaired, extracted and filed away with zero human interaction. SABnzbd offers an easy setup wizard and has self-analysis tools to verify your setup.
+
+  If you want to know more you can head over to our website at https://sabnzbd.org.
+
+category: media
+keywords:
+  - usenet
+  - download
+
+
+repo: https://github.com/sabnzbd/sabnzbd
+support: https://github.com/sabnzbd/sabnzbd/issues
+license: https://github.com/sabnzbd/sabnzbd/blob/develop/LICENSE.txt
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
 
 editions:
   - name: preview
@@ -13,7 +38,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: sabnzbd
         image: linuxserver/sabnzbd
         port:

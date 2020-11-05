@@ -43,7 +43,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: splunk
         image: splunk/splunk
         port: 8000

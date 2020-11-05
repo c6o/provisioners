@@ -1,6 +1,29 @@
 name: Seafile
 appId: seafile
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Seafile is an open source cloud storage system with privacy protection and teamwork features.
+description:
+  Seafile is an open source cloud storage system with privacy protection and teamwork features. Collections of files are called libraries. Each library can be synced separately. A library can also be encrypted with a user chosen password. Seafile also allows users to create groups and easily sharing files into groups.
+
+category: dms
+keywords:
+  - cloud-storage
+  - file-sync
+  - file-sharing
+  - wiki
+  - markdown
+  - knowledge-management
+  - document-management
+
+repo: https://github.com/haiwen/seafile
+support: https://github.com/haiwen/seafile/issues
+license: https://github.com/haiwen/seafile/blob/master/LICENSE.txt
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: seafile
         image: 'seafileltd/seafile:latest'
         port: 80

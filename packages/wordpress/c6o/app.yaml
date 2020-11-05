@@ -1,0 +1,45 @@
+name: WordPress
+appId: wordpress
+icon: icon.svg
+summary:
+  WordPress (WP, WordPress.org) is a free and open-source content management system (CMS) written in PHP and paired with a MySQL or MariaDB database.
+
+description:
+
+  WordPress (WP, WordPress.org) is a free and open-source content management system (CMS) written in PHP and paired with a MySQL or MariaDB database. Features include a plugin architecture and a template system, referred to within WordPress as Themes. WordPress was originally created as a blog-publishing system but has evolved to support other types of web content including more traditional mailing lists and forums, media galleries, membership sites, learning management systems (LMS) and online stores. WordPress is used by more than 60 million websites, including 33.6% of the top 10 million websites as of April 2019, WordPress is one of the most popular content management system solutions in use. WordPress has also been used for other application domains such as pervasive display systems (PDS).
+
+
+  WordPress was released on May 27, 2003, by its founders, American developer Matt Mullenweg and English developer Mike Little, as a fork of b2/cafelog. The software is released under the GPLv2 (or later) license.
+
+
+  To function, WordPress has to be installed on a web server, either part of an Internet hosting service like WordPress.com or a computer running the software package WordPress.org in order to serve as a network host in its own right. A local computer may be used for single-user testing and learning purposes
+
+category: cms
+keywords:
+  - wordpress
+  - blog
+  - content management systems
+
+
+repo: https://github.com/WordPress/WordPress
+support: https://github.com/WordPress/WordPress
+license: https://github.com/WordPress/WordPress/blob/master/license.txt
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+
+editions:
+  - name: stable
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: wordpress
+      provisioner:
+        package: '@provisioner/wordpress'
+      marina:
+        launch:
+          type: inline
+          popUp: true

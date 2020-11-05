@@ -1,6 +1,45 @@
 name: Plex Server
 appId:  plexserver
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Plex is a media player system with a client-server model. Plex Media Server stores, organizes, and streams all content; and the clients are the playback applications running on myriad devices and web browsers.
+
+description:
+
+  Plex Media Server (PMS) is the back-end media server component of Plex, free of charge. It organizes audio and visual content from personal media libraries and streams it to their player counterparts, either on the same machine, the same local area network, or over the Internet. It can run on Windows, macOS, Linux, FreeBSD, NAS devices, or on Nvidia Shield TV.
+
+
+  The server can acquire content from files, iTunes, iPhoto, Aperture, or the Internet. The music library is automatically organized by ID3 or M4A tags, such as title, artist, album, genre, year, and popularity. Plex Pass users also have the ability to access the whole music video catalog from VEVO.
+
+
+  Player apps are Plex's front-end allowing the user to manage and play music, photos, videos and online content from the Plex Media Server. Most of them are free of charge.
+
+
+  * Plex Web App – Plex released a crossplatform web app on November 16, 2012.
+
+  * Plex Media Player – Only the host parts of the application are open source.
+
+  * Plex - Successor to the Plex Media Player compatible only with 64 bit versions of Windows 10 and MacOS High Sierra and upward
+
+  * Plexamp and Plex Dash
+
+
+  The basic Plex player app runs on multitudes of platforms and devices Amazon Fire TV, Android TV, Apple TV, Chromecast, iOS, smart TVs and Blu-ray devices, webOS, Vewd, PlayStation 3, PlayStation 4, Roku, Sonos, TiVO, Windows Phone, Xbox 360, and Xbox One.
+
+
+category: media
+keywords:
+  - TV
+  - Video
+
+
+
+repo: https://www.plex.tv/
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
@@ -13,7 +52,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        ui: ignore
         name: plexserver
         image: 'plexinc/pms-docker:latest'
         port: 32400

@@ -1,6 +1,33 @@
 name: Zimbra
 appId: zimbra
 package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Zimbra Collaboration, formerly known as the Zimbra Collaboration Suite (ZCS) before 2019, is a collaborative software suite that includes an email server and a web client.
+
+description:
+  Zimbra Collaboration, formerly known as the Zimbra Collaboration Suite (ZCS) before 2019, is a collaborative software suite that includes an email server and a web client.
+
+
+  Zimbra was initially developed by LiquidSys, which changed their name to Zimbra, Inc. on 26 July 2005.`2] The Zimbra Collaboration Suite was first released in 2005. The company was subsequently purchased by Yahoo! on September 17, 2007, and later sold to VMware on January 12, 2010. In July 2013, it was sold by VMware to Telligent Systems which changed its name to Zimbra, Inc. in September 2013. It was then
+  acquired by Synacor on 18 August 2015.
+
+
+  According to former Zimbra President and CTO Scott Dietzen, the name for Zimbra is derived from the song "I Zimbra" by Talking Heads.
+
+category: comm
+keywords:
+  - communication
+  - Collaboration
+
+
+repo: https://github.com/jorgedlcruz/zimbra-automated-installation
+support: https://github.com/jorgedlcruz/zimbra-automated-installation/issues
+license: https://github.com/jorgedlcruz/zimbra-automated-installation/blob/master/LICENSE
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
 
 editions:
   - name: preview
