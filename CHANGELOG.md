@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/c6o/node-monorepo/compare/v0.0.16...v0.0.17) (2020-11-05)
+
+
+### ♻️ Chores
+
+* **metadata:** Add more metadata to provisioners. ([#93](https://github.com/c6o/node-monorepo/issues/93)) ([7fdd291](https://github.com/c6o/node-monorepo/commit/7fdd291671dcdcb04edc1d75a2480d13b76e2ff6))
+* **metadata:** More metadata ([#95](https://github.com/c6o/node-monorepo/issues/95)) ([5814b6b](https://github.com/c6o/node-monorepo/commit/5814b6b32af95c63e64b2ed166ca8138b82dc229))
+* **metadata:** Updated metadata to be able to use the WebUI to capture field values ([#92](https://github.com/c6o/node-monorepo/issues/92)) ([c32c959](https://github.com/c6o/node-monorepo/commit/c32c959e3e0c933f35d146298137c5158432f333))
+
+
+
+
+
 ## [0.0.16](https://github.com/c6o/node-monorepo/compare/v0.0.15...v0.0.16) (2020-10-30)
 
 

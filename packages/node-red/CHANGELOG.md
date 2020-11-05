@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/c6o/provisioners/compare/v0.0.16...v0.0.17) (2020-11-05)
+
+
+### ♻️ Chores
+
+* **metadata:** Updated metadata to be able to use the WebUI to capture field values ([#92](https://github.com/c6o/provisioners/issues/92)) ([c32c959](https://github.com/c6o/provisioners/commit/c32c959e3e0c933f35d146298137c5158432f333))
+
+
+
+
+
 ## [0.0.16](https://github.com/c6o/provisioners/compare/v0.0.15...v0.0.16) (2020-10-30)
 
 **Note:** Version bump only for package @provisioner/node-red
