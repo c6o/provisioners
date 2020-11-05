@@ -18,8 +18,8 @@ export class ObjectApplier implements Applier {
                 edition: spec.edition
             } as LabelsMetadata
         }
-        if(!spec.metaData.id) Math.random().toString(36).substring(6)
-        if(!spec.metaData.edition) spec.edition
+        if(!spec.metaData.id) spec.metaData.id = Math.random().toString(36).substring(6)
+        if(!spec.metaData.edition) spec.metaData.edition = spec.edition
 
         debug(`BOOSTRAP:${JSON.stringify(spec)}`)
 
