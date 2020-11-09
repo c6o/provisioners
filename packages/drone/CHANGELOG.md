@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/c6o/provisioners/compare/v0.0.16...v0.0.17) (2020-11-05)
+
+
+### ♻️ Chores
+
+* **metadata:** Add more metadata to provisioners. ([#93](https://github.com/c6o/provisioners/issues/93)) ([7fdd291](https://github.com/c6o/provisioners/commit/7fdd291671dcdcb04edc1d75a2480d13b76e2ff6))
+
+
+
+
+
 ## [0.0.16](https://github.com/c6o/provisioners/compare/v0.0.15...v0.0.16) (2020-10-30)
 
 

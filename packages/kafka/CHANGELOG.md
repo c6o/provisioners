@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.17](https://github.com/c6o/provisioners/compare/v0.0.16...v0.0.17) (2020-11-05)
+
+
+### ♻️ Chores
+
+* **metadata:** More metadata ([#95](https://github.com/c6o/provisioners/issues/95)) ([5814b6b](https://github.com/c6o/provisioners/commit/5814b6b32af95c63e64b2ed166ca8138b82dc229))
+
+
+
+
+
 ## [0.0.16](https://github.com/c6o/provisioners/compare/v0.0.15...v0.0.16) (2020-10-30)
 
 **Note:** Version bump only for package @provisioner/kafka

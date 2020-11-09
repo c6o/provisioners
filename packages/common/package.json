@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/common",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
   "scripts": {
