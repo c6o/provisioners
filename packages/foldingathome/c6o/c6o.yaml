@@ -27,7 +27,7 @@ provisioner:
 
 editions:
   - name: cpu
-    scope: public
+    status: public
     default: true
     spec:
       marina:
@@ -39,7 +39,7 @@ editions:
         teamNumber: 267252
 
   - name: gpu-cpu
-    scope: public
+    status: public
     default: true
     spec:
       marina:
@@ -51,7 +51,7 @@ editions:
         teamNumber: 267252
 
   - name: gpu
-    scope: public
+    status: public
     default: true
     spec:
       marina:

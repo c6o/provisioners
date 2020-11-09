@@ -33,6 +33,26 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: adminer
+      provisioner:
+        package: '@provisioner/appengine'
+        name: adminer
+        image: 'adminer:latest'
+        port: 8080
+        automated: true
+        tag-prefix: appengine
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
   - name: private
     status: private
     default: true
@@ -47,6 +67,13 @@ editions:
         port: 8080
         automated: true
         tag-prefix: appengine
+        volume:
+          - size: 1Gi
+            mountPath: /config
+            name: adminer-config
+          - size: 50Gi
+            mountPath: /data
+            name: adminer-data
         config:
           - name: USERNAME
             env: APP_USERNAME
@@ -73,25 +100,6 @@ editions:
             autoselect: true
             fieldType: password
 
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-  - name: preview
-    status: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: adminer
-      provisioner:
-        package: '@provisioner/appengine'
-        name: adminer
-        image: 'adminer:latest'
-        port: 8080
-        automated: true
-        tag-prefix: appengine
       marina:
         launch:
           type: inline

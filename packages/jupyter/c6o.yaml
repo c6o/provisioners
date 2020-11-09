@@ -51,7 +51,7 @@ provisioner:
 
 editions:
   - name: scipy
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -77,7 +77,7 @@ editions:
           popUp: true
 
   - name: datascience
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -104,7 +104,7 @@ editions:
 
 
   - name: tensorflow
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -130,7 +130,7 @@ editions:
           popUp: true
 
   - name: pyspark
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -157,7 +157,7 @@ editions:
 
 
   - name: basenotebook
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -184,7 +184,7 @@ editions:
 
 
   - name: all-spark
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -211,7 +211,7 @@ editions:
 
 
   - name: minimal
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -238,7 +238,7 @@ editions:
 
 
   - name: nbviewer
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -265,7 +265,7 @@ editions:
 
 
   - name: r-notebook
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -293,7 +293,7 @@ editions:
 
 
   - name: nature-demo
-    scope: public
+    status: public
     default: true
     spec:
       routes:

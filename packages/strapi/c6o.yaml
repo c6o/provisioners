@@ -28,7 +28,7 @@ provisioner:
 
 editions:
   - name: preview-sqlite
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -48,7 +48,7 @@ editions:
 
 
   - name: latest-postgresql
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -117,7 +117,7 @@ editions:
 
 
   - name: latest-mongo
-    scope: public
+    status: public
     default: true
     spec:
       routes:

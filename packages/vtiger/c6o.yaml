@@ -1,7 +1,6 @@
 name: vTiger CRM
 appId: vtiger
 package: '@provisioner/appengine'
-#icon: https://raw.githubusercontent.com/airsonic/airsonic/master/contrib/assets/logos/airsonic_dark_1400x400.svg
 icon: icon.svg
 description:
 
@@ -47,6 +46,35 @@ description:
 
   Vtiger one gives you a live 360-degree view of your customer, without the need for integrations. It helps your marketing, sales, and support teams to increase engagement, win more deals, and foster brand loyalty.
 
+
+  Setup
+
+  ----
+
+  FileRun requires access to a MariaDB or MySql database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE vtiger;
+
+    CREATE USER 'vtiger'@'%' IDENTIFIED BY '88888888';
+
+    GRANT ALL PRIVILEGES ON vtiger.* TO 'vtiger'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+
 summary:
   Get the full picture with 'One View' of customers
 
@@ -68,20 +96,27 @@ provisioner:
 
 editions:
   - name: preview
-    scope: private  #need to edit vtigercrm/includes/http/Request.php remove the throw.  only use mariadb
+    status: private  #TODO: NEED $PUBLIC_DNS
     default: true
     spec:
       routes:
         - type: http
           targetService: vtiger
+
       provisioner:
         package: "@provisioner/appengine"
-
+        tag-prefix: appengine
         name: vtiger
-        image: pimuzzo/vtiger
+        image: javanile/vtiger
         port: 80
         automated: true
         config:
+          - name: VT_SITE_URL
+            value: $PUBLIC_DNS
+          - name: BASE_URL
+            value: $PUBLIC_DNS
+
+
           - name: DB_HOSTNAME
             label: Database Host
             hint: The database host (Service)
@@ -100,17 +135,7 @@ editions:
           - name: DB_NAME
             value: vtiger
 
-          - name: BASE_URL
-            value: $PUBLIC_DNS
-
         secret:
-          - name: DB_PASSWORD
-            label: Database Password
-            hint: The Database password
-            required: true
-            autoselect: true
-            fieldType: password
-
           - name: DB_PASSWORD
             label: Database Password
             hint: The Database password
@@ -126,3 +151,4 @@ editions:
         launch:
           type: inline
           popUp: true
+          path: /vtigercrm

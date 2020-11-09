@@ -4,7 +4,7 @@ package: '@provisioner/appengine'
 
 editions:
   - name: calibre
-    scope: public
+    status: public
     default: true
     spec:
       routes:

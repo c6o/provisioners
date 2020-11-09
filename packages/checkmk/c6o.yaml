@@ -70,7 +70,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -101,7 +101,7 @@ editions:
           path: /cmk/check_mk/
 
   - name: live-stats
-    scope: public
+    status: public
     default: true
     spec:
       routes:
