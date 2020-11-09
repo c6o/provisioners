@@ -61,7 +61,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: public
+    scope: public
     default: true
     spec:
       routes:
@@ -85,7 +85,7 @@ editions:
 
 
   - name: latest
-    status: public
+    scope: public
     default: true
     spec:
       routes:

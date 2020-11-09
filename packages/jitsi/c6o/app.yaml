@@ -28,7 +28,7 @@ provisioner:
 
 editions:
   - name: stable
-    status: public
+    scope: public
     interfaces:
       - logstash
     spec:

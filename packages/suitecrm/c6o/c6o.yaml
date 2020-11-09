@@ -41,7 +41,7 @@ provisioner:
 
 editions:
   - name: stable
-    status: public
+    scope: public
     spec:
     routes:
       - type: http

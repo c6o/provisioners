@@ -3,7 +3,7 @@ appId: prometheus
 icon: icon.svg
 editions:
   - name: stable
-    status: public
+    scope: public
     spec:
       provisioner:
         package: '@provisioner/prometheus'

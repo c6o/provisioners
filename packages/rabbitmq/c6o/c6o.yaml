@@ -33,7 +33,7 @@ provisioner:
 
 editions:
   - name: stable
-    status: public
+    scope: public
     spec:
       provisioner:
         package: '@provisioner/prometheus'

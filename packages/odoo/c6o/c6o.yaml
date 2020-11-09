@@ -40,7 +40,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: public
+    scope: public
     spec:
       routes:
         - type: http
@@ -53,7 +53,7 @@ editions:
           popUp: true
 
   - name: latest
-    status: public
+    scope: public
     spec:
       routes:
         - type: http

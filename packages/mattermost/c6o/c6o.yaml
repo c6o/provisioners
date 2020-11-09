@@ -27,7 +27,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: public
+    scope: public
     spec:
       routes:
         - type: http
@@ -39,7 +39,7 @@ editions:
           type: inline
           popUp: true
   - name: enterprise
-    status: public
+    scope: public
     spec:
       routes:
         - type: http

@@ -23,7 +23,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: public
+    scope: public
     default: true
     spec:
       routes:
@@ -83,7 +83,7 @@ editions:
           popUp: true
 
   - name: preview-detailed
-    status: public
+    scope: public
     default: true
     spec:
       routes:
