@@ -30,7 +30,7 @@ provisioner:
 
 editions:
   - name: python
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -82,7 +82,7 @@ editions:
           popUp: true
 
   - name: nodejs
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -135,7 +135,7 @@ editions:
 
 
   - name: go
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -189,7 +189,7 @@ editions:
 
 
   - name: ruby
-    scope: public
+    status: public
     default: true
     spec:
       routes:

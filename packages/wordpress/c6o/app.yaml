@@ -32,7 +32,7 @@ provisioner:
 
 editions:
   - name: stable
-    scope: public
+    status: public
     spec:
       routes:
         - type: http

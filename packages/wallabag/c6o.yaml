@@ -50,7 +50,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: private
+    status: private
     default: true
     spec:
       routes:

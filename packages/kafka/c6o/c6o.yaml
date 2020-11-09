@@ -28,7 +28,7 @@ provisioner:
 
 editions:
   - name: dragon
-    scope: public
+    status: public
     spec:
       routes:
         - type: http

@@ -59,7 +59,7 @@ provisioner:
 
 editions:
   - name: stable
-    scope: public
+    status: public
     spec:
       marina: {}
       provisioner:

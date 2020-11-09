@@ -24,7 +24,7 @@ provisioner:
 
 editions:
   - name: local
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -43,7 +43,7 @@ editions:
           popUp: true
 
   - name: localinternal
-    scope: public
+    status: public
     default: true
     spec:
       provisioner:

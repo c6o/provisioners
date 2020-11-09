@@ -40,7 +40,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: private  #SSL issue
+    status: private  #SSL issue
     default: true
     spec:
       routes:

@@ -96,7 +96,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: private  #TODO: NEED $PUBLIC_DNS
+    status: private  #TODO: NEED $PUBLIC_DNS
     default: true
     spec:
       routes:

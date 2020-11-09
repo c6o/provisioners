@@ -29,7 +29,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: public
+    status: public
     default: true
     spec:
       routes:

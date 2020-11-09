@@ -40,7 +40,7 @@ provisioner:
 
 editions:
   - name: server
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -69,7 +69,7 @@ editions:
           popUp: true
 
   - name: agent
-    scope: public
+    status: public
     default: true
     spec:
       provisioner:

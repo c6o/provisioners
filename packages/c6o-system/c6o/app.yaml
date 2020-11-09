@@ -6,7 +6,7 @@ icon: systemIcon.svg
 summary: This is the CodeZero Operating System
 editions:
   - name: latest
-    scope: public
+    status: public
     spec:
       navstation: true
       provisioner:
@@ -34,7 +34,7 @@ icon: storeIcon.svg
 summary: Discover and Install other CodeZero Applications in the Store
 editions:
   - name: latest
-    scope: public
+    status: public
     spec:
       routes:
         - type: http
@@ -58,7 +58,7 @@ system: true
 summary: The Nav Station is the Settings Application where you can manage preferences and configuration of installed Applications.
 editions:
   - name: latest
-    scope: public
+    status: public
     spec:
       routes:
         - type: http
@@ -86,6 +86,6 @@ icon: marinaIcon.svg
 summary: The Marina is the CodeZero desktop UI for Kubernetes. It is the first Application that launches when you navigate to a CodeZero Cloud.
 editions:
   - name: latest
-    scope: public
+    status: public
     spec:
       provisioner: ignore

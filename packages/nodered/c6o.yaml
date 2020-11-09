@@ -31,7 +31,7 @@ support: https://github.com/node-red/node-red/issues
 
 editions:
   - name: preview
-    scope: public
+    status: public
     spec:
       routes:
         - type: http

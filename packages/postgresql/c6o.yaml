@@ -31,7 +31,7 @@ provisioner:
 
 editions:
   - name: developer
-    scope: public
+    status: public
     spec:
       routes:
           - type: tcp
@@ -76,7 +76,7 @@ editions:
           popUp: true
 
   - name: developer-internal
-    scope: public
+    status: public
     spec:
       provisioner:
         package: '@provisioner/appengine'

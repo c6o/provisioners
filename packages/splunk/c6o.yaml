@@ -34,7 +34,7 @@ provisioner:
 
 editions:
   - name: local
-    scope: public
+    status: public
     default: true
     spec:
       routes:

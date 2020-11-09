@@ -34,7 +34,7 @@ provisioner:
 
 editions:
   - name: preview
-    scope: public
+    status: public
     default: true
     spec:
       routes:
@@ -54,7 +54,7 @@ editions:
 
 
   - name: private
-    scope: private
+    status: private
     default: true
     spec:
       routes:

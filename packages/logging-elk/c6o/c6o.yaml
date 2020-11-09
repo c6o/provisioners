@@ -33,7 +33,7 @@ provisioner:
 
 editions:
   - name: stable
-    scope: public
+    status: public
     interfaces:
       - logstash
     spec:

@@ -28,7 +28,7 @@ provisioner:
 
 editions:
   - name: latest
-    scope: public
+    status: public
     default: true
     spec:
       routes:
