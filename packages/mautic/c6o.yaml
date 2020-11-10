@@ -1,0 +1,120 @@
+name: Mautic
+appId:  mautic
+package: '@provisioner/appengine'
+icon: icon.svg
+description:
+  Mautic began with a single focus. Equality. The Mautic community believes in giving every person the power to understand, manage, and grow their business or organization. Mautic is focused on helping this belief become a reality by getting powerful marketing automation software into the hands of everyone.
+
+
+  Mautic is software made by the people and for the people and as such the community is a top priority. Those people interested in becoming involved in a community with a vision to change the world should consider getting involved in Mautic. People are the priority. Equality is the goal.
+
+
+  Setup
+
+  ----
+
+  Mautic requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE mautic;
+
+    CREATE USER 'mautic'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'filerun'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON mautic.* TO 'mautic'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+
+
+summary:
+  Mautic - Open Source Marketing Automation Software.
+category: comm
+keywords:
+  - marketing automation
+
+repo: https://github.com/mautic/mautic
+license: https://github.com/mautic/mautic/blob/staging/LICENSE.txt
+support: https://github.com/mautic/mautic/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: private
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: mautic
+      provisioner:
+        package: '@provisioner/appengine'
+        automated: true
+        tag-prefix: appengine
+        name: mautic
+        image: 'mautic/mautic:latest'
+        port: 80
+
+        volume:
+            - name: mautic-data
+              size: 5Gi
+              mountPath: /var/www/html
+        config:
+          - name: MAUTIC_DB_HOST
+            label: Database Server Host
+            hint: Typically the name of the Service for the MySql instance
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: MAUTIC_DB_NAME
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mautic
+
+          - name: MAUTIC_DB_USER
+            label: Database user
+            hint: The username of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mautic
+
+          - name: MAUTIC_RUN_CRON_JOBS
+            value: true
+
+          - name: MAUTIC_TRUSTED_PROXIES
+            value: 0.0.0.0/0
+
+        secret:
+          - name: MAUTIC_DB_PASSWORD
+            label: Database Password
+            hint: The password used to login to your database.
+            required: true
+            autoselect: true
+            fieldType: password
+
+
+
+      marina:
+        launch:
+          type: inline
+          popUp: true

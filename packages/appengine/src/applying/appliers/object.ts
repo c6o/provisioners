@@ -1,7 +1,6 @@
 import { ProvisionerManager } from '@provisioner/common'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
-import { inspect } from 'util'
 import { templates } from '../../templates/latest'
 import createDebug from 'debug'
 import { LabelsMetadata } from '../../parsing'
@@ -14,11 +13,11 @@ export class ObjectApplier implements Applier {
 
         if (!spec.metaData) {
             spec.metaData = {
-                id: Math.random().toString(36).substring(6),
+                id: this.makeRandom(6),
                 edition: spec.edition
             } as LabelsMetadata
         }
-        if(!spec.metaData.id) spec.metaData.id = Math.random().toString(36).substring(6)
+        if(!spec.metaData.id) spec.metaData.id = this.makeRandom(6)
         if(!spec.metaData.edition) spec.metaData.edition = spec.edition
 
         debug(`BOOSTRAP:${JSON.stringify(spec)}`)
