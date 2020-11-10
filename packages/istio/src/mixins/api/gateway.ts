@@ -1,5 +1,6 @@
 import { baseProvisionerType } from '../../'
 import { Result } from '@c6o/kubeclient'
+import { promises } from 'dns'
 
 export const gatewayApiMixin = (base: baseProvisionerType) => class extends base {
 
@@ -55,23 +56,41 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
 
     async getExternalIPAddress() {
         let externalIP = null
+        let hostname = null
         await this.manager.cluster.
             begin(`Fetch external IP address`)
-            .beginWatch({
-                kind: 'Service',
-                metadata: {
-                    namespace: 'istio-system',
-                    labels: {
-                        istio: 'ingressgateway'
+                .beginWatch({
+                    kind: 'Service',
+                    metadata: {
+                        namespace: 'istio-system',
+                        labels: {
+                            istio: 'ingressgateway'
+                        }
                     }
-                }
-            })
-            .whenWatch(({ obj }) => obj.status?.loadBalancer?.ingress?.length && obj.status?.loadBalancer?.ingress[0].ip, (processor, service) => {
-                externalIP = service.status.loadBalancer.ingress[0].ip
-                processor.endWatch()
-            })
+                })
+                .whenWatch(({ obj }) => obj.status?.loadBalancer?.ingress?.length && (obj.status?.loadBalancer?.ingress[0].ip || obj.status?.loadBalancer?.ingress[0].hostname), (processor, service) => {
+                    externalIP = service.status.loadBalancer.ingress[0].ip
+                    hostname = service.status.loadBalancer.ingress[0].hostname
+                    processor.endWatch()
+                })
             .end()
+
+        if (!externalIP && hostname) {
+            const resolver = new promises.Resolver()
+            try {
+                const dnsResult = await resolver.resolve4(hostname)
+                if (dnsResult.length === 1)
+                    externalIP = dnsResult[0]
+            }
+            catch (ex) {
+                await sleep(1000)
+            }
+        }
 
         return externalIP
     }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
