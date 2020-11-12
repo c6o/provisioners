@@ -13,11 +13,11 @@ export class ObjectApplier implements Applier {
 
         if (!spec.metaData) {
             spec.metaData = {
-                id: this.makeRandom(6),
+                instanceId: this.makeRandom(6),
                 edition: spec.edition
             } as LabelsMetadata
         }
-        if(!spec.metaData.id) spec.metaData.id = this.makeRandom(6)
+        if(!spec.metaData.instanceId) spec.metaData.instanceId = this.makeRandom(6)
         if(!spec.metaData.edition) spec.metaData.edition = spec.edition
 
         debug(`BOOSTRAP:${JSON.stringify(spec)}`)
