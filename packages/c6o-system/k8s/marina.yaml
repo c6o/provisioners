@@ -8,7 +8,8 @@ data:
       window.c6oEnv = {
         'SYSTEM_SERVER_URL': '{{systemServerURL}}',
         'HUB_SERVER_URL': '{{hubServerURL}}',
-        'FEATURE_AUTHORIZATION_KEY': '{{featureAuthKey}}'
+        'FEATURE_AUTHORIZATION_KEY': '{{featureAuthKey}}',
+        'STRIPE_PUBLISHABLE_KEY': '{{stripePublishableKey}}'
       }
 ---
 apiVersion: apps/v1

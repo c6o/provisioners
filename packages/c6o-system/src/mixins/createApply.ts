@@ -117,7 +117,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterDomain: this.spec.clusterDomain,
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
-            featureAuthKey: this.spec.featureAuthKey
+            featureAuthKey: this.spec.featureAuthKey,
+            stripePublishableKey: this.spec.stripePublishableKey
         }
 
         await this.manager.cluster
