@@ -8,13 +8,13 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         'https://hub.codezero.io': 'codezero.cloud'
     }
 
-    hubToFeatureKey = {
+    hubToFeatureKeyMap = {
         'https://develop.hub.codezero.io': '2esfjsm95kkj0c8nc7rrlh320c7omri0hu1s',
         'https://staging.hub.codezero.io': 'b510uri5ep25aspo5u8pi94nv3fdgffkhen9',
         'https://hub.codezero.io': 'p2h2meb6rh5d9ac16nskh62ee1h6gs2thnv1'
     }
 
-    hubToStripeKey = {
+    hubToStripeKeyMap = {
         'https://develop.hub.codezero.io': 'pk_test_51HXVWKKjz7Cmz2tekhX1kNx5BZXiKn0j4ROatZMROTwHDOwJPl6bnTNsH1DIqxde90FkzTCi9Ix6x5aQxhCuLr7D00tcbfVwNC',
         'https://staging.hub.codezero.io': 'pk_test_51HXVWKKjz7Cmz2tekhX1kNx5BZXiKn0j4ROatZMROTwHDOwJPl6bnTNsH1DIqxde90FkzTCi9Ix6x5aQxhCuLr7D00tcbfVwNC',
         'https://hub.codezero.io': 'pk_live_51HXVWKKjz7Cmz2te0QAP3Z3361Wmpia5EyYBY4CRSM61XrPqEOX4kIg7AWmKTAGeHGxyG9KTGANo94HJvACIibpc00pwdf0L1W'
@@ -31,14 +31,14 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         if (hubURL.endsWith('ngrok.io'))
             return '2esfjsm95kkj0c8nc7rrlh320c7omri0hu1s'
 
-        return this.hubToFeatureKey[hubURL] || 'p2h2meb6rh5d9ac16nskh62ee1h6gs2thnv1'
+        return this.hubToFeatureKeyMap[hubURL] || 'p2h2meb6rh5d9ac16nskh62ee1h6gs2thnv1'
     }
 
     hubToStripeKey = (hubURL) => {
         if (hubURL.endsWith('ngrok.io'))
             return 'pk_test_51HXVWKKjz7Cmz2tekhX1kNx5BZXiKn0j4ROatZMROTwHDOwJPl6bnTNsH1DIqxde90FkzTCi9Ix6x5aQxhCuLr7D00tcbfVwNC'
 
-        return this.hubToStripeKey[hubURL] || 'pk_live_51HXVWKKjz7Cmz2te0QAP3Z3361Wmpia5EyYBY4CRSM61XrPqEOX4kIg7AWmKTAGeHGxyG9KTGANo94HJvACIibpc00pwdf0L1W'
+        return this.hubToStripeKeyMap[hubURL] || 'pk_live_51HXVWKKjz7Cmz2te0QAP3Z3361Wmpia5EyYBY4CRSM61XrPqEOX4kIg7AWmKTAGeHGxyG9KTGANo94HJvACIibpc00pwdf0L1W'
     }
 
     async createValidate() {
