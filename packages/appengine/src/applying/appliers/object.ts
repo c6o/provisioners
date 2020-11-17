@@ -9,6 +9,7 @@ const debug = createDebug('@appengine:ObjectApplier')
 
 export class ObjectApplier implements Applier {
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async apply(namespace: string, spec: any, manager: ProvisionerManager) {
 
         if (!spec.metaData) {
@@ -17,11 +18,10 @@ export class ObjectApplier implements Applier {
                 edition: spec.edition
             } as LabelsMetadata
         }
-        if(!spec.metaData.instanceId) spec.metaData.instanceId = this.makeRandom(6)
-        if(!spec.metaData.edition) spec.metaData.edition = spec.edition
+        if (!spec.metaData.instanceId) spec.metaData.instanceId = this.makeRandom(6)
+        if (!spec.metaData.edition) spec.metaData.edition = spec.edition
 
         debug(`BOOSTRAP:${JSON.stringify(spec)}`)
-
 
         const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
         debug(`deployment:${JSON.stringify(deployment)}`)
@@ -40,6 +40,7 @@ export class ObjectApplier implements Applier {
 
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applyDeployment(spec: any, manager: ProvisionerManager, deployment: any) {
 
         debug(`Installing the Deployment:${JSON.stringify(deployment)}`)
@@ -51,6 +52,7 @@ export class ObjectApplier implements Applier {
             .end()
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applyVolumes(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.volumes?.length) {
@@ -66,7 +68,8 @@ export class ObjectApplier implements Applier {
 
                 await manager.cluster
                     .begin(`Installing Volume Claim: '${item.name}'`)
-                    .addOwner(manager.document)  //TODO: Advanced installer needs to choose the volumes to delete
+                    //TODO: Advanced installer needs to choose the volumes to delete
+                    .addOwner(manager.document)
                     .upsert(pvc)
                     .end()
 
@@ -78,6 +81,7 @@ export class ObjectApplier implements Applier {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applyPorts(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.ports?.length) {
@@ -89,6 +93,15 @@ export class ObjectApplier implements Applier {
             for (const item of spec.ports) {
                 service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol })
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
+
+                if (item.probe?.length) {
+                    //we have probes
+                    for (const probe of item.probe) {
+                        const template = templates.getProbeTemplate(probe)
+                        if(template)
+                            deployment.spec.template.spec.containers[0] = { ...deployment.spec.template.spec.containers[0], ...template }
+                    }
+                }
             }
 
             debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`,)
@@ -103,6 +116,7 @@ export class ObjectApplier implements Applier {
 
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (!spec.configs?.length) spec.configs = []
@@ -110,6 +124,7 @@ export class ObjectApplier implements Applier {
         //provide some basic codezero app details to the provisioner
         spec.configs.push({ name: 'name', value: spec.name, env: 'CZ_APP' })
         spec.configs.push({ name: 'edition', value: spec.edition, env: 'CZ_EDITION' })
+        spec.configs.push({ name: 'instanceId', value: spec.metaData.instanceId, env: 'CZ_INSTANCE_ID' })
 
         const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
 
@@ -146,6 +161,7 @@ export class ObjectApplier implements Applier {
     }
 
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
 
         if (spec.secrets && spec.secrets.length > 0) {

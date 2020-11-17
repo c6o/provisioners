@@ -46,11 +46,21 @@ export interface Setting {
     fieldType: string
 }
 
+export interface Probe {
+    type: string
+    path: string
+    port: string
+    httpType: string
+    failureThreshold: number
+    periodSeconds: number
+}
+
 export interface Port {
     name: string
     protocol: string
     port: number
     targetPort: number
+    probe?: Probe[]
 }
 
 export interface Volume {
