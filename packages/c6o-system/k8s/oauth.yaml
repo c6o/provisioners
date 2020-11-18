@@ -5,4 +5,4 @@ metadata:
   name: codezero
   annotations:
     system.codezero.io/display: CodeZero
-    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/oauth/codezero/icon'
+    system.codezero.io/iconUrl: '{{assetsBaseURL}}/assets/oauth/codezero/icon'
