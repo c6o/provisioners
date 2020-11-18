@@ -6,7 +6,7 @@ metadata:
     namespace: c6o-system
     annotations:
       system.codezero.io/display: Marina
-      system.codezero.io/iconUrl: '{{assetsBaseUrl}}/assets/apps/marina/icon'
+      system.codezero.io/iconUrl: '{{assetsBaseURL}}/assets/apps/marina/icon'
 spec:
   marina:
     launch:
@@ -21,7 +21,7 @@ metadata:
   namespace: c6o-system
   annotations:
     system.codezero.io/display: Store
-    system.codezero.io/iconUrl: '{{assetsBaseUrl}}/assets/apps/store/icon'
+    system.codezero.io/iconUrl: '{{assetsBaseURL}}/assets/apps/store/icon'
 spec:
   marina:
     launch:
@@ -43,7 +43,7 @@ metadata:
   namespace: c6o-system
   annotations:
     system.codezero.io/display: Nav Station
-    system.codezero.io/iconUrl: '{{assetsBaseUrl}}/assets/apps/navstation/icon'
+    system.codezero.io/iconUrl: '{{assetsBaseURL}}/assets/apps/navstation/icon'
 spec:
   marina:
     launch:
