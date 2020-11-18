@@ -68,9 +68,6 @@ editions:
           - port: 8080
             name: http
             protocol: tcp
-            probe:
-              - type: startup
-                port: 8080
         automated: true
         tag-prefix: appengine
         volume:

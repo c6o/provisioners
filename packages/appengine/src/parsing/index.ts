@@ -34,6 +34,7 @@ export interface LabelsMetadata {
     edition: string
 }
 
+
 export interface Setting {
     name: string
     value: string
@@ -46,13 +47,18 @@ export interface Setting {
     fieldType: string
 }
 
+export type probeType = 'livenessProbe' | 'startupProbe' | 'readinessProbe'
+
 export interface Probe {
     type: string
     path: string
     port: string
     httpType: string
     failureThreshold: number
-    periodSeconds: number
+    initialDelaySeconds: number     //livenessProbe  readinessProbe
+    periodSeconds: number           //livenessProbe  startupProbe
+    command: unknown
+    tcpSocket: unknown
 }
 
 export interface Port {
