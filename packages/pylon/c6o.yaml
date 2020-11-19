@@ -1,5 +1,6 @@
 name: Pylon
 appId: pylon
+icon: icon.svg
 package: '@provisioner/appengine'
 summary:
   Pylon is a web based integrated development environment.
