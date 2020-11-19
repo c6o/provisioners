@@ -21,5 +21,5 @@ export interface Provisioner extends ProvisionerBase {
 export class Provisioner extends mix(ProvisionerBase)
     .with(createApplyMixin, removeInquireMixin, updateApplyMixin) {
     // @ts-ignore
-    get isLatest() { return this.edition === 'latest' }
+    get isLatest() { return this.editionId === 'latest' }
 }

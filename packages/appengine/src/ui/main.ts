@@ -25,20 +25,17 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
-
         this.handleMetaData()
 
         if (!this.spec.parsed)
             parser.parseInputsToSpec(null, this.spec)
 
         this.inspectFieldsForInputs()
-
     }
 
     handleMetaData() {
-
         this.spec.metaData = this.mediator.applicationSpec.metadata
-        this.spec.edition = this.spec.metaData.labels['system.codezero.io/edition']
+        this.spec.editionId = this.spec.metaData.labels['system.codezero.io/editionId']
 
         if (this.spec.metaData.annotations) {
             this.spec.metaData.appId = this.spec.metaData.annotations['system.codezero.io/appId']
@@ -46,15 +43,12 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
             this.spec.metaData.display = this.spec.metaData.annotations['system.codezero.io/display']
             this.spec.metaData.iconUrl = this.spec.metaData.annotations['system.codezero.io/iconUrl']
             this.spec.metaData.screenshots = this.spec.metaData.annotations['system.codezero.io/screenshots']
-            this.spec.metaData.edition = this.spec.metaData.labels['system.codezero.io/edition']
+            this.spec.metaData.editionId = this.spec.metaData.labels['system.codezero.io/editionId']
         }
         if (!this.spec.metaData.display) this.spec.metaData.display = this.spec.name
-
-
     }
 
     inspectFieldsForInputs() {
-
         const fieldTypes = ['text', 'password']
         this.spec._ui = { configs: false, secrets: false }
 
@@ -76,21 +70,14 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
                 }
             }
         }
-
     }
 
     async end() {
-
-
         if (this.spec._ui.configs)
             this.mediator.appendFlow('appengine-install-configs')
         else if (this.spec._ui.secrets)
             this.mediator.appendFlow('appengine-install-secrets')
 
         return true
-
     }
-
-
-
 }

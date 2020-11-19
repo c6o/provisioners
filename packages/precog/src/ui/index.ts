@@ -18,7 +18,7 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box @selected-item-changed=${this.storageSelected} label='Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></c6o-combo-box>
-                <c6o-combo-box @selected-item-changed=${this.editionSelected} label='Edition' value=${this.serviceSpec.edition || 'evaluation'} required .items=${this.editions}></c6o-combo-box>
+                <c6o-combo-box @selected-item-changed=${this.editionSelected} label='Edition' value=${this.serviceSpec.editionId || 'evaluation'} required .items=${this.editions}></c6o-combo-box>
             </c6o-form-layout>
             <c6o-form-layout>
                 <c6o-text-field @input=${this.usernameChanged} label="Docker username" value=${this.serviceSpec.dockerUsername || ''} autoselect required></c6o-text-field>
@@ -45,7 +45,7 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
     }
 
     editionSelected = (e) => {
-        this.serviceSpec.edition = e.detail.value
+        this.serviceSpec.editionId = e.detail.value
     }
 
     usernameChanged = (e) => {
