@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/c6o/provisioners/compare/v0.0.17...v0.0.18) (2020-11-19)
+
+
+### 🐛 Bug Fixes
+
+* **assets:** Fixed casing in assets URL ([7e15883](https://github.com/c6o/provisioners/commit/7e1588366b0d3f0b9f26c916361d96a598c38293))
+
+
+
+
+
 ## [0.0.17](https://github.com/c6o/provisioners/compare/v0.0.16...v0.0.17) (2020-11-05)
 
 **Note:** Version bump only for package @provisioner/c6o-system
