@@ -76,10 +76,10 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
         // set defaults
-        const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
+        const editionId = this.mediator.applicationSpec.metadata.labels['system.codezero.io/editionId']
         if (edition !== 'latest')
             throw new Error('Only the latest edition of Mattermost Provisioner allowed to pass')
-        this.serviceSpec.edition = edition
+        this.serviceSpec.editionId = editionId
     }
 
     async end() {

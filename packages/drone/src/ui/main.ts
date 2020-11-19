@@ -41,8 +41,8 @@ export class DroneSettingsMain extends LitElement implements StoreFlowStep {
 
     async begin() {
         // set defaults
-        const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
-        this.serviceSpec.edition = edition
+        const editionId = this.mediator.applicationSpec.metadata.labels['system.codezero.io/editionId']
+        this.serviceSpec.editionId = editionId
         this.serviceSpec.storageSize = this.serviceSpec.storageSize || '5Gi'
         this.serviceSpec.scmChoice = this.serviceSpec.scmChoice || this.scmChoices[0]
     }

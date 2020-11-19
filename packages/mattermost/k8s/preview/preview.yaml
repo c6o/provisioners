@@ -6,7 +6,7 @@ metadata:
   labels:
     app: mattermost-preview
     app.kubernetes.io/managed-by: codezero
-    system.codezero.io/edition: preview
+    system.codezero.io/editionId: preview
 spec:
   selector:
     matchLabels:

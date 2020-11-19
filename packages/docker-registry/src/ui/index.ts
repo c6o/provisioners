@@ -18,8 +18,8 @@ export class DockerRegistrySettings extends LitElement implements StoreFlowStep 
 
     async begin() {
         // set defaults
-        const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
-        this.serviceSpec.edition = edition
+        const editionId = this.mediator.applicationSpec.metadata.labels['system.codezero.io/editionId']
+        this.serviceSpec.editionId = editionId
     }
 
 }
