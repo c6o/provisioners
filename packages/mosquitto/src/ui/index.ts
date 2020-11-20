@@ -27,7 +27,7 @@ export class MosquittoSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
         // set defaults
-        const editionId = this.mediator.applicationSpec.metadata.labels['system.codezero.io/editionId']
+        const editionId = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
         this.serviceSpec.editionId = editionId
     }
 

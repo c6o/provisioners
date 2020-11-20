@@ -2,8 +2,8 @@ import { LabelsMetadata } from '../../parsing'
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 export function getLabels(name: string, metaData: LabelsMetadata) {
-    if(!metaData.editionId || metaData.editionId === '') metaData.editionId = 'preview'
-    const fullAppName = `${name}-${metaData.editionId}-${metaData.id}`
+    if(!metaData.edition || metaData.edition === '') metaData.edition = 'preview'
+    const fullAppName = `${name}-${metaData.edition}-${metaData.id}`
     const labels = {
         app: name,
         name: name,
@@ -17,7 +17,7 @@ export function getLabels(name: string, metaData: LabelsMetadata) {
     if(metaData.version) labels['app.kubernetes.io/version'] = metaData.version
     if(metaData.component) labels['app.kubernetes.io/component'] = metaData.component
     if(metaData.partOf) labels['app.kubernetes.io/part-of'] = metaData.partOf
-    if(metaData.editionId) labels['system.codezero.io/editionId'] = metaData.editionId
+    if(metaData.edition) labels['system.codezero.io/edition'] = metaData.edition
 
     return labels
 }

@@ -4,7 +4,7 @@ metadata:
   name: mosquitto
   namespace: testing
   labels:
-    system.codezero.io/editionId: latest
+    system.codezero.io/edition: latest
 spec:
   provisioner:
     remove-user:

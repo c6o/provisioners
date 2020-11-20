@@ -32,7 +32,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
 
     help (command: string, options: optionFunctionType, messages: string[]) {}
 
-    get editionId(): string { return this.manager?.document?.metadata?.labels['system.codezero.io/editionId'] }
+    get editionId(): string { return this.manager?.document?.metadata?.labels['system.codezero.io/edition'] }
 
     serve(req, res, serverRoot = 'lib/ui') {
         const root = path.resolve(this.moduleLocation, serverRoot)

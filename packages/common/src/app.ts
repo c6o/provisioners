@@ -103,7 +103,7 @@ export class AppObject {
     constructor(public document) { }
 
     getAppEdition() {
-        return this.document.metadata.labels?.['system.codezero.io/editionId'] || 'latest'
+        return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
     }
 
     getAppName() {
