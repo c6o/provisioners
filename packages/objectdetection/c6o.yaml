@@ -1,0 +1,57 @@
+name: Tensorflow Object Detection API
+appId:  objectdetection
+package: '@provisioner/appengine'
+summary:
+  The TensorFlow Object Detection API is an open source framework built on top of TensorFlow that makes it easy to construct, train and deploy object detection models.
+description:
+
+  The TensorFlow Object Detection API is an open source framework built on top of TensorFlow that makes it easy to construct, train and deploy object detection models.
+
+  Once deployed, you can incorporate the API into your custom application, be it a mobile application or a web application to suit your needs.
+
+category: dev-tools
+keywords:
+  - Developer
+  - Tools
+  - API
+  - TensorFlow
+  - Object Detection
+  - Machine Learning
+  - ML
+
+repo: https://github.com/wingedrasengan927/Tensorflow-2-Object-Detection-API-Flask-Application
+support: https://towardsdatascience.com/deploy-tensorflow-object-detection-api-on-kubernetes-with-python-flask-and-docker-7a9513dd19e4
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: private
+    default: true
+    spec:
+      provisioner:
+        package: '@provisioner/appengine'
+        name: objectdetection
+        image: 'ancs21/tf-od-api'
+        port:
+          - name: api
+            port: 5000
+          - name: jupyter
+            port: 8888
+        automated: true
+        tag-prefix: appengine
+        config:
+          - name: port
+            value: 5000
+          - name: host
+            value: 0.0.0.0
+          - name: debug
+            value: true
+
+      marina:
+        launch:
+          type: none
+          popUp: true
+

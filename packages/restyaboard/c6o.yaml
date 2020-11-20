@@ -1,0 +1,117 @@
+name: Restyaboard
+appId:  restyaboard
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Open source Trello-like kanban board. Based on Restya platform.
+
+
+description:
+
+  Open source Trello-like kanban board. Based on Restya platform.
+
+
+
+  Setup
+
+  ----
+
+  Resty requires access to a Postgresql database, with a user account which has sufficient permissions.  Do NOT create a new database manually, let the application handle that.
+
+
+  Here is a sample script to get you started.
+
+
+    ~~~~
+
+  CREATE USER restyaboard WITH PASSWORD '88888888';
+
+
+category: comm
+keywords:
+  - kanban
+  - project management
+
+repo: https://github.com/RestyaPlatform/board
+license: https://github.com/RestyaPlatform/board/blob/dev/LICENSE.txt
+support: https://github.com/RestyaPlatform/board/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: restyaboard
+      provisioner:
+        package: '@provisioner/appengine'
+        name: restyaboard
+        image: 'restyaplatform/restyaboard:dev'
+        tag-prefix: appengine
+        port: 80
+
+        volume:
+          - name: restyaboard-data
+            mountPath: /usr/share/nginx/html/media
+            size: 50Gi
+
+        config:
+
+          - name: POSTGRES_HOST
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: restyaboard
+
+          - name: POSTGRES_PORT
+            value: 5432
+
+          - name: POSTGRES_ADMIN_USER
+            label: Database Admin user name
+            hint: The username for the database user
+            required: true
+            autoselect: true
+            fieldType: text
+            value: root
+
+          - name: RESTYA_DB_USERNAME
+            label: Restya Database User Name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: restyaboard
+
+          - name: TZ
+            value: PST
+
+        secret:
+
+          - name: POSTGRES_ADMIN_PASS
+            label: Database Admin password
+            hint: The password for the database user
+            required: true
+            autoselect: true
+            fieldType: password
+
+          - name: RESTYA_DB_USERPASS
+            label: Restya Database Password
+            hint: The password for the database user
+            required: true
+            autoselect: true
+            fieldType: password
+
+
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

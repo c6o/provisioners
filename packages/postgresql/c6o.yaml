@@ -43,12 +43,9 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: postgresql
-        image: ananthhh/postgress
+        image: postgres:12-alpine
         automated: true
-        port:
-          name: tcp
-          protocol: TCP
-          port: 5432
+        port: 5432
         volume:
           - size: 5Gi
             mountPath: /data
@@ -82,11 +79,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: postgresql
-        image: ananthhh/postgress
-        port:
-          name: tcp
-          protocol: TCP
-          port: 5432
+        image: postgres:12-alpine
+        port: 5432
         volume:
           - size: 5Gi
             mountPath: /data

@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/common",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
   "scripts": {
@@ -36,5 +36,5 @@
     "mixwith": "^0.1.1",
     "ulid": "^2.3.0"
   },
-  "gitHead": "9431be11e4ad9ca64e2403060f3e725642f2af3c"
+  "gitHead": "76270c0e55c21dd5e02cd24c03c84567f77af028"
 }
