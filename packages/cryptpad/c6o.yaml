@@ -66,3 +66,35 @@ editions:
         launch:
           type: inline
           popUp: true
+
+  - name: private
+    status: private-test
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: cryptpad
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: cryptpad
+        image: promasu/cryptpad:latest
+        port:
+          - port: 3000
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 5
+                initialDelaySeconds: 5
+                timeoutSeconds: 5
+        automated: true
+        config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+      marina:
+        launch:
+          type: inline
+          popUp: true

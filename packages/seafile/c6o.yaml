@@ -49,9 +49,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
 
           - name: SEAFILE_ADMIN_EMAIL
             label: Admin Email

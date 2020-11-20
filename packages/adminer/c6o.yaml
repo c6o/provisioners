@@ -64,7 +64,10 @@ editions:
         package: '@provisioner/appengine'
         name: adminer
         image: 'adminer:latest'
-        port: 8080
+        port:
+          - port: 8080
+            name: http
+            protocol: tcp
         automated: true
         tag-prefix: appengine
         volume:

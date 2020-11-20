@@ -1,5 +1,6 @@
 name: Pylon
 appId: pylon
+icon: icon.svg
 package: '@provisioner/appengine'
 summary:
   Pylon is a web based integrated development environment.
@@ -46,9 +47,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
         volume:
           - name: pylon-code
             mountPath: /code

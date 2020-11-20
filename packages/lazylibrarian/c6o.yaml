@@ -26,9 +26,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
         volume:
           - name: lazylibrarian-config
             size: 5Gi

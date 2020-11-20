@@ -5,6 +5,7 @@ const debug = createDebug('@appengine:BasicPortParser')
 
 class BasicPortParser implements PortParser {
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parse(args: any, spec: any): Port[] {
 
         debug(`Port Inputs:${JSON.stringify(spec)}`, args, spec)
@@ -15,6 +16,7 @@ class BasicPortParser implements PortParser {
         return results
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     parseObject(args: any): Port[] {
 
         const results = []

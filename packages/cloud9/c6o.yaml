@@ -65,9 +65,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
 
         secret:
           - name: PASSWORD
@@ -109,9 +109,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
 
           - name: USERNAME
             label: Username
@@ -163,9 +163,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
 
           - name: USERNAME
             label: Username
@@ -216,9 +216,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
 
           - name: USERNAME
             label: Username

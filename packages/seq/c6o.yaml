@@ -1,0 +1,53 @@
+name: Seq
+appId: seq-logging
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Machine data, for humans.
+description:
+  Seq creates the visibility you need to quickly identify and diagnose problems in complex applications and microservices.
+
+
+  Collect application logs - Application logs are the most useful data available for detecting and solving a wide range of production issues and outages. Seq makes it easier to pinpoint the events and patterns in application behavior that show your system is working correctly — or why it isn't.
+
+
+  Seq is built for modern structured logging with message templates. Rather than waste time and effort trying to extract data from plain-text logs with fragile log parsing, the properties associated with each log event are captured and sent to Seq in a clean JSON format. Message templates are supported natively by ASP.NET Core, Serilog, NLog, and many other libraries, so your application can use the best available diagnostic logging for your platform.
+
+
+  Seq accepts logs via HTTP, GELF, custom inputs, and the seqcli command-line client, with plug-ins or integrations available for .NET Core, Java, Node.js, Python, Ruby, Go, Docker, message queues, and many other technologies.
+
+
+category: dev-tools
+keywords:
+  - Analytics
+  - Logging
+  - Structured Logging
+
+repo: https://datalust.co/seq
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: seq
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: seq
+        image: datalust/seq:latest
+        port: 80
+        automated: true
+        config:
+          - name: ACCEPT_EULA
+            value: y
+      marina:
+        launch:
+          type: inline
+          popUp: true

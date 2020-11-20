@@ -1,0 +1,113 @@
+name: Mibew
+appId:  mibew
+package: '@provisioner/appengine'
+icon: icon.svg
+
+summary:
+  Mibew Messenger (also known as Open Web Messenger) enables one-on-one chat assistance in real-time directly from your website. Just place the button of Web Messenger at your site. Your visitors click the button and chat with your operators who help them.
+
+description:
+
+
+
+  Setup
+
+  ----
+
+  Mibew requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE mibew;
+
+    CREATE USER 'mibew'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'mibew'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON mibew.* TO 'mibew'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+category: finance
+keywords:
+  - accounting
+  - bookeeping
+  - small businesses
+  - freelancers
+
+repo: https://github.com/akaunting/akaunting
+license: https://github.com/akaunting/akaunting/blob/master/LICENSE.txt
+support: https://github.com/akaunting/akaunting/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: private  #NOT READY
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: mibew
+      provisioner:
+        package: '@provisioner/appengine'
+        automated: true
+        tag-prefix: appengine
+        name: mibew
+        image: 'turnkeylinux/mibew'
+        port: 80
+
+        config:
+          - name: DB_HOST
+            label: Database Server Host
+            hint: Typically the name of the Service for the database instance
+            required: true
+            autoselect: true
+            fieldType: text
+
+          - name: DB_NAME
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mibew
+
+          - name: DB_USER
+            label: Database user
+            hint: The username of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mibew
+
+          - name: DEBUG
+            value: false
+
+        secret:
+          - name: DB_PASS
+            label: Database Password
+            hint: The password used to login to your database.
+            required: true
+            autoselect: true
+            fieldType: password
+
+
+
+      marina:
+        launch:
+          type: inline
+          popUp: true

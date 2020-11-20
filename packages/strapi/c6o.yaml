@@ -7,6 +7,31 @@ summary:
 description:
   Strapi is a flexible, open-source Headless CMS that gives developers the freedom to choose their favorite tools and frameworks while also allowing editors to easily manage and distribute their content. By making the admin panel and API extensible through a plugin system, Strapi enables the world's largest companies to accelerate content delivery while building beautiful digital experiences.
 
+
+
+  Setup
+
+  ----
+
+  Strapi requires access to a Postgresql or MongoDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script, for postgresql to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE strapi;
+
+    CREATE USER strapi WITH PASSWORD '88888888';
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+  The installation process takes a few minutes, so please be patient.
+
 category: cms
 keywords:
   - Content Management System
@@ -39,9 +64,15 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        port: 1337
         automated: true
-      marina:
+        port:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         launch:
           type: inline
           popUp: true
@@ -59,8 +90,15 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        port: 1337
         automated: true
+        port:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         volume:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/
@@ -93,8 +131,8 @@ editions:
             value: strapi
 
           - name: DATABASE_USERNAME
-            label: Database Name
-            hint: The name of the database to use
+            label: Database user name
+            hint: The username for the database user
             required: true
             autoselect: true
             fieldType: text
@@ -104,8 +142,8 @@ editions:
         secret:
 
           - name: DATABASE_PASSWORD
-            label: Admin Password
-            hint: The admin password
+            label: Database password
+            hint: The password for the database user
             required: true
             autoselect: true
             fieldType: password
@@ -128,8 +166,14 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        port: 1337
-        automated: true
+        port:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         volume:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/
@@ -162,8 +206,8 @@ editions:
             value: strapi
 
           - name: DATABASE_USERNAME
-            label: Database Name
-            hint: The name of the database to use
+            label: Database user name
+            hint: The username for the database user
             required: true
             autoselect: true
             fieldType: text
@@ -173,8 +217,8 @@ editions:
         secret:
 
           - name: DATABASE_PASSWORD
-            label: Admin Password
-            hint: The admin password
+            label: Database password
+            hint: The password for the database user
             required: true
             autoselect: true
             fieldType: password
