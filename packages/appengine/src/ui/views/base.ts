@@ -19,7 +19,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
 
     handleLayout(items, type) {
 
-        const fieldTypes = ['text', 'password']
+        const fieldTypes = ['text', 'password', 'checkbox']
 
         const headingLayout = document.createElement('c6o-form-layout')
         const headingField = document.createElement('p')
@@ -28,7 +28,6 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         this.pageLayout.appendChild(headingLayout)
         this.bodyLayout = document.createElement('c6o-form-layout')
         this.pageLayout.appendChild(this.bodyLayout)
-
 
         headingField.innerHTML = this.headingText
 
@@ -62,6 +61,9 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
     renderInputField(type, item) {
 
         if (!item.fieldType) item.fieldType = 'text'
+
+        if(item.fieldType === 'checkbox') return this.renderCheckboxInputField(type, item)
+
         const field = document.createElement(`c6o-${item.fieldType}-field`)
         field['label'] = item.name
 
@@ -75,7 +77,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
             field['autoselect'] = ''
 
         field['value'] = item.value
-        field['_id'] = item.name
+        field['id'] = item.name
         if (item.hint) {
             field['alt'] = item.hint
             field['title'] = item.hint
@@ -83,10 +85,45 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
 
         field.addEventListener('input', e => {
             const event = e as any
-            const name = event.target._id
+            const name = event.target.id
             for (const item of this.spec[type]) {
                 if (item.name === name) {
                     item.value = event.target.value
+                    break
+                }
+            }
+        })
+
+        this.bodyLayout.appendChild(field)
+
+        return
+    }
+
+    renderCheckboxInputField(type, item) {
+        const field = document.createElement('c6o-checkbox')
+
+        if (item.label && item.label !== '')
+            field.innerHTML = item.label
+
+        if (item.autoselect && item.autoselect === true)
+            field['autoselect'] = ''
+
+        field['id'] = item.name
+
+        if (item.hint) {
+            field['alt'] = item.hint
+            field['title'] = item.hint
+        }
+
+        if(item.value === true) field['checked'] = true
+
+        field.addEventListener('change', e => {
+            const event = e as any
+            const name = event.target.id
+            for (const item of this.spec[type]) {
+                if (item.name === name) {
+                    item.value = !!event.target.checked
+                    console.log('ROBX', 'checked-changed 222', event, item)
                     break
                 }
             }

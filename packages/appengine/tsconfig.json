@@ -8,8 +8,7 @@
         { "path":  "../common" }
     ],
     "include": [
-        "src",
-        "manifest.template.json"
+        "./src"
     ],
     "exclude": [
         "node_modules",

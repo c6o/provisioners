@@ -82,9 +82,12 @@ editions:
         port:
           - port: 3000
             name: http
-            protocol: tcp
+            protocol: TCP
             probe:
               - type: startup
+                periodSeconds: 5
+                initialDelaySeconds: 5
+                timeoutSeconds: 5
         automated: true
         config:
           - name: PUID

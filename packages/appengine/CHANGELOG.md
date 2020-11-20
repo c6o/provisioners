@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.18](https://github.com/c6o/provisioners/compare/v0.0.17...v0.0.18) (2020-11-19)
+
+
+### 🐛 Bug Fixes
+
+* **scope vs status:** Manifest had incorrect label for property scope vs status. ([#98](https://github.com/c6o/provisioners/issues/98)) ([cdae10c](https://github.com/c6o/provisioners/commit/cdae10cce61ad8b1c2d9995a74096990e5de40a1))
+
+
+### ♻️ Chores
+
+* **appengine-bug:** fixed bug with appengine ([#97](https://github.com/c6o/provisioners/issues/97)) ([2f0cc7e](https://github.com/c6o/provisioners/commit/2f0cc7e751bad6c4e33188e15d682c3c9ae05322))
+
+
+
+
+
 ## [0.0.17](https://github.com/c6o/provisioners/compare/v0.0.16...v0.0.17) (2020-11-05)
 
 **Note:** Version bump only for package @provisioner/appengine

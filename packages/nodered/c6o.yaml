@@ -47,17 +47,17 @@ editions:
 
           - name: NODE_RED_ENABLE_PROJECTS
             label: Enable Projects
-            hint: true or false
-            required: true
+            hint: Checked to enable projects
             autoselect: true
-            fieldType: text
+            fieldType: checkbox
             value: true
+            required: false
 
+            #https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
           - name: TZ
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
             fieldType: text
             value: America/Vancouver
 

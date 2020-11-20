@@ -91,15 +91,17 @@ export class ObjectApplier implements Applier {
             deployment.spec.template.spec.containers[0].ports = []
 
             for (const item of spec.ports) {
-
-                service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol.toUpperCase() })
+                if(item.protocol) item.protocol = item.protocol.toUpperCase()
+                service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol })
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
 
                 if (item.probe?.length) {
                     //we have probes
                     for (const probe of item.probe) {
                         if (!probe.port || probe.port <= 0) probe.port = item.port  //allow for a more terse syntax in the yaml; no need to specifiy the port, it will adopt the port from the parent instance
+
                         const template = templates.getProbeTemplate(probe)
+
                         if (template) {
                             debug('Probe will be applied to deployment container; template: ', template)
                             deployment.spec.template.spec.containers[0] = { ...deployment.spec.template.spec.containers[0], ...template }
