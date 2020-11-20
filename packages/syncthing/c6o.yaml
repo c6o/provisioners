@@ -102,9 +102,9 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            autoselect: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
+
         volume:
           - name: syncthing-data
             size: 100Gi

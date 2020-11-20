@@ -55,7 +55,7 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
     inspectFieldsForInputs() {
 
-        const fieldTypes = ['text', 'password', 'checkbox']
+        const fieldTypes = ['text', 'password', 'checkbox', 'timezone']
         this.spec._ui = { configs: false, secrets: false }
 
         if (this.spec.configs) {

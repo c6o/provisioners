@@ -64,9 +64,15 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        port: 1337
         automated: true
-      marina:
+        port:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         launch:
           type: inline
           popUp: true
@@ -84,8 +90,15 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        port: 1337
         automated: true
+        port:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         volume:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/
@@ -153,8 +166,14 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        port: 1337
-        automated: true
+        port:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         volume:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/

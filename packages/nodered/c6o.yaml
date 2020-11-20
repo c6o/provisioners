@@ -58,9 +58,8 @@ editions:
             label: Timezone
             hint: Specify a timezone to use.
             required: true
-            fieldType: text
+            fieldType: timezone
             value: America/Vancouver
-
 
         volumes:
           - name: nodered-data
