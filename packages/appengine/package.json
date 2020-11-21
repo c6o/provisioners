@@ -42,5 +42,6 @@
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",
     "tslib": "^1.11.1"
-  }
+  },
+  "gitHead": "76270c0e55c21dd5e02cd24c03c84567f77af028"
 }

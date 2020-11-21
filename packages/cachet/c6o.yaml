@@ -1,0 +1,110 @@
+name: Cachet
+appId:  cachet
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  An open source status page system for everyone.
+description:
+
+  Cachet is software that improves downtime.
+
+  Great companies all over the world are using Cachet to better communicate downtime and system outages to their customers, teams and shareholders.
+
+
+  Setup
+
+  ----
+
+  Cachet requires access to a Postgresql database, with a user account which has sufficient permissions to an existing database.
+
+
+  Here is a sample script to get you started.
+
+
+    ~~~~
+
+  CREATE USER cachet WITH PASSWORD '88888888';
+
+  CREATE DATABASE cachet ;
+
+  GRANT ALL PRIVILEGES ON DATABASE cachet to cachet;
+
+
+
+category: monitoring
+keywords:
+  - downtime
+  - reporting
+
+repo: https://github.com/cachethq/Cachet
+license: https://github.com/CachetHQ/Cachet/blob/2.4/LICENSE
+support: https://github.com/CachetHQ/Cachet/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: cachet
+      provisioner:
+        package: '@provisioner/appengine'
+        name: cachet
+        image: 'cachethq/docker:latest'
+        tag-prefix: appengine
+        port: 8000
+
+        config:
+
+          - name: DB_HOST
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: cachet
+
+          - name: DB_DATABASE
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: cachet
+
+          - name: POSTGRES_PORT
+            value: 5432
+
+          - name: APP_KEY
+            value: base64:04o0jBc+4hSNrJNS39i8J6185ubrC/YtOMwHGhw8v6o=
+
+          - name: DB_DRIVER
+            value: pgsql
+
+          - name: DB_USERNAME
+            label: Database user name
+            hint: The username for the database user
+            required: true
+            autoselect: true
+            fieldType: text
+            value: cachet
+
+        secret:
+
+          - name: DB_PASSWORD
+            label: Database password
+            hint: The password for the database user
+            required: true
+            autoselect: true
+            fieldType: password
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

@@ -20,7 +20,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
 
     handleLayout(items, type) {
 
-        const fieldTypes = ['text', 'password', 'checkbox', 'timezone']
+        const fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
 
         const headingLayout = document.createElement('c6o-form-layout')
         const headingField = document.createElement('p')
@@ -31,7 +31,6 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         this.pageLayout.appendChild(this.bodyLayout)
 
         headingField.innerHTML = this.headingText
-
         headingLayout.appendChild(headingField)
 
         if (items) {
@@ -67,14 +66,20 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         if (item.fieldType === 'password') return this.renderTextFiled(type, item)
         if (item.fieldType === 'checkbox') return this.renderCheckboxInputField(type, item)
 
-        const tzList =  getTimeZones()
-        const zones = []
-        for(const group of tzList) {
-          for(const zone of group.zones)
-              zones.push(zone.value)
+        if(item.fieldType === 'combobox' && item.items) {
+            return this.renderComboList(type, item, item.items)
         }
 
-        if (item.fieldType === 'timezone') return this.renderComboList(type, item, zones)
+
+        if (item.fieldType === 'timezone') {
+            const tzList = getTimeZones()
+            const zones = []
+            for (const group of tzList) {
+                for (const zone of group.zones)
+                    zones.push(zone.value)
+            }
+            return this.renderComboList(type, item, zones)
+        }
 
         return false
     }
