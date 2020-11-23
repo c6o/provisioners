@@ -1,0 +1,68 @@
+name: NextCloud
+appId: nextcloud
+icon: icon.svg
+category: dms
+
+description:
+  Nextcloud Hub is the first completely integrated on-premises content collaboration platform 
+  on the market, ready for a new generation of users who expect seamless online collaboration 
+  capabilities out of the box.
+summary:
+  Nextcloud is a suite of client-server software for creating and using file hosting services.
+
+keyworks:
+- nextcloud
+- next-cloud
+- document-sharing
+- file-sharing
+- open-source
+- calendars
+- document
+- email
+- contacts
+- groupware
+- productivity-platform
+
+repo: https://github.com/nextcloud/server
+
+editions:
+  - name: preview
+    status: public
+    spec:
+      marina:
+        launch:
+          type: inline
+          popUp: true
+      routes:
+        - type: http
+          targetService: nextcloud
+      provisioner:
+        package: '@conneryn/nextcloud'
+        applicationName: nextcloud
+        tag: stable
+        storage: 5Gi
+        sql:
+          enabled: true
+          selfHosted: true
+          host: nextcloud-db
+          port: 3306
+          database: nextcloud
+          username: nextcloud-user
+  
+  - name: demo
+    status: public
+    spec:
+      marina:
+        launch:
+          type: inline
+          popUp: true
+      routes:
+        - type: http
+          targetService: nextcloud
+      provisioner:
+        package: '@conneryn/nextcloud'
+        applicationName: nextcloud
+        tag: latest
+        storage: 5Gi
+        sql:
+          enabled: false
