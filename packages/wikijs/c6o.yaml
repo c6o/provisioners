@@ -3,13 +3,11 @@ appId:  wikijs
 package: '@provisioner/appengine'
 icon: icon.svg
 summary:
-  An open source status page system for everyone.
+  Wiki.js is a wiki engine running on Node.js and written in JavaScript.
+
 description:
 
-  Cachet is software that improves downtime.
-
-  Great companies all over the world are using Cachet to better communicate downtime and system outages to their customers, teams and shareholders.
-
+  Wiki.js is a wiki engine running on Node.js and written in JavaScript. It is free software released under the Affero GNU General Public License. It is available as a self-hosted solution or using "single-click" install on the DigitalOcean and AWS marketplace.
 
 
   Setup
@@ -19,7 +17,7 @@ description:
   Wikijs requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
 
 
-  Here is a sample script to get you started
+  Here is a sample script to get you started with MySql
 
 
     ~~~~
@@ -42,14 +40,13 @@ description:
 
 
 
-category: dms
+category: cms
 keywords:
-  - downtime
-  - reporting
+  - wiki
 
-repo: https://github.com/cachethq/Cachet
-license: https://github.com/CachetHQ/Cachet/blob/2.4/LICENSE
-support: https://github.com/CachetHQ/Cachet/issues
+repo: https://github.com/Requarks/wiki
+license: https://github.com/Requarks/wiki/blob/dev/LICENSE
+support: https://github.com/Requarks/wiki/issues
 
 provisioner:
   repo: https://github.com/c6o/provisioners
