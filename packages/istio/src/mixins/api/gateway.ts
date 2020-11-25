@@ -53,25 +53,15 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
         return await this.manager.cluster.delete(template)
     }
 
-    async getExternalIPAddress() {
-        let externalIP = null
-        await this.manager.cluster.
-            begin(`Fetch external IP address`)
-            .beginWatch({
-                kind: 'Service',
-                metadata: {
-                    namespace: 'istio-system',
-                    labels: {
-                        istio: 'ingressgateway'
-                    }
+    async getExternalAddress() {
+        return await super.getServiceAddress({
+            kind: 'Service',
+            metadata: {
+                namespace: 'istio-system',
+                labels: {
+                    istio: 'ingressgateway'
                 }
-            })
-            .whenWatch(({ obj }) => obj.status?.loadBalancer?.ingress?.length && obj.status?.loadBalancer?.ingress[0].ip, (processor, service) => {
-                externalIP = service.status.loadBalancer.ingress[0].ip
-                processor.endWatch()
-            })
-            .end()
-
-        return externalIP
+            }
+        })
     }
 }

@@ -2,6 +2,7 @@ import { ulid } from 'ulid'
 import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
+import { KubeDocument } from '@c6o/kubeclient'
 
 import {
     namespaceMixin,
@@ -138,4 +139,23 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
     }
 
+    async getServiceAddress(service: Partial<KubeDocument>) {
+        let ip = null
+        let hostname = null
+
+        await this.manager.cluster.
+            begin(`Fetch external address`)
+            .beginWatch(service)
+            .whenWatch(
+                ({ obj }) => obj.status?.loadBalancer?.ingress?.length && (obj.status?.loadBalancer?.ingress[0].ip || obj.status?.loadBalancer?.ingress[0].hostname),
+                (processor, service) => {
+                    ip = service.status.loadBalancer.ingress[0].ip
+                    hostname = service.status.loadBalancer.ingress[0].hostname
+                    processor.endWatch()
+                }
+            )
+            .end()
+
+        return { ip, hostname }
+    }
 }

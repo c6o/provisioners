@@ -54,7 +54,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.installCrds()
         await this.ensureCrdsApplied()
         await this.installIstioServices()
-        await this.getExternalIPAddress()
+        await this.getExternalAddress()
     }
 
     async installCrds() {
