@@ -1,0 +1,125 @@
+name: Snipe-It
+appId:  snipeit
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  Snipe-IT was made for IT asset management, to enable IT departments to track who has which laptop, when it was purchased, which software licenses and accessories are available, and so on.
+
+description:
+  Snipe-IT was made for IT asset management, to enable IT departments to track who has which laptop, when it was purchased, which software licenses and accessories are available, and so on.
+
+
+  [Read more on the Overview Page](https://snipe-it.readme.io/docs/overview)
+
+
+
+  Setup
+
+  ----
+
+  Snipe-It requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started with MySql
+
+
+    ~~~~
+
+    CREATE DATABASE snipeit;
+
+    CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+
+category: cms
+keywords:
+  - wiki
+
+repo: https://github.com/Requarks/wiki
+license: https://github.com/Requarks/wiki/blob/dev/LICENSE
+support: https://github.com/Requarks/wiki/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: snipeit
+      provisioner:
+        package: '@provisioner/appengine'
+        name: snipeit
+        image: 'snipe/snipe-it'
+        tag-prefix: appengine
+        port: 80
+        automated: true
+
+        config:
+
+          - name: DB_HOST
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mysql.database
+
+
+          - name: DB_PORT
+            label: Database Port
+            hint: The port of the database
+            required: true
+            autoselect: true
+            fieldType: text
+            value: 3306
+
+
+          - name: DB_DATABASE
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: snipeit
+
+          - name: DB_USERNAME
+            label: Database user name
+            hint: The username for the database user
+            required: true
+            autoselect: true
+            fieldType: text
+            value: snipeit
+
+        secret:
+          - name: DB_PASSWORD
+            label: Database password
+            hint: The password for the database user
+            required: true
+            autoselect: true
+            fieldType: password
+
+          - name: APP_KEY
+            value: $RANDOM:32
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
