@@ -1,0 +1,138 @@
+name: WikiJs
+appId:  wikijs
+package: '@provisioner/appengine'
+icon: icon.svg
+summary:
+  An open source status page system for everyone.
+description:
+
+  Cachet is software that improves downtime.
+
+  Great companies all over the world are using Cachet to better communicate downtime and system outages to their customers, teams and shareholders.
+
+
+
+  Setup
+
+  ----
+
+  Wikijs requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE wikijs;
+
+    CREATE USER 'wikijs'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'wikijs'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON wikijs.* TO 'wikijs'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+
+category: dms
+keywords:
+  - downtime
+  - reporting
+
+repo: https://github.com/cachethq/Cachet
+license: https://github.com/CachetHQ/Cachet/blob/2.4/LICENSE
+support: https://github.com/CachetHQ/Cachet/issues
+
+provisioner:
+  repo: https://github.com/c6o/provisioners
+  support: https://github.com/c6o/provisioners/issues
+
+editions:
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: wikijs
+      provisioner:
+        package: '@provisioner/appengine'
+        name: wikijs
+        image: 'requarks/wiki'
+        tag-prefix: appengine
+        port: 3000
+        automated: true
+
+        config:
+
+
+          - name: DB_TYPE
+            value: mysql
+            label: Database type
+            hint: The type of the database to use
+            required: true
+            autoselect: true
+            fieldType: combobox
+            items:
+              - value: mysql
+              - value: postgres
+              - value: mariadb
+              - value: mssql
+              - value: sqlite
+
+          - name: DB_HOST
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mysql.database
+
+
+          - name: DB_PORT
+            label: Database Port
+            hint: The port of the database
+            required: true
+            autoselect: true
+            fieldType: text
+            value: 3306
+
+
+          - name: DB_NAME
+            label: Database name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: wikijs
+
+          - name: DB_USER
+            label: Database user name
+            hint: The username for the database user
+            required: true
+            autoselect: true
+            fieldType: text
+            value: wikijs
+
+        secret:
+
+          - name: DB_PASS
+            label: Database password
+            hint: The password for the database user
+            required: true
+            autoselect: true
+            fieldType: password
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+

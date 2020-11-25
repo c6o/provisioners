@@ -62,20 +62,31 @@ export class ObjectApplier implements Applier {
 
             for (const item of spec.volumes) {
 
-                const pvc = templates.getPVCTemplate(item.name, item.size, spec.name, namespace, spec.metaData)
+                if (item.size && item.size !== '') {
+                    const pvc = templates.getPVCTemplate(item, namespace, spec.metaData)
 
-                debug(`Installing Volume Claim:${JSON.stringify(pvc)}`)
+                    debug(`Installing Volume Claim:${JSON.stringify(pvc)}`)
 
-                await manager.cluster
-                    .begin(`Installing Volume Claim: '${item.name}'`)
-                    //TODO: Advanced installer needs to choose the volumes to delete
-                    .addOwner(manager.document)
-                    .upsert(pvc)
-                    .end()
+                    await manager.cluster
+                        .begin(`Installing Volume Claim: '${item.name}'`)
+                        //TODO: Advanced installer needs to choose the volumes to delete
+                        .addOwner(manager.document)
+                        .upsert(pvc)
+                        .end()
 
-                deployment.spec.template.spec.containers[0].volumeMounts.push({ name: item.name, mountPath: item.mountPath })
-                deployment.spec.template.spec.volumes.push({ name: item.name, persistentVolumeClaim: { claimName: item.name } })
+                    deployment.spec.template.spec.volumes.push({ name: item.name, persistentVolumeClaim: { claimName: item.name } })
+                }
 
+                if (item.mountPath && item.mountPath !== '') {
+                    let mount = { name: item.name, mountPath: item.mountPath, subPath: undefined }
+
+                    if (item.subPath && item.subPath !== '')
+                        mount.subPath = item.subPath
+                    else
+                        delete mount.subPath
+
+                    deployment.spec.template.spec.containers[0].volumeMounts.push(mount)
+                }
             }
 
         }
@@ -91,7 +102,7 @@ export class ObjectApplier implements Applier {
             deployment.spec.template.spec.containers[0].ports = []
 
             for (const item of spec.ports) {
-                if(item.protocol) item.protocol = item.protocol.toUpperCase()
+                if (item.protocol) item.protocol = item.protocol.toUpperCase()
                 service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol })
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
 
