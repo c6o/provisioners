@@ -90,5 +90,6 @@ export interface Port {
 export interface Volume {
     size: string
     mountPath: string
+    subPath: string
     name: string
 }

@@ -1,15 +1,15 @@
-import { LabelsMetadata } from '../../parsing'
+import { LabelsMetadata, Volume } from '../../parsing'
 import { getLabels } from './labels'
 
-export function getPVCTemplate(volumeName: string, volumeSize: string, name: string, namespace: string, metaData: LabelsMetadata) {
+export function getPVCTemplate(volume: Volume, namespace: string, metaData: LabelsMetadata) {
 
     return {
         kind: 'PersistentVolumeClaim',
         apiVersion: 'v1',
         metadata: {
-            name: volumeName.toLowerCase(),
+            name: volume.name.toLowerCase(),
             namespace: namespace,
-            labels: getLabels(name, metaData)
+            labels: getLabels(volume.name, metaData)
         },
         spec: {
             accessModes: [
@@ -17,7 +17,7 @@ export function getPVCTemplate(volumeName: string, volumeSize: string, name: str
             ],
             resources: {
                 requests: {
-                    storage: volumeSize
+                    storage: volume.size
                 }
             }
         }

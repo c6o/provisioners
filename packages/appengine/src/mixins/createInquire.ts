@@ -223,7 +223,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (volumes && volumes.length > 0 || automated) return volumes
 
         const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
-        let responses = { hasVolumes: false, storageSize: '', mountPath: '', volumeName: '' }
+        let responses = { hasVolumes: false, storageSize: '', mountPath: '', volumeName: '', subPath: '' }
 
         do {
             responses = await this.manager.inquirer?.prompt([
@@ -252,6 +252,13 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 },
                 {
                     type: 'input',
+                    name: 'subPath',
+                    default: '',
+                    message: 'What sub path do you want this volume mounted at?',
+                    when: r => r.hasVolumes,
+                },
+                {
+                    type: 'input',
                     name: 'volumeName',
                     default: 'data-var',
                     message: 'What would you like to name this volume?',
@@ -261,7 +268,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             ])
 
             if (responses.hasVolumes) {
-                volumes.push({ size: responses.storageSize, mountPath: responses.mountPath, name: responses.volumeName })
+                volumes.push({ size: responses.storageSize, mountPath: responses.mountPath, name: responses.volumeName, subPath: responses.subPath })
             }
         } while (responses.hasVolumes)
 
