@@ -82,7 +82,7 @@ editions:
           - name: SERVER_URL
             value: http://teamcityserver:8111
             label: Server Url
-            hint: The url to your TeamCity Server
+            hint: The url to your TeamCity Server (service, typically teamcity.NAMESPACE)
             required: true
             autoselect: true
             fieldType: text

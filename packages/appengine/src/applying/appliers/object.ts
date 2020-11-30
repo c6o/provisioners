@@ -4,6 +4,7 @@ import { Buffer } from 'buffer'
 import { templates } from '../../templates/latest'
 import createDebug from 'debug'
 import { LabelsMetadata } from '../../parsing'
+import * as fs from 'fs'
 
 const debug = createDebug('@appengine:ObjectApplier')
 
@@ -24,7 +25,11 @@ export class ObjectApplier implements Applier {
         debug(`BOOSTRAP:${JSON.stringify(spec)}`)
 
         const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
-        debug(`deployment:${JSON.stringify(deployment)}`)
+
+        if (spec.link) {
+            //we have features/dependancies to deal with, lets jump to that first
+            await this.installFeatures(namespace, spec, manager)
+        }
 
         debug('applying secrets')
         await this.applySecrets(namespace, spec, manager, deployment)
@@ -40,13 +45,159 @@ export class ObjectApplier implements Applier {
 
     }
 
+    async installFeatures(namespace: string, spec: any, manager: ProvisionerManager) {
+
+        // stages:
+        // 1. Scan all "features", and create specs internally for each
+        // 2. Take the "values" and apply them to each features spec
+        // 3. Apply all features into the cluster
+        // 4. Apply the "script" section to the feature.  This will be very hard coded
+        // 5. Take the finished spec from each feature, and apply mappings to the App being installed
+        // 6. Install the App requested
+
+        // #Drawback, cant map values from one feature to another
+        // #Scripts and their relationship with the feature will be very fixed (mysql, mariadb, etc..)  AppEngine will need to support all database types and such to execute these scripts against
+
+        //make sure our current provisioner is listed as a dpeendancy so it can take part in the value and mappings
+        if (!spec.configs) spec.configs = []
+        if (!spec.secrets) spec.secrets = []
+
+        this.PrettyPrintJsonFile(spec, 'presetup-spec.json')
+
+        this.setupDependancies(spec)
+
+        this.PrettyPrintJsonFile(spec, 'prelink-spec.json')
+
+        debug('----------------------------------VALUES----------------------------------')
+        this.mapAndLink(spec.link.values, spec)
+        debug('----------------------------------DONE VALUES----------------------------------')
+
+        this.PrettyPrintJsonFile(spec, 'preinstall-spec.json')
+
+        await this.installDependancies(spec.name, spec.link.dependancies, spec.metaData, manager, namespace)
+
+        this.PrettyPrintJsonFile(spec, 'premap-spec.json')
+
+        debug('----------------------------------MAPPING----------------------------------')
+        this.mapAndLink(spec.link.mappings, spec)
+        debug('----------------------------------DONE MAPPING----------------------------------')
+
+        this.PrettyPrintJsonFile(spec)
+
+    }
+    setupDependancies(spec: any) {
+        const fullAppName = `${spec.name}-${spec.metaData.edition}-${spec.metaData.instanceId}`
+        for (const dependancy of spec.link.dependancies) {
+            if (!dependancy.spec) dependancy.spec = { name: dependancy.name}
+            if (!dependancy.spec.configs) dependancy.spec.configs = []
+            if (!dependancy.spec.secrets) dependancy.spec.secrets = []
+            if (!dependancy.spec.name) dependancy.spec.name = dependancy.name
+
+            dependancy.spec.metaData = JSON.parse(JSON.stringify(spec.metaData))
+            dependancy.spec.metaData.partOf = fullAppName
+            dependancy.spec.metaData.component = 'database'
+        }
+    }
+
+    async installDependancies(rootName: string, dependancies: any, metaData: LabelsMetadata, manager: ProvisionerManager, namespace: string) {
+        for (const dependancy of dependancies) {
+            dependancy.spec.configs.push({ name: 'DB_HOST', value: `${dependancy.name}.${namespace}` })
+            const deployment = await templates.getDeploymentTemplate(dependancy.spec.name, namespace, dependancy.spec.image, dependancy.spec.metaData)
+            debug('applying secrets')
+            await this.applySecrets(namespace, dependancy.spec, manager, deployment)
+            debug('applying configs')
+            await this.applyConfigs(namespace, dependancy.spec, manager, deployment)
+            debug('applying ports')
+            await this.applyPorts(namespace, dependancy.spec, manager, deployment)
+            debug('applying volumes')
+            await this.applyVolumes(namespace, dependancy.spec, manager, deployment)
+            debug('applying deployment')
+            await this.applyDeployment(dependancy.spec, manager, deployment)
+            debug('done')
+        }
+    }
+
+    mapAndLink(root: any, spec: any) {
+
+        //iterate over all values
+        for (const i of root) {
+
+            const value = i.item
+            const source = value.source
+            const destination = value.destination
+
+            //polyfill will our known values
+            if (source.value) {
+                if (typeof (source.value) === 'string' && source.value.startsWith('$RANDOM')) {
+                    if (source.value === '$RANDOM')
+                        source.value = this.makeRandom(10)
+                    else {
+                        if (source.value.indexOf(':') > 0) {
+                            const len = Number(source.value.substr(source.value.indexOf(':') + 1))
+                            source.value = this.makeRandom(len)
+                        }
+                    }
+                }
+            }
+
+            let destinationSpec = undefined
+            if (destination.name === spec.name) {
+                destinationSpec = spec
+            } else {
+                //copy over from source to destination
+                const featureLst = spec.link.dependancies.filter(e => e.name === destination.name)
+
+                if (featureLst && featureLst.length > 0) {
+                    if (!featureLst[0].spec) featureLst[0].spec = { configs: [], secrets: [] }
+                    destinationSpec = featureLst[0].spec
+                }
+            }
+
+    debug('destinationSpec', destination, destinationSpec)
+
+
+            //we have a value and a place for it to go to
+            if (destinationSpec) {
+
+                //if the source was a straight value
+                if (source.value) {
+                    destinationSpec[destination.type].push({ name: destination.field, value: source.value })
+                } else {
+                    //need to dig the value out of the other provisioner itself
+
+                    let sourceSpec = undefined
+
+                    //if we need to get it from the root spec
+                    if (source.name === spec.name) {
+                        sourceSpec = spec
+                    } else {
+                        sourceSpec = spec.link.dependancies.filter(e => e.name === source.name)[0]?.spec
+                    }
+
+    debug('sourceSpec', source, sourceSpec)
+
+                    if (sourceSpec) {
+                        const value = sourceSpec[destination.type].filter(e => e.name === source.field)[0]?.value
+                        destinationSpec[destination.type].push({ name: destination.field, value })
+                    }
+
+                }
+
+            }
+
+        }
+
+
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applyDeployment(spec: any, manager: ProvisionerManager, deployment: any) {
 
         debug(`Installing the Deployment:${JSON.stringify(deployment)}`)
+        this.PrettyPrintJsonFile(deployment, `${spec.name}-deployment.json`)
 
         await manager.cluster
-            .begin('Installing the Deployment')
+            .begin(`Installing the Deployment for ${spec.name}`)
             .addOwner(manager.document)
             .upsert(deployment)
             .end()
@@ -66,9 +217,10 @@ export class ObjectApplier implements Applier {
                     const pvc = templates.getPVCTemplate(item, namespace, spec.metaData)
 
                     debug(`Installing Volume Claim:${JSON.stringify(pvc)}`)
+                    this.PrettyPrintJsonFile(pvc, `${spec.name}-pvc.json`)
 
                     await manager.cluster
-                        .begin(`Installing Volume Claim: '${item.name}'`)
+                        .begin(`Installing the Volume Claim for ${spec.name}`)
                         //TODO: Advanced installer needs to choose the volumes to delete
                         .addOwner(manager.document)
                         .upsert(pvc)
@@ -123,9 +275,10 @@ export class ObjectApplier implements Applier {
             }
 
             debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`,)
+            this.PrettyPrintJsonFile(service, `${spec.name}-service.json`)
 
             await manager.cluster
-                .begin('Installing Networking Services')
+                .begin(`Installing the Networking Services for ${spec.name}`)
                 .addOwner(manager.document)
                 .upsert(service)
                 .end()
@@ -170,9 +323,10 @@ export class ObjectApplier implements Applier {
         }
 
         debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
+        this.PrettyPrintJsonFile(config, `${spec.name}-config.json`)
 
         await manager.cluster
-            .begin('Installing the Configuration Settings')
+            .begin(`Installing the Configuration Settings for ${spec.name}`)
             .addOwner(manager.document)
             .upsert(config)
             .end()
@@ -221,9 +375,10 @@ export class ObjectApplier implements Applier {
             }
 
             debug(`Installing secrets:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
+            this.PrettyPrintJsonFile(secret, `${spec.name}-secret.json`)
 
             await manager.cluster
-                .begin('Installing the Secrets')
+                .begin(`Installing the Secrets for ${spec.name}`)
                 .addOwner(manager.document)
                 .upsert(secret)
                 .end()
@@ -240,4 +395,11 @@ export class ObjectApplier implements Applier {
 
         return text
     }
+
+    PrettyPrintJsonFile(json: any, file = 'debug.json') {
+
+        if (!file) file = 'debug.json'
+        fs.writeFile(`/home/robchartier/data/source/github/node-monorepo/packages/provisioners/packages/${file}`, JSON.stringify(json, null, 2), i => { })
+    }
+
 }

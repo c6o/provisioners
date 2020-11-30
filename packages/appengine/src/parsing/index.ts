@@ -1,6 +1,9 @@
 import * as portParsers from './port'
 import * as settingsParsers from './setting'
 import * as volumeParsers from './volume'
+import createDebug from 'debug'
+
+const debug = createDebug('@appengine:Parser')
 
 export class ParserFactory{
     static getPortParser(type: string) : PortParser {
@@ -89,7 +92,7 @@ export interface Port {
 
 export interface Volume {
     size: string
-    mountPath: string
-    subPath: string
+    mountPath?: string
+    subPath?: string
     name: string
 }

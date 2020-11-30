@@ -1,4 +1,7 @@
 import { ParserFactory as parserFactory } from './parsing'
+import createDebug from 'debug'
+
+const debug = createDebug('@appengine:Parser')
 
 class Parser {
 
@@ -8,11 +11,13 @@ class Parser {
 
         spec.parsed = true
         const configParserType = spec.configParser || 'BasicSettingParser'
-        spec.configs = parserFactory.getSettingsParser(configParserType).parse(args, spec, 'config')
+        spec.configs = []
+        spec.configs = spec.configs.concat(parserFactory.getSettingsParser(configParserType).parse(args, spec, 'config'))
         if(spec.config) delete spec.config
 
         const secretsParserType = spec.secretParser || 'BasicSettingParser'
-        spec.secrets = parserFactory.getSettingsParser(secretsParserType).parse(args, spec, 'secret')
+        spec.secrets = []
+        spec.secrets = spec.secrets.concat(parserFactory.getSettingsParser(secretsParserType).parse(args, spec, 'secret'))
         if(spec.secret) delete spec.secret
 
         const portParserType = spec.portParser || 'BasicPortParser'

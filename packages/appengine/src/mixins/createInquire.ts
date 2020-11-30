@@ -44,7 +44,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.ports = await this.askPorts(args, automated)
         this.spec.volumes = await this.askVolumes(args, automated)
 
-        debug('Inquire Completed\n', 'spec:\n', this.spec, 'args:\n', args)
+        debug('Inquire Completed\n', 'spec:\n', this.spec, 'args:\n', args, this.spec.configs === this.spec.secrets)
+        debug(`CONFIGSPECSC:${this.spec.configs === this.spec.secrets}`)
 
         //czctl install appengine --local -n testing --image redis --name redis --port "6379/TCP/TCP"  --automated
         //czctl install redis --local -n testing
@@ -107,7 +108,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async askSecrets(args, automated) {
 
-        const secrets = this.spec.configs
+        const secrets = this.spec.secrets
         if (secrets && secrets.length > 0 || automated) return secrets
 
         let responses = { hasSecret: false, secretName: '', secretValue: '', envName: '' }

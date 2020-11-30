@@ -56,7 +56,7 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
+  - name: latest
     status: public
     default: true
     spec:
@@ -117,6 +117,130 @@ editions:
 
           - name: APP_KEY
             value: $RANDOM:32
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: preview
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: snipeit
+      provisioner:
+        package: '@provisioner/appengine'
+        name: snipeit
+        image: 'snipe/snipe-it'
+        tag-prefix: appengine
+        port: 80
+        automated: true
+
+#stages:
+#1. Scan all "features", and create specs internally for each
+#2. Take the "values" and apply them to each features spec
+#3. Apply all features into the cluster
+#4. Apply the "script" section to the feature.  This will be very hard coded
+#5. Take the finished spec from each feature, and apply mappings to the App being installed
+#6. Install the App requested
+
+#Drawback, cant map values from one feature to another
+#Scripts and their relationship with the feature will be very fixed (mysql, mariadb, etc..)  AppEngine will need to support all database types and such to execute these scripts against
+
+
+        link:
+            #WHICH DEPENDANCIES/FEATURES TO INSTALL
+            dependancies:
+              - name: mysql
+                spec:
+                  edition: internal
+                  package: '@provisioner/appengine'
+                  tag-prefix: appengine
+                  image: 'mysql:latest'
+                  ports:
+                    - port: 3306
+                      protocol: TCP
+                      name: mysql
+                  volumes:
+                    - size: 5Gi
+                      mountPath: /data
+                      name: mysql-data
+                #POST INSTALL THE FEATURE
+                  #RUN THE SCRIPT AGAINST THE DATABASE
+                  #CAPTURE OUTPUT, CONSOLE.LOG THE RESULT
+                  script:
+                      CREATE DATABASE snipeit;
+                      CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
+                      ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+                      GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
+                      FLUSH PRIVILEGES;
+
+                  #RUN THE SCRIPT AGAINST THE CLUSTER/NAMESPACE/POD
+                  #kubectl exec shell-demo -- ls -la
+                  #will take the output and console.log the result
+                  command:
+                    ls -la
+              #PRE INSTALL FEATURES
+            values:
+              - item:
+                  source:
+                      value: $RANDOM:32
+                  destination:
+                      name: mysql
+                      type: secrets
+                      field: MYSQL_ROOT_PASSWORD
+              - item:
+                  source:
+                      value: 3306
+                  destination:
+                      name: snipeit
+                      type: configs
+                      field: DB_PORT
+
+              - item:
+                  source:
+                      value: snipeit
+                  destination:
+                      name: snipeit
+                      type: configs
+                      field: DB_DATABASE
+
+              - item:
+                  source:
+                      value: snipeit
+                  destination:
+                      name: snipeit
+                      type: configs
+                      field: DB_USERNAME
+
+              - item:
+                  source:
+                    value: '88888888'
+                  destination:
+                      name: snipeit
+                      type: secrets
+                      field: DB_PASSWORD
+
+              - item:
+                  source:
+                      value: $RANDOM:32
+                  destination:
+                      name: snipeit
+                      type: configs
+                      field: APP_KEY
+
+            #POST INSTALL ALL FEATURES, PRE INSTALL APP
+            mappings:
+              - item:
+                  source:
+                    name: mysql
+                    type: configs
+                    field: DB_HOST
+                  destination:
+                      name: snipeit
+                      type: configs
+                      field: DB_HOST
 
       marina:
         launch:
