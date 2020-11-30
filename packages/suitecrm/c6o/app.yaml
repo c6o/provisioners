@@ -43,13 +43,12 @@ editions:
   - name: stable
     status: public
     spec:
-    routes:
-      - type: http
-        targetService: suitecrm
-    provisioner:
-      package: "@provisioner/suitecrm"
-      ui: ignore
-    marina:
-      launch:
-      type: inline
-      popUp: true
+      routes:
+        - type: http
+          targetService: suitecrm
+      provisioner:
+        package: "@provisioner/suitecrm"
+      marina:
+        launch:
+          type: inline
+          popUp: true
