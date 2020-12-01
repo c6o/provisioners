@@ -10,6 +10,9 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     get spec() {
         return this.mediator.applicationSpec.spec.provisioner
     }
+    get name() {
+        return this.mediator.applicationSpec.metadata.name
+    }
 
 
     render() {
@@ -25,6 +28,11 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     }
 
     async begin() {
+
+        if(!this.spec.name && this.mediator.applicationSpec.metadata.name) {
+            this.spec.name = this.mediator.applicationSpec.metadata.name
+        }
+
 
         this.handleMetaData()
 

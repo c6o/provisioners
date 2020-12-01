@@ -123,9 +123,10 @@ export class ObjectApplier implements Applier {
     }
 
     async installDependancies(rootName: string, dependancies: any, metaData: LabelsMetadata, manager: ProvisionerManager, namespace: string) {
-        let mysql: any
+        let database: any
         for (const dependancy of dependancies) {
-            if(dependancy.name === 'mysql') mysql = dependancy
+            if(dependancy.name === 'mysql') database = dependancy
+            if(dependancy.name === 'mariadb') database = dependancy
 
             dependancy.spec.configs.push({ name: 'DB_HOST', value: `${dependancy.name}.${namespace}` })
             const deployment = await templates.getDeploymentTemplate(dependancy.spec.name, namespace, dependancy.spec.image, dependancy.spec.command, dependancy.spec.metaData)
@@ -144,21 +145,21 @@ export class ObjectApplier implements Applier {
             debug('done')
         }
 
-        if(mysql.spec.scripts) {
+        if(database.spec.scripts) {
 
             debug('Waiting for 5 seconds to ensure database health...')
 
             await new Promise(resolve => setTimeout(resolve, 5000))
 
             const scripts = []
-            for(const script of mysql.spec.scripts) {
+            for(const script of database.spec.scripts) {
                 scripts.push(script.script)
             }
 
             applySql({
-                host: mysql.spec.configs.filter(e=>e.name === 'DB_HOST')[0].value,
-                port: mysql.spec.configs.filter(e=>e.name === 'DB_PORT')[0].value,
-                password: mysql.spec.secrets.filter(e=>e.name === 'MYSQL_ROOT_PASSWORD')[0].value,
+                host: database.spec.configs.filter(e=>e.name === 'DB_HOST')[0].value,
+                port: database.spec.configs.filter(e=>e.name === 'DB_PORT')[0].value,
+                password: database.spec.secrets.filter(e=>e.name === 'MYSQL_ROOT_PASSWORD')[0].value,
                 user: 'root',
                 sql: scripts,
                 insecureAuth: true

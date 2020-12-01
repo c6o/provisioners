@@ -7,6 +7,7 @@ const debug = createDebug('@appengine:createInquire')
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async createInquire(args) {
+
         const answers = {
             image: args['image'] || this.spec.image,
             name: args['name'] || this.spec.name,
@@ -31,6 +32,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 validate: r => r !== '' //non empty string
             }
         ], answers)
+
+
 
         this.spec.image = responses.image
         this.spec.name = responses.name
