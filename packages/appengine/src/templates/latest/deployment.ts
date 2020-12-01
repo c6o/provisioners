@@ -2,7 +2,7 @@
 import { LabelsMetadata } from '../../parsing'
 import { getLabels } from './labels'
 
-export function getDeploymentTemplate(name: string, namespace: string, image: string, metaData: LabelsMetadata) {
+export function getDeploymentTemplate(name: string, namespace: string, image: string, command: string[], metaData: LabelsMetadata) {
 
     return {
         apiVersion: 'apps/v1',
@@ -28,6 +28,7 @@ export function getDeploymentTemplate(name: string, namespace: string, image: st
                             name: name,
                             image: image,
                             imagePullPolicy: 'Always',
+                            command,
                             env: []
                         }
                     ]

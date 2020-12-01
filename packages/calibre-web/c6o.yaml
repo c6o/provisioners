@@ -1,37 +1,64 @@
 name: Calibre Web
-appId: calibre-web                 #App internal name (all lower, no spaces); minimum 5 characters
-package: '@provisioner/appengine'
+appId: calibre-web #App internal name (all lower, no spaces); minimum 5 characters
+package: "@provisioner/appengine"
 icon: icon.svg
 description:
   Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 
+
   Features
+
   ----
+
   * Bootstrap 3 HTML5 interface
+
   * full graphical setup
+
   * User management with fine-grained per-user permissions
+
   * Admin interface
+
   * User Interface in czech, dutch, english, finnish, french, german, hungarian, italian, japanese, khmer, polish, russian, simplified chinese, spanish, swedish, turkish, ukrainian
+
   * OPDS feed for eBook reader apps
+
   * Filter and search by titles, authors, tags, series and language
+
   * Create a custom book collection (shelves)
+
   * Support for editing eBook metadata and deleting eBooks from Calibre library
+
   * Support for converting eBooks through Calibre binaries
+
   * Restrict eBook download to logged-in users
+
   * Support for public user registration
+
   * Send eBooks to Kindle devices with the click of a button
+
   * Sync your Kobo devices through Calibre-Web with your Calibre library
+
   * Support for reading eBooks directly in the browser (.txt, .epub, .pdf, .cbr, .cbt, .cbz)
+
   * Upload new books in many formats, including audio formats (.mp3, .m4a, .m4b)
+
   * Support for Calibre Custom Columns
+
   * Ability to hide content based on categories and Custom Column content per user
+
   * Self-update capability
+
   * "Magic Link" login to make it easy to log on eReaders
+
   * Login via LDAP, google/github oauth and via proxy authentication
 
+
   Default admin login
+
   ----
+
   Username admin
+
   Password admin123
 
 summary:
@@ -62,7 +89,7 @@ editions:
         - type: http
           targetService: calibre-web
       provisioner:
-        package: '@provisioner/appengine'
+        package: "@provisioner/appengine"
         tag-prefix: appengine
         name: calibre-web
         image: linuxserver/calibre-web

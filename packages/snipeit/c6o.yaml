@@ -169,18 +169,18 @@ editions:
                 #POST INSTALL THE FEATURE
                   #RUN THE SCRIPT AGAINST THE DATABASE
                   #CAPTURE OUTPUT, CONSOLE.LOG THE RESULT
-                  script:
-                      CREATE DATABASE snipeit;
-                      CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
-                      ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
-                      GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
-                      FLUSH PRIVILEGES;
+                  scripts:
+                      - script: CREATE DATABASE snipeit;
+                      - script: CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
+                      - script: ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+                      - script: GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
+                      - script: FLUSH PRIVILEGES;
 
                   #RUN THE SCRIPT AGAINST THE CLUSTER/NAMESPACE/POD
                   #kubectl exec shell-demo -- ls -la
                   #will take the output and console.log the result
-                  command:
-                    ls -la
+                  # command:
+                  #   ls -la
               #PRE INSTALL FEATURES
             values:
               - item:
@@ -195,6 +195,14 @@ editions:
                       value: 3306
                   destination:
                       name: snipeit
+                      type: configs
+                      field: DB_PORT
+
+              - item:
+                  source:
+                      value: 3306
+                  destination:
+                      name: mysql
                       type: configs
                       field: DB_PORT
 

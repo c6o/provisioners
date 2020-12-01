@@ -7,7 +7,6 @@ const debug = createDebug('@appengine:createInquire')
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async createInquire(args) {
-
         const answers = {
             image: args['image'] || this.spec.image,
             name: args['name'] || this.spec.name,
@@ -45,13 +44,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         this.spec.volumes = await this.askVolumes(args, automated)
 
         debug('Inquire Completed\n', 'spec:\n', this.spec, 'args:\n', args, this.spec.configs === this.spec.secrets)
-        debug(`CONFIGSPECSC:${this.spec.configs === this.spec.secrets}`)
-
-        //czctl install appengine --local -n testing --image redis --name redis --port "6379/TCP/TCP"  --automated
-        //czctl install redis --local -n testing
-
-        //czctl install redis --local -n testing  --specOnly > foo.yaml
-        //czctl provision foo.yaml
 
         //appEngine -> provisions docker containers
         //appStudio -> UI to manage appEngine based configuration  (czctl and webui -> icon in marina)

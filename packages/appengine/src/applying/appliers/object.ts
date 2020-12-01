@@ -2,13 +2,15 @@ import { ProvisionerManager } from '@provisioner/common'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
 import { templates } from '../../templates/latest'
-import createDebug from 'debug'
 import { LabelsMetadata } from '../../parsing'
+import { applySql } from '../../templates/latest/features/mysql'
 import * as fs from 'fs'
+import createDebug from 'debug'
 
 const debug = createDebug('@appengine:ObjectApplier')
-
 export class ObjectApplier implements Applier {
+
+    emitFile = true
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async apply(namespace: string, spec: any, manager: ProvisionerManager) {
@@ -24,7 +26,7 @@ export class ObjectApplier implements Applier {
 
         debug(`BOOSTRAP:${JSON.stringify(spec)}`)
 
-        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
+        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.command, spec.metaData)
 
         if (spec.link) {
             //we have features/dependancies to deal with, lets jump to that first
@@ -62,21 +64,21 @@ export class ObjectApplier implements Applier {
         if (!spec.configs) spec.configs = []
         if (!spec.secrets) spec.secrets = []
 
-        this.PrettyPrintJsonFile(spec, 'presetup-spec.json')
+        this.PrettyPrintJsonFile(spec, 'pre-setup-spec.json')
 
         this.setupDependancies(spec)
 
-        this.PrettyPrintJsonFile(spec, 'prelink-spec.json')
+        this.PrettyPrintJsonFile(spec, 'pre-link-spec.json')
 
         debug('----------------------------------VALUES----------------------------------')
         this.mapAndLink(spec.link.values, spec)
         debug('----------------------------------DONE VALUES----------------------------------')
 
-        this.PrettyPrintJsonFile(spec, 'preinstall-spec.json')
+        this.PrettyPrintJsonFile(spec, 'pre-install-spec.json')
 
         await this.installDependancies(spec.name, spec.link.dependancies, spec.metaData, manager, namespace)
 
-        this.PrettyPrintJsonFile(spec, 'premap-spec.json')
+        this.PrettyPrintJsonFile(spec, 'pre-map-spec.json')
 
         debug('----------------------------------MAPPING----------------------------------')
         this.mapAndLink(spec.link.mappings, spec)
@@ -97,12 +99,36 @@ export class ObjectApplier implements Applier {
             dependancy.spec.metaData.partOf = fullAppName
             dependancy.spec.metaData.component = 'database'
         }
+        this.PrettyPrintJsonFile(spec, 'setup-dependancies.json')
+
+    }
+
+
+    async ensurePodIsRunning(manager: ProvisionerManager, namespace: string, app: string) {
+        await manager.cluster
+            .begin('Ensure pod is running')
+            .beginWatch({
+                kind: 'Pod',
+                metadata: {
+                    namespace,
+                    labels: {
+                        app
+                    }
+                }
+            })
+            .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                processor.endWatch()
+            })
+            .end()
     }
 
     async installDependancies(rootName: string, dependancies: any, metaData: LabelsMetadata, manager: ProvisionerManager, namespace: string) {
+        let mysql: any
         for (const dependancy of dependancies) {
+            if(dependancy.name === 'mysql') mysql = dependancy
+
             dependancy.spec.configs.push({ name: 'DB_HOST', value: `${dependancy.name}.${namespace}` })
-            const deployment = await templates.getDeploymentTemplate(dependancy.spec.name, namespace, dependancy.spec.image, dependancy.spec.metaData)
+            const deployment = await templates.getDeploymentTemplate(dependancy.spec.name, namespace, dependancy.spec.image, dependancy.spec.command, dependancy.spec.metaData)
             debug('applying secrets')
             await this.applySecrets(namespace, dependancy.spec, manager, deployment)
             debug('applying configs')
@@ -113,8 +139,33 @@ export class ObjectApplier implements Applier {
             await this.applyVolumes(namespace, dependancy.spec, manager, deployment)
             debug('applying deployment')
             await this.applyDeployment(dependancy.spec, manager, deployment)
+            debug('ensure dependancy is runing')
+            await this.ensurePodIsRunning(manager, namespace, dependancy.name)
             debug('done')
         }
+
+        if(mysql.spec.scripts) {
+
+            debug('Waiting for 5 seconds to ensure database health...')
+
+            await new Promise(resolve => setTimeout(resolve, 5000))
+
+            const scripts = []
+            for(const script of mysql.spec.scripts) {
+                scripts.push(script.script)
+            }
+
+            applySql({
+                host: mysql.spec.configs.filter(e=>e.name === 'DB_HOST')[0].value,
+                port: mysql.spec.configs.filter(e=>e.name === 'DB_PORT')[0].value,
+                password: mysql.spec.secrets.filter(e=>e.name === 'MYSQL_ROOT_PASSWORD')[0].value,
+                user: 'root',
+                sql: scripts,
+                insecureAuth: true
+            })
+        }
+
+
     }
 
     mapAndLink(root: any, spec: any) {
@@ -153,8 +204,6 @@ export class ObjectApplier implements Applier {
                 }
             }
 
-    debug('destinationSpec', destination, destinationSpec)
-
 
             //we have a value and a place for it to go to
             if (destinationSpec) {
@@ -174,7 +223,6 @@ export class ObjectApplier implements Applier {
                         sourceSpec = spec.link.dependancies.filter(e => e.name === source.name)[0]?.spec
                     }
 
-    debug('sourceSpec', source, sourceSpec)
 
                     if (sourceSpec) {
                         const value = sourceSpec[destination.type].filter(e => e.name === source.field)[0]?.value
@@ -208,8 +256,11 @@ export class ObjectApplier implements Applier {
 
         if (spec.volumes?.length) {
 
-            deployment.spec.template.spec.containers[0].volumeMounts = []
-            deployment.spec.template.spec.volumes = []
+            if(!deployment.spec.template.spec.containers[0].volumeMounts)
+                deployment.spec.template.spec.containers[0].volumeMounts = []
+
+                if(!deployment.spec.template.spec.volumes)
+                deployment.spec.template.spec.volumes = []
 
             for (const item of spec.volumes) {
 
@@ -251,7 +302,8 @@ export class ObjectApplier implements Applier {
 
             const service = templates.getPortTemplate(spec.name, namespace, spec.metaData)
 
-            deployment.spec.template.spec.containers[0].ports = []
+            if(!deployment.spec.template.spec.containers[0].ports)
+                deployment.spec.template.spec.containers[0].ports = []
 
             for (const item of spec.ports) {
                 if (item.protocol) item.protocol = item.protocol.toUpperCase()
@@ -320,6 +372,41 @@ export class ObjectApplier implements Applier {
                         }
                     })
             }
+        }
+
+        if(spec.name === 'mysql') {
+
+            const configAuth = {
+                apiVersion: 'v1',
+                kind: 'ConfigMap',
+                metadata: {
+                    namespace,
+                    name: 'mysql-config',
+                    labels: {
+                        app: spec.name
+                    }
+                },
+                data: {
+                    'default_auth': '[mysqld]\ndefault_authentication_plugin=mysql_native_password'
+                }
+            }
+
+            await manager.cluster
+                .begin('Installing mysql specific configuration')
+                .addOwner(manager.document)
+                .upsert(configAuth)
+                .end()
+
+            if(!deployment.spec.template.spec.volumes)
+                deployment.spec.template.spec.volumes = []
+
+            if(!deployment.spec.template.spec.containers[0].volumeMounts)
+                deployment.spec.template.spec.containers[0].volumeMounts = []
+
+
+            deployment.spec.template.spec.volumes.push({ name: 'mysql-config-volume', configMap: { name: 'mysql-config' }})
+            deployment.spec.template.spec.containers[0].volumeMounts.push({ name: 'mysql-config-volume', mountPath: '/etc/mysql/conf.d/default_auth.cnf', subPath: 'default_auth' })
+
         }
 
         debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
@@ -397,9 +484,10 @@ export class ObjectApplier implements Applier {
     }
 
     PrettyPrintJsonFile(json: any, file = 'debug.json') {
-
+        if(!this.emitFile) return
         if (!file) file = 'debug.json'
-        fs.writeFile(`/home/robchartier/data/source/github/node-monorepo/packages/provisioners/packages/${file}`, JSON.stringify(json, null, 2), i => { })
+        fs.writeFile(`./packages/provisioners/packages/appengine/out/${file}`, JSON.stringify(json, null, 2), i => { })
+        debug(`${__dirname}/packages/provisioners/packages/appengine/out/${file} was written`)
     }
 
 }

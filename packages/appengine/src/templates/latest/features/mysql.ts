@@ -1,28 +1,22 @@
 
-import { LabelsMetadata } from '../../../parsing'
-import { templates } from '../../latest'
+import { createConnection } from 'mysql'
 
+import createDebug from 'debug'
+const debug = createDebug('@appengine:mysql')
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getMySqlTemplate(spec: any, metaData: LabelsMetadata) {
+export function applySql(options: { host: string, port: number, user: string, password: string, sql: string[], insecureAuth: boolean }) {
 
-    //deployment, which will give us our pods
-    //nodeport for our service/exposed port
-    //secret for the password
-    //configmap for our username
-    //pvc and volume for storage
-    //
+    debug('applySql', options)
 
-    const name = 'mysql'
+    const connection = createConnection(options)
+    connection.connect()
 
-    const deployment = templates.getDeploymentTemplate(name, spec.namespace, 'mysql:latest', metaData)
-    const service = templates.getPortTemplate(name, spec.namespace, metaData)
-    const secret = templates.getSecretTemplate(name, spec.namespace, metaData)
-    const config = templates.getConfigTemplate(name, spec.namespace, metaData)
-    const volume = templates.getPVCTemplate(
-        { name: `${name}-data`, size: '5Gi', mountPath : '/data'  },
-        spec.namespace,
-        metaData)
+    for (const sqlStatement of options.sql) {
+        connection.query(sqlStatement, function (error, results) {
+            if (error) throw error
+            debug('MySql statement executed:', results)
+        })
+    }
+    connection.end()
 
-    return [deployment, service, secret, config, volume]
 }

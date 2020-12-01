@@ -5,7 +5,6 @@ import { getConfigTemplate } from './configs'
 import { getPortTemplate } from './ports'
 import { getProbeTemplate } from './probes'
 import { getTimeZones } from './timeZones'
-import { getMySqlTemplate } from './features/mysql'
 
 
 class Templates {
@@ -16,7 +15,6 @@ class Templates {
     getPortTemplate = getPortTemplate
     getProbeTemplate = getProbeTemplate
     getTimeZones = getTimeZones
-    getMySqlTemplate = getMySqlTemplate
 }
 
 export const templates = new Templates()
