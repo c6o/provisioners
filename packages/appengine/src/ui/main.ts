@@ -1,5 +1,6 @@
-import { LitElement, html, customElement } from 'lit-element'
+import { LitElement, html, customElement, css, CSSResult } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+// @ts-ignore
 import { parser } from '../parser'
 
 @customElement('appengine-install-main')
@@ -11,32 +12,50 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
         return this.mediator.applicationSpec.spec.provisioner
     }
 
+    static get styles(): (CSSResult[] | CSSResult)[] {
+        return [
+            css`
+                h3 {
+                    color: #2a343e;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    margin-top: 0;
+                }
+
+                p {
+                    margin-bottom: 15px;
+                }
+
+                #description {
+                    margin-bottom: 30px;
+                }
+
+                #instructions {
+                    text-align: right;
+                }
+            `
+        ]
+    }
 
     render() {
         return html`
-        <h3>Welcome to the ${this.spec.metaData.display} installation.</h3>
-        <p>${this.spec.metaData.description}</p>
-        <br />
-        <br />
-        <table width='100%'>
-        <tr><td align='right'><p>Press 'Next' to get started with the installation.</p></td></tr>
-        </table>
-    `
+            <h3>Welcome to the ${this.spec.metaData.display} installation.</h3>
+            <p id="description">${this.spec.metaData.description}</p>
+            <p id="instructions">Press 'Next' to get started.</p>
+        `
     }
 
     async begin() {
-
         this.handleMetaData()
 
         if (!this.spec.parsed)
             parser.parseInputsToSpec(null, this.spec)
 
         this.inspectFieldsForInputs()
-
     }
 
     handleMetaData() {
-
         this.spec.metaData = this.mediator.applicationSpec.metadata
         this.spec.edition = this.spec.metaData.labels['system.codezero.io/edition']
 
@@ -49,12 +68,9 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
             this.spec.metaData.edition = this.spec.metaData.labels['system.codezero.io/edition']
         }
         if (!this.spec.metaData.display) this.spec.metaData.display = this.spec.name
-
-
     }
 
     inspectFieldsForInputs() {
-
         const fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
         this.spec._ui = { configs: false, secrets: false }
 
@@ -76,21 +92,14 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
                 }
             }
         }
-
     }
 
     async end() {
-
-
         if (this.spec._ui.configs)
             this.mediator.appendFlow('appengine-install-configs')
         else if (this.spec._ui.secrets)
             this.mediator.appendFlow('appengine-install-secrets')
 
         return true
-
     }
-
-
-
 }
