@@ -25,6 +25,7 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
                 p {
                     margin-bottom: 15px;
+                    margin-top: 0;
                 }
 
                 #description {

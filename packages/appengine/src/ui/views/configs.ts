@@ -7,9 +7,10 @@ export class AppEngineConfigsSettings extends BaseViewSettings implements StoreF
 
     async begin() {
         super.headingText = `
-                <h3>Configuration</h3>
-                <p>This data will be captured as a ConfigMap within Kubernetes.</p>
-                <p>It will also (typically) be set as an environment variable on the container.</p>`
+            <h3>Configuration</h3>
+            <p>This data will be captured as a ConfigMap within Kubernetes.</p>
+            <p>It will also (typically) be set as an environment variable on the container.</p>
+        `
 
         super.handleLayout(super.spec.configs, 'configs')
     }
@@ -22,6 +23,4 @@ export class AppEngineConfigsSettings extends BaseViewSettings implements StoreF
 
         return true
     }
-
-
 }

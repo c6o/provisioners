@@ -1,11 +1,11 @@
-import { LitElement } from 'lit-element'
+import { LitElement, css, CSSResult } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+// @ts-ignore
 import { getTimeZones } from '../../templates/latest/timeZones'
 
 export class BaseViewSettings extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
-
     headingText: string
     bodyLayout: any
     pageLayout: any
@@ -14,24 +14,49 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         return this.mediator.applicationSpec.spec.provisioner
     }
 
+    static get styles(): (CSSResult[] | CSSResult)[] {
+        return [
+            css`
+                p {
+                    margin-bottom: 15px;
+                    margin-top: 0;
+                }
+
+                h3 {
+                    color: #2a343e;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    margin-top: 0;
+                }
+
+                .heading-text {
+                    margin-bottom: 20px;
+                }
+
+                .text-error {
+                    color: #ff5a00;
+                }
+            `
+        ]
+    }
+
     render() {
         return this.pageLayout
     }
 
     handleLayout(items, type) {
-
         const fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
 
-        const headingLayout = document.createElement('c6o-form-layout')
-        const headingField = document.createElement('p')
+        const headingLayout = document.createElement('div')
+        headingLayout.setAttribute('class', 'heading-text')
+        headingLayout.innerHTML = this.headingText
 
-        this.pageLayout = document.createElement('c6o-form-layout')
+        this.pageLayout = document.createElement('section')
         this.pageLayout.appendChild(headingLayout)
+
         this.bodyLayout = document.createElement('c6o-form-layout')
         this.pageLayout.appendChild(this.bodyLayout)
-
-        headingField.innerHTML = this.headingText
-        headingLayout.appendChild(headingField)
 
         if (items) {
             for (const item of items) {
@@ -49,7 +74,8 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
             if (item.required && item.required === true) {
                 if (!item.value || item.value === '') {
                     const validationFailedField = document.createElement('p')
-                    validationFailedField.innerHTML = 'Validation has failed, try again.'
+                    validationFailedField.setAttribute('class', 'text-error')
+                    validationFailedField.innerHTML = 'Validation has failed, please try again.'
                     this.bodyLayout.appendChild(validationFailedField)
                     return false
                 }
@@ -59,7 +85,6 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
     }
 
     renderInputField(type, item) {
-
         if (!item.fieldType) item.fieldType = 'text'
 
         if (item.fieldType === 'text') return this.renderTextFiled(type, item)
@@ -69,7 +94,6 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         if(item.fieldType === 'combobox' && item.items) {
             return this.renderComboList(type, item, item.items)
         }
-
 
         if (item.fieldType === 'timezone') {
             const tzList = getTimeZones()
@@ -157,7 +181,6 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
     }
 
     renderComboList(type, item, items) {
-
         const field = document.createElement('c6o-combo-box')
 
         field['label'] = item.name
@@ -194,5 +217,4 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
 
         return true
     }
-
 }
