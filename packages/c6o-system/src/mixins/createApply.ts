@@ -8,6 +8,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         this.spec.tag = this.spec.tag || 'canary'
 
         await this.ensureServiceNamespacesExist()
+        await this.ensureIstio()
         await this.provisionSystem()
         await this.provisionApps()
         await this.provisionOAuth()
@@ -73,6 +74,28 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     get systemServerUrl() {
         return `${this.spec.protocol}://${this.host}`
+    }
+
+    async ensureIstio() {
+        try {
+            this.manager.status?.push('Ensuring Istio installed')
+            const delegate = this.manager.getDelegateManager()
+
+            debugger
+            //const istioManifest = await delegate.hubClient.getAppEditionManifest('istio', 'latest')
+            const istioManifest = await delegate.hubClient.getAppManifest('istio', 'stable')
+            istioManifest.metadata.namespace = 'istio-system'
+            //@ts-ignore
+            await delegate.perform(istioManifest, 'create')
+            console.log('Manifest', istioManifest)
+
+        }
+        catch (ex) {
+            console.log('EX', ex)
+        }
+        finally {
+            this.manager.status?.pop()
+        }
     }
 
     async provisionSystem() {

@@ -22,4 +22,5 @@ export interface ProvisionerManager {
     getProvisionerModule(serviceName: string, npmPackage?:string ): Promise<ProvisionerBase>
     getInstalledApp(name: string, namespace: string ): Promise<AppDocument>
     getInstalledApps(appName: string): Promise<Array<AppDocument>>
+    getDelegateManager(): ProvisionerManager
 }

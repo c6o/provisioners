@@ -87,7 +87,7 @@ export class AppObject {
         const services = this.document.spec.provisioner?.services || []
 
         return this._services = [
-            ...services,
+            //...services,
             { [appProvisioner]: this.document.spec.provisioner }
         ]
     }
