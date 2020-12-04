@@ -98,7 +98,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Provision CodeZero OAuth')
                 .addOwner(this.manager.document)
-                .upsertFile('../../k8s/oauth.yaml', { hubServerURL: this.spec.hubServerURL, assetsBaseURL: this.spec.assetsBaseURL })
+                .upsertFile('../../k8s/oauth.yaml', { hubServerURL: this.spec.hubServerURL })
             .end()
     }
 
@@ -118,8 +118,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
             featureAuthKey: this.spec.featureAuthKey,
-            stripePublishableKey: this.spec.stripePublishableKey,
-            assetsBaseURL: this.spec.assetsBaseURL
+            stripePublishableKey: this.spec.stripePublishableKey
         }
 
         await this.manager.cluster
