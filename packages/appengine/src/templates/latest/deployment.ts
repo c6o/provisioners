@@ -2,7 +2,7 @@
 import { LabelsMetadata } from '../../parsing'
 import { getLabels } from './labels'
 
-export function getDeploymentTemplate(name: string, namespace: string, image: string, command: string[], metaData: LabelsMetadata) {
+export function getDeploymentTemplate(name: string, namespace: string, image: string, command: string[], labels: LabelsMetadata) {
 
     return {
         apiVersion: 'apps/v1',
@@ -10,7 +10,7 @@ export function getDeploymentTemplate(name: string, namespace: string, image: st
         metadata: {
             namespace: namespace,
             name: name,
-            labels: getLabels(name, metaData)
+            labels: getLabels(name, labels)
         },
         spec: {
             selector: {
@@ -20,7 +20,7 @@ export function getDeploymentTemplate(name: string, namespace: string, image: st
             },
             template: {
                 metadata: {
-                    labels: getLabels(name, metaData)
+                    labels: getLabels(name, labels)
                 },
                 spec: {
                     containers: [

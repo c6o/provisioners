@@ -65,7 +65,6 @@ editions:
           targetService: snipeit
       provisioner:
         package: '@provisioner/appengine'
-        name: snipeit
         image: 'snipe/snipe-it'
         tag-prefix: appengine
         port: 80
@@ -131,7 +130,6 @@ editions:
           targetService: snipeit
       provisioner:
         package: '@provisioner/appengine'
-        name: snipeit
         image: 'snipe/snipe-it'
         tag-prefix: appengine
         port: 80

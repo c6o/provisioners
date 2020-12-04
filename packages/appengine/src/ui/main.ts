@@ -1,5 +1,5 @@
 import { LitElement, html, customElement } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator, AppObject } from '@provisioner/common'
 import { parser } from '../parser'
 
 @customElement('appengine-install-main')
@@ -29,10 +29,9 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
     async begin() {
 
-        if(!this.spec.name && this.mediator.applicationSpec.metadata.name) {
-            this.spec.name = this.mediator.applicationSpec.metadata.name
-        }
+        const manifest = new AppObject(this.mediator.applicationSpec)
 
+        console.log(manifest)
 
         this.handleMetaData()
 

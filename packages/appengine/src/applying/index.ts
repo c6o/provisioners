@@ -1,5 +1,4 @@
-import { ProvisionerManager } from '@provisioner/common'
-import { IDebugger } from 'debug'
+import { AppObject, ProvisionerManager } from '@provisioner/common'
 import * as appliers from './appliers'
 
 
@@ -10,5 +9,5 @@ export class ApplierFactory{
 }
 
 export interface Applier {
-    apply(namespace: string, spec: any, manager : ProvisionerManager, debug: IDebugger)
+    apply(manifest: AppObject, manager : ProvisionerManager)
 }
