@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/c6o/provisioners/compare/v0.0.19...v0.0.20) (2020-12-04)
+
+
+### 🐛 Bug Fixes
+
+* **c6o-system:** Now you can install codezero over itself ([aee8fda](https://github.com/c6o/provisioners/commit/aee8fda47c7601a0b680e738afd9f6d250f8e9ce))
+
+
+
+
+
 ## [0.0.19](https://github.com/c6o/provisioners/compare/v0.0.18...v0.0.19) (2020-11-20)
 
 **Note:** Version bump only for package @provisioner/c6o-system

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.20](https://github.com/nsainaney/traxitt/compare/v0.0.19...v0.0.20) (2020-12-04)
+
+
+### ♻️ Chores
+
+* Moved service address getter to base ([4eedadf](https://github.com/nsainaney/traxitt/commit/4eedadf44e0c727595880eddc68af3c8dfb0bedc))
+
+
+
+
+
 ## [0.0.19](https://github.com/nsainaney/traxitt/compare/v0.0.18...v0.0.19) (2020-11-20)
 
 **Note:** Version bump only for package @provisioner/common
