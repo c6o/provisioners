@@ -1,11 +1,11 @@
 import { ParserFactory as parserFactory } from './parsing'
 import createDebug from 'debug'
-import { AppObject } from '@provisioner/common'
+import { AppManifest } from './appObject'
 const debug = createDebug('@appengine:Parser')
 
 class Parser {
 
-    parseInputsToSpec(args, manifest: AppObject) {
+    parseInputsToSpec(args, manifest: AppManifest) {
 
         if (args === null) args = {}
 

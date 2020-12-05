@@ -1,30 +1,23 @@
-import { AppObject, ProvisionerManager } from '@provisioner/common'
+import { ProvisionerManager } from '@provisioner/common'
+import { AppEngineState, AppManifest, Helper } from '../../appObject'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
 import { templates } from '../../templates/latest'
-import { LabelsMetadata } from '../../parsing'
-import { applySql } from '../../templates/latest/features/mysql'
-import * as fs from 'fs'
+//import { applySql } from '../../templates/latest/features/mysql'
 import createDebug from 'debug'
 
 const debug = createDebug('@appengine:ObjectApplier')
 export class ObjectApplier implements Applier {
 
+    helper = new Helper()
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async apply(manifest: AppObject, manager: ProvisionerManager) {
+    async apply(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager) {
+
+        state.startTimer('object-apply')
 
         const spec = manifest.provisioner
-
-        if (!manifest.state.labels) {
-            manifest.state.labels = {
-                instanceId: this.makeRandom(6),
-                edition: spec.edition
-            } as LabelsMetadata
-        }
-        if (!manifest.state.labels) manifest.state.labels = this.makeRandom(6)
-        if (!manifest.state.labels) manifest.state.labels = spec.edition
-
-        const deployment = await templates.getDeploymentTemplate(spec.name, manifest.namespace, spec.image, spec.command, manifest.state.labels)
+        const deployment = await templates.getDeploymentTemplate(spec.name, manifest.namespace, spec.image, spec.command, state.labels)
 
         // if (spec.link) {
         //     //we have features/dependancies to deal with, lets jump to that first
@@ -32,27 +25,26 @@ export class ObjectApplier implements Applier {
         // }
 
         debug('applying secrets')
-        await this.applySecrets(manifest, manager, deployment)
+        await this.applySecrets(manifest, state, manager, deployment)
         debug('applying configs')
-        await this.applyConfigs(manifest, manager, deployment)
+        await this.applyConfigs(manifest, state, manager, deployment)
         debug('applying ports')
-        await this.applyPorts(manifest, manager, deployment)
+        await this.applyPorts(manifest, state, manager, deployment)
         debug('applying volumes')
-        await this.applyVolumes(manifest, manager, deployment)
+        await this.applyVolumes(manifest, state, manager, deployment)
         debug('applying deployment')
-        await this.applyDeployment(manifest, manager, deployment)
+        await this.applyDeployment(manifest, state, manager, deployment)
         debug('done')
 
+        state.endTimer('object-apply')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyDeployment(manifest: AppObject, manager: ProvisionerManager, deployment: any) {
+    async applyDeployment(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+        state.startTimer('apply-deployment')
 
         debug(`Installing the Deployment:${JSON.stringify(deployment)}`)
-        this.PrettyPrintJsonFile(deployment, `${manifest.appId}-deployment.json`)
-
-
-        manifest.state.timing.apply.deployment = { start: new Date() }
+        this.helper.PrettyPrintJsonFile(deployment, `${manifest.appId}-deployment.json`)
 
         await manager.cluster
             .begin(`Installing the Deployment for ${manifest.displayName}`)
@@ -60,27 +52,28 @@ export class ObjectApplier implements Applier {
             .upsert(deployment)
             .end()
 
-        manifest.state.timing.apply.deployment = { start: new Date() }
+        state.endTimer('apply-deployment')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyVolumes(manifest: AppObject, manager: ProvisionerManager, deployment: any) {
+    async applyVolumes(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+        state.startTimer('apply-volumes')
 
         if (manifest.provisioner.volumes?.length) {
 
-            if(!deployment.spec.template.spec.containers[0].volumeMounts)
+            if (!deployment.spec.template.spec.containers[0].volumeMounts)
                 deployment.spec.template.spec.containers[0].volumeMounts = []
 
-                if(!deployment.spec.template.spec.volumes)
+            if (!deployment.spec.template.spec.volumes)
                 deployment.spec.template.spec.volumes = []
 
             for (const item of manifest.provisioner.volumes) {
 
                 if (item.size && item.size !== '') {
-                    const pvc = templates.getPVCTemplate(item, manifest.namespace, manifest.state.labels)
+                    const pvc = templates.getPVCTemplate(item, manifest.namespace, state.labels)
 
                     debug(`Installing Volume Claim:${JSON.stringify(pvc)}`)
-                    this.PrettyPrintJsonFile(pvc, `${manifest.appId}-pvc.json`)
+                    this.helper.PrettyPrintJsonFile(pvc, `${manifest.appId}-pvc.json`)
 
                     await manager.cluster
                         .begin(`Installing the Volume Claim for ${manifest.displayName}`)
@@ -105,16 +98,19 @@ export class ObjectApplier implements Applier {
             }
 
         }
+
+        state.endTimer('apply-volumes')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyPorts(manifest: AppObject, manager: ProvisionerManager, deployment: any) {
+    async applyPorts(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+        state.startTimer('apply-ports')
 
         if (manifest.provisioner.ports?.length) {
 
-            const service = templates.getPortTemplate(manifest.appId, manifest.namespace, manifest.state.labels)
+            const service = templates.getPortTemplate(manifest.appId, manifest.namespace, state.labels)
 
-            if(!deployment.spec.template.spec.containers[0].ports)
+            if (!deployment.spec.template.spec.containers[0].ports)
                 deployment.spec.template.spec.containers[0].ports = []
 
             for (const item of manifest.provisioner.ports) {
@@ -139,7 +135,7 @@ export class ObjectApplier implements Applier {
             }
 
             debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`,)
-            this.PrettyPrintJsonFile(service, `${manifest.appId}-service.json`)
+            this.helper.PrettyPrintJsonFile(service, `${manifest.appId}-service.json`)
 
             await manager.cluster
                 .begin(`Installing the Networking Services for ${manifest.displayName}`)
@@ -148,20 +144,23 @@ export class ObjectApplier implements Applier {
                 .end()
         }
 
+        state.endTimer('apply-ports')
 
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyConfigs(manifest: AppObject, manager: ProvisionerManager, deployment: any) {
+    async applyConfigs(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+
+        state.startTimer('apply-configs')
 
         if (!manifest.provisioner.configs?.length) manifest.provisioner.configs = []
 
         //provide some basic codezero app details to the provisioner
         manifest.provisioner.configs.push({ name: 'name', value: manifest.appId, env: 'CZ_APP' })
         manifest.provisioner.configs.push({ name: 'edition', value: manifest.edition, env: 'CZ_EDITION' })
-        manifest.provisioner.configs.push({ name: 'instanceId', value: manifest.state.labels.instanceId, env: 'CZ_INSTANCE_ID' })
+        manifest.provisioner.configs.push({ name: 'instanceId', value: state.labels.instanceId, env: 'CZ_INSTANCE_ID' })
 
-        const config = templates.getConfigTemplate(manifest.appId, manifest.namespace, manifest.state.labels)
+        const config = templates.getConfigTemplate(manifest.appId, manifest.namespace, state.labels)
 
         for (const item of manifest.provisioner.configs) {
             if (!item.env || item.env === '') item.env = item.name
@@ -222,22 +221,27 @@ export class ObjectApplier implements Applier {
         // }
 
         debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
-        this.PrettyPrintJsonFile(config, `${manifest.appId}-config.json`)
+        this.helper.PrettyPrintJsonFile(config, `${manifest.appId}-config.json`)
 
         await manager.cluster
             .begin(`Installing the Configuration Settings for ${manifest.displayName}`)
             .addOwner(manager.document)
             .upsert(config)
             .end()
+
+        state.endTimer('apply-configs')
+
     }
 
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applySecrets(manifest: AppObject, manager: ProvisionerManager, deployment: any) {
+    async applySecrets(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+
+        state.startTimer('apply-secrets')
 
         if (manifest.provisioner.secrets && manifest.provisioner.secrets.length > 0) {
 
-            const secret = templates.getSecretTemplate(manifest.appId, manifest.namespace, manifest.state.labels)
+            const secret = templates.getSecretTemplate(manifest.appId, manifest.namespace, state.labels)
 
             for (const item of manifest.provisioner.secrets) {
 
@@ -247,11 +251,11 @@ export class ObjectApplier implements Applier {
                 if (val !== '') {
                     if (val.startsWith('$RANDOM')) {
                         if (val === '$RANDOM')
-                            val = this.makeRandom(10)
+                            val = this.helper.makeRandom(10)
                         else {
                             if (val.indexOf(':') > 0) {
                                 const len = Number(val.substr(val.indexOf(':') + 1))
-                                val = this.makeRandom(len)
+                                val = this.helper.makeRandom(len)
                             }
                         }
                     }
@@ -274,7 +278,7 @@ export class ObjectApplier implements Applier {
             }
 
             debug(`Installing secrets:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
-            this.PrettyPrintJsonFile(secret, `${manifest.appId}-secret.json`)
+            this.helper.PrettyPrintJsonFile(secret, `${manifest.appId}-secret.json`)
 
             await manager.cluster
                 .begin(`Installing the Secrets for ${manifest.displayName}`)
@@ -283,24 +287,8 @@ export class ObjectApplier implements Applier {
                 .end()
         }
 
+        state.endTimer('apply-secrets')
     }
 
-    makeRandom(len) {
-        let text = ''
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
-        for (let i = 0; i < len; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length))
-
-        return text
-    }
-
-    emitFile = true
-    PrettyPrintJsonFile(json: any, file = 'debug.json') {
-        if(!this.emitFile) return
-        if (!file) file = 'debug.json'
-        file = `${__dirname}/${file}`
-        fs.writeFile(file, JSON.stringify(json, null, 2), i => { })
-        debug(`${file} was written`)
-    }
 }

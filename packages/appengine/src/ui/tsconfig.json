@@ -1,6 +1,7 @@
 // Extends is not supported at this time by parcel-cli
 {
     "compilerOptions": {
+        "composite": true,
         "module": "esnext",
         "moduleResolution": "node",
         "declaration": true,
@@ -15,6 +16,18 @@
         "skipLibCheck": true,
         "target": "es2018",
         "sourceMap": true,
-        "lib": ["es2018", "dom"],
-    }
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+    },
+    "exclude": [
+        "node_modules",
+        "test"
+    ],
+    "references": [
+        {
+            "path": "../../../common"
+        }
+    ]
 }

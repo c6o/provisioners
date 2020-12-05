@@ -30,11 +30,13 @@ export interface VolumeParser {
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 export interface LabelsMetadata {
-    instanceId: string
-    partOf: string
-    component: string
-    version: string
-    edition: string
+    name?: string
+    appId?: string
+    instanceId?: string
+    partOf?: string
+    component?: string
+    version?: string
+    edition?: string
 }
 
 

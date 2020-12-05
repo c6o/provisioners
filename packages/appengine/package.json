@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/appengine",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "CodeZero provisioner for appengine",
   "main": "lib/index.js",
   "scripts": {
@@ -36,13 +36,12 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@c6o/kubeclient": "^0.0.6",
-    "@provisioner/common": "^0.0.19",
+    "@provisioner/common": "^0.0.20",
     "debug": "^4.2.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
-    "mysql": "^2.18.1",
     "parcel-bundler": "^1.12.4",
     "tslib": "^1.11.1"
   },
-  "gitHead": "76270c0e55c21dd5e02cd24c03c84567f77af028"
+  "gitHead": "707c88b725dc0a6b77ac8b7aaae4c8f401c00bf5"
 }

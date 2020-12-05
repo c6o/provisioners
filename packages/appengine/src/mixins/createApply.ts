@@ -1,8 +1,7 @@
 import { baseProvisionerType } from '../index'
 import { ApplierFactory as applierFactory } from '../applying/'
 import createDebug from 'debug'
-import * as fs from 'fs'
-import { AppObject } from '@provisioner/common'
+import { AppObject, AppManifest, TimingReporter } from '../appObject'
 
 const debug = createDebug('@appengine:createApply')
 
@@ -20,24 +19,28 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
     async createApply() {
-        const manifest = new AppObject(this.manager.document)
-        manifest.state.timing.apply = { start: new Date() }
-
+        const manifest = new AppObject(this.manager.document) as AppManifest
+        this.state.startTimer('apply')
         await this.ensureServiceNamespacesExist()
         await this.installApp(manifest)
         await this.ensureAppIsRunning(manifest)
+        this.state.endTimer('apply')
 
-        manifest.state.timing.apply.end = new Date()
+        this.helper.PrettyPrintJsonFile(manifest, `${manifest.appId}-completed-manifest`)
+        this.helper.PrettyPrintJsonFile(this.state, `${manifest.appId}-completed-state`)
+
+        new TimingReporter().report(this.state)
     }
 
-    async installApp(manifest: AppObject) {
-        manifest.state.timing.install =  { start: new Date() }
+    async installApp(manifest: AppManifest) {
+        this.state.startTimer('install')
         const applierType = manifest.provisioner.applier || 'ObjectApplier'
-        await applierFactory.getApplier(applierType).apply(manifest, this.manager)
-        manifest.state.timing.install.end = new Date()
+        await applierFactory.getApplier(applierType).apply(manifest, this.state, this.manager)
+        this.state.endTimer('install')
     }
 
-    async ensureAppIsRunning(manifest: AppObject) {
+    async ensureAppIsRunning(manifest: AppManifest) {
+        this.state.startTimer('watch-pod')
         await this.manager.cluster.
             begin(`Ensure ${manifest.displayName} services are running`)
             .beginWatch(this.pods(manifest.namespace, manifest.appId))
@@ -45,6 +48,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 processor.endWatch()
             })
             .end()
+        this.state.endTimer('watch-pod')
     }
 
 }

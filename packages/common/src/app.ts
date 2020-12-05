@@ -147,47 +147,4 @@ export class AppObject {
             this.document.metadata.labels[labelName] = labelValue
     }
 
-
-    //Required for appEngine provisioner
-    get edition() {
-        return this.getAppEdition()
-    }
-    get description() {
-        return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId
-    }
-    get displayName() {
-        return this.document.metadata.annotations?.['system.codezero.io/display'] || this.appId
-    }
-    get iconUrl() {
-        return this.document.metadata.annotations?.['system.codezero.io/iconUrl']
-    }
-
-    ///Provisioner appId itself and NOT the database identifier
-    get appId() {
-        return this.document.metadata.name
-    }
-
-    get namespace() {
-        return this.getAppNamespace()
-    }
-
-    get spec() {
-        return this.document.spec
-    }
-
-    get provisioner() {
-        return this.document.spec.provisioner
-    }
-
-    get routes() {
-        return this.document.spec.routes
-    }
-
-    //temporary storage, will be deleted before applying it to the cluster
-    get state() {
-        return this.document.spec.provisioner.state
-    }
-    set state(value: any) {
-        this.document.spec.provisioner.state = value
-    }
 }

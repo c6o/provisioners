@@ -1,22 +1,25 @@
 import { baseProvisionerType } from '../index'
-import createDebug from 'debug'
 import { parser } from '../parser'
-import * as fs from 'fs'
-import { AppObject } from '@provisioner/common'
+import { AppEngineState, AppManifest, AppObject, Helper } from '../appObject'
+import createDebug from 'debug'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-
+    helper = new Helper()
 
     async createInquire(args) {
+        const manifest = new AppObject(this.manager.document) as AppManifest
+        this.state = new AppEngineState(
+            {
+                name: manifest.name,
+                appId: manifest.appId,
+                partOf: manifest.appId,
+                edition: manifest.edition
+            }, args)
 
-        const manifest = new AppObject(this.manager.document)
-        if(!manifest.state) manifest.state = { args }
-        if(!manifest.state.args) manifest.state.args = args
-        if(!manifest.state.timing) manifest.state.timing = { appId: manifest.appId, edition: manifest.edition, start: new Date() }
-
+        this.state.startTimer('inquire')
 
         const answers = {
             image: args['image'] || manifest.provisioner.image,
@@ -25,7 +28,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         const automated = args['automated'] || manifest.provisioner.automated
 
-        manifest.state.timing.inquire = { start: new Date() }
         debug('Inquire started\n', 'manifest:\n', manifest, 'args:\n', args)
 
         const responses = await this.manager.inquirer?.prompt([
@@ -58,7 +60,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         manifest.provisioner.ports = await this.askPorts(args, automated, manifest.provisioner.ports)
         manifest.provisioner.volumes = await this.askVolumes(args, automated, manifest.provisioner.volumes)
 
-        manifest.state.timing.inquire.end = new Date()
+        this.state.endTimer('inquire')
+
     }
 
 

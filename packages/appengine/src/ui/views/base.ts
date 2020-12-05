@@ -1,18 +1,12 @@
-import { LitElement } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep } from '@provisioner/common'
 import { getTimeZones } from '../../templates/latest/timeZones'
+import { AppEngineBaseView } from './appEngineBaseView'
 
-export class BaseViewSettings extends LitElement implements StoreFlowStep {
-
-    mediator: StoreFlowMediator
+export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep {
 
     headingText: string
     bodyLayout: any
     pageLayout: any
-
-    get spec() {
-        return this.mediator.applicationSpec.spec.provisioner
-    }
 
     render() {
         return this.pageLayout
@@ -108,7 +102,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         field.addEventListener('input', e => {
             const event = e as any
             const name = event.target.id
-            for (const item of this.spec[type]) {
+            for (const item of this.manifest.provisioner[type]) {
                 if (item.name === name) {
                     item.value = event.target.value
                     break
@@ -142,7 +136,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         field.addEventListener('change', e => {
             const event = e as any
             const name = event.target.id
-            for (const item of this.spec[type]) {
+            for (const item of this.manifest.provisioner[type]) {
                 if (item.name === name) {
                     item.value = !!event.target.checked
                     break
@@ -182,7 +176,7 @@ export class BaseViewSettings extends LitElement implements StoreFlowStep {
         field.addEventListener('change', e => {
             const event = e as any
             const name = event.target.id
-            for (const item of this.spec[type]) {
+            for (const item of this.manifest.provisioner[type]) {
                 if (item.name === name) {
                     item.value = event.target.value
                     break

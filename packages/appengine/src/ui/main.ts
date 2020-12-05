@@ -1,84 +1,58 @@
-import { LitElement, html, customElement } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator, AppObject } from '@provisioner/common'
+import { StoreFlowStep } from '@provisioner/common'
+import { customElement, html } from 'lit-element'
+import { TimingReporter } from '../appObject'
 import { parser } from '../parser'
+import { AppEngineBaseView } from './views/appEngineBaseView'
 
 @customElement('appengine-install-main')
-export class AppEngineSettings extends LitElement implements StoreFlowStep {
-
-    mediator: StoreFlowMediator
-
-    get spec() {
-        return this.mediator.applicationSpec.spec.provisioner
-    }
-    get name() {
-        return this.mediator.applicationSpec.metadata.name
-    }
-
+export class AppEngineSettings extends AppEngineBaseView implements StoreFlowStep {
 
     render() {
         return html`
-        <h3>Welcome to the ${this.spec.metaData.display} installation.</h3>
-        <p>${this.spec.metaData.description}</p>
-        <br />
-        <br />
-        <table width='100%'>
-        <tr><td align='right'><p>Press 'Next' to get started with the installation.</p></td></tr>
-        </table>
-    `
+            <h3>Welcome to the ${this.manifest.displayName} installation.</h3>
+            <p>${this.manifest.description}</p>
+            <br />
+            <br />
+            <table width='100%'>
+            <tr><td align='right'><p>Press 'Next' to get started with the installation.</p></td></tr>
+            </table>
+        `
     }
 
     async begin() {
 
-        const manifest = new AppObject(this.mediator.applicationSpec)
+        super.begin()
 
-        console.log(manifest)
+        super.state.startTimer('ui-main')
 
-        this.handleMetaData()
-
-        if (!this.spec.parsed)
-            parser.parseInputsToSpec(null, this.spec)
+        if (!super.state.parsed)
+            parser.parseInputsToSpec(null, super.manifest)
 
         this.inspectFieldsForInputs()
 
-    }
-
-    handleMetaData() {
-
-        this.spec.metaData = this.mediator.applicationSpec.metadata
-        this.spec.edition = this.spec.metaData.labels['system.codezero.io/edition']
-
-        if (this.spec.metaData.annotations) {
-            this.spec.metaData.appId = this.spec.metaData.annotations['system.codezero.io/appId']
-            this.spec.metaData.description = this.spec.metaData.annotations['system.codezero.io/description']
-            this.spec.metaData.display = this.spec.metaData.annotations['system.codezero.io/display']
-            this.spec.metaData.iconUrl = this.spec.metaData.annotations['system.codezero.io/iconUrl']
-            this.spec.metaData.screenshots = this.spec.metaData.annotations['system.codezero.io/screenshots']
-            this.spec.metaData.edition = this.spec.metaData.labels['system.codezero.io/edition']
-        }
-        if (!this.spec.metaData.display) this.spec.metaData.display = this.spec.name
-
+        super.state.startTimer('ui-main')
 
     }
 
     inspectFieldsForInputs() {
 
         const fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
-        this.spec._ui = { configs: false, secrets: false }
+        super.state.payload.ui = { configs: false, secrets: false }
 
-        if (this.spec.configs) {
-            for (const config of this.spec.configs) {
+        if (super.manifest.provisioner.configs) {
+            for (const config of super.manifest.provisioner.configs) {
                 if (fieldTypes.includes(config.fieldType?.toLowerCase())) {
                     config.fieldType = config.fieldType.toLowerCase()
-                    this.spec._ui.configs = true
+                    super.state.payload.ui.configs = true
                     break
                 }
             }
         }
-        if (this.spec.secrets) {
-            for (const secret of this.spec.secrets) {
+        if (super.manifest.provisioner.secrets) {
+            for (const secret of super.manifest.provisioner.secrets) {
                 if (fieldTypes.includes(secret.fieldType.toLowerCase())) {
                     secret.fieldType = secret.fieldType.toLowerCase()
-                    this.spec._ui.secrets = true
+                    super.state.payload.ui.secrets = true
                     break
                 }
             }
@@ -89,10 +63,12 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     async end() {
 
 
-        if (this.spec._ui.configs)
-            this.mediator.appendFlow('appengine-install-configs')
-        else if (this.spec._ui.secrets)
-            this.mediator.appendFlow('appengine-install-secrets')
+        if (super.state.payload.ui.configs)
+            super.mediator.appendFlow('appengine-install-configs')
+        else if (super.state.payload.ui.secrets)
+            super.mediator.appendFlow('appengine-install-secrets')
+        else
+            new TimingReporter().report(super.state)
 
         return true
 

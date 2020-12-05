@@ -11,12 +11,12 @@ export class AppEngineSecretsSettings extends BaseViewSettings implements StoreF
                 <p>This data will be captured as Secrets within Kubernetes.</p>
                 <p>It will also (typically) be set as an environment variable on the container.</p>`
 
-        super.handleLayout(super.spec.secrets, 'secrets')
+        super.handleLayout(this.manifest.provisioner.secrets, 'secrets')
     }
 
     async end() {
 
-        if(!super.validateItems(super.spec.secrets)) return false
+        if(!super.validateItems(this.manifest.provisioner.secrets)) return false
 
         return true
     }

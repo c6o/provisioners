@@ -1,4 +1,5 @@
-import { AppObject, ProvisionerManager } from '@provisioner/common'
+import { ProvisionerManager } from '@provisioner/common'
+import { AppEngineState, AppManifest } from '../appObject'
 import * as appliers from './appliers'
 
 
@@ -9,5 +10,5 @@ export class ApplierFactory{
 }
 
 export interface Applier {
-    apply(manifest: AppObject, manager : ProvisionerManager)
+    apply(manifest: AppManifest, state: AppEngineState, manager : ProvisionerManager)
 }
