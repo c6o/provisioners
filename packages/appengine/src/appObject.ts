@@ -1,5 +1,5 @@
 import { LabelsMetadata } from "./parsing"
-import * as fs from 'fs'
+// import * as fs from 'fs'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:timing')
 
@@ -20,6 +20,14 @@ export class AppEngineState {
     args: any
     payload: any
     parsed: boolean
+    platform: string
+    timestamp: Date
+
+    timerChangedAction
+
+    onTimerChanged(action) {
+        this.timerChangedAction = action
+    }
 
     startTimer(name: string) {
         let existing = this.timing.find(e => e.name === name)
@@ -29,6 +37,7 @@ export class AppEngineState {
             this.timing.push(existing)
         }
         existing.start = (new Date()).getTime()
+        if(this.timerChangedAction) this.timerChangedAction({action: 'startTimer', name, state: this})
         return existing
     }
 
@@ -42,12 +51,16 @@ export class AppEngineState {
         }
         existing.end = (new Date()).getTime()
         existing.duration = existing.end - existing.start
+        if(this.timerChangedAction) this.timerChangedAction({action: 'endTimer', name, state: this})
+
     }
 
     constructor(labels: LabelsMetadata, args?: any, payload?: any) {
         this.timing = new Array<AppProvisionerTimer>()
         this.labels = labels
         this.parsed = false
+        this.timestamp = new Date()
+        this.platform = 'Web'
 
         if (this.labels.instanceId === undefined) {
             const helper = new Helper()
@@ -62,7 +75,6 @@ export class AppEngineState {
             this.payload = {}
         else
             this.payload = payload
-
     }
 }
 export class AppProvisionerTimer {
@@ -84,12 +96,33 @@ export interface AppManifest {
     readonly routes: string
     readonly name: string
     readonly spec: string
+    hasCustomConfigFields(): boolean
+    hasCustomSecretFields(): boolean
+    customConfigFields()
+    customSecretFields()
 }
 
 
 export class AppObject implements AppManifest {
 
     constructor(public document) { }
+
+
+    fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
+
+    hasCustomConfigFields(): boolean {
+        return this.customConfigFields().length > 0
+    }
+    hasCustomSecretFields(): boolean {
+        return this.customSecretFields().length > 0
+    }
+    customConfigFields()  {
+        return this.provisioner.configs.filter(e=> this.fieldTypes.includes(e.fieldType?.toLowerCase()))
+    }
+    customSecretFields() {
+        return this.provisioner.secrets.filter(e=> this.fieldTypes.includes(e.fieldType?.toLowerCase()))
+    }
+
 
     getAppEdition() {
         return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
@@ -163,7 +196,9 @@ export class Helper {
         if (!file) file = 'debug.json'
         file = `${__dirname}/${file}`
         if(!file.endsWith('.json')) file = `${file}.json`
-        fs.writeFileSync(file, JSON.stringify(json, null, 2))
+        //fs.writeFileSync(file, JSON.stringify(json, null, 2))
+        debug(file, json)
+        console.log(file, json)
         return file
     }
 }

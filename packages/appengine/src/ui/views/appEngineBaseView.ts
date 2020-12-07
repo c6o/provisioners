@@ -11,9 +11,12 @@ export class AppEngineBaseView extends LitElement implements StoreFlowStep {
     state: AppEngineState
     helper = new Helper()
 
-    async begin() {
+    async init() {
 
-        this.manifest = new AppObject(this.mediator.applicationSpec) as AppManifest
+        if(this.manifest === undefined)
+            this.manifest = new AppObject(this.mediator.applicationSpec) as AppManifest
+
+        if(this.state === undefined) {
         this.state = new AppEngineState(
             {
                 name: this.manifest.name,
@@ -21,7 +24,11 @@ export class AppEngineBaseView extends LitElement implements StoreFlowStep {
                 partOf: this.manifest.appId,
                 edition: this.manifest.edition
             })
+        }
+        console.log('ROBX BEGIN STATE', this.state)
+        console.log('ROBX BEGIN MANIFEST', this.manifest)
 
+        this.state.onTimerChanged(e=>console.log('ROBX STATE CHANGE:', e))
     }
 
 }

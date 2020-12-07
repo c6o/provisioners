@@ -16,9 +16,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 name: manifest.name,
                 appId: manifest.appId,
                 partOf: manifest.appId,
-                edition: manifest.edition
+                edition: manifest.edition,
             }, args)
 
+        this.state.platform = 'Console'
         this.state.startTimer('inquire')
 
         const answers = {

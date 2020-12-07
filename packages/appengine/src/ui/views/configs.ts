@@ -7,22 +7,31 @@ import { BaseViewSettings } from './base'
 export class AppEngineConfigsSettings extends BaseViewSettings implements StoreFlowStep {
 
     async begin() {
-        super.headingText = `
+        console.log('ROBX BEGIN CONFIGS', this)
+        super.init()
+
+        this.state.startTimer('ui-configs-begin')
+
+
+        this.headingText = `
                 <h3>Configuration</h3>
                 <p>This data will be captured as a ConfigMap within Kubernetes.</p>
                 <p>It will also (typically) be set as an environment variable on the container.</p>`
 
-        super.handleLayout(super.manifest.provisioner.configs, 'configs')
+        this.handleLayout(this.manifest.customConfigFields(), 'configs')
+        this.state.endTimer('ui-configs-begin')
+
     }
 
     async end() {
-        if(!super.validateItems(super.manifest.provisioner.configs)) return false
-        //intenionally not super
-        if (super.state.payload.ui.secrets)
-            this.mediator.appendFlow('appengine-install-secrets')
-        else
-            new TimingReporter().report(this.state)
+        if(!this.validateItems(this.manifest.provisioner.configs)) return false
 
+        if (this.manifest.hasCustomSecretFields()) {
+            console.log('ROBX config has secrets, will transition to configs')
+            this.mediator.appendFlow('appengine-install-secrets')
+        } else {
+            new TimingReporter().report(this.state)
+        }
         return true
     }
 

@@ -23,6 +23,7 @@ keywords:
   - SimpleDB
   - Elasticsearch
   - MongoDB
+  - robc
 
 repo: https://github.com/vrana/adminer/
 license: https://www.apache.org/licenses/LICENSE-2.0.html

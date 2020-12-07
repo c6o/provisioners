@@ -20,55 +20,29 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
     }
 
     async begin() {
+        super.init()
+        this.state.startTimer('ui-main-begin')
 
-        super.begin()
+        if (!this.state.parsed)
+            parser.parseInputsToSpec(null, this.manifest)
 
-        super.state.startTimer('ui-main')
+        this.state.endTimer('ui-main-begin')
 
-        if (!super.state.parsed)
-            parser.parseInputsToSpec(null, super.manifest)
-
-        this.inspectFieldsForInputs()
-
-        super.state.startTimer('ui-main')
-
-    }
-
-    inspectFieldsForInputs() {
-
-        const fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
-        super.state.payload.ui = { configs: false, secrets: false }
-
-        if (super.manifest.provisioner.configs) {
-            for (const config of super.manifest.provisioner.configs) {
-                if (fieldTypes.includes(config.fieldType?.toLowerCase())) {
-                    config.fieldType = config.fieldType.toLowerCase()
-                    super.state.payload.ui.configs = true
-                    break
-                }
-            }
-        }
-        if (super.manifest.provisioner.secrets) {
-            for (const secret of super.manifest.provisioner.secrets) {
-                if (fieldTypes.includes(secret.fieldType.toLowerCase())) {
-                    secret.fieldType = secret.fieldType.toLowerCase()
-                    super.state.payload.ui.secrets = true
-                    break
-                }
-            }
-        }
 
     }
 
     async end() {
 
 
-        if (super.state.payload.ui.configs)
-            super.mediator.appendFlow('appengine-install-configs')
-        else if (super.state.payload.ui.secrets)
-            super.mediator.appendFlow('appengine-install-secrets')
-        else
-            new TimingReporter().report(super.state)
+        if (this.manifest.hasCustomConfigFields()) {
+            console.log('ROBX main has configs, will transition to configs')
+            this.mediator.appendFlow('appengine-install-configs')
+        } else if (this.manifest.hasCustomSecretFields()) {
+            console.log('ROBX main has secrets, will transition to configs')
+            this.mediator.appendFlow('appengine-install-secrets')
+        } else {
+            new TimingReporter().report(this.state)
+        }
 
         return true
 
