@@ -3,6 +3,7 @@ import { baseProvisionerType } from '../'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
     externalIPAddress
     SYSTEM_GATEWAY_NAME = 'system-gateway'
+    jwtKey = [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('') // generate random key
 
     async createApply() {
         this.spec.tag = this.spec.tag || 'canary'
@@ -81,7 +82,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterId: this.spec.clusterId,
             clusterKey: this.spec.clusterKey,
             hubServerURL: this.spec.hubServerURL,
-            systemServerURL: this.systemServerUrl
+            systemServerURL: this.systemServerUrl,
+            jwtKey: this.jwtKey, // plain key
         }
 
         await this.manager.cluster
@@ -110,7 +112,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionApps() {
-        const jwtKey = [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('') // generate random key
         const options = {
             tag: this.spec.tag,
             clusterNamespace: this.spec.clusterNamespace,
@@ -120,8 +121,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             featureAuthKey: this.spec.featureAuthKey,
             stripePublishableKey: this.spec.stripePublishableKey,
             host: this.host,
-            jwtKey, // plain key
-            encodedJwtKey: Buffer.from(jwtKey).toString('base64'), // base64 encoded key
+            encodedJwtKey: Buffer.from(this.jwtKey).toString('base64'), // base64 encoded key
         }
 
         await this.manager.cluster
