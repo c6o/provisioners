@@ -92,27 +92,17 @@ export class AppObject {
         ]
     }
 
-    get serviceNames() {
-        return this.services.map(serviceObject => this.getServiceName(serviceObject))
-    }
+    get appEdition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
 
-    get isNew() {
-        return !!this.document.metadata.uid
-    }
+    get appName() { return this.document.metadata.name }
+
+    get appNamespace() { return this.document.metadata.namespace }
+
+    get isNew() { return !!this.document.metadata.uid }
+
+    get serviceNames() { return this.services.map(serviceObject => this.getServiceName(serviceObject)) }
 
     constructor(public document) { }
-
-    getAppEdition() {
-        return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
-    }
-
-    getAppName() {
-        return this.document.metadata.name
-    }
-
-    getAppNamespace() {
-        return this.document.metadata.namespace
-    }
 
     // spec is the contents of the service object
     getServiceSpec(serviceName: string) {
