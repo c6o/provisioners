@@ -16,8 +16,7 @@ export class ObjectApplier implements Applier {
 
         state.startTimer('object-apply')
 
-        const spec = manifest.provisioner
-        const deployment = await templates.getDeploymentTemplate(spec.name, manifest.namespace, spec.image, spec.command, state.labels)
+        const deployment = await templates.getDeploymentTemplate(manifest.provisioner.name, manifest.namespace, manifest.provisioner.image, manifest.provisioner.command, state.labels)
 
         // if (spec.link) {
         //     //we have features/dependancies to deal with, lets jump to that first
@@ -156,8 +155,8 @@ export class ObjectApplier implements Applier {
         if (!manifest.provisioner.configs?.length) manifest.provisioner.configs = []
 
         //provide some basic codezero app details to the provisioner
-        manifest.provisioner.configs.push({ name: 'name', value: manifest.appId, env: 'CZ_APP' })
-        manifest.provisioner.configs.push({ name: 'edition', value: manifest.edition, env: 'CZ_EDITION' })
+        manifest.provisioner.configs.push({ name: 'name',       value: state.labels.appId,      env: 'CZ_APP' })
+        manifest.provisioner.configs.push({ name: 'edition',    value: state.labels.edition,    env: 'CZ_EDITION' })
         manifest.provisioner.configs.push({ name: 'instanceId', value: state.labels.instanceId, env: 'CZ_INSTANCE_ID' })
 
         const config = templates.getConfigTemplate(manifest.appId, manifest.namespace, state.labels)
@@ -168,9 +167,7 @@ export class ObjectApplier implements Applier {
             if (item.value === '$PUBLIC_DNS') {
                 item.value = ''
             }
-
             config.data[item.name] = String(item.value)
-
             if (item.env !== 'NONE') {
                 deployment.spec.template.spec.containers[0].env.push(
                     {
@@ -184,7 +181,6 @@ export class ObjectApplier implements Applier {
                     })
             }
         }
-
         // if(spec.name === 'mysql') {
 
         //     const configAuth = {

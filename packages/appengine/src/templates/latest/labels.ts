@@ -7,12 +7,11 @@ export function getLabels(name: string, labels: LabelsMetadata) {
     const finalLabels = {
         app: name,
         name: name,
-        'system.codezero.io/instance': fullAppName,
         'system.codezero.io/appengine': 'v1',
         'system.codezero.io/app': fullAppName,
         'system.codezero.io/id': labels.instanceId,
         'app.kubernetes.io/name': name,
-        'app.kubernetes.io/managed-by': 'codezero',
+        'app.kubernetes.io/managed-by': 'codezero'
     }
     if(labels.version) finalLabels['app.kubernetes.io/version'] = labels.version
     if(labels.component) finalLabels['app.kubernetes.io/component'] = labels.component

@@ -7,11 +7,9 @@ import { BaseViewSettings } from './base'
 export class AppEngineConfigsSettings extends BaseViewSettings implements StoreFlowStep {
 
     async begin() {
-        console.log('ROBX BEGIN CONFIGS', this)
         super.init()
 
         this.state.startTimer('ui-configs-begin')
-
 
         this.headingText = `
                 <h3>Configuration</h3>
@@ -27,7 +25,6 @@ export class AppEngineConfigsSettings extends BaseViewSettings implements StoreF
         if(!this.validateItems(this.manifest.provisioner.configs)) return false
 
         if (this.manifest.hasCustomSecretFields()) {
-            console.log('ROBX config has secrets, will transition to configs')
             this.mediator.appendFlow('appengine-install-secrets')
         } else {
             new TimingReporter().report(this.state)

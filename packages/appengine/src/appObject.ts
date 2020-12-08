@@ -1,11 +1,11 @@
 import { LabelsMetadata } from "./parsing"
-// import * as fs from 'fs'
+import * as fs from 'fs'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:timing')
 
 export class TimingReporter implements TimingReporter {
     report(state: AppEngineState) {
-        debug(state)
+        debug('TimingReporter:', state)
         return true
     }
 }
@@ -107,8 +107,7 @@ export class AppObject implements AppManifest {
 
     constructor(public document) { }
 
-
-    fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
+    private fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
 
     hasCustomConfigFields(): boolean {
         return this.customConfigFields().length > 0
@@ -196,9 +195,8 @@ export class Helper {
         if (!file) file = 'debug.json'
         file = `${__dirname}/${file}`
         if(!file.endsWith('.json')) file = `${file}.json`
-        //fs.writeFileSync(file, JSON.stringify(json, null, 2))
+        fs.writeFileSync(file, JSON.stringify(json, null, 2))
         debug(file, json)
-        console.log(file, json)
         return file
     }
 }
