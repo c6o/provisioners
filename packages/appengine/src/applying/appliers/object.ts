@@ -18,6 +18,11 @@ export class ObjectApplier implements Applier {
 
         const deployment = await templates.getDeploymentTemplate(manifest.provisioner.name, manifest.namespace, manifest.provisioner.image, manifest.provisioner.command, state.labels)
 
+        //support docker tags being specified in the manifest
+        //used for upgrades
+        if(manifest.provisioner.tag) {
+            deployment.spec.template.spec.containers[0].image = `${deployment.spec.template.spec.containers[0].image}:${manifest.provisioner.tag}`
+        }
         // if (spec.link) {
         //     //we have features/dependancies to deal with, lets jump to that first
         //     await this.installFeatures(manifest.namespace, spec, manager)

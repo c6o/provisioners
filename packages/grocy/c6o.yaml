@@ -37,7 +37,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: grocy
-        image: 'linuxserver/grocy:latest'
+        tag: latest
+        image: linuxserver/grocy
         port: 80
         automated: true
         config:

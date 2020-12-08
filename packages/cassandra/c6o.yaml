@@ -49,7 +49,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cassandra
-        image: 'cassandra:latest'
+        tag: latest
+        image: cassandra
         port:
           - port: 7000
             name: jmx

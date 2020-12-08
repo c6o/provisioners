@@ -33,7 +33,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: natsserver
-        image: 'nats:latest'
+        tag: latest
+        image: nats
         port:
           - name: clients
             port: 4222

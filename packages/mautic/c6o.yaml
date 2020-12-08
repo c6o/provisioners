@@ -67,7 +67,8 @@ editions:
         automated: true
         tag-prefix: appengine
         name: mautic
-        image: 'mautic/mautic:latest'
+        tag: latest
+        image: mautic/mautic
         port: 80
 
         volume:

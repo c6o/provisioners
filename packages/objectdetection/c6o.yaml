@@ -34,7 +34,7 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         name: objectdetection
-        image: 'ancs21/tf-od-api'
+        image: ancs21/tf-od-api
         port:
           - name: api
             port: 5000

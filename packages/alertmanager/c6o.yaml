@@ -36,7 +36,8 @@ editions:
         tag-prefix: appengine
         package: '@provisioner/appengine'
         name: alertmanager
-        image: 'prom/alertmanager:latest'
+        tag: latest
+        image: prom/alertmanager
         port: 9093
         automated: true
       marina:

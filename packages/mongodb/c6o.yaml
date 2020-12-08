@@ -36,7 +36,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: mongodb
-        image: 'mongo:latest'
+        tag: latest
+        image: mongo
         port: 27017
         automated: true
 
@@ -72,7 +73,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: mongodb
-        image: 'mongo:latest'
+        tag: latest
+        image: mongo
         port: 27017
         volume:
           - size: 5Gi

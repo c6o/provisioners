@@ -33,7 +33,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: n8nserver
-        image: 'n8nio/n8n:0.43.0-ubuntu'
+        tag: 0.43.0-ubuntu
+        image: n8nio/n8n
         port: 5678
         automated: true
       marina:

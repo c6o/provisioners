@@ -43,7 +43,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: postgresql
-        image: postgres:12-alpine
+        tag: 12-alpine
+        image: postgres
         automated: true
         port: 5432
         volume:
@@ -79,7 +80,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: postgresql
-        image: postgres:12-alpine
+        tag: 12-alpine
+        image: postgres
         port: 5432
         volume:
           - size: 5Gi

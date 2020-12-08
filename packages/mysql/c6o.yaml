@@ -43,7 +43,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: mysql
-        image: 'mysql:latest'
+        tag: latest
+        image: mysql
         port: 3306
         volume:
           - size: 5Gi
@@ -69,7 +70,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: mysql
-        image: 'mysql:latest'
+        tag: latest
+        image: mysql
         port: 3306
         volume:
           - size: 5Gi

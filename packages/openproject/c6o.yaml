@@ -32,7 +32,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: openproject
-        image: 'openproject/community:11'
+        tag: 11
+        image: openproject/community
         port: 80
         automated: true
 

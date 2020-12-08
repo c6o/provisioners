@@ -53,7 +53,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: plexserver
-        image: 'plexinc/pms-docker:latest'
+        tag: latest
+        image: plexinc/pms-docker
         port: 32400
         config:
           - name: PUID

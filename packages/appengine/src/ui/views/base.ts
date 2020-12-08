@@ -61,9 +61,7 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
         if (item.fieldType === 'password') return this.renderTextField(type, item)
         if (item.fieldType === 'checkbox') return this.renderCheckboxInputField(type, item)
         if (item.fieldType === 'timezone') return this.renderTimezoneField(type, item)
-        if (item.fieldType === 'combobox' && item.items) {
-            return this.renderComboList(type, item, item.items)
-        }
+        if (item.fieldType === 'combobox' && item.items) return this.renderComboList(type, item, item.items)
 
         return false
     }
@@ -72,10 +70,9 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
         const zones = []
         for (const group of tzList) {
             for (const zone of group.zones)
-                zones.push(zone.value)
+                zones.push({ value: zone.value })
         }
         return this.renderComboList(type, item, zones)
-        return true
     }
 
     renderTextField(type, item) {
@@ -171,7 +168,7 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
 
         if (item.value) field['value'] = item.value
 
-        field['items'] = items
+        field['items'] = items.map(({value}) => value)
 
         field.addEventListener('change', e => {
             const event = e as any

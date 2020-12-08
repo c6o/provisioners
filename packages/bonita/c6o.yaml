@@ -33,7 +33,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: bonita
-        image: 'bonita:latest'
+        tag: latest
+        image: bonita
         port: 8080
         automated: true
         volume:
@@ -93,7 +94,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: bonita
-        image: 'bonita:latest'
+        tag: latest
+        image: bonita
         port: 8080
         automated: true
         volume:

@@ -63,7 +63,7 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         name: wikijs
-        image: 'requarks/wiki'
+        image: requarks/wiki
         tag-prefix: appengine
         port: 3000
         automated: true

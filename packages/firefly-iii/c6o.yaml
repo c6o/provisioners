@@ -72,7 +72,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: firefly-iii
-        image: 'jc5x/firefly-iii:latest'
+        tag: latest
+        image: jc5x/firefly-iii
         port: 8080
         automated: true
         volume:

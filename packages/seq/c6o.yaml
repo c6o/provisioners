@@ -41,7 +41,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: seq
-        image: datalust/seq:latest
+        tag: latest
+        image: datalust/seq
         port: 80
         automated: true
         config:

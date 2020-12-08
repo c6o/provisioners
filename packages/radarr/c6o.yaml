@@ -36,7 +36,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: radarr
-        image: 'linuxserver/radarr:latest'
+        tag: latest
+        image: linuxserver/radarr
         port: 7878
         automated: true
         config:

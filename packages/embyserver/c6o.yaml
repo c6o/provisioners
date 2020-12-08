@@ -56,7 +56,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: embyserver
-        image: 'linuxserver/emby:latest'
+        tag: latest
+        image: linuxserver/emby
         config:
           - name: PUID
             value: 0

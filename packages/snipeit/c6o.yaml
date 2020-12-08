@@ -65,7 +65,7 @@ editions:
           targetService: snipeit
       provisioner:
         package: '@provisioner/appengine'
-        image: 'snipe/snipe-it'
+        image: snipe/snipe-it
         tag-prefix: appengine
         port: 80
         automated: true
@@ -130,7 +130,7 @@ editions:
           targetService: snipeit
       provisioner:
         package: '@provisioner/appengine'
-        image: 'snipe/snipe-it'
+        image: snipe/snipe-it
         tag-prefix: appengine
         port: 80
         automated: true
@@ -155,7 +155,8 @@ editions:
                   edition: internal
                   package: '@provisioner/appengine'
                   tag-prefix: appengine
-                  image: 'mysql:latest'
+                  tag: latest
+                  image: mysql
                   ports:
                     - port: 3306
                       protocol: TCP

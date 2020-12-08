@@ -55,7 +55,8 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         name: cachet
-        image: 'cachethq/docker:latest'
+        tag: latest
+        image: cachethq/docker
         tag-prefix: appengine
         port: 8000
 
