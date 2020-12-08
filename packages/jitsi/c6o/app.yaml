@@ -36,7 +36,9 @@ editions:
         - type: http
           targetService: jitsi-web
       provisioner:
+        tag: stable-5142
         package: '@provisioner/jitsi'
+        ignore: true
       marina:
         launch:
           type: inline
