@@ -27,6 +27,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const authPassword = Buffer.from(super.generatePassword()).toString('base64')
         const jvbPassword = Buffer.from(super.generatePassword()).toString('base64')
         const clusterIP = await super.getIngressGatewayServiceClusterIp()
+        const tag = this.spec.tag || 'stable-5142'
 
         await this.manager.cluster
             .begin('Install jitsi deployment')
@@ -38,7 +39,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install NodePort')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/2-deployment.yaml', { namespace, clusterIP })
+            .upsertFile('../../k8s/latest/2-deployment.yaml', { namespace, clusterIP, tag })
             .end()
 
         await this.manager.cluster
