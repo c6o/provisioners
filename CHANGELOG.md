@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/c6o/node-monorepo/compare/v0.0.20...v0.0.21) (2020-12-08)
+
+
+### 🐛 Bug Fixes
+
+* **Jitsi tag:** Updated jitsi to support a docker image tag, including defaults ([#114](https://github.com/c6o/node-monorepo/issues/114)) ([1d28e6f](https://github.com/c6o/node-monorepo/commit/1d28e6fc48a7db3dcf7e7e1ea9d009372ec7895f))
+
+
+### ♻️ Chores
+
+* **assets:** Removed assetsBaseURL ([#112](https://github.com/c6o/node-monorepo/issues/112)) ([b0d92b4](https://github.com/c6o/node-monorepo/commit/b0d92b40c44ec0821626a03e966d9478cbf03b1b))
+
+
+
+
+
 ## [0.0.20](https://github.com/c6o/node-monorepo/compare/v0.0.19...v0.0.20) (2020-12-04)
 
 

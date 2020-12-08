@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/c6o/provisioners/compare/v0.0.20...v0.0.21) (2020-12-08)
+
+
+### ♻️ Chores
+
+* **assets:** Removed assetsBaseURL ([#112](https://github.com/c6o/provisioners/issues/112)) ([b0d92b4](https://github.com/c6o/provisioners/commit/b0d92b40c44ec0821626a03e966d9478cbf03b1b))
+
+
+
+
+
 ## [0.0.20](https://github.com/c6o/provisioners/compare/v0.0.19...v0.0.20) (2020-12-04)
 
 
