@@ -27,7 +27,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const authPassword = Buffer.from(super.generatePassword()).toString('base64')
         const jvbPassword = Buffer.from(super.generatePassword()).toString('base64')
         const clusterIP = await super.getIngressGatewayServiceClusterIp()
-        const tag = this.spec.tag || ':stable-5142'
+        const tag = this.spec.tag || 'stable-5142'
 
         await this.manager.cluster
             .begin('Install jitsi deployment')
