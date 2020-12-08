@@ -150,8 +150,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (answers.env === 'development')
             this.spec.hubServerURL = process.env.HUB_SERVER_URL || `https://c6o-${process.env.USER}.serveo.net`
         else if (answers.env === 'staging')
-            this.spec.hubServerURL = 'https://staging.hub.codezero.io'
+            this.spec.hubServerURL = 'https://staging.codezero.io'
         else
-            this.spec.hubServerURL = 'https://hub.codezero.io'
+            this.spec.hubServerURL = 'https://codezero.io'
     }
 }
