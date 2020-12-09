@@ -11,6 +11,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(args) {
         const manifest = new AppObject(this.manager.document) as AppManifest
+
         this.state = new AppEngineState(
             {
                 name: manifest.name,

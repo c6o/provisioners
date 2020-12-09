@@ -20,11 +20,9 @@ export class AppEngineSecretsSettings extends BaseViewSettings implements StoreF
         this.handleLayout(this.manifest.customSecretFields(), 'secrets')
         this.state.endTimer('ui-secrets-begin')
 
-
     }
 
     async end() {
-
         if(!this.validateItems(this.manifest.provisioner.secrets)) return false
 
         return true
