@@ -1,36 +1,7 @@
 {
   "name": "provisioners-root",
   "private": true,
-  "workspaces": [
-    "packages/istio/",
-    "packages/etcd-operator/",
-    "packages/c6o-system/",
-    "packages/rabbitmq/",
-    "packages/vscode/",
-    "packages/common/",
-    "packages/etcd/",
-    "packages/mongo/",
-    "packages/mattermost/",
-    "packages/ghost/",
-    "packages/kafka/",
-    "packages/node-red/",
-    "packages/jitsi/",
-    "packages/grafana/",
-    "packages/mosquitto/",
-    "packages/cert-manager/",
-    "packages/prometheus/",
-    "packages/wordpress/",
-    "packages/docker-registry/",
-    "packages/appengine/",
-    "packages/verdaccio/",
-    "packages/foldingathome/",
-    "packages/odoo/",
-    "packages/logging-elk/",
-    "packages/precog/",
-    "packages/suitecrm/",
-    "packages/drone/",
-    "packages/appsuite/"
-  ],
+  "workspaces": ["packages/*"],
   "scripts": {
     "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",
     "build": "lerna run build --stream",
@@ -38,7 +9,7 @@
     "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
     "publish-patch": "yarn reset && lerna publish patch",
     "publish-main": "git checkout main && git merge --no-ff",
-    "publish-manifests": "lerna exec czctl -- app publish ./ --account codezero -f"
+    "publish-manifests": "ls -d $PWD/packages/* | xargs -I fld czctl app publish fld --account codezero -f"
   },
   "devDependencies": {
     "@types/node": "^10.12.18",

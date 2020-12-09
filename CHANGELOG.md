@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.21](https://github.com/c6o/node-monorepo/compare/v0.0.20...v0.0.21) (2020-12-08)
+
+
+### 🐛 Bug Fixes
+
+* **Jitsi tag:** Updated jitsi to support a docker image tag, including defaults ([#114](https://github.com/c6o/node-monorepo/issues/114)) ([1d28e6f](https://github.com/c6o/node-monorepo/commit/1d28e6fc48a7db3dcf7e7e1ea9d009372ec7895f))
+
+
+### ♻️ Chores
+
+* **assets:** Removed assetsBaseURL ([#112](https://github.com/c6o/node-monorepo/issues/112)) ([b0d92b4](https://github.com/c6o/node-monorepo/commit/b0d92b40c44ec0821626a03e966d9478cbf03b1b))
+
+
+
+
+
+## [0.0.20](https://github.com/c6o/node-monorepo/compare/v0.0.19...v0.0.20) (2020-12-04)
+
+
+### 🐛 Bug Fixes
+
+* More work on the app engine UI ([98bf253](https://github.com/c6o/node-monorepo/commit/98bf25318b1235d1c22014991a59799484bb9aef))
+* **c6o-system:** Now you can install codezero over itself ([aee8fda](https://github.com/c6o/node-monorepo/commit/aee8fda47c7601a0b680e738afd9f6d250f8e9ce))
+* **publish:** Fixed publish-manifests so non-workspace apps are published ([e210607](https://github.com/c6o/node-monorepo/commit/e210607ce3bc475f76467eca562bf9ad33ae42ec))
+
+
+### ♻️ Chores
+
+* Moved service address getter to base ([4eedadf](https://github.com/c6o/node-monorepo/commit/4eedadf44e0c727595880eddc68af3c8dfb0bedc))
+* Some UI cleanup to the app engine provisioner ([ad25f8f](https://github.com/c6o/node-monorepo/commit/ad25f8f472fe0ccb2f10db33537e2181486d6465))
+
+
+
+
+
 ## [0.0.19](https://github.com/c6o/node-monorepo/compare/v0.0.18...v0.0.19) (2020-11-20)
 
 **Note:** Version bump only for package provisioners-root

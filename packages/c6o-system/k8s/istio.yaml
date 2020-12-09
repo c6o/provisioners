@@ -5,7 +5,7 @@ metadata:
   namespace: istio-system
   annotations:
     system.codezero.io/display: Istio
-    system.codezero.io/iconUrl: '{{assetsBaseURL}}/assets/apps/istio/icon'
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/istio/icon'
 spec:
   navstation: true
 status: Running

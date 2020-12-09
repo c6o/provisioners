@@ -17,6 +17,7 @@ export class WordpressSettings extends LitElement implements StoreFlowStep {
             </c6o-form-layout>
         `
     }
+
     usernameChanged = (e) => {
         this.serviceSpec.username = e.target.value
     }

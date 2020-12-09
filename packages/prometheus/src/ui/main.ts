@@ -15,15 +15,45 @@ export class PrometheusMainInstall extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-checkbox @checked-changed=${this.checkHandler('simpleService')} ?checked=${!!this.serviceSpec.simpleService}>Simple Prometheus Install</c6o-checkbox>
-                <br />
-                <c6o-checkbox @checked-changed=${this.checkHandler('alertManagerEnabled')} ?checked=${!!this.serviceSpec.alertManagerEnabled} ?disabled=${this.isSimple}>Alert Manager</c6o-checkbox>
-                <br />
-                <c6o-checkbox @checked-changed=${this.checkHandler('kubeMetricsEnabled')} ?checked=${!!this.serviceSpec.kubeMetricsEnabled} ?disabled=${this.isSimple}>Kube State Metrics</c6o-checkbox>
-                <br />
-                <c6o-checkbox @checked-changed=${this.checkHandler('nodeExporterEnabled')} ?checked=${!!this.serviceSpec.nodeExporterEnabled} ?disabled=${this.isSimple}>Node Exporter</c6o-checkbox>
-                <br />
-                <c6o-checkbox @checked-changed=${this.checkHandler('pushGatewayEnabled')} ?checked=${!!this.serviceSpec.pushGatewayEnabled} ?disabled=${this.isSimple}>Push Gateway</c6o-checkbox>
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.simpleService}
+                    theme="condensed"
+                    @checked-changed=${this.checkHandler('simpleService')}
+                >
+                    Simple Prometheus Install
+                </c6o-checkbox>
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.alertManagerEnabled}
+                    ?disabled=${this.isSimple}
+                    theme="condensed"
+                    @checked-changed=${this.checkHandler('alertManagerEnabled')}
+                >
+                    Alert Manager
+                </c6o-checkbox>
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.kubeMetricsEnabled}
+                    ?disabled=${this.isSimple}
+                    theme="condensed"
+                    @checked-changed=${this.checkHandler('kubeMetricsEnabled')}
+                >
+                    Kube State Metrics
+                </c6o-checkbox>
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.nodeExporterEnabled}
+                    ?disabled=${this.isSimple}
+                    theme="condensed"
+                    @checked-changed=${this.checkHandler('nodeExporterEnabled')}
+                >
+                    Node Exporter
+                </c6o-checkbox>
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.pushGatewayEnabled}
+                    ?disabled=${this.isSimple}
+                    theme="condensed"
+                    @checked-changed=${this.checkHandler('pushGatewayEnabled')}
+                >
+                    Push Gateway
+                </c6o-checkbox>
             </c6o-form-layout>
         `
     }
