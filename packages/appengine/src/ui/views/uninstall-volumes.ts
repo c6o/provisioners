@@ -18,28 +18,19 @@ export class UninstallVolumesViewSettings extends LitElement implements StoreFlo
     }
 
     async begin() {
-        console.log('ROBX', this.mediator)
         this.handleLayout()
     }
 
     handleLayout() {
+        const headingLayout = document.createElement('h3')
+        headingLayout.textContent = 'Volume Management'
 
-        const headingLayout = document.createElement('c6o-form-layout')
-        const headingField = document.createElement('p')
-
-        this.pageLayout = document.createElement('c6o-form-layout')
+        this.pageLayout = document.createElement('section')
         this.pageLayout.appendChild(headingLayout)
+
         this.bodyLayout = document.createElement('c6o-form-layout')
         this.pageLayout.appendChild(this.bodyLayout)
 
-
-        headingField.innerHTML = 'Volume Management'
-
-        headingLayout.appendChild(headingField)
-
         this.requestUpdate()
-
     }
-
-
 }

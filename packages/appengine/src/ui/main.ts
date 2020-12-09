@@ -25,10 +25,5 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
         }
 
         await (this.mediator as any).handleNext()
-
-
     }
-
-
-
 }
