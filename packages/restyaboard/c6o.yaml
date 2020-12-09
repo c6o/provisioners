@@ -51,7 +51,8 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         name: restyaboard
-        image: 'restyaplatform/restyaboard:dev'
+        tag: dev
+        image: restyaplatform/restyaboard
         tag-prefix: appengine
         port: 80
 

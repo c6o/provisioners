@@ -40,7 +40,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cloud9python
-        image: 'linuxserver/cloud9:python'
+        tag: python
+        image: linuxserver/cloud9
         port: 8000
         automated: true
         volume:
@@ -92,7 +93,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cloud9nodejs
-        image: 'linuxserver/cloud9:nodejs'
+        tag: nodejs
+        image: linuxserver/cloud9
         port: 8000
         automated: true
         volume:
@@ -145,7 +147,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cloud9go
-        image: 'linuxserver/cloud9:go'
+        tag: go
+        image: linuxserver/cloud9
         port: 8000
         automated: true
         volume:
@@ -199,7 +202,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cloud9ruby
-        image: 'linuxserver/cloud9:ruby'
+        tag: ruby
+        image: linuxserver/cloud9
         port: 8000
         automated: true
         volume:

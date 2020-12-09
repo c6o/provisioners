@@ -1,5 +1,7 @@
-import { mix } from 'mixwith'
-import { ProvisionerBase } from '@provisioner/common'
+import { mix } from "mixwith"
+import { ProvisionerBase } from "@provisioner/common"
+import { AppEngineState, AppManifest, AppProvisionerTimer } from "./appObject"
+
 import {
     createApplyMixin,
     createInquireMixin
@@ -12,5 +14,6 @@ export interface Provisioner extends ProvisionerBase {
 }
 
 export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin) {
-
+    state: AppEngineState
+    manifest: AppManifest
 }

@@ -67,8 +67,9 @@ editions:
         package: '@provisioner/appengine'
         automated: true
         tag-prefix: appengine
+        tag: 1.3.9
         name: akaunting
-        image: 'sameersbn/akaunting:1.3.9'
+        image: sameersbn/akaunting
         port: 80
 
         volume:

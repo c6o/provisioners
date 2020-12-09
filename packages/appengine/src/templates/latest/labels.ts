@@ -1,23 +1,22 @@
 import { LabelsMetadata } from '../../parsing'
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
-export function getLabels(name: string, metaData: LabelsMetadata) {
-    if(!metaData.edition || metaData.edition === '') metaData.edition = 'preview'
-    const fullAppName = `${name}-${metaData.edition}-${metaData.instanceId}`
-    const labels = {
+export function getLabels(name: string, labels: LabelsMetadata) {
+    if(!labels.edition || labels.edition === '') labels.edition = 'preview'
+    const fullAppName = `${name}-${labels.edition}-${labels.instanceId}`
+    const finalLabels = {
         app: name,
         name: name,
-        'system.codezero.io/instance': fullAppName,
         'system.codezero.io/appengine': 'v1',
         'system.codezero.io/app': fullAppName,
-        'system.codezero.io/id': metaData.instanceId,
+        'system.codezero.io/id': labels.instanceId,
         'app.kubernetes.io/name': name,
-        'app.kubernetes.io/managed-by': 'codezero',
+        'app.kubernetes.io/managed-by': 'codezero'
     }
-    if(metaData.version) labels['app.kubernetes.io/version'] = metaData.version
-    if(metaData.component) labels['app.kubernetes.io/component'] = metaData.component
-    if(metaData.partOf) labels['app.kubernetes.io/part-of'] = metaData.partOf
-    if(metaData.edition) labels['system.codezero.io/edition'] = metaData.edition
+    if(labels.version) finalLabels['app.kubernetes.io/version'] = labels.version
+    if(labels.component) finalLabels['app.kubernetes.io/component'] = labels.component
+    if(labels.partOf) finalLabels['app.kubernetes.io/part-of'] = labels.partOf
+    if(labels.edition) finalLabels['system.codezero.io/edition'] = labels.edition
 
-    return labels
+    return finalLabels
 }

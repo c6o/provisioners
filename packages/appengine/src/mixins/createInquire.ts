@@ -1,20 +1,36 @@
 import { baseProvisionerType } from '../index'
-import createDebug from 'debug'
 import { parser } from '../parser'
+import { AppEngineState, AppManifest, AppObject, Helper } from '../appObject'
+import createDebug from 'debug'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
+    helper = new Helper()
+
     async createInquire(args) {
+        const manifest = new AppObject(this.manager.document) as AppManifest
+
+        this.state = new AppEngineState(
+            {
+                name: manifest.name,
+                appId: manifest.appId,
+                partOf: manifest.appId,
+                edition: manifest.edition,
+            }, args)
+
+        this.state.platform = 'Console'
+        this.state.startTimer('inquire')
 
         const answers = {
-            image: args['image'] || this.spec.image,
-            name: args['name'] || this.spec.name,
+            image: args['image'] || manifest.provisioner.image,
+            name: args['name'] || manifest.appId,
         }
-        const automated = args['automated'] || this.spec.automated
 
-        debug('Inquire started\n', 'spec:\n', this.spec, 'args:\n', args)
+        const automated = args['automated'] || manifest.provisioner.automated
+
+        debug('Inquire started\n', 'manifest:\n', manifest, 'args:\n', args)
 
         const responses = await this.manager.inquirer?.prompt([
             {
@@ -33,38 +49,29 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             }
         ], answers)
 
-        this.spec.image = responses.image
-        this.spec.name = responses.name
-        this.spec.edition = this.edition
 
-        parser.parseInputsToSpec(args, this.spec)
 
-        this.spec.configs = await this.askConfig(args, automated)
-        this.spec.secrets = await this.askSecrets(args, automated)
-        this.spec.ports = await this.askPorts(args, automated)
-        this.spec.volumes = await this.askVolumes(args, automated)
+        manifest.provisioner.image = responses.image
+        manifest.provisioner.name = responses.name
+        manifest.provisioner.edition = manifest.edition
 
-        debug('Inquire Completed\n', 'spec:\n', this.spec, 'args:\n', args)
+        parser.parseInputsToSpec(args, manifest)
 
-        //czctl install appengine --local -n testing --image redis --name redis --port "6379/TCP/TCP"  --automated
-        //czctl install redis --local -n testing
+        manifest.provisioner.configs = await this.askConfig(args, automated, manifest.provisioner.configs)
+        manifest.provisioner.secrets = await this.askSecrets(args, automated, manifest.provisioner.secrets)
+        manifest.provisioner.ports = await this.askPorts(args, automated, manifest.provisioner.ports)
+        manifest.provisioner.volumes = await this.askVolumes(args, automated, manifest.provisioner.volumes)
 
-        //czctl install redis --local -n testing  --specOnly > foo.yaml
-        //czctl provision foo.yaml
-
-        //appEngine -> provisions docker containers
-        //appStudio -> UI to manage appEngine based configuration  (czctl and webui -> icon in marina)
-        //appSuite  -> provisioner for provisioners
+        this.state.endTimer('inquire')
 
     }
 
 
-    async askConfig(args, automated) {
+    async askConfig(args, automated, configs) {
 
-        const configs = this.spec.configs
         if (configs.length > 0 || automated) return configs
 
-        let responses = { hasConfig: false, configName : '', configValue : '', envName : '' }
+        let responses = { hasConfig: false, configName: '', configValue: '', envName: '' }
 
         do {
             responses = await this.manager.inquirer?.prompt([
@@ -105,9 +112,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     }
 
-    async askSecrets(args, automated) {
+    async askSecrets(args, automated, secrets) {
 
-        const secrets = this.spec.configs
         if (secrets && secrets.length > 0 || automated) return secrets
 
         let responses = { hasSecret: false, secretName: '', secretValue: '', envName: '' }
@@ -151,9 +157,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     }
 
-    async askPorts(args, automated) {
+    async askPorts(args, automated, ports) {
 
-        const ports = this.spec.ports
         if (ports && ports.length > 0 || automated) return ports
 
         let responses = { hasPorts: false, name: '', protocol: 'TCP', port: 8080, targetPort: 0, externalPort: 8080 }
@@ -217,9 +222,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return !isNaN(parseFloat(n)) && isFinite(n)
     }
 
-    async askVolumes(args, automated) {
+    async askVolumes(args, automated, volumes) {
 
-        const volumes = this.spec.volumes
         if (volumes && volumes.length > 0 || automated) return volumes
 
         const storageChoices = ['1Gi', '2Gi', '5Gi', '10Gi', '20Gi', '50Gi', '100Gi']
@@ -275,4 +279,5 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         return volumes
 
     }
+
 }

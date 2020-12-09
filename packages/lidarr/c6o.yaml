@@ -33,7 +33,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: lidarr
-        image: 'linuxserver/lidarr:latest'
+        tag: latest
+        image: linuxserver/lidarr
         port: 8686
         automated: true
         config:

@@ -49,7 +49,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: xfcefocal
-        image: 'linuxserver/rdesktop:latest'
+        tag: latest
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -91,7 +92,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: xfcebionic
-        image: 'linuxserver/rdesktop:xfce-bionic'
+        tag: xfce-bionic
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -135,7 +137,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: kdefocal
-        image: 'linuxserver/rdesktop:kde-focal'
+        tag: kde-focal
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -178,7 +181,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: kdebionic
-        image: 'linuxserver/rdesktop:kde-bionic'
+        tag: kde-bionic
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -222,7 +226,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: matefocal
-        image: 'linuxserver/rdesktop:mate-focal'
+        tag: mate-focal
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -266,7 +271,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: matebionic
-        image: 'linuxserver/rdesktop:mate-bionic'
+        tag: mate-bionic
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -310,7 +316,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: i3focal
-        image: 'linuxserver/rdesktop:i3-focal'
+        tag: i3-focal
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -354,7 +361,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: i3bionic
-        image: 'linuxserver/rdesktop:i3-bionic'
+        tag: i3-bionic
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -397,7 +405,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: openboxfocal
-        image: 'linuxserver/rdesktop:openbox-focal'
+        tag: openbox-focal
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -440,7 +449,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: openboxbionic
-        image: 'linuxserver/rdesktop:openbox-bionic'
+        tag: openbox-bionic
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -483,7 +493,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: icewmfocal
-        image: 'linuxserver/rdesktop:icewm-focal'
+        tag: icewm-focal
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp
@@ -526,7 +537,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: icewmbionic
-        image: 'linuxserver/rdesktop:icewm-bionic'
+        tag: icewm-bionic
+        image: linuxserver/rdesktop
         port:
           - port: 3389
             name: tcp

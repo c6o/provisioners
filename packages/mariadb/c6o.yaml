@@ -44,7 +44,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: mariadb
-        image: 'mariadb'
+        image: mariadb
         port: 3306
         automated: true
         secret:
@@ -71,7 +71,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: mariadb
-        image: 'mariadb'
+        image: mariadb
         port: 3306
         automated: true
         config:

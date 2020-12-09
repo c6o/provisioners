@@ -67,7 +67,7 @@ editions:
         automated: true
         tag-prefix: appengine
         name: mibew
-        image: 'turnkeylinux/mibew'
+        image: turnkeylinux/mibew
         port: 80
 
         config:

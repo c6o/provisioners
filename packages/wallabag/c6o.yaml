@@ -60,7 +60,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: wallabag
-        image: 'wallabag/wallabag'
+        image: wallabag/wallabag
         port: 80
         automated: true
         config:

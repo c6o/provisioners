@@ -33,7 +33,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: sonarr
-        image: 'linuxserver/sonarr:latest'
+        tag: latest
+        image: linuxserver/sonarr
         port: 8989
         automated: true
         config:

@@ -37,7 +37,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: duplicati
-        image: 'duplicati/duplicati:latest'
+        tag: latest
+        image: duplicati/duplicati
         port: 8200
         automated: true
         volume:

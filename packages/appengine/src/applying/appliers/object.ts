@@ -1,74 +1,89 @@
 import { ProvisionerManager } from '@provisioner/common'
+import { AppEngineState, AppManifest, Helper } from '../../appObject'
 import { Applier } from '..'
 import { Buffer } from 'buffer'
 import { templates } from '../../templates/latest'
+//import { applySql } from '../../templates/latest/features/mysql'
 import createDebug from 'debug'
-import { LabelsMetadata } from '../../parsing'
 
 const debug = createDebug('@appengine:ObjectApplier')
-
 export class ObjectApplier implements Applier {
 
+    helper = new Helper()
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async apply(namespace: string, spec: any, manager: ProvisionerManager) {
+    async apply(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager) {
 
-        if (!spec.metaData) {
-            spec.metaData = {
-                instanceId: this.makeRandom(6),
-                edition: spec.edition
-            } as LabelsMetadata
-        }
-        if (!spec.metaData.instanceId) spec.metaData.instanceId = this.makeRandom(6)
-        if (!spec.metaData.edition) spec.metaData.edition = spec.edition
+        state.startTimer('object-apply')
 
-        debug(`BOOSTRAP:${JSON.stringify(spec)}`)
+        const deployment = await templates.getDeploymentTemplate(
+            manifest.provisioner.name,
+            manifest.namespace,
+            manifest.provisioner.image,
+            state.labels,
+            manifest.provisioner.tag,
+            manifest.provisioner.imagePullPolicy,
+            manifest.provisioner.command,
+        )
 
-        const deployment = await templates.getDeploymentTemplate(spec.name, namespace, spec.image, spec.metaData)
-        debug(`deployment:${JSON.stringify(deployment)}`)
+        // if (spec.link) {
+        //     //we have features/dependancies to deal with, lets jump to that first
+        //     await this.installFeatures(manifest.namespace, spec, manager)
+        // }
 
         debug('applying secrets')
-        await this.applySecrets(namespace, spec, manager, deployment)
+        await this.applySecrets(manifest, state, manager, deployment)
         debug('applying configs')
-        await this.applyConfigs(namespace, spec, manager, deployment)
+        await this.applyConfigs(manifest, state, manager, deployment)
         debug('applying ports')
-        await this.applyPorts(namespace, spec, manager, deployment)
+        await this.applyPorts(manifest, state, manager, deployment)
         debug('applying volumes')
-        await this.applyVolumes(namespace, spec, manager, deployment)
+        await this.applyVolumes(manifest, state, manager, deployment)
         debug('applying deployment')
-        await this.applyDeployment(spec, manager, deployment)
+        await this.applyDeployment(manifest, state, manager, deployment)
         debug('done')
 
+        state.endTimer('object-apply')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyDeployment(spec: any, manager: ProvisionerManager, deployment: any) {
+    async applyDeployment(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+        state.startTimer('apply-deployment')
 
         debug(`Installing the Deployment:${JSON.stringify(deployment)}`)
+        this.helper.PrettyPrintJsonFile(deployment, `${manifest.appId}-deployment.json`)
 
         await manager.cluster
-            .begin('Installing the Deployment')
+            .begin(`Installing the Deployment for ${manifest.displayName}`)
             .addOwner(manager.document)
             .upsert(deployment)
             .end()
+
+        state.endTimer('apply-deployment')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyVolumes(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
+    async applyVolumes(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+        state.startTimer('apply-volumes')
 
-        if (spec.volumes?.length) {
+        if (manifest.provisioner.volumes?.length) {
 
-            deployment.spec.template.spec.containers[0].volumeMounts = []
-            deployment.spec.template.spec.volumes = []
+            if (!deployment.spec.template.spec.containers[0].volumeMounts)
+                deployment.spec.template.spec.containers[0].volumeMounts = []
 
-            for (const item of spec.volumes) {
+            if (!deployment.spec.template.spec.volumes)
+                deployment.spec.template.spec.volumes = []
+
+            for (const item of manifest.provisioner.volumes) {
 
                 if (item.size && item.size !== '') {
-                    const pvc = templates.getPVCTemplate(item, namespace, spec.metaData)
+                    const pvc = templates.getPVCTemplate(item, manifest.namespace, state.labels)
 
                     debug(`Installing Volume Claim:${JSON.stringify(pvc)}`)
+                    this.helper.PrettyPrintJsonFile(pvc, `${manifest.appId}-pvc.json`)
 
                     await manager.cluster
-                        .begin(`Installing Volume Claim: '${item.name}'`)
+                        .begin(`Installing the Volume Claim for ${manifest.displayName}`)
                         //TODO: Advanced installer needs to choose the volumes to delete
                         .addOwner(manager.document)
                         .upsert(pvc)
@@ -78,7 +93,7 @@ export class ObjectApplier implements Applier {
                 }
 
                 if (item.mountPath && item.mountPath !== '') {
-                    let mount = { name: item.name, mountPath: item.mountPath, subPath: undefined }
+                    const mount = { name: item.name, mountPath: item.mountPath, subPath: undefined }
 
                     if (item.subPath && item.subPath !== '')
                         mount.subPath = item.subPath
@@ -90,18 +105,22 @@ export class ObjectApplier implements Applier {
             }
 
         }
+
+        state.endTimer('apply-volumes')
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyPorts(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
+    async applyPorts(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
+        state.startTimer('apply-ports')
 
-        if (spec.ports?.length) {
+        if (manifest.provisioner.ports?.length) {
 
-            const service = templates.getPortTemplate(spec.name, namespace, spec.metaData)
+            const service = templates.getPortTemplate(manifest.appId, manifest.namespace, state.labels)
 
-            deployment.spec.template.spec.containers[0].ports = []
+            if (!deployment.spec.template.spec.containers[0].ports)
+                deployment.spec.template.spec.containers[0].ports = []
 
-            for (const item of spec.ports) {
+            for (const item of manifest.provisioner.ports) {
                 if (item.protocol) item.protocol = item.protocol.toUpperCase()
                 service.spec.ports.push({ name: item.name, port: item.port, targetPort: item.targetPort, protocol: item.protocol })
                 deployment.spec.template.spec.containers[0].ports.push({ name: item.name, containerPort: item.port })
@@ -123,38 +142,40 @@ export class ObjectApplier implements Applier {
             }
 
             debug(`Installing Networking Services:${JSON.stringify(deployment)}|${JSON.stringify(deployment.spec.template.spec.containers[0].ports)}`,)
+            this.helper.PrettyPrintJsonFile(service, `${manifest.appId}-service.json`)
 
             await manager.cluster
-                .begin('Installing Networking Services')
+                .begin(`Installing the Networking Services for ${manifest.displayName}`)
                 .addOwner(manager.document)
                 .upsert(service)
                 .end()
         }
 
+        state.endTimer('apply-ports')
 
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applyConfigs(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
+    async applyConfigs(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
 
-        if (!spec.configs?.length) spec.configs = []
+        state.startTimer('apply-configs')
+
+        if (!manifest.provisioner.configs?.length) manifest.provisioner.configs = []
 
         //provide some basic codezero app details to the provisioner
-        spec.configs.push({ name: 'name', value: spec.name, env: 'CZ_APP' })
-        spec.configs.push({ name: 'edition', value: spec.edition, env: 'CZ_EDITION' })
-        spec.configs.push({ name: 'instanceId', value: spec.metaData.instanceId, env: 'CZ_INSTANCE_ID' })
+        manifest.provisioner.configs.push({ name: 'name', value: state.labels.appId, env: 'CZ_APP' })
+        manifest.provisioner.configs.push({ name: 'edition', value: state.labels.edition, env: 'CZ_EDITION' })
+        manifest.provisioner.configs.push({ name: 'instanceId', value: state.labels.instanceId, env: 'CZ_INSTANCE_ID' })
 
-        const config = templates.getConfigTemplate(spec.name, namespace, spec.metaData)
+        const config = templates.getConfigTemplate(manifest.appId, manifest.namespace, state.labels)
 
-        for (const item of spec.configs) {
+        for (const item of manifest.provisioner.configs) {
             if (!item.env || item.env === '') item.env = item.name
 
             if (item.value === '$PUBLIC_DNS') {
                 item.value = ''
             }
-
             config.data[item.name] = String(item.value)
-
             if (item.env !== 'NONE') {
                 deployment.spec.template.spec.containers[0].env.push(
                     {
@@ -168,25 +189,65 @@ export class ObjectApplier implements Applier {
                     })
             }
         }
+        // if(spec.name === 'mysql') {
+
+        //     const configAuth = {
+        //         apiVersion: 'v1',
+        //         kind: 'ConfigMap',
+        //         metadata: {
+        //             namespace,
+        //             name: 'mysql-config',
+        //             labels: {
+        //                 app: spec.name
+        //             }
+        //         },
+        //         data: {
+        //             'default_auth': '[mysqld]\ndefault_authentication_plugin=mysql_native_password'
+        //         }
+        //     }
+
+        //     await manager.cluster
+        //         .begin('Installing mysql specific configuration')
+        //         .addOwner(manager.document)
+        //         .upsert(configAuth)
+        //         .end()
+
+        //     if(!deployment.spec.template.spec.volumes)
+        //         deployment.spec.template.spec.volumes = []
+
+        //     if(!deployment.spec.template.spec.containers[0].volumeMounts)
+        //         deployment.spec.template.spec.containers[0].volumeMounts = []
+
+
+        //     deployment.spec.template.spec.volumes.push({ name: 'mysql-config-volume', configMap: { name: 'mysql-config' }})
+        //     deployment.spec.template.spec.containers[0].volumeMounts.push({ name: 'mysql-config-volume', mountPath: '/etc/mysql/conf.d/default_auth.cnf', subPath: 'default_auth' })
+
+        // }
 
         debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
+        this.helper.PrettyPrintJsonFile(config, `${manifest.appId}-config.json`)
 
         await manager.cluster
-            .begin('Installing the Configuration Settings')
+            .begin(`Installing the Configuration Settings for ${manifest.displayName}`)
             .addOwner(manager.document)
             .upsert(config)
             .end()
+
+        state.endTimer('apply-configs')
+
     }
 
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async applySecrets(namespace: string, spec: any, manager: ProvisionerManager, deployment: any) {
+    async applySecrets(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
 
-        if (spec.secrets && spec.secrets.length > 0) {
+        state.startTimer('apply-secrets')
 
-            const secret = templates.getSecretTemplate(spec.name, namespace, spec.metaData)
+        if (manifest.provisioner.secrets && manifest.provisioner.secrets.length > 0) {
 
-            for (const item of spec.secrets) {
+            const secret = templates.getSecretTemplate(manifest.appId, manifest.namespace, state.labels)
+
+            for (const item of manifest.provisioner.secrets) {
 
                 if (!item.env || item.env === '') item.env = item.name
 
@@ -194,11 +255,11 @@ export class ObjectApplier implements Applier {
                 if (val !== '') {
                     if (val.startsWith('$RANDOM')) {
                         if (val === '$RANDOM')
-                            val = this.makeRandom(10)
+                            val = this.helper.makeRandom(10)
                         else {
                             if (val.indexOf(':') > 0) {
                                 const len = Number(val.substr(val.indexOf(':') + 1))
-                                val = this.makeRandom(len)
+                                val = this.helper.makeRandom(len)
                             }
                         }
                     }
@@ -221,23 +282,17 @@ export class ObjectApplier implements Applier {
             }
 
             debug(`Installing secrets:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
+            this.helper.PrettyPrintJsonFile(secret, `${manifest.appId}-secret.json`)
 
             await manager.cluster
-                .begin('Installing the Secrets')
+                .begin(`Installing the Secrets for ${manifest.displayName}`)
                 .addOwner(manager.document)
                 .upsert(secret)
                 .end()
         }
 
+        state.endTimer('apply-secrets')
     }
 
-    makeRandom(len) {
-        let text = ''
-        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
-        for (let i = 0; i < len; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length))
-
-        return text
-    }
 }

@@ -23,6 +23,7 @@ keywords:
   - SimpleDB
   - Elasticsearch
   - MongoDB
+  - robc
 
 repo: https://github.com/vrana/adminer/
 license: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -43,7 +44,7 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         name: adminer
-        image: 'adminer:latest'
+        image: adminer
         port: 8080
         automated: true
         tag-prefix: appengine
@@ -63,7 +64,8 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         name: adminer
-        image: 'adminer:latest'
+        tag: latest
+        image: adminer
         port:
           - port: 8080
             name: http

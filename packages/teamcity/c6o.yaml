@@ -50,7 +50,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: teamcityserver
-        image: 'jetbrains/teamcity-server'
+        image: jetbrains/teamcity-server
         port: 8111
         automated: true
         config:
@@ -76,13 +76,13 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: teamcityagent
-        image: 'jetbrains/teamcity-agent'
+        image: jetbrains/teamcity-agent
         automated: true
         config:
           - name: SERVER_URL
             value: http://teamcityserver:8111
             label: Server Url
-            hint: The url to your TeamCity Server
+            hint: The url to your TeamCity Server (service, typically teamcity.NAMESPACE)
             required: true
             autoselect: true
             fieldType: text

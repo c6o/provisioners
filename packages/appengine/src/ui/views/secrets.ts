@@ -6,17 +6,24 @@ import { BaseViewSettings } from './base'
 export class AppEngineSecretsSettings extends BaseViewSettings implements StoreFlowStep {
 
     async begin() {
-        super.headingText = `
+        console.log('ROBX BEGIN SECRETS', this)
+        super.init()
+
+        this.state.startTimer('ui-secrets-begin')
+
+
+        this.headingText = `
                 <h3>Secrets</h3>
                 <p>This data will be captured as Secrets within Kubernetes.</p>
                 <p>It will also (typically) be set as an environment variable on the container.</p>`
 
-        super.handleLayout(super.spec.secrets, 'secrets')
+        this.handleLayout(this.manifest.customSecretFields(), 'secrets')
+        this.state.endTimer('ui-secrets-begin')
+
     }
 
     async end() {
-
-        if(!super.validateItems(super.spec.secrets)) return false
+        if(!this.validateItems(this.manifest.provisioner.secrets)) return false
 
         return true
     }

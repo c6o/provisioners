@@ -18,7 +18,7 @@ export interface LaunchType {
     }
 }
 export interface RoutesType {
-    type: 'tcp'|'http',
+    type: 'tcp' | 'http',
     targetService: string,
     targetPort?: number,
     disabled?: boolean
@@ -135,4 +135,16 @@ export class AppObject {
     }
 
     getServiceName = (serviceObject) => Object.keys(serviceObject)[0]
+
+    //add or update the label
+    upsertLabel(labelName: string, labelValue: string) {
+        this.document.metadata.labels[labelName] = labelValue
+    }
+
+    //only add if it doesnt already exist
+    insertOnlyLabel(labelName: string, labelValue: string) {
+        if (!this.document.metadata.labels[labelName])
+            this.document.metadata.labels[labelName] = labelValue
+    }
+
 }

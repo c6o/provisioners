@@ -90,7 +90,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: syncthing
-        image: 'syncthing/syncthing:latest'
+        tag: latest
+        image: syncthing/syncthing
         port: 8384
         automated: true
         config:

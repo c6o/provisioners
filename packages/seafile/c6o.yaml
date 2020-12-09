@@ -37,7 +37,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: seafile
-        image: 'seafileltd/seafile:latest'
+        tag: latest
+        image: seafileltd/seafile
         port: 80
         automated: true
         config:

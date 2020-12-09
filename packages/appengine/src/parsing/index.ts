@@ -1,6 +1,9 @@
 import * as portParsers from './port'
 import * as settingsParsers from './setting'
 import * as volumeParsers from './volume'
+import createDebug from 'debug'
+
+const debug = createDebug('@appengine:Parser')
 
 export class ParserFactory{
     static getPortParser(type: string) : PortParser {
@@ -27,11 +30,13 @@ export interface VolumeParser {
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 export interface LabelsMetadata {
-    instanceId: string
-    partOf: string
-    component: string
-    version: string
-    edition: string
+    name?: string
+    appId?: string
+    instanceId?: string
+    partOf?: string
+    component?: string
+    version?: string
+    edition?: string
 }
 
 
@@ -89,7 +94,7 @@ export interface Port {
 
 export interface Volume {
     size: string
-    mountPath: string
-    subPath: string
+    mountPath?: string
+    subPath?: string
     name: string
 }

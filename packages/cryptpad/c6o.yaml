@@ -38,7 +38,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cryptpad
-        image: promasu/cryptpad:latest
+        tag: latest
+        image: promasu/cryptpad
         port: 3000
         automated: true
         config:

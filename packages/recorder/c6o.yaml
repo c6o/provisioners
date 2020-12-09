@@ -35,7 +35,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: recorder
-        image: 'owntracks/recorder:latest'
+        tag: latest
+        image: owntracks/recorder
         port: 8083
         automated: true
         config:

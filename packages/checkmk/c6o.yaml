@@ -80,7 +80,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: checkmk
-        image: 'checkmk/check-mk-raw:latest'
+        tag: latest
+        image: checkmk/check-mk-raw
         port: 5000
         automated: true
         secret:
@@ -111,7 +112,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: checkmk
-        image: 'checkmk/check-mk-raw:latest'
+        tag: latest
+        image: checkmk/check-mk-raw
         port:
           - port: 5000
             name: http
