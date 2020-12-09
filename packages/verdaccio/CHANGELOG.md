@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.22](https://github.com/nsainaney/traxitt/compare/v0.0.21...v0.0.22) (2020-12-09)
+
+**Note:** Version bump only for package @provisioner/verdaccio
+
+
+
+
+
 ## [0.0.21](https://github.com/nsainaney/traxitt/compare/v0.0.20...v0.0.21) (2020-12-08)
 
 **Note:** Version bump only for package @provisioner/verdaccio
