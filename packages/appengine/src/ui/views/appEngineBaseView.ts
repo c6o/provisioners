@@ -25,10 +25,6 @@ export class AppEngineBaseView extends LitElement implements StoreFlowStep {
                 edition: this.manifest.edition
             })
         }
-        console.log('ROBX BEGIN STATE', this.state)
-        console.log('ROBX BEGIN MANIFEST', this.manifest)
-
-        this.state.onTimerChanged(e=>console.log('ROBX STATE CHANGE:', e))
     }
 
 }

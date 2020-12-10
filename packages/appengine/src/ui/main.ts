@@ -14,7 +14,6 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
         if (!this.state.parsed)
             parser.parseInputsToSpec(null, this.manifest)
 
-        this.state.endTimer('ui-main-begin')
 
         if (this.manifest.hasCustomConfigFields()) {
             this.mediator.appendFlow('appengine-install-configs')
@@ -23,7 +22,11 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
         } else {
             new TimingReporter().report(this.state)
         }
+        this.state.endTimer('ui-main-begin')
+
+        console.log(this.state)
 
         await (this.mediator as any).handleNext()
+
     }
 }
