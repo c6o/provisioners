@@ -8,7 +8,7 @@ export function getLabels(name: string, labels: LabelsMetadata) {
         app: name,
         name: name,
         'system.codezero.io/appengine': 'v1',
-        'system.codezero.io/app': fullAppName,
+        'system.codezero.io/app': name, // This is used to render GetInfo in Marina
         'system.codezero.io/id': labels.instanceId,
         'app.kubernetes.io/name': name,
         'app.kubernetes.io/managed-by': 'codezero'
