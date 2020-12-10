@@ -1,5 +1,5 @@
 import { LabelsMetadata } from "./parsing"
-import * as fs from 'fs'
+//import * as fs from 'fs'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:timing')
 
@@ -15,10 +15,9 @@ export interface TimingReporter {
 }
 
 export class AppEngineState {
-    timing: Array<AppProvisionerTimer>
+    timing: AppProvisionerTimer[]
     labels: LabelsMetadata
     args: any
-    payload: any
     parsed: boolean
     platform: string
     timestamp: Date
@@ -55,7 +54,7 @@ export class AppEngineState {
 
     }
 
-    constructor(labels: LabelsMetadata, args?: any, payload?: any) {
+    constructor(labels: LabelsMetadata, args?: any) {
         this.timing = new Array<AppProvisionerTimer>()
         this.labels = labels
         this.parsed = false
@@ -70,11 +69,6 @@ export class AppEngineState {
             this.args = {}
         else
             this.args = args
-
-        if (payload === undefined)
-            this.payload = {}
-        else
-            this.payload = payload
     }
 }
 export class AppProvisionerTimer {
@@ -195,7 +189,7 @@ export class Helper {
         if (!file) file = 'debug.json'
         file = `${__dirname}/${file}`
         if(!file.endsWith('.json')) file = `${file}.json`
-        fs.writeFileSync(file, JSON.stringify(json, null, 2))
+        //fs.writeFileSync(file, JSON.stringify(json, null, 2))
         debug(file, json)
         return file
     }

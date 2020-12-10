@@ -29,8 +29,6 @@ export function getDeploymentTemplate(
         imageWithTag = `${image}:${tag}`
     }
 
-
-
     return {
         apiVersion: 'apps/v1',
         kind: 'Deployment',
