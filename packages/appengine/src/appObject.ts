@@ -1,5 +1,4 @@
 import { LabelsMetadata } from "./parsing"
-//import * as fs from 'fs'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:timing')
 
@@ -36,7 +35,7 @@ export class AppEngineState {
             this.timing.push(existing)
         }
         existing.start = (new Date()).getTime()
-        if(this.timerChangedAction) this.timerChangedAction({action: 'startTimer', name, state: this})
+        if (this.timerChangedAction) this.timerChangedAction({ action: 'startTimer', name, state: this })
         return existing
     }
 
@@ -50,7 +49,7 @@ export class AppEngineState {
         }
         existing.end = (new Date()).getTime()
         existing.duration = existing.end - existing.start
-        if(this.timerChangedAction) this.timerChangedAction({action: 'endTimer', name, state: this})
+        if (this.timerChangedAction) this.timerChangedAction({ action: 'endTimer', name, state: this })
 
     }
 
@@ -65,10 +64,8 @@ export class AppEngineState {
             const helper = new Helper()
             this.labels.instanceId = helper.makeRandom(5)
         }
-        if (args === undefined)
-            this.args = {}
-        else
-            this.args = args
+
+        this.args = args || {}
     }
 }
 export class AppProvisionerTimer {
@@ -109,30 +106,16 @@ export class AppObject implements AppManifest {
     hasCustomSecretFields(): boolean {
         return this.customSecretFields().length > 0
     }
-    customConfigFields()  {
-        return this.provisioner.configs.filter(e=> this.fieldTypes.includes(e.fieldType?.toLowerCase()))
+    customConfigFields() {
+        return this.provisioner.configs.filter(e => this.fieldTypes.includes(e.fieldType?.toLowerCase()))
     }
     customSecretFields() {
-        return this.provisioner.secrets.filter(e=> this.fieldTypes.includes(e.fieldType?.toLowerCase()))
+        return this.provisioner.secrets.filter(e => this.fieldTypes.includes(e.fieldType?.toLowerCase()))
     }
-
-
-    getAppEdition() {
-        return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
-    }
-
-    getAppName() {
-        return this.document.metadata.name
-    }
-
-    getAppNamespace() {
-        return this.document.metadata.namespace
-    }
-
 
     //Required for appEngine provisioner
     get edition() {
-        return this.getAppEdition()
+        return this.document.metadata.namespace
     }
     get description() {
         return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId
@@ -150,7 +133,7 @@ export class AppObject implements AppManifest {
     }
 
     get namespace() {
-        return this.getAppNamespace()
+        return this.document.metadata.namespace
     }
 
     get spec() {
@@ -166,7 +149,7 @@ export class AppObject implements AppManifest {
     }
 
     get name() {
-        return this.getAppName()
+        return this.document.metadata.name
     }
 
 }
@@ -188,8 +171,7 @@ export class Helper {
         if (!this.emitFile) return
         if (!file) file = 'debug.json'
         file = `${__dirname}/${file}`
-        if(!file.endsWith('.json')) file = `${file}.json`
-        //fs.writeFileSync(file, JSON.stringify(json, null, 2))
+        if (!file.endsWith('.json')) file = `${file}.json`
         debug(file, json)
         return file
     }
