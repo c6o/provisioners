@@ -13,18 +13,15 @@ export class AppEngineBaseView extends LitElement implements StoreFlowStep {
 
     async init() {
 
-        if(this.manifest === undefined)
-            this.manifest = new AppObject(this.mediator.applicationSpec) as AppManifest
+        this.manifest = this.manifest || new AppObject(this.mediator.applicationSpec) as AppManifest
 
-        if(this.state === undefined) {
-        this.state = new AppEngineState(
+        this.state = this.state || new AppEngineState(
             {
                 name: this.manifest.name,
                 appId: this.manifest.appId,
                 partOf: this.manifest.appId,
                 edition: this.manifest.edition
             })
-        }
     }
 
 }
