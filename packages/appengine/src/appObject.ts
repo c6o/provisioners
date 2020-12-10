@@ -36,7 +36,8 @@ export class AppEngineState {
             this.timing.push(existing)
         }
         existing.start = (new Date()).getTime()
-        if(this.timerChangedAction) this.timerChangedAction({action: 'startTimer', name, state: this})
+        if (this.timerChangedAction)
+            this.timerChangedAction({ action: 'startTimer', name, state: this })
         return existing
     }
 
@@ -50,8 +51,8 @@ export class AppEngineState {
         }
         existing.end = (new Date()).getTime()
         existing.duration = existing.end - existing.start
-        if(this.timerChangedAction) this.timerChangedAction({action: 'endTimer', name, state: this})
-
+        if (this.timerChangedAction)
+            this.timerChangedAction({ action: 'endTimer', name, state: this })
     }
 
     constructor(labels: LabelsMetadata, args?: any) {
@@ -65,10 +66,7 @@ export class AppEngineState {
             const helper = new Helper()
             this.labels.instanceId = helper.makeRandom(5)
         }
-        if (args === undefined)
-            this.args = {}
-        else
-            this.args = args
+        this.args = args || {}
     }
 }
 export class AppProvisionerTimer {
@@ -96,7 +94,6 @@ export interface AppManifest {
     customSecretFields()
 }
 
-
 export class AppObject implements AppManifest {
 
     constructor(public document) { }
@@ -106,69 +103,32 @@ export class AppObject implements AppManifest {
     hasCustomConfigFields(): boolean {
         return this.customConfigFields().length > 0
     }
+
     hasCustomSecretFields(): boolean {
         return this.customSecretFields().length > 0
     }
+
     customConfigFields()  {
         return this.provisioner.configs.filter(e=> this.fieldTypes.includes(e.fieldType?.toLowerCase()))
     }
+
     customSecretFields() {
         return this.provisioner.secrets.filter(e=> this.fieldTypes.includes(e.fieldType?.toLowerCase()))
     }
 
-
-    getAppEdition() {
-        return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest'
-    }
-
-    getAppName() {
-        return this.document.metadata.name
-    }
-
-    getAppNamespace() {
-        return this.document.metadata.namespace
-    }
-
-
-    //Required for appEngine provisioner
-    get edition() {
-        return this.getAppEdition()
-    }
-    get description() {
-        return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId
-    }
-    get displayName() {
-        return this.document.metadata.annotations?.['system.codezero.io/display'] || this.appId
-    }
-    get iconUrl() {
-        return this.document.metadata.annotations?.['system.codezero.io/iconUrl']
-    }
-
-    //Provisioner appId itself and NOT the database identifier
-    get appId() {
-        return this.document.metadata.name
-    }
-
-    get namespace() {
-        return this.getAppNamespace()
-    }
-
-    get spec() {
-        return this.document.spec
-    }
-
-    get provisioner() {
-        return this.document.spec.provisioner
-    }
-
-    get routes() {
-        return this.document.spec.routes
-    }
-
-    get name() {
-        return this.getAppName()
-    }
-
+    get appEdition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
+    get appId() { return this.document.metadata.name } //Provisioner appId itself and NOT the database identifier
+    get appName() { return this.document.metadata.name }
+    get appNamespace() { return this.document.metadata.namespace }
+    get description() { return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId }
+    get displayName() { return this.document.metadata.annotations?.['system.codezero.io/display'] || this.appId }
+    get edition() { return this.appEdition } //Required for appEngine provisioner
+    get iconUrl() { return this.document.metadata.annotations?.['system.codezero.io/iconUrl'] }
+    get name() { return this.appName }
+    get namespace() { return this.appNamespace }
+    get provisioner() { return this.document.spec.provisioner }
+    get routes() { return this.document.spec.routes }
+    get spec() { return this.document.spec }
 }
 
 export class Helper {
