@@ -14,22 +14,25 @@ status: Running
 apiVersion: security.istio.io/v1beta1
 kind: "RequestAuthentication"
 metadata:
-  name: ingress
+  name: c6o-jwt-ingress
   namespace: istio-system
 spec:
   selector:
     matchLabels:
       app: istio-ingressgateway
   jwtRules:
-    - outputPayloadToHeader: c6o-token
+    - # outputPayloadToHeader: c6o-token
+      fromHeaders:
+        - name: c6o-sys
+      # forwardOriginalToken: true
       issuer: "codezero-technologies-inc" # no spaces nor caps allowed; otherwise Istio will throw and auth errro
       jwks: |
         {
           keys: [
             {
+              "kid": "c6o-marina",
               "kty": "oct",
               "use": "sig",
-              "kid": "codezero-technologies-inc",
               "k": "{{encodedJwtKey}}",
               "alg": "HS256"
             }
@@ -40,7 +43,7 @@ spec:
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
- name: ingress
+ name: c6o-jwt-permissions
  namespace: istio-system
 spec:
  selector:
@@ -52,3 +55,46 @@ spec:
    - operation:
        methods: ["*"]
        hosts: ["{{host}}"]
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: c6o-jwt-cookie-to-header
+  namespace: istio-system
+spec:
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: ANY
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.lua
+          typed_config:
+            "@type": "type.googleapis.com/envoy.config.filter.http.lua.v2.Lua"
+            inlineCode: |
+              function envoy_on_request(request_handle)
+                function trim(s)
+                  return (s:gsub("^%s*(.-)%s*$", "%1"))
+                end
+
+                local headers = request_handle:headers()
+                local cookieString = headers:get("cookie")
+                local jwt = nil
+                if cookieString ~= nil then
+                  for token in string.gmatch(cookieString, "[^;]+") do
+                    if string.find(trim(token), "c6o%-sys=") ~= nil then
+                      jwt = (string.sub(trim(token), string.find(trim(token), "=") + 1))
+                    end
+                  end
+                end
+                if jwt == nil then
+                    print("No JWT found in ingress LUA envoy_on_request(request_handle) function")
+                else
+                    headers:add("c6o-sys", jwt)
+                end
+              end
+              function envoy_on_response(handle)
+                -- placeholder
+              end

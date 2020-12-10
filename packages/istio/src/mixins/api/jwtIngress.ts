@@ -34,7 +34,7 @@ export const jwtIngressApiMixin = (base: baseProvisionerType) => class extends b
         apiVersion: 'security.istio.io/v1beta1',
         kind: 'AuthorizationPolicy',
         metadata: {
-            name: 'ingress',
+            name: 'c6o-jwt-permissions',
             namespace: 'istio-system'
         }
     }
