@@ -50,7 +50,6 @@ editions:
           targetService: restyaboard
       provisioner:
         package: '@provisioner/appengine'
-        name: restyaboard
         tag: dev
         image: restyaplatform/restyaboard
         tag-prefix: appengine

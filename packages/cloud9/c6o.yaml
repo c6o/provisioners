@@ -39,7 +39,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cloud9python
         tag: python
         image: linuxserver/cloud9
         port: 8000
@@ -92,7 +91,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cloud9nodejs
         tag: nodejs
         image: linuxserver/cloud9
         port: 8000
@@ -146,7 +144,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cloud9go
         tag: go
         image: linuxserver/cloud9
         port: 8000
@@ -201,7 +198,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cloud9ruby
         tag: ruby
         image: linuxserver/cloud9
         port: 8000

@@ -62,7 +62,6 @@ editions:
           targetService: wikijs
       provisioner:
         package: '@provisioner/appengine'
-        name: wikijs
         image: requarks/wiki
         tag-prefix: appengine
         port: 3000

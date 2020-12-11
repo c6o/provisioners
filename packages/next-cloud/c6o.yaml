@@ -67,7 +67,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: nextcloud
         image: nextcloud
         port:
           - port: 80
@@ -88,7 +87,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: nextcloud
         image: nextcloud
         port:
           - port: 80

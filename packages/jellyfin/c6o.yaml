@@ -29,7 +29,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: jellyfin
         image: jellyfin/jellyfin
         port:
           - 8096

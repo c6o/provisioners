@@ -38,7 +38,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: sabnzbd
         image: linuxserver/sabnzbd
         port:
           - 8080

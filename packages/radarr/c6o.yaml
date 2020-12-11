@@ -35,8 +35,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: radarr
-        tag: latest
         image: linuxserver/radarr
         port: 7878
         automated: true

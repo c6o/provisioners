@@ -49,7 +49,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: teamcityserver
         image: jetbrains/teamcity-server
         port: 8111
         automated: true
@@ -75,7 +74,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: teamcityagent
         image: jetbrains/teamcity-agent
         automated: true
         config:

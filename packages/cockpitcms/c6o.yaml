@@ -36,7 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cockpitcms
         image: aheinze/cockpit
         port: 80
         automated: true

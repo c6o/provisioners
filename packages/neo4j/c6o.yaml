@@ -41,7 +41,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: neo4j
         image: neo4j
         port:
           - port: 7474
@@ -77,7 +76,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: neo4j
         image: neo4j
         port:
           - port: 7474

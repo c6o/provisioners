@@ -52,7 +52,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: photoprism
         image: photoprism/photoprism
         port: 2342
         automated: true

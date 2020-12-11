@@ -58,7 +58,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: redis
         image: redis
         config:
           - name: appendonly
@@ -83,7 +82,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: redis
         image: redis
         config:
           - name: appendonly

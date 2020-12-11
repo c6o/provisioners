@@ -41,8 +41,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: nats-webui
-        tag: latest
         image: sphqxe/nats-webui
         port: 80
         automated: true

@@ -32,7 +32,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: n8nserver
         tag: 0.43.0-ubuntu
         image: n8nio/n8n
         port: 5678

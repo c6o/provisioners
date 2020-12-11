@@ -74,7 +74,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: speedtest
         image: adolfintel/speedtest
         port: 80
         automated: true

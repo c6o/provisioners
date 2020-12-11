@@ -91,7 +91,6 @@ editions:
       provisioner:
         package: "@provisioner/appengine"
         tag-prefix: appengine
-        name: calibre-web
         image: linuxserver/calibre-web
         port: 8083
         volume:

@@ -52,7 +52,6 @@ editions:
         targetService: papermerge
     provisioner:
       package: '@provisioner/appengine'
-      name: papermerge
       image: linuxserver/papermerge
       port: 8000
       config:

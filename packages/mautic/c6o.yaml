@@ -66,8 +66,6 @@ editions:
         package: '@provisioner/appengine'
         automated: true
         tag-prefix: appengine
-        name: mautic
-        tag: latest
         image: mautic/mautic
         port: 80
 

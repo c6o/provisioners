@@ -13,7 +13,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: lazylibrarian
         image: thraxis/lazylibrarian-calibre
         port: 5299
         automated: true

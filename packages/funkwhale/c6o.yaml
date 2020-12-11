@@ -70,7 +70,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: funkwhale
         image: thetarkus/funkwhale
         port: 80
         automated: true

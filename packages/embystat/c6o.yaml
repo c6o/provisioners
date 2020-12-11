@@ -39,8 +39,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: embystat
-        tag: latest
         image: linuxserver/embystat
         port: 6555
         automated: true

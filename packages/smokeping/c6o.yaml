@@ -35,7 +35,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: smokeping
         image: linuxserver/smokeping
         port: 80
         automated: true

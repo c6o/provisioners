@@ -45,7 +45,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: booksonic-air
         image: linuxserver/booksonic-air
         port: 4040
         volume:

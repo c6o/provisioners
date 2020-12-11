@@ -43,7 +43,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: openmaptiles
         image: klokantech/openmaptiles-server
         port: 80
         automated: true

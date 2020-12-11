@@ -36,8 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: heimdall
-        tag: latest
         image: linuxserver/heimdall
         port: 80
         automated: true
