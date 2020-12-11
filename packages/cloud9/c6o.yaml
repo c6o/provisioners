@@ -35,7 +35,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: cloud9python
+          targetService: cloud9
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -69,6 +69,7 @@ editions:
             value: America/Vancouver
 
 
+
         secret:
           - name: PASSWORD
             label: Password
@@ -87,7 +88,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: cloud9nodejs
+          targetService: cloud9
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -140,7 +141,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: cloud9go
+          targetService: cloud9
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -194,7 +195,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: cloud9ruby
+          targetService: cloud9
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine

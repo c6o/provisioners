@@ -44,3 +44,48 @@ editions:
         launch:
           type: inline
           popUp: true
+          path: /install/
+
+  - name: preview-mongo
+    status: public
+    default: true
+    spec:
+      routes:
+        - type: http
+          targetService: cockpitcms
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        image: aheinze/cockpit
+        port: 80
+        automated: true
+        config:
+          - name: COCKPIT_SALT
+            value: $RANDOM:32
+          - name: COCKPIT_SESSION_NAME
+            value: $RANDOM:32
+
+          - name: COCKPIT_DATABASE_NAME
+            label: Database name to use
+            hint: The database name to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: cockpitcms
+
+        secret:
+
+          - name: COCKPIT_DATABASE_SERVER
+            label: MongoDB Connection
+            hint: The connection string to connect to MongoDB Service
+            required: true
+            autoselect: true
+            fieldType: text
+            value: mongodb://root:88888888@mongodb.database:27017/?authSource=admin
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+          path: /install/
+

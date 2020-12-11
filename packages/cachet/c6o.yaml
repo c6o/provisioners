@@ -62,11 +62,11 @@ editions:
 
           - name: DB_HOST
             label: Database Host
-            hint: The name of the database server (Service)
+            hint: The name of the database server (Service postresql.[NAMESPACE])
             required: true
             autoselect: true
             fieldType: text
-            value: cachet
+            value: postgresql.database
 
           - name: DB_DATABASE
             label: Database name
@@ -101,6 +101,7 @@ editions:
             required: true
             autoselect: true
             fieldType: password
+            value: 88888888
 
       marina:
         launch:

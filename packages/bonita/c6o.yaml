@@ -6,6 +6,35 @@ icon: icon.svg
 description:
   Bonita is an open-source business process management and Low-code development platform created in 2001. Bonita technology was developed originally in 2001 by Miguel Valdés Faura, at the French Institute for Research in Computer Science and Automation, and subsequently transferred to Groupe Bull. In 2009, the Director of the BPM division, Miguel Valdes Faura founded Bonitasoft a French open-source software vendor.
 
+
+  Setup
+
+  ----
+
+  Strapi requires access to a Postgresql database with a few users created in the database.  This has been created prior to the installation.
+
+
+  Here is a sample script, for postgresql to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE bonitadb;
+
+    CREATE DATABASE bonitabusinessdb;
+
+    CREATE USER bonita WITH PASSWORD '88888888';
+
+    CREATE USER bonitabusiness WITH PASSWORD '88888888';
+
+    GRANT ALL ON DATABASE bonitadb TO bonita;
+
+    GRANT ALL ON DATABASE bonitabusinessdb TO bonitabusiness;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
 summary:
   Bonita is an open-source business process management and Low-code development platform created in 2001.
 category: comm
@@ -33,7 +62,17 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: bonita
-        port: 8080
+        port:
+          - port: 8080
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                timeoutSeconds: 5
+                failureThreshold: 5
+                periodSeconds: 5
+                successThreshold: 1
+                initialDelaySeconds: 5
         automated: true
         volume:
           - size: 5Gi
@@ -42,10 +81,11 @@ editions:
         config:
           - name: DB_HOST
             label: Postgres Server Host
-            hint: Typically the name of the Service for the Postgres instance
+            hint: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
             required: true
             autoselect: true
             fieldType: text
+            value: postgresql.database
           - name: DB_VENDOR
             label: Database Vendor
             hint: The type of database to use (postgres or mysql)
@@ -66,66 +106,7 @@ editions:
             required: true
             autoselect: true
             fieldType: text
-            value: bonitauser
-
-        secret:
-          - name: DB_PASS
-            label: Postgres Password
-            hint: The password used to login to your postgress database.
-            required: true
-            autoselect: true
-            fieldType: password
-
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-  - name: preview-detailed
-    status: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: bonita
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: bonita
-        port: 8080
-        automated: true
-        volume:
-          - size: 5Gi
-            mountPath: /opt/bonita
-            name: bonita-data
-        config:
-          - name: DB_HOST
-            label: Postgres Server Host
-            hint: Typically the name of the Service for the Postgres instance
-            required: true
-            autoselect: true
-            fieldType: text
-          - name: DB_VENDOR
-            label: Database Vendor
-            hint: The type of database to use (postgres or mysql)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: postgres
-          - name: DB_NAME
-            label: Database name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: bonitadb
-          - name: DB_USER
-            label: Database user
-            hint: The username of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: bonitauser
+            value: bonita
 
 
           - name: TENANT_LOGIN
@@ -142,16 +123,13 @@ editions:
             fieldType: text
             value: platformAdmin
 
-
-
           - name: BIZ_DB_NAME
             label: Business Database Name
             hint: The name of the database for the Business
             required: true
             autoselect: true
             fieldType: text
-            value: businessdb
-
+            value: bonitabusinessdb
 
           - name: BIZ_DB_USER
             label: Business Database Username
@@ -159,16 +137,18 @@ editions:
             required: true
             autoselect: true
             fieldType: text
-            value: businessuser
+            value: bonitabusiness
 
 
         secret:
           - name: DB_PASS
-            label: Postgres Password
-            hint: The password used to login to your postgress database.
+            label: Database Password
+            hint: The password used to login to your database.
             required: true
             autoselect: true
             fieldType: password
+            value: 88888888
+
           - name: TENANT_PASSWORD
             label: Tenant password
             hint: The Password used to login to the system as the Tenant.
@@ -185,17 +165,15 @@ editions:
             fieldType: password
             value: platform
 
-
           - name: BIZ_DB_PASS
             label: Business Database Password
             hint: The password of the user for the database for the Business
             required: true
             autoselect: true
             fieldType: password
-            value: businesspass
+            value: 88888888
 
       marina:
         launch:
           type: inline
           popUp: true
-

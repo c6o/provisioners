@@ -53,6 +53,9 @@ description:
   * Login via LDAP, google/github oauth and via proxy authentication
 
 
+  **Take Note:** You do need your own Calibre database which will need to be uploaded after installation.
+
+
   Default admin login
 
   ----
@@ -64,7 +67,6 @@ description:
 summary:
   Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
 
-  Take Note You do need your own Calibre database.
 category: media
 keywords:
   - Calibre

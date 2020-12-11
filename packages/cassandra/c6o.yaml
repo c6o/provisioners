@@ -80,5 +80,4 @@ editions:
             fieldType: password
       marina:
         launch:
-          type: inline
-          popUp: true
+          type: none
