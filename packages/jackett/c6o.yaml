@@ -39,7 +39,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: jackett
         image: linuxserver/jackett
         port: 9117
         automated: true

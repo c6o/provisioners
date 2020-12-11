@@ -128,7 +128,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: filerun
         image: afian/filerun
         port: 80
         automated: true

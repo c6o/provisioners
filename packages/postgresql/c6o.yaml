@@ -42,7 +42,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: postgresql
         tag: 12-alpine
         image: postgres
         automated: true

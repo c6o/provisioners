@@ -45,7 +45,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cassandra-web
         image: ipushc/cassandra-web
         port: 80
         config:

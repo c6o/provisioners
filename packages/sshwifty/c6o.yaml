@@ -35,8 +35,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: sshwifty
-        tag: latest
         image: niruix/sshwifty'
         port: 8182
         automated: true

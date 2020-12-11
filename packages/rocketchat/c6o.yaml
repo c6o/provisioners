@@ -13,7 +13,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: rocketchat
         image: rocket.chat
         port: 3000
         automated: true

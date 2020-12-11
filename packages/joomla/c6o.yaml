@@ -36,7 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: joomla
         image: joomla
         port: 80
         automated: true

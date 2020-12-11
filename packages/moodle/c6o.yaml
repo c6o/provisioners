@@ -36,8 +36,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: moodle
-        tag: latest
         image: bitnami/moodle
         port: 8080
         automated: true

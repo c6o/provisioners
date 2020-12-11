@@ -52,8 +52,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: plexserver
-        tag: latest
         image: plexinc/pms-docker
         port: 32400
         config:

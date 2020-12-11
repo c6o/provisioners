@@ -32,7 +32,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: etherpad
         image: etherpad/etherpad
         port: 9001
         automated: true

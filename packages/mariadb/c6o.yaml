@@ -43,7 +43,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: mariadb
         image: mariadb
         port: 3306
         automated: true
@@ -70,7 +69,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: mariadb
         image: mariadb
         port: 3306
         automated: true

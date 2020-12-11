@@ -48,8 +48,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: cassandra
-        tag: latest
         image: cassandra
         port:
           - port: 7000

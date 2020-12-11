@@ -60,7 +60,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: scipy
         image: jupyter/scipy-notebook
         port: 8888
         volume:
@@ -86,7 +85,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: datascience
         image: jupyter/datascience-notebook
         port: 8888
         volume:
@@ -113,7 +111,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: tensorflow
         image: jupyter/tensorflow-notebook
         port: 8888
         volume:
@@ -139,7 +136,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: pyspark
         image: jupyter/pyspark-notebook
         port: 8888
         volume:
@@ -166,7 +162,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: basenotebook
         image: jupyter/base-notebook
         port: 8888
         volume:
@@ -193,7 +188,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: all-spark
         image: jupyter/all-spark-notebook
         port: 8888
         volume:
@@ -220,7 +214,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: minimal
         image: jupyter/minimal-notebook
         port: 8888
         volume:
@@ -247,7 +240,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: nbviewer
         image: jupyter/nbviewer
         port: 8080
         volume:
@@ -274,7 +266,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: r-notebook
         image: jupyter/r-notebook
         port: 8888
         volume:
@@ -302,7 +293,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: nature-demo
         image: jupyter/nature-demo
         port: 8888
         volume:

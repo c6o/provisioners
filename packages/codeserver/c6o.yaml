@@ -69,8 +69,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: codeserver
-        tag: latest
         image: linuxserver/code-server
         port: 8443
         automated: true

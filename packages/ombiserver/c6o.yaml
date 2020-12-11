@@ -38,8 +38,6 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: ombi
-        tag: latest
         image: linuxserver/ombi
         port: 3579
         automated: true

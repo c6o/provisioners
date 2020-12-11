@@ -46,8 +46,7 @@ editions:
           targetService: airsonic
       provisioner:
         package: "@provisioner/appengine"
-        name: airsonic
-        image: "linuxserver/airsonic"
+        image: linuxserver/airsonic
         port: 4040
         automated: true
         tag-prefix: appengine
