@@ -51,6 +51,10 @@ editions:
         image: drupal
         port: 80
         automated: true
+        # config:
+        #   - name: DRUPAL_TRUSTED_HOST
+        #     value: $PUBLIC_DNS
+
       marina:
         launch:
           type: inline
