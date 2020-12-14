@@ -61,7 +61,7 @@ description:
 
   ----
 
-  FileRun requires access to a MySql database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+  FileRun requires access to a MySql database along with a user with 'mysql_native_password' authentication.  Ensure that both the database and users have been created prior to the installation.
 
 
   Here is a sample script to get you started

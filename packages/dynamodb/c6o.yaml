@@ -41,7 +41,7 @@ editions:
           type: inline
           popUp: true
 
-  - name: localinternal
+  - name: local-internal
     status: public
     default: true
     spec:

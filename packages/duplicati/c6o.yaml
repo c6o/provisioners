@@ -36,13 +36,30 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        image: duplicati/duplicati
+        image: ghcr.io/linuxserver/duplicati
         port: 8200
         automated: true
         volume:
-          - name: duplicati-data
-            size: 5Gi
-            mountPath: /data
+          - name: duplicati-config
+            size: 1Gi
+            mountPath: /config
+          - name: duplicati-backups
+            size: 10Gi
+            mountPath: /backups
+          - name: duplicati-source
+            size: 10Gi
+            mountPath: /source
+        config:
+          - name: PUID
+            value: 0
+          - name: PGID
+            value: 0
+          - name: TZ
+            label: Timezone
+            hint: Specify a timezone to use.
+            required: true
+            fieldType: timezone
+            value: America/Vancouver
       marina:
         launch:
           type: inline

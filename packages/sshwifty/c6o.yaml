@@ -35,7 +35,7 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        image: niruix/sshwifty'
+        image: niruix/sshwifty
         port: 8182
         automated: true
       marina:

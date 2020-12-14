@@ -59,8 +59,7 @@ editions:
         automated: true
       marina:
         launch:
-          type: inline
-          popUp: true
+          type: none
 
   - name: developerinternal
     spec:
@@ -83,5 +82,4 @@ editions:
         automated: true
       marina:
         launch:
-          type: inline
-          popUp: true
+          type: none

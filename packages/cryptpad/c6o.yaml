@@ -27,47 +27,8 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: latest
+  - name: preview
     status: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: cryptpad
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: promasu/cryptpad
-        port: 3000
-        automated: true
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-        # volume:
-        #   - name: cryptpad-blob
-        #     mountPath: /cryptpad/blob
-        #     size: 10Gi
-        #   - name: cryptpad-block
-        #     mountPath: /cryptpad/block
-        #     size: 10Gi
-        #   - name: cryptpad-customize
-        #     mountPath: /cryptpad/customize
-        #     size: 10Gi
-        #   - name: cryptpad-data
-        #     mountPath: /cryptpad/data
-        #     size: 10Gi
-        #   - name: cryptpad-datastore
-        #     mountPath: /cryptpad/datastore
-        #     size: 10Gi
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-  - name: private
-    status: private-test
     default: true
     spec:
       routes:
@@ -82,17 +43,15 @@ editions:
           - port: 3000
             name: http
             protocol: TCP
-            probe:
-              - type: startup
-                periodSeconds: 5
-                initialDelaySeconds: 5
-                timeoutSeconds: 5
+
         automated: true
         config:
           - name: PUID
             value: 0
           - name: PGID
             value: 0
+          # - name: httpSafeOrigin
+          #   value: $PUBLIC_DNS
       marina:
         launch:
           type: inline

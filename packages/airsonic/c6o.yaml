@@ -47,7 +47,17 @@ editions:
       provisioner:
         package: "@provisioner/appengine"
         image: linuxserver/airsonic
-        port: 4040
+        port:
+          - port: 4040
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                timeoutSeconds: 5
+                failureThreshold: 5
+                periodSeconds: 5
+                successThreshold: 1
+                initialDelaySeconds: 20
         automated: true
         tag-prefix: appengine
         config:

@@ -45,15 +45,15 @@ editions:
     status: public
     spec:
       routes:
-        - type: tcp
+        - type: http
           targetService: couchdb
-          tcp:
-            port: 5984
-            name: couchdb
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: couchdb
+        port: 5984
+        automated: true
+
         config:
           - name: COUCHDB_USER
             label: Username
@@ -71,19 +71,15 @@ editions:
             autoselect: true
             fieldType: password
 
-        port:
-          - port: 6379
-            name: tcp
-            protocol: TCP
         volume:
           - size: 5Gi
             mountPath: /opt/couchdb/data
             name: couchdb-data
-        automated: true
       marina:
         launch:
           type: inline
           popUp: true
+          path: /_utils/
 
   - name: preview-internal
     status: public
@@ -91,8 +87,10 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
-        name: couchdb
         image: couchdb
+        port: 5984
+        automated: true
+
         config:
           - name: COUCHDB_USER
             label: Username
@@ -110,16 +108,10 @@ editions:
             autoselect: true
             fieldType: password
 
-        port:
-          - port: 5984
-            name: tcp
-            protocol: TCP
         volume:
           - size: 5Gi
             mountPath: /opt/couchdb/data
             name: couchdb-data
-        automated: true
       marina:
         launch:
-          type: inline
-          popUp: true
+          type: none
