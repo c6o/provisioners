@@ -1,6 +1,8 @@
-import { LitElement } from 'lit-element'
+import { customElement, LitElement } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
 
+
+@customElement('appengine-uninstall-volumes')
 export class UninstallVolumesViewSettings extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
@@ -14,6 +16,7 @@ export class UninstallVolumesViewSettings extends LitElement implements StoreFlo
     }
 
     render() {
+        console.log('RENDERING UNINSTALL FOR VOLUMES')
         return this.pageLayout
     }
 

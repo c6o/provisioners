@@ -89,6 +89,7 @@ export interface AppManifest {
     readonly spec: string
     hasCustomConfigFields(): boolean
     hasCustomSecretFields(): boolean
+    hasVolumes(): boolean
     customConfigFields()
     customSecretFields()
 }
@@ -100,6 +101,9 @@ export class AppObject implements AppManifest {
 
     private fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
 
+    hasVolumes(): boolean {
+        return this.provisioner.volumes.length > 0
+    }
     hasCustomConfigFields(): boolean {
         return this.customConfigFields().length > 0
     }

@@ -15,16 +15,12 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
             parser.parseInputsToSpec(null, this.manifest)
 
 
-        if (this.manifest.hasCustomConfigFields()) {
-            this.mediator.appendFlow('appengine-install-configs')
-        } else if (this.manifest.hasCustomSecretFields()) {
-            this.mediator.appendFlow('appengine-install-secrets')
+        if (this.manifest.hasVolumes()) {
+            this.mediator.appendFlow('appengine-uninstall-volumes')
         } else {
             new TimingReporter().report(this.state)
         }
         this.state.endTimer('ui-main-begin')
-
-        console.log(this.state)
 
         await (this.mediator as any).handleNext()
 
