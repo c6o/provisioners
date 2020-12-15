@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/c6o/provisioners/compare/v0.0.23...v0.0.24) (2020-12-15)
+
+
+### 🐛 Bug Fixes
+
+* **marina:** App name for GetInfo dialogs ([978cffa](https://github.com/c6o/provisioners/commit/978cffae97fe376f842f532305803687c41bde42))
+
+
+
+
+
 ## [0.0.23](https://github.com/c6o/provisioners/compare/v0.0.22...v0.0.23) (2020-12-10)
 
 **Note:** Version bump only for package @provisioner/appengine

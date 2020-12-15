@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/c6o/provisioners/compare/v0.0.23...v0.0.24) (2020-12-15)
+
+
+### ♻️ Chores
+
+* Add CMS env vars ([a56a7b9](https://github.com/c6o/provisioners/commit/a56a7b9dbffbc55c5254e2ebb2b3286916f57ef9))
+
+
+
+
+
 ## [0.0.23](https://github.com/c6o/provisioners/compare/v0.0.22...v0.0.23) (2020-12-10)
 
 **Note:** Version bump only for package @provisioner/c6o-system

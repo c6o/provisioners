@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.24](https://github.com/c6o/node-monorepo/compare/v0.0.23...v0.0.24) (2020-12-15)
+
+
+### 🐛 Bug Fixes
+
+* **marina:** App name for GetInfo dialogs ([978cffa](https://github.com/c6o/node-monorepo/commit/978cffae97fe376f842f532305803687c41bde42))
+
+
+### ♻️ Chores
+
+* Add CMS env vars ([a56a7b9](https://github.com/c6o/node-monorepo/commit/a56a7b9dbffbc55c5254e2ebb2b3286916f57ef9))
+* **bugs:** Miscel bugs found in provisioners ([#133](https://github.com/c6o/node-monorepo/issues/133)) ([434f8bd](https://github.com/c6o/node-monorepo/commit/434f8bd0e27e2a001bb7dd5a10a21f45fb5cebab))
+* Refactor getter methods ([5372517](https://github.com/c6o/node-monorepo/commit/5372517e416a3209d32e5633cae017dd6610aff8))
+
+
+
+
+
 ## [0.0.23](https://github.com/c6o/node-monorepo/compare/v0.0.22...v0.0.23) (2020-12-10)
 
 **Note:** Version bump only for package provisioners-root
