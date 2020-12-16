@@ -17,3 +17,11 @@ To get started building Provisioners, please refer to our [Application Developer
 # Having an issue?
 
 Submit an issue in our provisioner repository at [github.com/c60/provisioners](https://github.com/c6o/provisioners/issues)
+
+# Contributing
+
+We encourage anyone in the CodeZero community is governed by the [Code of Conduct](https://github.com/c6o/provisioners/code-of-conduct.md).
+
+# Code of Conduct
+
+Participation in the CodeZero community is governed by the [Code of Conduct](https://github.com/c6o/provisioners/code-of-conduct.md).
