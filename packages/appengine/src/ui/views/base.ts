@@ -1,4 +1,6 @@
 import { StoreFlowStep } from '@provisioner/common'
+import { css, CSSResult } from 'lit-element'
+// @ts-ignore
 import { getTimeZones } from '../../templates/latest/timeZones'
 import { AppEngineBaseView } from './appEngineBaseView'
 
@@ -8,24 +10,49 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
     bodyLayout: any
     pageLayout: any
 
+    static get styles(): (CSSResult[] | CSSResult)[] {
+        return [
+            css`
+                p {
+                    margin-bottom: 15px;
+                    margin-top: 0;
+                }
+
+                h3 {
+                    color: #2a343e;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    margin-top: 0;
+                }
+
+                .heading-text {
+                    margin-bottom: 20px;
+                }
+
+                .text-error {
+                    color: #ff5a00;
+                }
+            `
+        ]
+    }
+
     render() {
         return this.pageLayout
     }
 
     handleLayout(items, type) {
-
         this.state.startTimer('ui-configs-handleLayout')
 
-        const headingLayout = document.createElement('c6o-form-layout')
-        const headingField = document.createElement('p')
+        const headingLayout = document.createElement('div')
+        headingLayout.setAttribute('class', 'heading-text')
+        headingLayout.innerHTML = this.headingText
 
-        this.pageLayout = document.createElement('c6o-form-layout')
+        this.pageLayout = document.createElement('section')
         this.pageLayout.appendChild(headingLayout)
+
         this.bodyLayout = document.createElement('c6o-form-layout')
         this.pageLayout.appendChild(this.bodyLayout)
-
-        headingField.innerHTML = this.headingText
-        headingLayout.appendChild(headingField)
 
         if (items) {
             for (const item of items) {
@@ -35,7 +62,6 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
         }
 
         this.state.endTimer('ui-configs-handleLayout')
-
     }
 
     validateItems(items) {
@@ -44,7 +70,8 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
             if (item.required && item.required === true) {
                 if (!item.value || item.value === '') {
                     const validationFailedField = document.createElement('p')
-                    validationFailedField.innerHTML = 'Validation has failed, try again.'
+                    validationFailedField.setAttribute('class', 'text-error')
+                    validationFailedField.innerHTML = 'Validation has failed, please try again.'
                     this.bodyLayout.appendChild(validationFailedField)
                     return false
                 }
@@ -54,8 +81,6 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
     }
 
     renderInputField(type, item) {
-
-        console.log('ROBX renderInputField', type, item)
         if (!item.fieldType) item.fieldType = 'text'
         if (item.fieldType === 'text') return this.renderTextField(type, item)
         if (item.fieldType === 'password') return this.renderTextField(type, item)
@@ -65,6 +90,7 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
 
         return false
     }
+
     renderTimezoneField(type, item) {
         const tzList = getTimeZones()
         const zones = []
@@ -144,11 +170,9 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
         this.bodyLayout.appendChild(field)
 
         return true
-
     }
 
     renderComboList(type, item, items) {
-
         const field = document.createElement('c6o-combo-box')
 
         field['label'] = item.name
@@ -185,5 +209,4 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
 
         return true
     }
-
 }

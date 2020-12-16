@@ -27,6 +27,5 @@ export class UninstallAppEngine extends LitElement implements StoreFlowStep {
 
     async begin() {
         console.log('ROBX', this.mediator)
-
     }
 }

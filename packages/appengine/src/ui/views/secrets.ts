@@ -6,11 +6,9 @@ import { BaseViewSettings } from './base'
 export class AppEngineSecretsSettings extends BaseViewSettings implements StoreFlowStep {
 
     async begin() {
-        console.log('ROBX BEGIN SECRETS', this)
         super.init()
 
         this.state.startTimer('ui-secrets-begin')
-
 
         this.headingText = `
                 <h3>Secrets</h3>
@@ -19,13 +17,10 @@ export class AppEngineSecretsSettings extends BaseViewSettings implements StoreF
 
         this.handleLayout(this.manifest.customSecretFields(), 'secrets')
         this.state.endTimer('ui-secrets-begin')
-
     }
 
     async end() {
-        if(!this.validateItems(this.manifest.provisioner.secrets)) return false
-
-        return true
+        return !!this.validateItems(this.manifest.provisioner.secrets)
     }
 
 }

@@ -3,7 +3,6 @@ import { StoreFlowMediator, StoreFlowStep } from '@provisioner/common'
 import { LitElement } from 'lit-element'
 import { AppEngineState, AppManifest, AppObject, Helper } from '../../appObject'
 
-
 export class AppEngineBaseView extends LitElement implements StoreFlowStep {
 
     manifest: AppManifest
@@ -12,9 +11,7 @@ export class AppEngineBaseView extends LitElement implements StoreFlowStep {
     helper = new Helper()
 
     async init() {
-
         this.manifest = this.manifest || new AppObject(this.mediator.applicationSpec) as AppManifest
-
         this.state = this.state || new AppEngineState(
             {
                 name: this.manifest.name,
@@ -23,5 +20,4 @@ export class AppEngineBaseView extends LitElement implements StoreFlowStep {
                 edition: this.manifest.edition
             })
     }
-
 }
