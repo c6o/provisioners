@@ -9,6 +9,34 @@ description:
 
   Moodle is built by the Moodle project which is led and coordinated by Moodle HQ, which is financially supported by a network of over 80 Moodle Partner service companies worldwide.
 
+
+  Setup
+
+  ----
+
+  Moodle requires access to a MariaDB database along with a user for authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE moodle;
+
+    CREATE USER 'moodle'@'%' IDENTIFIED BY '88888888';
+
+    GRANT ALL PRIVILEGES ON moodle.* TO 'moodle'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
 category: e-learning
 keywords:
   - Learning Management System
@@ -37,43 +65,55 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: bitnami/moodle
-        port: 8080
         automated: true
+        port:
+          - port: 8080
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                timeoutSeconds: 5
+                failureThreshold: 5
+                periodSeconds: 5
+                successThreshold: 1
+                initialDelaySeconds: 360
 
+        secret:
+            - name: MOODLE_DATABASE_PASSWORD
+              label: Database Password
+              hint: Password for the admin user
+              required: true
+              autoselect: true
+              fieldType: password
+              value: 88888888
 
-      secret:
-          - name: MOODLE_DATABASE_PASSWORD
-            label: Database Password
-            hint: Password for the admin user
-            required: true
-            autoselect: true
-            fieldType: password
+        config:
+            - name: MOODLE_DATABASE_HOST
+              label: Database Host
+              hint: Host for the database server (Service)
+              required: true
+              autoselect: true
+              fieldType: text
+              value: mariadb.database
 
-      config:
-          - name: MOODLE_DATABASE_HOST
-            label: Database Host
-            hint: Host for the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
+            - name: MOODLE_DATABASE_USER
+              label: Database Username
+              hint: Username for the admin user
+              required: true
+              autoselect: true
+              fieldType: text
+              value: moodle
 
-          - name: MOODLE_DATABASE_USER
-            label: Database Username
-            hint: Username for the admin user
-            required: true
-            autoselect: true
-            fieldType: text
+            - name: MOODLE_DATABASE_TYPE
+              value: mariadb
 
-          - name: MOODLE_DATABASE_TYPE
-            value: mariadb
+            - name: MOODLE_DATABASE_NAME
+              value: moodle
 
-          - name: MOODLE_DATABASE_NAME
-            value: moodle
-
-      volume:
-          - size: 5Gi
-            mountPath: /bitnami/moodle
-            name: moodle-data
+        volume:
+            - size: 5Gi
+              mountPath: /bitnami/moodle
+              name: moodle-data
       marina:
         launch:
           type: inline

@@ -1,12 +1,19 @@
 name: Grocy
 appId: grocy
 package: '@provisioner/appengine'
-icon: icon.svg
 summary:
   ERP beyond your fridge - grocy is a web-based self-hosted groceries & household management solution for your home.
 
 description:
   ERP beyond your fridge - grocy is a web-based self-hosted groceries & household management solution for your home.
+
+
+  Setup
+
+  ----
+
+  Default login is user admin with password admin, please change the password immediately (see user menu).
+
 
 category: analytics
 keywords:
@@ -37,13 +44,23 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/grocy
-        port: 80
         automated: true
+        port:
+          - port: 80
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                timeoutSeconds: 5
+                failureThreshold: 5
+                periodSeconds: 5
+                successThreshold: 1
+                initialDelaySeconds: 30
         config:
           - name: PUID
-            value: 0
+            value: 1000
           - name: PGID
-            value: 0
+            value: 1000
           - name: TZ
             label: Timezone
             hint: Specify a timezone to use.

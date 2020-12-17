@@ -44,6 +44,10 @@ editions:
         image: chronograf
         port: 8888
         automated: true
+        volume:
+          - size: 1Gi
+            mountPath: /var/lib/chronograf
+            name: chronograf-data
       marina:
         launch:
           type: inline

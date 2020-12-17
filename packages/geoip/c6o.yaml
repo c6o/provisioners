@@ -37,6 +37,22 @@ editions:
         image: supermasita/geoip-flask
         port: 8888
         automated: true
+        secret:
+          - name: LICENSE_KEY
+            label: MaxMind License Key
+            hint: MaxMind License Key
+            required: false
+            autoselect: true
+            fieldType: text
+        # config:
+        #   - name: app_domain
+        #     label: app_domain
+        #     hint: app_domain
+        #     required: false
+        #     autoselect: true
+        #     fieldType: text
+        #     value: https://geoip-testing.cindy.codezero.dev/
+
       marina:
         launch:
           type: inline
@@ -52,6 +68,21 @@ editions:
         image:  supermasita/geoip-flask
         port: 8888
         automated: true
+        secret:
+          - name: LICENSE_KEY
+            label: MaxMind License Key
+            hint: MaxMind License Key
+            required: false
+            autoselect: true
+            fieldType: text
+        # config:
+        #   - name: app_domain
+        #     label: app_domain
+        #     hint: app_domain
+        #     required: false
+        #     autoselect: true
+        #     fieldType: text
+        #     value: https://geoip-testing.cindy.codezero.dev/
       marina:
         launch:
           type: inline

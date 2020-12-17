@@ -56,7 +56,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: scipy
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -69,6 +69,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -81,7 +88,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: datascience
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -94,6 +101,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -107,7 +121,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: tensorflow
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -120,6 +134,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -132,7 +153,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: pyspark
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -145,6 +166,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -158,7 +186,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: basenotebook
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -171,6 +199,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -184,7 +219,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: all-spark
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -197,6 +232,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -210,7 +252,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: minimal
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -223,6 +265,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -236,7 +285,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: nbviewer
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -249,6 +298,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -262,7 +318,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: r-notebook
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -275,6 +331,13 @@ editions:
         config:
           - name: JUPYTER_ENABLE_LAB
             value: yes
+        secret:
+          - name: JUPYTER_TOKEN
+            label: Notebook Token
+            hint: The token to login to the notebook
+            required: true
+            autoselect: true
+            fieldType: password
         automated: true
       marina:
         launch:
@@ -289,7 +352,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: nature-demo
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine

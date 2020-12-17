@@ -28,14 +28,13 @@ spec:
           - containerPort: 80
             name: server
             protocol: TCP
-        livenessProbe:
+        startupProbe:
           httpGet:
             path: /
             port: 80
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
+          failureThreshold: 30
+          periodSeconds: 10
+          initialDelaySeconds: 10
         volumeMounts:
         - name: drone
           mountPath: /var/lib/drone

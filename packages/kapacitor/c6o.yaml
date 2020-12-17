@@ -49,7 +49,7 @@ editions:
             required: true
             autoselect: true
             fieldType: text
-            value: http://influxdb:8086
+            value: http://influxdb.namespace:8086
         volume:
           - name: kapacitor-data
             size: 5Gi

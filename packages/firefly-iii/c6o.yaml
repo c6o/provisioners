@@ -72,8 +72,18 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jc5x/firefly-iii
-        port: 8080
         automated: true
+        port:
+          - port: 8080
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                timeoutSeconds: 5
+                failureThreshold: 5
+                periodSeconds: 5
+                successThreshold: 1
+                initialDelaySeconds: 10
         volume:
           - name: firefly-iii-export
             size: 20Gi
@@ -102,6 +112,7 @@ editions:
             required: true
             autoselect: true
             fieldType: text
+            value: firefly
 
           - name: DB_HOST
             label: Database Server name
@@ -109,6 +120,7 @@ editions:
             required: true
             autoselect: true
             fieldType: text
+            value: mariadb.database
 
           - name: DB_PORT
             value: "3306"

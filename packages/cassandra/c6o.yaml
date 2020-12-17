@@ -64,7 +64,7 @@ editions:
             mountPath: /var/lib/cassandra
             name: cassandra-data
         automated: true
-        secret:
+        config:
           - name: CASSANDRA_USERNAME
             label: Database Username
             hint: The Username used to login to your database.
@@ -72,6 +72,7 @@ editions:
             autoselect: true
             fieldType: text
             value: root
+        secret:
           - name: CASSANDRA_PASSWORD
             label: Database Password
             hint: The Password used to login to your database.

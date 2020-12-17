@@ -20,6 +20,8 @@ export class GhostSettings extends LitElement implements StoreFlowStep {
         // set defaults
         const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
         this.serviceSpec.edition = edition
+        await (this.mediator as any).handleNext()
+
     }
 
     async end() {

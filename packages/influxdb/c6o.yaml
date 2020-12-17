@@ -26,13 +26,10 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
+  - name: preview-internal
     status: public
     default: true
     spec:
-      routes:
-        - type: http
-          targetService: influxdb
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -49,7 +46,9 @@ editions:
           - name: influxdb-data
             size: 50Gi
             mountPath: /var/lib/influxdb
+          - name: influxdb-config
+            size: 1Gi
+            mountPath: /etc/influxdb
       marina:
         launch:
-          type: inline
-          popUp: true
+          type: none

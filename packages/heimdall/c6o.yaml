@@ -37,8 +37,18 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/heimdall
-        port: 80
         automated: true
+        port:
+          - port: 80
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                timeoutSeconds: 5
+                failureThreshold: 5
+                periodSeconds: 10
+                successThreshold: 1
+                initialDelaySeconds: 120
         config:
           - name: PUID
             value: 1000

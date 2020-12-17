@@ -60,29 +60,6 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
-    status: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: matomo
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: matomo
-        port: 80
-        automated: true
-        volume:
-          - name: matomo-data
-            size: 5Gi
-            mountPath: /var/www/html
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-
   - name: latest
     status: public
     default: true
