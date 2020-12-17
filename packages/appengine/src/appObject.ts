@@ -156,6 +156,34 @@ export class AppObject implements AppManifest {
 
 export class Helper {
 
+    get systemServerConfigMap() {
+        return {
+            kind: 'ConfigMap',
+            metadata: {
+                namespace: 'c6o-system',
+                name: 'system-server-config' // constants?
+            }
+        }
+    }
+    async getApplicationUrl(manager, appName: string, namespace: string) {
+
+        const result = await manager.cluster.read(this.systemServerConfigMap)
+
+        if (result.error) {
+            // TODO: log failure
+            return void 0
+        }
+
+        const host = result.object?.data?.HOST
+
+        if (!host) {
+            // TODO: log missing host
+            return void 0
+        }
+
+        return `${appName}-${namespace}.${host}`
+    }
+
     makeRandom(len) {
         let text = ''
         const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
