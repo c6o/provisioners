@@ -151,7 +151,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionRoutes() {
-        const host = this.host.replace(".", "\\.")
+        const host = this.host.split(".").join("\\.")
 
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)

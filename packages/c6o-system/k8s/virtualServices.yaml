@@ -49,3 +49,12 @@ spec:
     route:
     - destination:
         host: system-marina
+  - match: # apps
+    - uri:
+        prefix: /
+      headers:
+        :authority:
+          regex: ^.+--.+\.{{host}}$
+    route:
+    - destination:
+        host: system-server
