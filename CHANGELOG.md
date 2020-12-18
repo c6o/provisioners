@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.25](https://github.com/c6o/node-monorepo/compare/v0.0.24...v0.0.25) (2020-12-18)
+
+
+### ♻️ Chores
+
+* Adding back some CSS for styling app engine ([109556b](https://github.com/c6o/node-monorepo/commit/109556bd6728db1cdfae41dc14b38fad347f4406))
+
+
+
+
+
 ## [0.0.24](https://github.com/c6o/node-monorepo/compare/v0.0.23...v0.0.24) (2020-12-15)
 
 
