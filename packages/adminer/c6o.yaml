@@ -47,6 +47,28 @@ editions:
         port: 8080
         automated: true
         tag-prefix: appengine
+        config:
+          - name: URI
+            value: $PUBLIC_URI
+          - name: FULL_URI
+            value: $PUBLIC_URI/this/is/a/path?foo=bar&x=y
+          - name: RANDOM
+            value: $RANDOM
+          - name: RANDOM32
+            value: $RANDOM:32
+          - name: DNS
+            value: $PUBLIC_DNS
+        secret:
+          - name: URI
+            value: $PUBLIC_URI
+          - name: FULL_URI
+            value: $PUBLIC_URI/this/is/a/path?foo=bar&x=y
+          - name: RANDOM
+            value: $RANDOM
+          - name: RANDOM32
+            value: $RANDOM:32
+          - name: DNS
+            value: $PUBLIC_DNS
       marina:
         launch:
           type: inline

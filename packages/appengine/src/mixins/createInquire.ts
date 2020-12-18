@@ -55,7 +55,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         manifest.provisioner.name = responses.name
         manifest.provisioner.edition = manifest.edition
 
-        parser.parseInputsToSpec(this.manager, args, manifest)
+        await parser.parseInputsToSpec(args, manifest)
 
         manifest.provisioner.configs = await this.askConfig(args, automated, manifest.provisioner.configs)
         manifest.provisioner.secrets = await this.askSecrets(args, automated, manifest.provisioner.secrets)

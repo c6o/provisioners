@@ -15,10 +15,7 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
         this.state.startTimer('ui-main-begin')
 
         if (!this.state.parsed)
-            parser.parseInputsToSpec(this.mediator, null, this.manifest)
-
-        console.log('ROBX', this.manifest)
-        debug('ROBX', this.manifest)
+            await parser.parseInputsToSpec(null, this.manifest)
 
         if (this.manifest.hasCustomConfigFields()) {
             this.mediator.appendFlow('appengine-install-configs')

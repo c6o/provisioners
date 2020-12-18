@@ -1,10 +1,11 @@
 import { LabelsMetadata } from "./parsing"
 import createDebug from 'debug'
+import { ProvisionerManager } from "@provisioner/common"
 const debug = createDebug('@appengine:timing')
 
 export class TimingReporter implements TimingReporter {
     report(state: AppEngineState) {
-        debug('TimingReporter:', state)
+        debug(`APPX - TimingReporter - ${JSON.stringify(state).split('\n').join('')}`)
         return true
     }
 }
@@ -20,6 +21,8 @@ export class AppEngineState {
     parsed: boolean
     platform: string
     timestamp: Date
+    publicDNS: string
+    publicURI: string
 
     timerChangedAction
 
@@ -165,23 +168,27 @@ export class Helper {
             }
         }
     }
-    async getApplicationUrl(manager, appName: string, namespace: string) {
+    async getApplicationURI(manager: ProvisionerManager, appName: string, namespace: string) {
+        return `https://${await this.getApplicationDNS(manager, appName, namespace)}`
+    }
+    host: string = void 0
+    async getApplicationDNS(manager: ProvisionerManager, appName: string, namespace: string) {
+
+        if(this.host) return this.host
 
         const result = await manager.cluster.read(this.systemServerConfigMap)
-
         if (result.error) {
             // TODO: log failure
             return void 0
         }
-
         const host = result.object?.data?.HOST
-
         if (!host) {
             // TODO: log missing host
             return void 0
         }
 
-        return `${appName}-${namespace}.${host}`
+        this.host = `${appName}-${namespace}.${host}`
+        return host
     }
 
     makeRandom(len) {

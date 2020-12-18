@@ -1,19 +1,18 @@
 import { ParserFactory as parserFactory } from './parsing'
 import createDebug from 'debug'
 import { AppManifest, Helper } from './appObject'
+import { ProvisionerManager } from '@provisioner/common'
 const debug = createDebug('@appengine:Parser')
 
 class Parser {
 
-    parseInputsToSpec(manager: any, args: any, manifest: AppManifest) {
+    async parseInputsToSpec(args: any, manifest: AppManifest) {
 
         if (args === null) args = {}
 
         const helper = new Helper()
 
         const spec = manifest.provisioner
-
-        spec.appUrl = helper.getApplicationUrl(manager, spec.name, spec.namespace)
 
         spec.parsed = true
         const configParserType = spec.configParser || 'BasicSettingParser'

@@ -9,6 +9,7 @@ import createDebug from 'debug'
 const debug = createDebug('@appengine:ObjectApplier')
 export class ObjectApplier implements Applier {
 
+    DEFAULT_RANDOM_LENGTH = 10
     helper = new Helper()
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -162,6 +163,27 @@ export class ObjectApplier implements Applier {
 
     }
 
+    convertTemplatedValue(value: string, state: AppEngineState) {
+
+        if (state.publicURI && value.indexOf('$PUBLIC_DNS') >= 0) {
+            value = value.replace('$PUBLIC_DNS', state.publicDNS)
+        }
+        if (state.publicURI && value.indexOf('$PUBLIC_URI') >= 0) {
+            value = value.replace('$PUBLIC_URI', state.publicURI)
+        }
+        if (value.indexOf('$RANDOM') >= 0) {
+            if (value === '$RANDOM')
+                value = this.helper.makeRandom(this.DEFAULT_RANDOM_LENGTH)
+            else {
+                if (value.indexOf(':') > 0) {
+                    const len = Number(value.substr(value.indexOf(':') + 1))
+                    value = this.helper.makeRandom(len)
+                }
+            }
+        }
+        return value
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async applyConfigs(manifest: AppManifest, state: AppEngineState, manager: ProvisionerManager, deployment: any) {
 
@@ -179,9 +201,8 @@ export class ObjectApplier implements Applier {
             for (const item of manifest.provisioner.configs) {
                 if (!item.env || item.env === '') item.env = item.name
 
-                if (item.value === '$PUBLIC_DNS') {
-                    item.value = ''
-                }
+                item.value = this.convertTemplatedValue(item.value, state)
+
                 config.data[item.name] = String(item.value)
                 if (item.env !== 'NONE') {
                     deployment.spec.template.spec.containers[0].env.push(
@@ -253,41 +274,28 @@ export class ObjectApplier implements Applier {
         try {
             state.startTimer('apply-secrets')
 
-            if (manifest.provisioner.secrets && manifest.provisioner.secrets.length > 0) {
+            if (manifest.provisioner?.secrets?.length > 0) {
 
                 const secret = templates.getSecretTemplate(manifest.appId, manifest.namespace, state.labels)
 
                 for (const item of manifest.provisioner.secrets) {
 
-                    if (!item.env || item.env === '') item.env = item.name
 
-                    let val = String(item.value)?.trim()
-                    if (val !== '') {
-                        if (val.startsWith('$RANDOM')) {
-                            if (val === '$RANDOM')
-                                val = this.helper.makeRandom(10)
-                            else {
-                                if (val.indexOf(':') > 0) {
-                                    const len = Number(val.substr(val.indexOf(':') + 1))
-                                    val = this.helper.makeRandom(len)
-                                }
-                            }
-                        }
+                    item.value = this.convertTemplatedValue(item.value, state)
 
-                        const value = Buffer.from(val).toString('base64')
-                        secret.data[item.name] = value
-                        if (item.env !== '$NONE') {
-                            deployment.spec.template.spec.containers[0].env.push(
-                                {
-                                    name: item.env,
-                                    valueFrom: {
-                                        secretKeyRef: {
-                                            name: secret.metadata.name,
-                                            key: item.name
-                                        }
+                    const value = Buffer.from(item.value).toString('base64')
+                    secret.data[item.name] = value
+                    if (item.env !== '$NONE') {
+                        deployment.spec.template.spec.containers[0].env.push(
+                            {
+                                name: item.env,
+                                valueFrom: {
+                                    secretKeyRef: {
+                                        name: secret.metadata.name,
+                                        key: item.name
                                     }
-                                })
-                        }
+                                }
+                            })
                     }
                 }
 
@@ -301,6 +309,7 @@ export class ObjectApplier implements Applier {
             }
 
             state.endTimer('apply-secrets')
+
         } catch (e) {
             debug('APPX applySecrets', JSON.stringify(e))
         }
