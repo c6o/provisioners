@@ -202,6 +202,7 @@ export class ObjectApplier implements Applier {
                 if (!item.env || item.env === '') item.env = item.name
 
                 item.value = this.convertTemplatedValue(item.value, state)
+                if(!item.env || item.env === '') item.env = item.name
 
                 config.data[item.name] = String(item.value)
                 if (item.env !== 'NONE') {
@@ -282,6 +283,7 @@ export class ObjectApplier implements Applier {
 
 
                     item.value = this.convertTemplatedValue(item.value, state)
+                    if(!item.env || item.env === '') item.env = item.name
 
                     const value = Buffer.from(item.value).toString('base64')
                     secret.data[item.name] = value
