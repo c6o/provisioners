@@ -1,11 +1,19 @@
 import { baseProvisionerType } from '../index'
 import { ApplierFactory as applierFactory } from '../applying/'
 import createDebug from 'debug'
-import { AppObject, AppManifest, TimingReporter, AppEngineState } from '../appObject'
+import { AppObject, AppManifest, TimingReporter, AppEngineState, Helper } from '../appObject'
 
 const debug = createDebug('@appengine:createApply')
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
+
+    writeToLog(title, ...args) {
+        const msg = `APPX - ${title} - ${JSON.stringify(args).split('\n').join('')}`
+        debug(msg)
+        console.log(msg)
+    }
+
+    helper = new Helper()
 
     pods(namespace, app) {
         return {
@@ -21,6 +29,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createApply() {
         const manifest = new AppObject(this.manager.document) as AppManifest
 
+
         if (!this.state) {
             this.state = new AppEngineState(
                 {
@@ -29,10 +38,15 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     partOf: manifest.appId,
                     edition: manifest.edition,
                 })
-
         }
-        debug('APPX createApply - manifest', manifest)
-        debug('APPX createApply - state', this.state)
+
+        if(!this.state.publicDNS) {
+            this.state.publicDNS = await this.helper.getApplicationDNS(this.manager, manifest.name, manifest.namespace)
+            this.state.publicURI = await this.helper.getApplicationURI(this.manager, manifest.name, manifest.namespace)
+        }
+
+        this.writeToLog('createApply - manifest', manifest)
+        this.writeToLog('createApply - state', this.state)
 
         try {
             this.state.startTimer('apply')
@@ -42,7 +56,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.state.endTimer('apply')
             new TimingReporter().report(this.state)
         } catch (e) {
-            debug('APPX createApply', e)
+            this.writeToLog('createApply', e)
         }
     }
 
@@ -55,7 +69,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if((manifest as any).fieldTypes) delete (manifest as any).fieldTypes
             this.state.endTimer('install')
         } catch (e) {
-            debug('APPX installApp', e)
+            this.writeToLog('installApp', e)
         }
     }
 
@@ -72,7 +86,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .end()
             this.state.endTimer('watch-pod')
         } catch (e) {
-            debug('APPX ensureAppIsRunning', e)
+            this.writeToLog('ensureAppIsRunning', e)
         }
     }
 
