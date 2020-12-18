@@ -14,8 +14,6 @@ export class JitsiSettings extends LitElement implements StoreFlowStep {
         this.serviceSpec.edition = edition
 
         //just skip to the next page
-        await (this.mediator as any).handleNext()
-
+        await (this.mediator as any).handleNext(true) // 'true' will skip increasing the flow index
     }
-
 }
