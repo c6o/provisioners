@@ -83,7 +83,7 @@ export class AppObject {
         this.document.spec.provisioner = this.document.spec.provisioner || {}
 
         // do not copy - provisioners -- modify the document service spec directly
-        const appProvisioner: string = this.document.spec.provisioner.name || this.document.metadata.name
+        const appProvisioner: string = this.document.metadata.name
         const services = this.document.spec.provisioner?.services || []
 
         return this._services = [
