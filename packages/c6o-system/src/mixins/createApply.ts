@@ -84,7 +84,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
             host: this.host,
-            jwtKey: Buffer.from(this.jwtKey).toString('base64')
+            jwtKey: Buffer.from(jwtKey).toString('base64')
         }
 
         await this.manager.cluster
