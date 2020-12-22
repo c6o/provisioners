@@ -2,6 +2,7 @@ name: App Engine
 appId: appengine                    #App internal name (all lower, no spaces); minimum 5 characters
 package: '@provisioner/appengine'
 icon: icon.svg
+system: true
 description:
   AppEngine is a key component in the simplification of leveraging Kubernetes for your Docker Images, within the c6o system.  It allows DevOps staff to quickly and easily wrap docker images for deployment onto Kubernetes.
 
