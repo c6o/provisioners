@@ -89,3 +89,27 @@ editions:
     status: public
     spec:
       provisioner: ignore
+---
+_id: harbourmaster
+appId: harbourmaster
+name: Harbour Master
+icon: harbourMasterIcon.svg
+system: true
+summary: The Harbour Master is the the app that handles security and identity management.
+editions:
+  - name: latest
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: system-harbourmaster
+          http:
+            prefix: /harbourmaster/
+            rewrite: /
+      provisioner: ignore
+      marina:
+        launch:
+          type: inline
+          port: 1239
+          tag: c6o-harbourmaster-app
+          path: /index.html
