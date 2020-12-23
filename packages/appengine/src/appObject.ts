@@ -118,7 +118,7 @@ export class AppObject implements AppManifest {
 
     //Required for appEngine provisioner
     get edition() {
-        return this.document.metadata.namespace
+        return this.document.metadata.edition
     }
     get description() {
         return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId
@@ -171,24 +171,28 @@ export class Helper {
     async getApplicationURI(manager: ProvisionerManager, appName: string, namespace: string) {
         return `https://${await this.getApplicationDNS(manager, appName, namespace)}`
     }
+
     host: string = void 0
+
     async getApplicationDNS(manager: ProvisionerManager, appName: string, namespace: string) {
 
-        if(this.host) return this.host
+        if(this.host !== void 0) return this.host
 
         const result = await manager.cluster.read(this.systemServerConfigMap)
         if (result.error) {
             // TODO: log failure
             return void 0
         }
-        const host = result.object?.data?.HOST
-        if (!host) {
+
+        const _host = result.object?.data?.HOST
+
+        if (!_host) {
             // TODO: log missing host
             return void 0
         }
 
-        this.host = `${appName}-${namespace}.${host}`
-        return host
+        this.host = `${appName}-${namespace}.${_host}`
+        return this.host
     }
 
     makeRandom(len) {

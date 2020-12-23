@@ -27,6 +27,12 @@ export class ObjectApplier implements Applier {
                 manifest.provisioner.command,
             )
 
+            if (!state.publicDNS) {
+                state.publicDNS = await this.helper.getApplicationDNS(manager, manifest.name, manifest.namespace)
+                state.publicURI = await this.helper.getApplicationURI(manager, manifest.name, manifest.namespace)
+            }
+
+
             // if (spec.link) {
             //     //we have features/dependancies to deal with, lets jump to that first
             //     await this.installFeatures(manifest.namespace, spec, manager)
@@ -163,7 +169,9 @@ export class ObjectApplier implements Applier {
 
     }
 
-    convertTemplatedValue(value: string, state: AppEngineState) {
+    convertTemplatedValue(value: any, state: AppEngineState) {
+
+        if (typeof value !== 'string') value = `${value}`  //force our datatype
 
         if (state.publicURI && value.indexOf('$PUBLIC_DNS') >= 0) {
             value = value.replace('$PUBLIC_DNS', state.publicDNS)
@@ -202,7 +210,7 @@ export class ObjectApplier implements Applier {
                 if (!item.env || item.env === '') item.env = item.name
 
                 item.value = this.convertTemplatedValue(item.value, state)
-                if(!item.env || item.env === '') item.env = item.name
+                if (!item.env || item.env === '') item.env = item.name
 
                 config.data[item.name] = String(item.value)
                 if (item.env !== 'NONE') {
@@ -281,10 +289,8 @@ export class ObjectApplier implements Applier {
 
                 for (const item of manifest.provisioner.secrets) {
 
-
                     item.value = this.convertTemplatedValue(item.value, state)
-                    if(!item.env || item.env === '') item.env = item.name
-
+                    if (!item.env || item.env === '') item.env = item.name
                     const value = Buffer.from(item.value).toString('base64')
                     secret.data[item.name] = value
                     if (item.env !== '$NONE') {
@@ -300,8 +306,7 @@ export class ObjectApplier implements Applier {
                             })
                     }
                 }
-
-                debug(`Installing secrets:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
+                debug(`Installing secrets:${JSON.stringify(secret)}`)
 
                 await manager.cluster
                     .begin(`Installing the Secrets for ${manifest.displayName}`)
@@ -309,7 +314,7 @@ export class ObjectApplier implements Applier {
                     .upsert(secret)
                     .end()
             }
-
+            debug(`Installing secrets container:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
             state.endTimer('apply-secrets')
 
         } catch (e) {
