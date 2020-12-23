@@ -73,6 +73,11 @@ editions:
         - type: http
           targetService: neo4j
           targetPort: 7474
+          name: http
+        - type: http
+          targetService: neo4j
+          targetPort: 7687
+          name: bolt
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -83,7 +88,7 @@ editions:
             protocol: TCP
           - port: 7687
             name: bolt
-            protocol: http
+            protocol: TCP
         automated: true
         volume:
           - size: 5Gi
