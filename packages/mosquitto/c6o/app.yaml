@@ -28,23 +28,25 @@ editions:
     status: public
     spec:
       routes:
-        - type: http
-          targetService: mattermost-preview
+        - type: tcp
+          targetService: mosquitto
+          tcp:
+            port: 1883
+            name: tcp
       provisioner:
-        package: '@provisioner/mattermost'
+        package: '@provisioner/mosquitto'
       marina:
         launch:
           type: inline
           popUp: true
-  - name: enterprise
+
+  - name: preview-internal
     status: public
     spec:
-      routes:
-        - type: http
-          targetService: cz-mattermost-cluster
       provisioner:
-        package: '@provisioner/mattermost'
+        package: '@provisioner/mosquitto'
       marina:
         launch:
           type: inline
           popUp: true
+

@@ -53,7 +53,7 @@ spec:
   selector:
     matchLabels:
       name: folding
-  replicas: 2 # Set number of replicas to run - one replica per node
+  replicas: 1 # Set number of replicas to run - one replica per node
   strategy:
     type: RollingUpdate
     rollingUpdate:

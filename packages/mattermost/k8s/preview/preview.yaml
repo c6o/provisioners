@@ -18,7 +18,7 @@ spec:
         app: mattermost-preview
     spec:
       containers:
-        - image: mattermost/mattermost-preview
+        - image: mattermost/mattermost-preview:5.26.0
           name: mattermost-preview
           ports:
             - containerPort: 8065
