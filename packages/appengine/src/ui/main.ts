@@ -10,11 +10,12 @@ const debug = createDebug('@appengine:createInquire')
 @customElement('appengine-install-main')
 export class AppEngineSettings extends AppEngineBaseView implements StoreFlowStep {
 
+    // NARAYAN: This is a temporary fix - do not document or use elsewhere
+    skipMediatorRender = true
+
     async begin() {
         super.init()
         this.state.startTimer('ui-main-begin')
-
-        let skip = false
 
         if (!this.state.parsed)
             await parser.parseInputsToSpec(null, this.manifest)
@@ -23,12 +24,8 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
             this.mediator.appendFlow('appengine-install-configs')
         else if (this.manifest.hasCustomSecretFields())
             this.mediator.appendFlow('appengine-install-secrets')
-        else {
-            skip = true
+        else
             new TimingReporter().report(this.state)
-        }
         this.state.endTimer('ui-main-begin')
-
-        await (this.mediator as any).handleNext(skip) // passing 'true' will skip advancing the handleNext index
     }
 }
