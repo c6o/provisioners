@@ -127,6 +127,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .upsertFile('../../k8s/marina.yaml', options)
                 .upsertFile('../../k8s/store.yaml', options)
                 .upsertFile('../../k8s/navstation.yaml', options)
+                .upsertFile('../../k8s/harbourmaster.yaml', options)
                 .upsertFile('../../k8s/apps.yaml', options)
                 .clearOwners()
                 .upsertFile('../../k8s/istio.yaml', options)
