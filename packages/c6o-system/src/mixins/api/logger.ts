@@ -51,6 +51,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         const systemServerConfigMap = result.object
         systemServerConfigMap.data = {
             LOG_ELASTIC_CONNECTION: `${logstash.protocol}://${logstash.service}.${appNamespace}:${logstash.port}`,
+            LOG_LEVEL: 'info',
             ...systemServerConfigMap.data
         }
         await this.manager.cluster.upsert(systemServerConfigMap)
