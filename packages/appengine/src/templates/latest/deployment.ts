@@ -7,27 +7,19 @@ export function getDeploymentTemplate(
     namespace: string,
     image: string,
     labels: LabelsMetadata,
-    tag: string = undefined,
-    imagePullPolicy = undefined,
-    command: string[] = undefined,
+    tag?: string,
+    imagePullPolicy?: string,
+    command?: string[],
 ) {
     //imagePullPolicy https://kubernetes.io/docs/concepts/configuration/overview/
     //https://kubernetes.io/docs/concepts/containers/images/#updating-images
 
-    //if there is no explicity set value
-    if (imagePullPolicy === undefined) {
-        //default value
-        imagePullPolicy = 'IfNotPresent'
-        //set it to Always, if the tag is explictly set to latest
-        if (tag !== undefined && tag === 'latest') imagePullPolicy = 'Always'
-    }
+    // if not set, set it to Always, if the tag is explicitly set to latest, IfNotPresent otherwise
+    imagePullPolicy = imagePullPolicy || tag === 'latest ' ? 'Always' : 'IfNotPresent'
 
     //support docker tags being specified in the manifest
     //used for upgrades
-    let imageWithTag = image
-    if (tag !== undefined && imageWithTag.indexOf(':') <= 0) {
-        imageWithTag = `${image}:${tag}`
-    }
+    image = tag && !image.includes(':') ? `${image}:${tag}` : image
 
     return {
         apiVersion: 'apps/v1',
@@ -48,15 +40,13 @@ export function getDeploymentTemplate(
                     labels: getLabels(name, labels)
                 },
                 spec: {
-                    containers: [
-                        {
-                            name: name,
-                            image: imageWithTag,
-                            imagePullPolicy,
-                            command,
-                            env: []
-                        }
-                    ]
+                    containers: [{
+                        name,
+                        image,
+                        imagePullPolicy,
+                        command,
+                        env: []
+                    }]
                 }
             }
         }
