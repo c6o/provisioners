@@ -52,6 +52,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             new TimingReporter().report(this.state)
         } catch (e) {
             this.writeToLog('createApply', e)
+            throw e
         }
     }
 
@@ -66,6 +67,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.state.endTimer('install')
         } catch (e) {
             this.writeToLog('installApp', e)
+            throw e
         }
     }
 
@@ -83,6 +85,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.state.endTimer('watch-pod')
         } catch (e) {
             this.writeToLog('ensureAppIsRunning', e)
+            throw e
         }
     }
 

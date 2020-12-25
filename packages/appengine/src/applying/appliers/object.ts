@@ -53,6 +53,7 @@ export class ObjectApplier implements Applier {
             state.endTimer('object-apply')
         } catch (e) {
             debug('APPX apply', JSON.stringify(e))
+            throw e
         }
 
     }

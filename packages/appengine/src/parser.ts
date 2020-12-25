@@ -5,7 +5,7 @@ const debug = createDebug('@appengine:Parser')
 
 class Parser {
 
-    async parseInputsToSpec(args: any, manifest: AppManifest) {
+    parseInputsToSpec(args: any, manifest: AppManifest) {
 
         if (args === null) args = {}
 
