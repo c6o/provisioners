@@ -29,7 +29,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createApply() {
         const manifest = new AppObject(this.manager.document) as AppManifest
 
-
         if (!this.state) {
             this.state = new AppEngineState(
                 {
@@ -43,50 +42,31 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         this.writeToLog('createApply - manifest', manifest)
         this.writeToLog('createApply - state', this.state)
 
-        try {
-            this.state.startTimer('apply')
-            await this.ensureServiceNamespacesExist()
-            await this.installApp(manifest)
-            await this.ensureAppIsRunning(manifest)
-            this.state.endTimer('apply')
-            new TimingReporter().report(this.state)
-        } catch (e) {
-            this.writeToLog('createApply', e)
-            throw e
-        }
+        this.state.startTimer('apply')
+        await this.ensureServiceNamespacesExist()
+        await this.installApp(manifest)
+        await this.ensureAppIsRunning(manifest)
+        this.state.endTimer('apply')
+        new TimingReporter().report(this.state)
     }
 
     async installApp(manifest: AppManifest) {
-        try {
-
-            this.state.startTimer('install')
-
-            const applierType = manifest.provisioner.applier || 'ObjectApplier'
-            await applierFactory.getApplier(applierType).apply(manifest, this.state, this.manager)
-            if((manifest as any).fieldTypes) delete (manifest as any).fieldTypes
-            this.state.endTimer('install')
-        } catch (e) {
-            this.writeToLog('installApp', e)
-            throw e
-        }
+        this.state.startTimer('install')
+        const applierType = manifest.provisioner.applier || 'ObjectApplier'
+        await applierFactory.getApplier(applierType).apply(manifest, this.state, this.manager)
+        if((manifest as any).fieldTypes) delete (manifest as any).fieldTypes
+        this.state.endTimer('install')
     }
 
     async ensureAppIsRunning(manifest: AppManifest) {
-        try {
-
-            this.state.startTimer('watch-pod')
-            await this.manager.cluster.
-                begin(`Ensure ${manifest.displayName} services are running`)
-                .beginWatch(this.pods(manifest.namespace, manifest.appId))
-                .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
-                    processor.endWatch()
-                })
-                .end()
-            this.state.endTimer('watch-pod')
-        } catch (e) {
-            this.writeToLog('ensureAppIsRunning', e)
-            throw e
-        }
+        this.state.startTimer('watch-pod')
+        await this.manager.cluster.
+            begin(`Ensure ${manifest.displayName} services are running`)
+            .beginWatch(this.pods(manifest.namespace, manifest.appId))
+            .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
+                processor.endWatch()
+            })
+            .end()
+        this.state.endTimer('watch-pod')
     }
-
 }
