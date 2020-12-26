@@ -7,12 +7,6 @@ const debug = createDebug('@appengine:createApply')
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    writeToLog(title, ...args) {
-        const msg = `APPX - ${title} - ${JSON.stringify(args).split('\n').join('')}`
-        debug(msg)
-        console.log(msg)
-    }
-
     helper = new Helper()
 
     pods(namespace, app) {
@@ -41,6 +35,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         this.writeToLog('createApply - manifest', manifest)
         this.writeToLog('createApply - state', this.state)
+        if(!this.state.publicDNS) {
+            this.state.publicDNS = await this.helper.getApplicationDNS(this.manager, manifest.name, manifest.namespace)
+            this.state.publicURI = await this.helper.getApplicationURI(this.manager, manifest.name, manifest.namespace)
+        }
 
         this.state.startTimer('apply')
         await this.ensureServiceNamespacesExist()

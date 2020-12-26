@@ -1,15 +1,82 @@
 import { baseProvisionerType } from '../index'
 import { parser } from '../parser'
 import { AppEngineState, AppManifest, AppObject, Helper } from '../appObject'
+import { Flow } from '../contracts'
+import { multiInquireStep as testSteps } from './flowSamples'
+import { inspect } from 'util'
 import createDebug from 'debug'
+import e from 'cors'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    helper = new Helper()
-
     async createInquire(args) {
+        // const steps = this.manager.document.spec?.provisioner?.steps
+        const steps = testSteps
+        for (const step of Flow.each(steps))
+            await this.processStep(step)
+    }
+
+    async processStep(step: Flow.step) {
+        debug('Processing step %s', step.name)
+        if (step.sections)
+            for (const section of step.sections)
+                await this.processSection(section)
+        else if (step.inquire)
+            await this.processInquire(step.inquire)
+        else
+            throw new Error(`Step ${step.name} lacks any sections or inquire`)
+    }
+
+    async processSection(section: Flow.section) {
+        debug('Processing section %s', section.title)
+        throw new Error(`NOT IMPLEMENTED ${inspect(section)}`)
+    }
+
+    async processInquire(inquireField: Flow.inquireType) {
+        const inquireFields = Array.isArray(inquireField) ?
+            inquireField :
+            [inquireField]
+
+        const asks = inquireFields.map(item => this.mapInquire(item))
+        const responses = await this.manager.inquirer.prompt(asks)
+        throw new Error(`NOT IMPLEMENTED ${inspect(responses)}`)
+    }
+
+    /**
+     * Maps from a Flow.inquireType item to inquire.prompt items
+     * @param inquireItem
+     */
+    mapInquire(inquireItem: Flow.inquireStep) {
+        debug('Mapping from %o', inquireItem)
+
+        // Inquire is forgiving and ignores fields it doesn't understand
+        // but let's be good and strip out c6o
+        const { c6o, ...rest } = inquireItem
+
+        if (rest.validate)
+            delete rest.validate
+
+        if (rest.when)
+            delete rest.when
+
+        // For choices, we have to convert separator strings to the separator object
+        if (rest.choices)
+            rest.choices = rest.choices.map(choice =>
+                choice === Flow.choiceSeparator ?
+                    new this.manager.inquirer.Separator() :
+                    choice
+            )
+
+        debug('Mapped to %o', rest)
+        return rest
+    }
+
+
+
+    helper = new Helper()
+    async oldCreateInquire(args) {
         const manifest = new AppObject(this.manager.document) as AppManifest
 
         this.state = new AppEngineState(
