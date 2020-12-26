@@ -2,24 +2,40 @@ import { baseProvisionerType } from '../index'
 import { parser } from '../parser'
 import { AppEngineState, AppManifest, AppObject, Helper } from '../appObject'
 import { Flow } from '../contracts'
-import { multiInquireStep as testSteps } from './flowSamples'
+import { skippedSteps as testSteps } from './flowSamples'
+import chalk from 'chalk'
 import { inspect } from 'util'
 import createDebug from 'debug'
-import e from 'cors'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
+
+    inquireResponses: any = {}
+    inquireExtensions = new Map<string, Flow.c6oExtensions>()
 
     async createInquire(args) {
         // const steps = this.manager.document.spec?.provisioner?.steps
         const steps = testSteps
         for (const step of Flow.each(steps))
             await this.processStep(step)
+
+        // Stop provisioning from going any further
+        throw new Error(`NOT IMPLEMENTED ${inspect(this.inquireResponses)}`)
     }
 
     async processStep(step: Flow.step) {
         debug('Processing step %s', step.name)
+
+        if (step.skip) {
+            debug('Processing skip function %o', step.skip)
+            const skipFunction =  new Function('answers',  step.skip)
+            const skip = skipFunction.call(this.manager.document, this.inquireResponses)
+            debug('Skip function says %s', skip)
+            if (skip)
+                return
+        }
+
         if (step.sections)
             for (const section of step.sections)
                 await this.processSection(section)
@@ -31,7 +47,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async processSection(section: Flow.section) {
         debug('Processing section %s', section.title)
-        throw new Error(`NOT IMPLEMENTED ${inspect(section)}`)
+
+        // We can't use console.log because vorpal does something
+        // to console.log so we write directly to stdout
+        process.stdout.write(chalk.yellowBright.bold('\n❯ Section: ') + chalk.yellowBright(section.title) + '\n\n')
+        await this.processInquire(section.inquire)
     }
 
     async processInquire(inquireField: Flow.inquireType) {
@@ -41,7 +61,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         const asks = inquireFields.map(item => this.mapInquire(item))
         const responses = await this.manager.inquirer.prompt(asks)
-        throw new Error(`NOT IMPLEMENTED ${inspect(responses)}`)
+
+        // Add to the responses bag
+        this.inquireResponses = {
+            ...this.inquireResponses,
+            ...responses
+        }
     }
 
     /**
@@ -55,11 +80,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         // but let's be good and strip out c6o
         const { c6o, ...rest } = inquireItem
 
-        if (rest.validate)
-            delete rest.validate
+        if (Flow.isFunctionString(rest.validate))
+            rest.validate = new Function('value', 'answers', rest.validate).bind(this.manager.document)
 
-        if (rest.when)
-            delete rest.when
+        if (Flow.isFunctionString(rest.when))
+            rest.when = new Function('answers', rest.when).bind(this.manager.document)
+
+        if (rest.type === 'password' && !rest.mask)
+            rest.mask = '*'
 
         // For choices, we have to convert separator strings to the separator object
         if (rest.choices)
@@ -68,6 +96,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     new this.manager.inquirer.Separator() :
                     choice
             )
+
+        // Stash the extensions
+        this.inquireExtensions.set(rest.name, c6o)
 
         debug('Mapped to %o', rest)
         return rest

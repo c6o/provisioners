@@ -2,14 +2,14 @@ import { Flow } from '../contracts'
 
 const simpleInquire: Flow.inquireType = {
     type: 'input',
-    name: 'value'
+    name: 'simpleValue'
 }
 
 // From: https://github.com/SBoudrias/Inquirer.js/tree/master/packages/inquirer/examples
 const multiInquire: Flow.inquireType = [
     {
         type: 'checkbox',
-        name: 'value1',
+        name: 'Checkbox',
         choices: [
             Flow.choiceSeparator,
             {
@@ -57,16 +57,22 @@ const multiInquire: Flow.inquireType = [
     },
     {
         type: 'confirm',
-        name: 'value2',
-        choices: ['one', 'two', 'three']
+        name: 'Confirm',
+    },
+    {
+        type: 'list',
+        name: 'List',
+        choices: ['Jumbo', 'Large', 'Standard', 'Medium', 'Small', 'Micro', 'skip-editor']
     },
     {
         type: 'editor',
-        name: 'value3'
+        name: 'Editor',
+        when: 'return answers.List !== "skip-editor"'
+        // when: 'throw new Error(JSON.stringify(this))' // Test to show that this is the manifest
     },
     {
         type: 'expand',
-        name: 'value4',
+        name: 'Expand',
         choices: [
             {
                 key: 'y',
@@ -93,24 +99,19 @@ const multiInquire: Flow.inquireType = [
     },
     {
         type: 'input',
-        name: 'value5'
-    },
-    {
-        type: 'list',
-        name: 'value6',
-        choices: ['Jumbo', 'Large', 'Standard', 'Medium', 'Small', 'Micro']
+        name: 'Input'
     },
     {
         type: 'number',
-        name: 'value7'
+        name: 'Number'
     },
     {
         type: 'password',
-        name: 'value8'
+        name: 'Password'
     },
     {
         type: 'rawlist',
-        name: 'value9',
+        name: 'RawList',
         choices: [
             'Order a pizza',
             'Make a reservation',
@@ -132,6 +133,27 @@ export const multiInquireStep: Flow.steps = {
 }
 
 export const sectionedSteps: Flow.steps = [{
-    name: 'main'
-}
+    name: 'main',
+    sections: [
+        {
+            title: 'This is a section',
+            inquire: simpleInquire
+        },
+        {
+            title: 'This is another section',
+            inquire: multiInquire
+        }
+    ]
+}]
+
+export const skippedSteps: Flow.steps = [
+    {
+        name: 'main',
+        inquire: simpleInquire
+    },
+    {
+        name: 'conditional',
+        skip: 'return answers.simpleValue === "skip"',
+        inquire: multiInquire
+    }
 ]
