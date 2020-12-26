@@ -14,10 +14,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         // const steps = this.manager.document.spec?.provisioner?.steps
 
         const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-        await flowProcessor.process(testSteps)
+        const result = await flowProcessor.process(testSteps)
 
         // Stop provisioning from going any further
-        throw new Error(`NOT IMPLEMENTED ${inspect(flowProcessor.inquireResponses)}`)
+        throw new Error(`NOT IMPLEMENTED ${inspect(result)}`)
     }
 
     helper = new Helper()

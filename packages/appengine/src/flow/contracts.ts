@@ -62,6 +62,12 @@ export interface step {
 // where all the magic starts
 export type steps = step | Array<step>
 
+export interface result {
+    transient: { [key: string]: string }
+    config: { [key: string]: string }
+    secret: { [key: string]: string }
+}
+
 // Makes it easy to use for...of
 // against a single object or an array of objects
 // and is undefined safe

@@ -11,9 +11,26 @@ export class FlowProcessor {
 
     constructor(private inquirer, private document) { }
 
-    async process(steps: contracts.steps) {
+    async process(steps: contracts.steps): Promise<contracts.result> {
+
+        // Extract the responses and extensions from steps
         for (const step of contracts.each(steps))
             await this.processStep(step)
+
+        const result: contracts.result = {
+            transient: {},
+            config: {},
+            secret: {}
+        }
+
+        for(const pair of this.inquireExtensions) {
+            const [stepName, ext] = pair
+            debug('Post processing step %s %o', stepName, ext)
+            const target = ext?.target || 'config'
+            result[target][stepName] = this.inquireResponses[stepName]
+        }
+
+        return result
     }
 
     async processStep(step: contracts.step) {
