@@ -1,17 +1,17 @@
-import { Flow } from '../contracts'
+import * as contracts from './contracts'
 
-const simpleInquire: Flow.inquireType = {
+const simpleInquire: contracts.inquireType = {
     type: 'input',
     name: 'simpleValue'
 }
 
 // From: https://github.com/SBoudrias/Inquirer.js/tree/master/packages/inquirer/examples
-const multiInquire: Flow.inquireType = [
+const multiInquire: contracts.inquireType = [
     {
         type: 'checkbox',
         name: 'Checkbox',
         choices: [
-            Flow.choiceSeparator,
+            contracts.choiceSeparator,
             {
                 name: 'Pepperoni',
             },
@@ -24,7 +24,7 @@ const multiInquire: Flow.inquireType = [
             {
                 name: 'Bacon',
             },
-            Flow.choiceSeparator, //new inquirer.Separator(' = The Cheeses = '),
+            contracts.choiceSeparator, //new inquirer.Separator(' = The Cheeses = '),
             {
                 name: 'Mozzarella',
                 checked: true,
@@ -35,14 +35,14 @@ const multiInquire: Flow.inquireType = [
             {
                 name: 'Parmesan',
             },
-            Flow.choiceSeparator, //new inquirer.Separator(' = The usual ='),
+            contracts.choiceSeparator, //new inquirer.Separator(' = The usual ='),
             {
                 name: 'Mushroom',
             },
             {
                 name: 'Tomato',
             },
-            Flow.choiceSeparator, //new inquirer.Separator(' = The extras = '),
+            contracts.choiceSeparator, //new inquirer.Separator(' = The extras = '),
             {
                 name: 'Pineapple',
             },
@@ -89,7 +89,7 @@ const multiInquire: Flow.inquireType = [
                 name: 'Show diff',
                 value: 'diff',
             },
-            Flow.choiceSeparator,
+            contracts.choiceSeparator,
             {
                 key: 'x',
                 name: 'Abort',
@@ -115,24 +115,24 @@ const multiInquire: Flow.inquireType = [
         choices: [
             'Order a pizza',
             'Make a reservation',
-            Flow.choiceSeparator,
+            contracts.choiceSeparator,
             'Ask opening hours',
             'Talk to the receptionist',
         ],
     }
 ]
 
-export const simpleInquireStep: Flow.steps = {
+export const simpleInquireStep: contracts.steps = {
     name: 'main',
     inquire: simpleInquire
 }
 
-export const multiInquireStep: Flow.steps = {
+export const multiInquireStep: contracts.steps = {
     name: 'main',
     inquire: multiInquire
 }
 
-export const sectionedSteps: Flow.steps = [{
+export const sectionedSteps: contracts.steps = [{
     name: 'main',
     sections: [
         {
@@ -146,7 +146,7 @@ export const sectionedSteps: Flow.steps = [{
     ]
 }]
 
-export const skippedSteps: Flow.steps = [
+export const skippedSteps: contracts.steps = [
     {
         name: 'main',
         inquire: simpleInquire
