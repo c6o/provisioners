@@ -42,6 +42,7 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
     }
 
     handleLayout(items, type) {
+
         this.state.startTimer('ui-configs-handleLayout')
 
         const headingLayout = document.createElement('div')
@@ -106,14 +107,17 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
 
         field['label'] = item.name
 
-        if (item.label && item.label !== '')
+        if (item.label && item.label !== '') {
             field['label'] = item.label
+        }
 
-        if (item.required && item.required === true)
+        if (item.required && item.required === true) {
             field['required'] = ''
+        }
 
-        if (item.autoselect && item.autoselect === true)
+        if (item.autoselect && item.autoselect === true) {
             field['autoselect'] = ''
+        }
 
         field['value'] = item.value
         field['id'] = item.name
@@ -141,11 +145,13 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
     renderCheckboxInputField(type, item) {
         const field = document.createElement('c6o-checkbox')
 
-        if (item.label && item.label !== '')
+        if (item.label && item.label !== '') {
             field.innerHTML = item.label
+        }
 
-        if (item.autoselect && item.autoselect === true)
+        if (item.autoselect && item.autoselect === true) {
             field['autoselect'] = ''
+        }
 
         field['id'] = item.name
 
@@ -177,11 +183,13 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
 
         field['label'] = item.name
 
-        if (item.label && item.label !== '')
+        if (item.label && item.label !== '') {
             field['label'] = item.label
+        }
 
-        if (item.autoselect && item.autoselect === true)
+        if (item.autoselect && item.autoselect === true) {
             field['autoselect'] = ''
+        }
 
         field['id'] = item.name
 

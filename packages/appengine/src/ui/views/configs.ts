@@ -2,12 +2,17 @@ import { StoreFlowStep } from '@provisioner/common'
 import { customElement } from 'lit-element'
 import { TimingReporter } from '../../appObject'
 import { BaseViewSettings } from './base'
+import createDebug from 'debug'
+const debug = createDebug('@appengine:AppEngineConfigsSettings')
 
 @customElement('appengine-install-configs')
 export class AppEngineConfigsSettings extends BaseViewSettings implements StoreFlowStep {
 
     async begin() {
-        super.init()
+
+        await super.init()
+
+        debug('AppEngineConfigsSettings %j', this.manifest)
 
         this.state.startTimer('ui-configs-begin')
 
@@ -18,10 +23,12 @@ export class AppEngineConfigsSettings extends BaseViewSettings implements StoreF
         `
 
         this.handleLayout(this.manifest.customConfigFields(), 'configs')
+
         this.state.endTimer('ui-configs-begin')
     }
 
     async end() {
+
         if (!this.validateItems(this.manifest.provisioner.configs)) return false
 
         this.manifest.hasCustomSecretFields() ?

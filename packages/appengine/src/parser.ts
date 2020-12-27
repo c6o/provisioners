@@ -1,7 +1,6 @@
 import { ParserFactory as parserFactory } from './parsing'
+import { AppManifest } from './appObject'
 import createDebug from 'debug'
-import { AppManifest, Helper } from './appObject'
-import { ProvisionerManager } from '@provisioner/common'
 const debug = createDebug('@appengine:Parser')
 
 class Parser {
@@ -10,9 +9,9 @@ class Parser {
 
         if (args === null) args = {}
 
-        const helper = new Helper()
-
         const spec = manifest.provisioner
+
+        debug('Parsing starting %j', spec)
 
         spec.parsed = true
         const configParserType = spec.configParser || 'BasicSettingParser'
@@ -33,6 +32,7 @@ class Parser {
         spec.volumes = parserFactory.getVolumeParser(volumeParserType).parse(args, spec)
         if (spec.volume) delete spec.volume
 
+        debug('Parsing complete %j', spec)
     }
 }
 

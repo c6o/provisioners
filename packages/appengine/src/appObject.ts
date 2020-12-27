@@ -104,10 +104,10 @@ export class AppObject implements AppManifest {
     private fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
 
     hasCustomConfigFields(): boolean {
-        return this.customConfigFields().length > 0
+        return this.customConfigFields().length >= 0
     }
     hasCustomSecretFields(): boolean {
-        return this.customSecretFields().length > 0
+        return this.customSecretFields().length >= 0
     }
     customConfigFields() {
         return this.provisioner.configs.filter(e => this.fieldTypes.includes(e.fieldType?.toLowerCase()))

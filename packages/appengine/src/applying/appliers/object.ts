@@ -69,7 +69,7 @@ export class ObjectApplier implements Applier {
                 .end()
             state.endTimer('apply-deployment')
         } catch (e) {
-            debug('APPX applyDeployment', JSON.stringify(e), JSON.stringify(deployment))
+            debug('APPX applyDeployment %j %j', JSON.stringify(e), JSON.stringify(deployment))
         }
     }
 
@@ -116,7 +116,7 @@ export class ObjectApplier implements Applier {
             }
             state.endTimer('apply-volumes')
         } catch (e) {
-            debug('APPX applyVolumes', JSON.stringify(e))
+            debug('APPX applyVolumes %j', e)
         }
 
     }
@@ -163,13 +163,15 @@ export class ObjectApplier implements Applier {
             }
             state.endTimer('apply-ports')
         } catch (e) {
-            debug('APPX applyPorts', JSON.stringify(e))
+            debug('APPX applyPorts  %j', e)
         }
 
 
     }
 
     convertTemplatedValue(value: any, state: AppEngineState) {
+
+        if (!value) return
 
         if (typeof value !== 'string') value = `${value}`  //force our datatype
 
@@ -206,11 +208,15 @@ export class ObjectApplier implements Applier {
 
             const config = templates.getConfigTemplate(manifest.appId, manifest.namespace, state.labels)
 
+            debug(`Setting up configs:${JSON.stringify(config)}`)
+
+
             for (const item of manifest.provisioner.configs) {
                 if (!item.env || item.env === '') item.env = item.name
 
+                debug(`Setting up configs: ${item.name} ${item.value}`)
                 item.value = this.convertTemplatedValue(item.value, state)
-                if (!item.env || item.env === '') item.env = item.name
+
 
                 config.data[item.name] = String(item.value)
                 if (item.env !== 'NONE') {
@@ -226,6 +232,9 @@ export class ObjectApplier implements Applier {
                         })
                 }
             }
+
+            //#region linkage
+
             // if(spec.name === 'mysql') {
 
             //     const configAuth = {
@@ -260,8 +269,9 @@ export class ObjectApplier implements Applier {
             //     deployment.spec.template.spec.containers[0].volumeMounts.push({ name: 'mysql-config-volume', mountPath: '/etc/mysql/conf.d/default_auth.cnf', subPath: 'default_auth' })
 
             // }
+            //#endregion
 
-            debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
+            debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
             await manager.cluster
                 .begin(`Installing the Configuration Settings for ${manifest.displayName}`)
                 .addOwner(manager.document)
@@ -270,7 +280,7 @@ export class ObjectApplier implements Applier {
 
             state.endTimer('apply-configs')
         } catch (e) {
-            debug('APPX applyConfigs', JSON.stringify(e))
+            debug('APPX applyConfigs failed.  %j', e)
         }
 
 
@@ -318,7 +328,7 @@ export class ObjectApplier implements Applier {
             state.endTimer('apply-secrets')
 
         } catch (e) {
-            debug('APPX applySecrets', JSON.stringify(e))
+            debug('APPX applySecrets  %j', e)
         }
 
     }
