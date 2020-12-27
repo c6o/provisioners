@@ -1,12 +1,12 @@
 import * as contracts from './contracts'
 
-const simpleInquire: contracts.inquireType = {
+const simpleInquire: contracts.promptType = {
     type: 'input',
     name: 'simpleValue'
 }
 
 // From: https://github.com/SBoudrias/Inquirer.js/tree/master/packages/inquirer/examples
-const multiInquire: contracts.inquireType = [
+const multiInquire: contracts.promptType = [
     {
         type: 'checkbox',
         name: 'Checkbox',

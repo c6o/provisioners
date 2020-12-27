@@ -1,4 +1,5 @@
-import { Options as contracts } from 'generate-password'
+import { Options as generatorOptions } from 'generate-password'
+export { Options as generatorOptions } from 'generate-password'
 
 export type functionExpression = string | Function // this is an inline function that's turned into an expression
 export const isFunctionString = (func: functionExpression): func is string => func && typeof func === 'string'
@@ -16,12 +17,13 @@ export type choiceSeparatorType = '<<separator>>'
 
 export interface c6oExtensions {
     target?: 'config' | 'secret' | 'transient'
+    label?: string
     required?: boolean
-    password?: contracts
+    generate?: generatorOptions
+    generateMessage?: string
 }
 
-// This is
-export interface inquireStep {
+export interface inquirePrompt {
     type: 'input' | 'number' | 'confirm' | 'list' | 'rawlist' | 'expand' | 'checkbox' | 'password' | 'editor'
     name: string
     message?: string
@@ -33,28 +35,30 @@ export interface inquireStep {
     choices?: Array<string | number | choiceObject | choiceSeparatorType>
     validate?: functionExpression
     when?: functionExpression
+}
 
+export interface c6oPrompt extends inquirePrompt {
     // The following is codeZero extensions and they will be removed
     // from the final inquire data structure
     c6o?: c6oExtensions
 }
 
-export type inquireType = inquireStep | Array<inquireStep>
+export type promptType = c6oPrompt | Array<c6oPrompt>
 
 // A section allows the developer to group
 // questions on the web ui or cli and
 export interface section {
     title: string
-    inquire: inquireType
+    inquire: promptType
 }
 
 // A step defines a collection of
 // sections (inquirer questions grouped around a title)
 // or inquirer questions
 export interface step {
-    name: string
+    name?: string
     sections?: Array<section>
-    inquire?: inquireType
+    inquire?: promptType
     skip?: string
 }
 

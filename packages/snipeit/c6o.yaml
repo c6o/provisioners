@@ -69,7 +69,45 @@ editions:
         tag-prefix: appengine
         port: 80
         automated: true
-
+        steps:
+            inquire:
+              - type: input
+                name: DB_HOST
+                message: The name of the database server (Service)
+                default: mysql.database
+                c6o:
+                  label: Database Host
+              - type: number
+                name: DB_PORT
+                message: The port of the database
+                default: 3306
+                c6o:
+                  label: Database Port
+              - type: input
+                name: DB_DATABASE
+                message: The name of the database to use
+                default: snipeit
+                c6o:
+                  label: Database name
+              - type: input
+                name: DB_USERNAME
+                message: The database user name
+                default: snipeit
+                c6o:
+                  label: Database user name
+              - type: password
+                name: DB_PASSWORD
+                message: The database user password
+                c6o:
+                  label: Database user password
+                  target: secret
+              - type: input
+                name: APP_KEY
+                message: App encryption key
+                c6o:
+                  target: secret
+                  generate:
+                    length: 16
         config:
 
           - name: DB_HOST
@@ -77,7 +115,7 @@ editions:
             hint: The name of the database server (Service)
             required: true
             autoselect: true
-            fieldType: text
+            fieldType: DNS
             value: mysql.database
 
 
