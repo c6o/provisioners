@@ -27,6 +27,12 @@ export class ObjectApplier implements Applier {
                 manifest.provisioner.command,
             )
 
+            if (!state.publicDNS) {
+                state.publicDNS = await this.helper.getApplicationDNS(manager, manifest.name, manifest.namespace)
+                state.publicURI = await this.helper.getApplicationURI(manager, manifest.name, manifest.namespace)
+            }
+
+
             // if (spec.link) {
             //     //we have features/dependancies to deal with, lets jump to that first
             //     await this.installFeatures(manifest.namespace, spec, manager)
@@ -63,7 +69,7 @@ export class ObjectApplier implements Applier {
                 .end()
             state.endTimer('apply-deployment')
         } catch (e) {
-            debug('APPX applyDeployment', JSON.stringify(e), JSON.stringify(deployment))
+            debug('APPX applyDeployment %j %j', JSON.stringify(e), JSON.stringify(deployment))
         }
     }
 
@@ -110,7 +116,7 @@ export class ObjectApplier implements Applier {
             }
             state.endTimer('apply-volumes')
         } catch (e) {
-            debug('APPX applyVolumes', JSON.stringify(e))
+            debug('APPX applyVolumes %j', e)
         }
 
     }
@@ -157,13 +163,17 @@ export class ObjectApplier implements Applier {
             }
             state.endTimer('apply-ports')
         } catch (e) {
-            debug('APPX applyPorts', JSON.stringify(e))
+            debug('APPX applyPorts  %j', e)
         }
 
 
     }
 
-    convertTemplatedValue(value: string, state: AppEngineState) {
+    convertTemplatedValue(value: any, state: AppEngineState) {
+
+        if (!value) return
+
+        if (typeof value !== 'string') value = `${value}`  //force our datatype
 
         if (state.publicURI && value.indexOf('$PUBLIC_DNS') >= 0) {
             value = value.replace('$PUBLIC_DNS', state.publicDNS)
@@ -198,11 +208,15 @@ export class ObjectApplier implements Applier {
 
             const config = templates.getConfigTemplate(manifest.appId, manifest.namespace, state.labels)
 
+            debug(`Setting up configs:${JSON.stringify(config)}`)
+
+
             for (const item of manifest.provisioner.configs) {
                 if (!item.env || item.env === '') item.env = item.name
 
+                debug(`Setting up configs: ${item.name} ${item.value}`)
                 item.value = this.convertTemplatedValue(item.value, state)
-                if(!item.env || item.env === '') item.env = item.name
+
 
                 config.data[item.name] = String(item.value)
                 if (item.env !== 'NONE') {
@@ -218,6 +232,9 @@ export class ObjectApplier implements Applier {
                         })
                 }
             }
+
+            //#region linkage
+
             // if(spec.name === 'mysql') {
 
             //     const configAuth = {
@@ -252,8 +269,9 @@ export class ObjectApplier implements Applier {
             //     deployment.spec.template.spec.containers[0].volumeMounts.push({ name: 'mysql-config-volume', mountPath: '/etc/mysql/conf.d/default_auth.cnf', subPath: 'default_auth' })
 
             // }
+            //#endregion
 
-            debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`,)
+            debug(`Installing configs:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
             await manager.cluster
                 .begin(`Installing the Configuration Settings for ${manifest.displayName}`)
                 .addOwner(manager.document)
@@ -262,7 +280,7 @@ export class ObjectApplier implements Applier {
 
             state.endTimer('apply-configs')
         } catch (e) {
-            debug('APPX applyConfigs', JSON.stringify(e))
+            debug('APPX applyConfigs failed.  %j', e)
         }
 
 
@@ -281,10 +299,8 @@ export class ObjectApplier implements Applier {
 
                 for (const item of manifest.provisioner.secrets) {
 
-
                     item.value = this.convertTemplatedValue(item.value, state)
-                    if(!item.env || item.env === '') item.env = item.name
-
+                    if (!item.env || item.env === '') item.env = item.name
                     const value = Buffer.from(item.value).toString('base64')
                     secret.data[item.name] = value
                     if (item.env !== '$NONE') {
@@ -300,8 +316,7 @@ export class ObjectApplier implements Applier {
                             })
                     }
                 }
-
-                debug(`Installing secrets:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
+                debug(`Installing secrets:${JSON.stringify(secret)}`)
 
                 await manager.cluster
                     .begin(`Installing the Secrets for ${manifest.displayName}`)
@@ -309,11 +324,11 @@ export class ObjectApplier implements Applier {
                     .upsert(secret)
                     .end()
             }
-
+            debug(`Installing secrets container:${JSON.stringify(deployment.spec.template.spec.containers[0].env)}`)
             state.endTimer('apply-secrets')
 
         } catch (e) {
-            debug('APPX applySecrets', JSON.stringify(e))
+            debug('APPX applySecrets  %j', e)
         }
 
     }

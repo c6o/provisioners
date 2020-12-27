@@ -63,16 +63,16 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: nextcloud
+          targetService: next-cloud
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
+        automated: true
         port:
           - port: 80
             name: http
             protocol: TCP
-        automated: true
       marina:
         launch:
           type: inline
@@ -83,16 +83,16 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: nextcloud
+          targetService: next-cloud
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
+        automated: true
         port:
           - port: 80
             name: http
             protocol: TCP
-        automated: true
         config:
           - name: MYSQL_DATABASE
             value: nextcloud
@@ -111,7 +111,7 @@ editions:
             fieldType: text
 
           - name: MYSQL_HOST
-            value: nextcloud
+            value: mariadb.database
             label: Database Host (MySql or MariaDb)
             hint: Specify the name of database host
             required: true
@@ -133,6 +133,7 @@ editions:
 
         secret:
           - name: MYSQL_PASSWORD
+            value: 88888888
             label: Database password
             hint: Specify the password for the database
             required: true
@@ -140,6 +141,7 @@ editions:
             fieldType: password
 
           - name: NEXTCLOUD_ADMIN_PASSWORD
+            value: 88888888
             label: Next Cloud Admin Password
             hint: Specify the password for the admin user
             required: true
@@ -148,7 +150,7 @@ editions:
 
         volumes:
           - name: nextcloud-file-data
-            mountPath: /var/www/html/
+            mountPath: /var/www/html/data
             size: 10Gi
       marina:
         launch:

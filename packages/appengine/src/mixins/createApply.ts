@@ -40,11 +40,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 })
         }
 
-        if(!this.state.publicDNS) {
-            this.state.publicDNS = await this.helper.getApplicationDNS(this.manager, manifest.name, manifest.namespace)
-            this.state.publicURI = await this.helper.getApplicationURI(this.manager, manifest.name, manifest.namespace)
-        }
-
         this.writeToLog('createApply - manifest', manifest)
         this.writeToLog('createApply - state', this.state)
 
@@ -64,6 +59,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
 
             this.state.startTimer('install')
+
             const applierType = manifest.provisioner.applier || 'ObjectApplier'
             await applierFactory.getApplier(applierType).apply(manifest, this.state, this.manager)
             if((manifest as any).fieldTypes) delete (manifest as any).fieldTypes
