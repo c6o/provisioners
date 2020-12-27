@@ -8,6 +8,9 @@ const debug = createDebug('@appengine:AppEngineSettings')
 @customElement('appengine-install-main')
 export class AppEngineSettings extends AppEngineBaseView implements StoreFlowStep {
 
+    // NARAYAN: This is a temporary fix - do not document or use elsewhere
+    skipMediatorRender = true
+
     async begin() {
 
         await super.init()
