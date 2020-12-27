@@ -13,15 +13,32 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         // Steps will come from the applicationSpec but for now, we use test data
         const steps = this.manager.document.spec?.provisioner?.steps
 
-        // Let the flowProcessor run inquire
-        const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-        const result = await flowProcessor.process(steps)
+        if (steps) {
+            // Let the flowProcessor run inquire
+            const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
+            const result = await flowProcessor.process(steps)
 
-        // We now have config, secrets and transient data used for applying
-        // update the appropriate parts of the document and delete the flow section
+            // We now have config, secrets and transient data used for applying
+            // update the appropriate parts of the document and delete the flow section
+            const provisioner = this.manager.document.spec.provisioner
+            let { config, secret } = provisioner
 
-        // Stop provisioning from going any further
-        throw new Error(`NOT IMPLEMENTED ${inspect(result)}`)
+            // Merge the results
+            provisioner.config = config ? {
+                    ...config,
+                    ...result.config
+                } :
+                result.config
+
+            provisioner.secret = secret ? {
+                    ...secret,
+                    ...result.secret
+                } :
+                result.secret
+
+            // Stop provisioning from going any further
+            throw new Error(`NOT IMPLEMENTED ${inspect(provisioner)}`)
+        }
     }
 
     helper = new Helper()
