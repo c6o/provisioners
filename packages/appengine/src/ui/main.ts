@@ -17,19 +17,13 @@ export class AppEngineSettings extends AppEngineBaseView implements StoreFlowSte
 
         this.state.startTimer('ui-main-begin')
 
-        let skip = false
-
-        if (this.manifest.hasCustomConfigFields()) {
+        if (this.manifest.hasCustomConfigFields())
             this.mediator.appendFlow('appengine-install-configs')
-        } else if (this.manifest.hasCustomSecretFields()) {
+        else if (this.manifest.hasCustomSecretFields())
             this.mediator.appendFlow('appengine-install-secrets')
-        } else {
-            skip = true
+        else
             new TimingReporter().report(this.state)
-        }
 
         this.state.endTimer('ui-main-begin')
-
-        await (this.mediator as any).handleNext(skip) // passing 'true' will skip advancing the handleNext index
     }
 }

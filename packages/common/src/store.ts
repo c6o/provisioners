@@ -8,6 +8,7 @@ export interface StoreFlowMediator {
 }
 
 export interface StoreFlowStep {
+    skipMediatorRender?: boolean
     mediator?: StoreFlowMediator
     begin?(): Promise<void>
     end?(): Promise<boolean>
