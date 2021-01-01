@@ -21,10 +21,6 @@
             "dom"
         ],
     },
-    "exclude": [
-        "node_modules",
-        "test"
-    ],
     "references": [
         {
             "path": "../../../common"

@@ -17,9 +17,5 @@
         "target": "es2018",
         "sourceMap": true,
         "lib": ["es2018", "dom"],
-    },
-    "exclude": [
-        "node_modules",
-        "test"
-    ]
+    }
 }

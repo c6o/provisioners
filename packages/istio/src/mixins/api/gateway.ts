@@ -1,5 +1,5 @@
 import { baseProvisionerType } from '../../'
-import { Result } from '@c6o/kubeclient'
+import { Result } from '@c6o/kubeclient-contracts'
 
 export const gatewayApiMixin = (base: baseProvisionerType) => class extends base {
 

@@ -18,7 +18,9 @@
         "lib": ["es2018", "dom"]
     },
     "exclude": [
+        "src/ui",
         "test",
+        "**/*.unit.ts",
         "node_modules"
     ]
 }

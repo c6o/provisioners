@@ -1,4 +1,4 @@
-import { KubeDocument } from '@c6o/kubeclient'
+import { KubeDocument } from '@c6o/kubeclient-contracts'
 
 export interface MenuItems {
     type: string,
