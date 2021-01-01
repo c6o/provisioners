@@ -1,7 +1,6 @@
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import { MongoClient } from 'mongodb'
-import { Processor } from '@c6o/kubeclient'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -107,7 +106,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
     
     /** Attempts to connect to MongoDb and sets the mongoDbClient */
-    async connectMongoDbClient(processor: Processor, attempt) {
+    async connectMongoDbClient(processor, attempt) {
         const connectionString = `mongodb://root:${this.rootPassword}@localhost:${processor.lastResult.other.localPort}`
         this.manager.status?.info(`Attempt ${attempt + 1} to connect to mongo on local port ${processor.lastResult.other.localPort}`)
         return this.mongoDbClient = await MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })

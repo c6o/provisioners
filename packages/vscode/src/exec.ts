@@ -82,6 +82,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
         const cluster = this.manager.cluster
 
         // TODO: get options from args?
+        // @ts-ignore TODO: Update kubeclient-contracts to have options
         const namespace = cluster.options.n || cluster.options.namespace
 
         if (!namespace)
