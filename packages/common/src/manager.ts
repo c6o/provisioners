@@ -1,5 +1,5 @@
 
-import { Cluster, Status, KubeObject } from '@c6o/kubeclient'
+import { Cluster, KubeObject, Status } from '@c6o/kubeclient-contracts'
 import { ProvisionerBase } from './provisioner'
 import { AppDocument } from '.'
 

@@ -1,4 +1,4 @@
-import { KubeDocument } from '@c6o/kubeclient'
+import { KubeDocument } from '@c6o/kubeclient-contracts'
 
 // annotation added to document to trigger application update
 export const DOCUMENT_SIGNAL = 'system.codezero.io/update-signal'
