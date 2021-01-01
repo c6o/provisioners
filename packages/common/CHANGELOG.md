@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/nsainaney/traxitt/compare/v0.0.25...v0.0.26) (2021-01-01)
+
+
+### 🐛 Bug Fixes
+
+* **appengine:** Re-removed merged code for handleNext ([a3073c1](https://github.com/nsainaney/traxitt/commit/a3073c1338a29f23f0b600919dff2453196bba4a))
+
+
+### ♻️ Chores
+
+* Cleaned up tsconfig/package.json. Updated kubeclient to 0.0.7 ([#152](https://github.com/nsainaney/traxitt/issues/152)) ([5edc89a](https://github.com/nsainaney/traxitt/commit/5edc89a41bdd305c9f3650691454e8dfb32d128f))
+* Removed deprecated provisioner.name ([9c5ac68](https://github.com/nsainaney/traxitt/commit/9c5ac68a39d9dd4a24d12effdae3b1064033b2d9))
+
+
+
+
+
 ## [0.0.25](https://github.com/nsainaney/traxitt/compare/v0.0.24...v0.0.25) (2020-12-18)
 
 **Note:** Version bump only for package @provisioner/common

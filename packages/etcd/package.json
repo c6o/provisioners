@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/etcd",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "CodeZero provisioner for etcd",
   "main": "lib/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.25",
+    "@provisioner/common": "^0.0.26",
     "mixwith": "^0.1.1"
   },
   "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884"

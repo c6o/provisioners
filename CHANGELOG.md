@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/c6o/node-monorepo/compare/v0.0.25...v0.0.26) (2021-01-01)
+
+
+### 🐛 Bug Fixes
+
+* **appengine:** Duct taped skip handling ([6707b6b](https://github.com/c6o/node-monorepo/commit/6707b6bd0d4fe9d7a89a5656b1f80f132700915a))
+* **appengine:** Re-removed merged code for handleNext ([a3073c1](https://github.com/c6o/node-monorepo/commit/a3073c1338a29f23f0b600919dff2453196bba4a))
+* Skip advancing the index if skipping an install screen ([b7861ac](https://github.com/c6o/node-monorepo/commit/b7861aca80a3ceb5328bffefd06792247bcbddd8))
+
+
+### ♻️ Chores
+
+* Cleaned up tsconfig/package.json. Updated kubeclient to 0.0.7 ([#152](https://github.com/c6o/node-monorepo/issues/152)) ([5edc89a](https://github.com/c6o/node-monorepo/commit/5edc89a41bdd305c9f3650691454e8dfb32d128f))
+* Very small code style update. "e" is typically used in our code to represent an event. ([70e4f85](https://github.com/c6o/node-monorepo/commit/70e4f8580fb657c7436d55b797f591b852b83e32))
+* **bugbash:** Fixed more provisioners ([#146](https://github.com/c6o/node-monorepo/issues/146)) ([e5226f8](https://github.com/c6o/node-monorepo/commit/e5226f8786700b255c2d4b9cb95010449822394a))
+* Removed deprecated provisioner.name ([9c5ac68](https://github.com/c6o/node-monorepo/commit/9c5ac68a39d9dd4a24d12effdae3b1064033b2d9))
+
+
+
+
+
 ## [0.0.25](https://github.com/c6o/node-monorepo/compare/v0.0.24...v0.0.25) (2020-12-18)
 
 

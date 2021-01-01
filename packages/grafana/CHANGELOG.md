@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.26](https://github.com/c6o/provisioners/compare/v0.0.25...v0.0.26) (2021-01-01)
+
+
+### ♻️ Chores
+
+* Cleaned up tsconfig/package.json. Updated kubeclient to 0.0.7 ([#152](https://github.com/c6o/provisioners/issues/152)) ([5edc89a](https://github.com/c6o/provisioners/commit/5edc89a41bdd305c9f3650691454e8dfb32d128f))
+
+
+
+
+
 ## [0.0.25](https://github.com/c6o/provisioners/compare/v0.0.24...v0.0.25) (2020-12-18)
 
 **Note:** Version bump only for package @provisioner/grafana
