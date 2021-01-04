@@ -20,8 +20,8 @@ Submit an issue in our provisioner repository at [github.com/c60/provisioners](h
 
 # Contributing
 
-We encourage anyone in the CodeZero community is governed by the [Code of Conduct](https://github.com/c6o/provisioners/code-of-conduct.md).
+We encourage anyone in the community to help contribute to these Provisioners.  To get started, check out our [Contributing Guidelines](https://github.com/c6o/provisioners/blob/develop/CONTRIBUTING.md).
 
 # Code of Conduct
 
-Participation in the CodeZero community is governed by the [Code of Conduct](https://github.com/c6o/provisioners/code-of-conduct.md).
+Participation in the CodeZero community is governed by the [Code of Conduct](https://github.com/c6o/provisioners/blob/develop/code-of-conduct.md).
