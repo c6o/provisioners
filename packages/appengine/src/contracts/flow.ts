@@ -4,7 +4,7 @@ export { Options as generatorOptions } from 'generate-password'
 export type functionExpression = string | Function // this is an inline function that's turned into an expression
 export const isFunctionString = (func: functionExpression): func is string => func && typeof func === 'string'
 
-export interface choiceObject {
+export interface ChoiceObject {
     key?: string // technically a char but typescript does not have a char
     name: string
     value?: number | string
@@ -23,50 +23,52 @@ export interface c6oExtensions {
     generateMessage?: string
 }
 
-export interface inquirePrompt {
+export interface InquirePrompt {
     type: 'input' | 'number' | 'confirm' | 'list' | 'rawlist' | 'expand' | 'checkbox' | 'password' | 'editor'
     name: string
     message?: string
-    default?: string | number | boolean | Array<string | number | boolean>
+    default?: string | number | boolean | string[] | number | boolean
     askAnswered?: boolean
     mask?: string // technically a char but typescript does not have a char
 
     // The following  will be mapped to inquirer formats
-    choices?: Array<string | number | choiceObject | choiceSeparatorType>
+    choices?: Array<string | number | ChoiceObject | choiceSeparatorType>
     validate?: functionExpression
     when?: functionExpression
 }
 
-export interface c6oPrompt extends inquirePrompt {
+export interface Prompt extends InquirePrompt {
     // The following is codeZero extensions and they will be removed
     // from the final inquire data structure
     c6o?: c6oExtensions
 }
 
-export type promptType = c6oPrompt | Array<c6oPrompt>
+export type PromptType = Prompt | Prompt[]
 
 // A section allows the developer to group
 // questions on the web ui or cli and
-export interface section {
+export interface Section {
     title: string
-    inquire: promptType
+    prompts: PromptType
 }
 
 // A step defines a collection of
 // sections (inquirer questions grouped around a title)
 // or inquirer questions
-export interface step {
+export interface Step {
     name?: string
-    sections?: Array<section>
-    inquire?: promptType
     skip?: string
+
+    // Has to have one and only one of the below
+    sections?: Section[]
+    prompts?: PromptType
 }
 
 // This is the entry point
 // where all the magic starts
-export type steps = step | Array<step>
+export type Steps = Step | Step[]
 
-export interface result {
+export interface Result {
     transient: { [key: string]: string }
     config: { [key: string]: string }
     secret: { [key: string]: string }

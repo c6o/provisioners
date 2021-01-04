@@ -1,5 +1,5 @@
 import { generate } from 'generate-password'
-import * as contracts from './contracts'
+import * as contracts from '../contracts'
 import chalk from 'chalk'
 import createDebug from 'debug'
 
@@ -18,7 +18,7 @@ export class FlowProcessor {
      */
     constructor(private inquirer, private fnContext) { }
 
-    async process(steps: contracts.steps): Promise<contracts.result> {
+    async process(steps: contracts.Steps): Promise<contracts.Result> {
 
         // Extract the responses and extensions from steps
         for (const step of contracts.each(steps))
@@ -26,7 +26,7 @@ export class FlowProcessor {
 
         this.postProcessGenerates()
 
-        const result: contracts.result = {
+        const result: contracts.Result = {
             transient: {},
             config: {},
             secret: {}
@@ -44,7 +44,7 @@ export class FlowProcessor {
         return result
     }
 
-    async processStep(step: contracts.step) {
+    async processStep(step: contracts.Step) {
         step.name = step.name || 'main'
         debug('Processing step %s', step.name)
 
@@ -63,28 +63,28 @@ export class FlowProcessor {
         if (step.sections)
             for (const section of step.sections)
                 await this.processSection(section)
-        else if (step.inquire)
-            await this.processInquire(step.inquire)
+        else if (step.prompts)
+            await this.processInquire(step.prompts)
         else
             throw new Error(`Step ${step.name} lacks any sections or inquire`)
     }
 
-    async processSection(section: contracts.section) {
+    async processSection(section: contracts.Section) {
         debug('Processing section %s', section.title)
 
         // We can't use console.log because vorpal does something
         // to console.log so we write directly to stdout
         process.stdout.write(chalk.yellowBright.bold('\n❯ Section: ') + chalk.yellowBright(section.title) + '\n\n')
-        await this.processInquire(section.inquire)
+        await this.processInquire(section.prompts)
     }
 
-    async processInquire(inquireField: contracts.promptType) {
+    async processInquire(inquireField: contracts.PromptType) {
         const inquireFields = Array.isArray(inquireField) ?
             inquireField :
             [inquireField]
 
 
-        const asks = inquireFields.reduce(this.convertPrompts.bind(this), new Array<contracts.inquirePrompt>())
+        const asks = inquireFields.reduce(this.convertPrompts.bind(this), new Array<contracts.InquirePrompt>())
         const responses = await this.inquirer.prompt(asks)
 
         // Add to the responses bag - new responses overwrite old responses
@@ -98,7 +98,7 @@ export class FlowProcessor {
      * Converts c6oPrompt to inquirePrompt
      * @param prompt
      */
-    convertPrompts(prompts: contracts.inquirePrompt[], prompt: contracts.c6oPrompt) {
+    convertPrompts(prompts: contracts.InquirePrompt[], prompt: contracts.Prompt) {
         debug('Mapping from %o', prompt)
 
         // Inquire is forgiving and ignores fields it doesn't understand
@@ -126,7 +126,7 @@ export class FlowProcessor {
      * Convert validate strings to function (value, answers) => predicate
      * @param prompt
      */
-    handleValidate(prompt: contracts.inquirePrompt) {
+    handleValidate(prompt: contracts.InquirePrompt) {
         if (contracts.isFunctionString(prompt.validate))
             prompt.validate = new Function('value', 'answers', prompt.validate).bind(this.fnContext)
     }
@@ -135,7 +135,7 @@ export class FlowProcessor {
      * Convert when strings to function (answers) => predicate
      * @param prompt
      */
-    handleWhen(prompt: contracts.inquirePrompt) {
+    handleWhen(prompt: contracts.InquirePrompt) {
         if (contracts.isFunctionString(prompt.when))
             prompt.when = new Function('answers', prompt.when).bind(this.fnContext)
     }
@@ -144,7 +144,7 @@ export class FlowProcessor {
      * For choices, we have to convert separator strings to the separator object
      * @param prompt
      */
-    handleChoices(prompt: contracts.inquirePrompt) {
+    handleChoices(prompt: contracts.InquirePrompt) {
         if (prompt.choices)
             prompt.choices = prompt.choices.map(choice =>
                     choice === contracts.choiceSeparator ?
@@ -157,7 +157,7 @@ export class FlowProcessor {
      * Ensure passwords have a mask and target secrets
      * @param step
      */
-    handlePassword(step: contracts.c6oPrompt) {
+    handlePassword(step: contracts.Prompt) {
         if (step.type === 'password') {
             if (!step.mask)
                 step.mask = '*'
@@ -171,12 +171,12 @@ export class FlowProcessor {
      * @param inquire
      * @param prompts
      */
-    handleGenerate(inquire: contracts.inquirePrompt, c6o: contracts.c6oExtensions, prompts: contracts.inquirePrompt[]) {
+    handleGenerate(inquire: contracts.InquirePrompt, c6o: contracts.c6oExtensions, prompts: contracts.InquirePrompt[]) {
         if (c6o?.generate) {
             const queryName = `${inquire.name}-C60-GENERATE`
 
             // Prompt the user if they would like to use a generated value
-            const query: contracts.inquirePrompt = {
+            const query: contracts.InquirePrompt = {
                 type: 'confirm',
                 name: queryName,
                 default: true,

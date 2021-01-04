@@ -1,12 +1,12 @@
-import * as contracts from './contracts'
+import * as contracts from '../contracts'
 
-const simpleInquire: contracts.promptType = {
+const simpleInquire: contracts.PromptType = {
     type: 'input',
     name: 'simpleValue'
 }
 
 // From: https://github.com/SBoudrias/Inquirer.js/tree/master/packages/inquirer/examples
-const multiInquire: contracts.promptType = [
+const multiInquire: contracts.PromptType = [
     {
         type: 'checkbox',
         name: 'Checkbox',
@@ -122,38 +122,38 @@ const multiInquire: contracts.promptType = [
     }
 ]
 
-export const simpleInquireStep: contracts.steps = {
+export const simpleInquireStep: contracts.Steps = {
     name: 'main',
-    inquire: simpleInquire
+    prompts: simpleInquire
 }
 
-export const multiInquireStep: contracts.steps = {
+export const multiInquireStep: contracts.Steps = {
     name: 'main',
-    inquire: multiInquire
+    prompts: multiInquire
 }
 
-export const sectionedSteps: contracts.steps = [{
+export const sectionedSteps: contracts.Steps = [{
     name: 'main',
     sections: [
         {
             title: 'This is a section',
-            inquire: simpleInquire
+            prompts: simpleInquire
         },
         {
             title: 'This is another section',
-            inquire: multiInquire
+            prompts: multiInquire
         }
     ]
 }]
 
-export const skippedSteps: contracts.steps = [
+export const skippedSteps: contracts.Steps = [
     {
         name: 'main',
-        inquire: simpleInquire
+        prompts: simpleInquire
     },
     {
         name: 'conditional',
         skip: 'return answers.simpleValue === "skip"',
-        inquire: multiInquire
+        prompts: multiInquire
     }
 ]

@@ -63,13 +63,15 @@ editions:
       routes:
         - type: http
           targetService: snipeit
+        - type: tcp
+          targetService: db-connection
       provisioner:
         package: '@provisioner/appengine'
         image: snipe/snipe-it
         tag-prefix: appengine
         port: 80
         automated: true
-        steps:
+        flow:
             inquire:
               - type: input
                 name: DB_HOST
@@ -109,7 +111,6 @@ editions:
                   generate:
                     length: 16
         config:
-
           - name: DB_HOST
             label: Database Host
             hint: The name of the database server (Service)
