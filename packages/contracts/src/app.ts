@@ -1,4 +1,4 @@
-import { KubeDocument } from '@c6o/kubeclient-contracts'
+import { KubeDocument, KubeObject } from '@c6o/kubeclient-contracts'
 
 export interface MenuItems {
     type: string,
@@ -73,10 +73,7 @@ export const AppStatuses = {
     }
 }
 
-// TODO add status: ...(list) and use this for validation
-
-export class AppObject {
-
+export class AppObject extends KubeObject {
     _services
 
     get services() {
@@ -97,17 +94,38 @@ export class AppObject {
         ]
     }
 
-    get appEdition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
+    constructor(public document: AppDocument) {
+        super(document)
+    }
 
+    /** @todo This does not give you the app._id but the app.metadata.name and is expected to change */
+    get appId() { return this.document.metadata.name }
+
+
+    get name() { return this.document.metadata.name }
+    get namespace() { return this.document.metadata.namespace }
+
+
+    get description() { return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId }
+    get edition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
+    get displayName() { return this.document.metadata.annotations?.['system.codezero.io/display'] || this.name }
+    get iconUrl() { return this.document.metadata.annotations?.['system.codezero.io/iconUrl'] }
+
+
+    get provisioner() { return this.spec.provisioner }
+    get routes() { return this.spec.routes }
+    get spec() { return this.document.spec }
+
+    /** @deprecated */
+    get appEdition() { return this.edition }
+    /** @deprecated */
     get appName() { return this.document.metadata.name }
-
+    /** @deprecated */
     get appNamespace() { return this.document.metadata.namespace }
 
     get isNew() { return !!this.document.metadata.uid }
 
     get serviceNames() { return this.services.map(serviceObject => this.getServiceName(serviceObject)) }
-
-    constructor(public document) { }
 
     // spec is the contents of the service object
     getServiceSpec(serviceName: string) {
@@ -136,7 +154,7 @@ export class AppObject {
         this.document.metadata.labels[labelName] = labelValue
     }
 
-    //only add if it doesnt already exist
+    //only add if it doesn't already exist
     insertOnlyLabel(labelName: string, labelValue: string) {
         if (!this.document.metadata.labels[labelName])
             this.document.metadata.labels[labelName] = labelValue

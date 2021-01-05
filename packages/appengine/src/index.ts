@@ -1,6 +1,6 @@
 import { mix } from "mixwith"
 import { ProvisionerBase } from "@provisioner/common"
-import { AppEngineState, AppManifest, AppProvisionerTimer } from "./appObject"
+import { AppEngineState, AppManifest } from "./appObject"
 
 import {
     createApplyMixin,

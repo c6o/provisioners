@@ -1,6 +1,6 @@
 import { baseProvisionerType } from '../index'
 import { parser } from '../parser'
-import { AppEngineState, AppManifest, AppObject, Helper } from '../appObject'
+import { AppEngineState, AppManifest, AppEngineAppObject, Helper } from '../appObject'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import { inspect } from 'util'
 import createDebug from 'debug'
@@ -43,7 +43,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     helper = new Helper()
     async oldCreateInquire(args) {
-        const manifest = new AppObject(this.manager.document) as AppManifest
+        const manifest = new AppEngineAppObject(this.manager.document) as AppManifest
 
         this.state = new AppEngineState(
             {

@@ -1,6 +1,9 @@
 import { LabelsMetadata } from "./parsing"
 import createDebug from 'debug'
-import { ProvisionerManager } from "@provisioner/common"
+import { ProvisionerManager } from '@provisioner/common'
+import { AppObject } from '@provisioner/contracts'
+import { AppEngineAppDocument } from './contracts'
+//import { AppObject } from "@provisioner/contracts"
 const debug = createDebug('@appengine:timing')
 
 export class TimingReporter implements TimingReporter {
@@ -87,75 +90,16 @@ export interface AppManifest {
     readonly appId: string
     readonly namespace: string
     readonly provisioner: any
-    readonly routes: string
     readonly name: string
     readonly spec: string
-    hasCustomConfigFields(): boolean
-    hasCustomSecretFields(): boolean
-    customConfigFields()
-    customSecretFields()
 }
 
 
-export class AppObject implements AppManifest {
+export class AppEngineAppObject extends AppObject {
 
-    constructor(public document) { }
-
-    private fieldTypes = ['text', 'password', 'checkbox', 'timezone', 'combobox']
-
-    hasCustomConfigFields(): boolean {
-        return !!this.customConfigFields().length
+    constructor(document: AppEngineAppDocument) {
+        super(document)
     }
-    hasCustomSecretFields(): boolean {
-        return !!this.customSecretFields().length
-    }
-
-  customConfigFields() {
-        return this.provisioner.configs.filter(item => this.fieldTypes.includes(item.fieldType?.toLowerCase()))
-    }
-    customSecretFields() {
-        return this.provisioner.secrets.filter(item => this.fieldTypes.includes(item.fieldType?.toLowerCase()))
-    }
-
-    //Required for appEngine provisioner
-    get edition() {
-        return this.document.metadata.edition
-    }
-    get description() {
-        return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId
-    }
-    get displayName() {
-        return this.document.metadata.annotations?.['system.codezero.io/display'] || this.appId
-    }
-    get iconUrl() {
-        return this.document.metadata.annotations?.['system.codezero.io/iconUrl']
-    }
-
-    //Provisioner appId itself and NOT the database identifier
-    get appId() {
-        return this.document.metadata.name
-    }
-
-    get namespace() {
-        return this.document.metadata.namespace
-    }
-
-    get spec() {
-        return this.document.spec
-    }
-
-    get provisioner() {
-        return this.document.spec.provisioner
-    }
-
-    get routes() {
-        return this.document.spec.routes
-    }
-
-    get name() {
-        return this.document.metadata.name
-    }
-
 }
 
 export class Helper {
