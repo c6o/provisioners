@@ -1,4 +1,4 @@
-import { LabelsMetadata, Volume } from '../../parsing'
+import { LabelsMetadata, Volume } from '../../contracts'
 import { getLabels } from './labels'
 
 export function getPVCTemplate(volume: Volume, namespace: string, metaData: LabelsMetadata) {

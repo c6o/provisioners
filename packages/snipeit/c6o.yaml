@@ -72,7 +72,7 @@ editions:
         port: 80
         automated: true
         flow:
-            inquire:
+            prompts:
               - type: input
                 name: DB_HOST
                 message: The name of the database server (Service)
@@ -110,7 +110,7 @@ editions:
                   target: secret
                   generate:
                     length: 16
-        config:
+        configs:
           - name: DB_HOST
             label: Database Host
             hint: The name of the database server (Service)
@@ -145,7 +145,7 @@ editions:
             fieldType: text
             value: snipeit
 
-        secret:
+        secrets:
           - name: DB_PASSWORD
             label: Database password
             hint: The password for the database user

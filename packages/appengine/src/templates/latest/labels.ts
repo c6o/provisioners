@@ -1,4 +1,4 @@
-import { LabelsMetadata } from '../../parsing'
+import { LabelsMetadata } from '../../contracts'
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 export function getLabels(name: string, labels: LabelsMetadata) {

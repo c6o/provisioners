@@ -1,4 +1,5 @@
 import { Options as generatorOptions } from 'generate-password'
+import { keyValue } from './keyValue'
 export { Options as generatorOptions } from 'generate-password'
 
 export type functionExpression = string | Function // this is an inline function that's turned into an expression
@@ -68,10 +69,12 @@ export interface Step {
 // where all the magic starts
 export type Steps = Step | Step[]
 
-export interface Result {
-    transient: { [key: string]: string }
-    config: { [key: string]: string }
-    secret: { [key: string]: string }
+export type Flow = Steps | '$unset'
+
+export interface FlowResult {
+    transient?: keyValue
+    configs?: keyValue
+    secrets?: keyValue
 }
 
 // Makes it easy to use for...of

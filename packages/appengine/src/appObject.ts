@@ -1,8 +1,7 @@
-import { LabelsMetadata } from "./parsing"
 import createDebug from 'debug'
 import { ProvisionerManager } from '@provisioner/common'
 import { AppObject } from '@provisioner/contracts'
-import { AppEngineAppDocument } from './contracts'
+import { AppEngineAppDocument, FlowResult, LabelsMetadata } from './contracts'
 //import { AppObject } from "@provisioner/contracts"
 const debug = createDebug('@appengine:timing')
 
@@ -96,9 +95,29 @@ export interface AppManifest {
 
 
 export class AppEngineAppObject extends AppObject {
+    document: AppEngineAppDocument
+
+    get flow() { return this.document.spec.provisioner?.flow  }
+    get configs() { return this.document.spec.provisioner?.configs }
+    get secrets() { return this.document.spec.provisioner?.secrets  }
+    get volumes()  { return this.document.spec.provisioner?.volumes  }
+    get ports() { return this.document.spec.provisioner?.ports  }
+
+    get image() { return this.document.spec.provisioner?.image  }
 
     constructor(document: AppEngineAppDocument) {
         super(document)
+    }
+
+    postInquire() {
+        this.document.spec.provisioner['flow'] = '$unset'
+    }
+
+    processResult(result: FlowResult) {
+        const provisioner = this.document.spec.provisioner
+        // Merge the results
+        provisioner.configs = Object.assign(provisioner.configs || {}, result.configs)
+        provisioner.secrets = Object.assign(provisioner.secrets || {}, result.secrets)
     }
 }
 

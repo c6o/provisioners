@@ -1,4 +1,4 @@
-import { Probe } from '../../parsing'
+import { Probe } from '../../contracts'
 
 export function getProbeTemplate(probe: Probe) {
 

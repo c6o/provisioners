@@ -1,4 +1,4 @@
-import { KubeDocument, KubeObject } from '@c6o/kubeclient-contracts'
+import { KubeDocument, KubeObject, Metadata } from '@c6o/kubeclient-contracts'
 
 export interface MenuItems {
     type: string,
@@ -38,6 +38,18 @@ export interface RoutesType {
 export interface ServicesType {
     // open
     [key: string]: any
+}
+
+//https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+export interface LabelsMetadata {
+    name?: string
+    appId?: string
+    instanceId?: string
+    partOf?: string
+    component?: string
+    version?: string
+    edition?: string
+    [key: string]: string
 }
 
 export interface AppDocumentSpec {
@@ -105,7 +117,7 @@ export class AppObject extends KubeObject {
     get name() { return this.document.metadata.name }
     get namespace() { return this.document.metadata.namespace }
 
-
+    get tag() { return this.document.spec.provisioner?.tag  }
     get description() { return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId }
     get edition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
     get displayName() { return this.document.metadata.annotations?.['system.codezero.io/display'] || this.name }

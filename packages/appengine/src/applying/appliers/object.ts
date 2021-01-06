@@ -37,12 +37,6 @@ export class ObjectApplier implements Applier {
                 state.publicURI = await this.helper.getApplicationURI(manager, manifest.name, manifest.namespace)
             }
 
-
-            // if (spec.link) {
-            //     //we have features/dependancies to deal with, lets jump to that first
-            //     await this.installFeatures(manifest.namespace, spec, manager)
-            // }
-
             debug('applying secrets')
             await this.applySecrets()
             debug('applying configs')
@@ -76,11 +70,6 @@ export class ObjectApplier implements Applier {
             manifest.provisioner.imagePullPolicy,
             manifest.provisioner.command,
         )
-
-        // if (spec.link) {
-        //     //we have features/dependancies to deal with, lets jump to that first
-        //     await this.installFeatures(manifest.namespace, spec, manager)
-        // }
 
         await this.applySecrets()
         await this.applyConfigs()

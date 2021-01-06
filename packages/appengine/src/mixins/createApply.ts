@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../index'
 import { ApplierFactory as applierFactory } from '../applying/'
 import createDebug from 'debug'
-import { AppObject, AppManifest, TimingReporter, AppEngineState, Helper } from '../appObject'
+import { AppEngineAppObject, AppManifest, TimingReporter, AppEngineState, Helper } from '../appObject'
 
 const debug = createDebug('@appengine:createApply')
 
@@ -20,8 +20,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
         }
     }
+
     async createApply() {
-        const manifest = new AppObject(this.manager.document) as AppManifest
+        this.manager.status?.push('', '')
+    }
+
+    async oldCreateApply() {
+        const manifest = new AppEngineAppObject(this.manager.document)
 
         if (!this.state) {
             this.state = new AppEngineState(

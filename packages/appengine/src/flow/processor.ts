@@ -18,27 +18,30 @@ export class FlowProcessor {
      */
     constructor(private inquirer, private fnContext) { }
 
-    async process(steps: contracts.Steps): Promise<contracts.Result> {
-
-        // Extract the responses and extensions from steps
-        for (const step of contracts.each(steps))
-            await this.processStep(step)
-
-        this.postProcessGenerates()
-
-        const result: contracts.Result = {
+    async process(steps: contracts.Flow): Promise<contracts.FlowResult> {
+        const result: contracts.FlowResult = {
             transient: {},
-            config: {},
-            secret: {}
+            configs: {},
+            secrets: {}
         }
 
-        // Post process the results into the various target
-        // in the results object - we use the extensionsMap for this
-        for(const pair of this.extensionsMap) {
-            const [stepName, ext] = pair
-            debug('Post processing step %s %o', stepName, ext)
-            const target = ext?.target || 'config'
-            result[target][stepName] = this.responses[stepName]
+        // Extract the responses and extensions from steps
+        if (steps !== '$unset')
+        {
+            for (const step of contracts.each(steps))
+                await this.processStep(step)
+
+            this.postProcessGenerates()
+
+
+            // Post process the results into the various target
+            // in the results object - we use the extensionsMap for this
+            for(const pair of this.extensionsMap) {
+                const [stepName, ext] = pair
+                debug('Post processing step %s %o', stepName, ext)
+                const target = ext?.target || 'config'
+                result[target][stepName] = this.responses[stepName]
+            }
         }
 
         return result

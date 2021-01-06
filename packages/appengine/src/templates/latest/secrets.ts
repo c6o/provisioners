@@ -1,4 +1,4 @@
-import { LabelsMetadata } from '../../parsing'
+import { LabelsMetadata } from '../../contracts'
 import { getLabels } from './labels'
 
 

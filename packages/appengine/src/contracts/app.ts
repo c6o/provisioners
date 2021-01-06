@@ -1,5 +1,6 @@
 import { AppDocument, AppDocumentSpec } from '@provisioner/contracts'
-import { Steps } from './flow'
+import { Flow } from './flow'
+import { keyValue } from './keyValue'
 
 export type probeType = 'liveness' | 'startup' | 'readiness'
 
@@ -48,20 +49,27 @@ export interface Volume {
     subPath?: string
 }
 
+//https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
+export interface LabelsMetadata {
+    name?: string
+    appId?: string
+    instanceId?: string
+    partOf?: string
+    component?: string
+    version?: string
+    edition?: string
+}
 export interface AppEngineAppSpecProvisioner extends AppDocumentSpec {
-    flow?: Steps
+    image?: string
+    flow?: Flow
 
-    configs?: {
-        [key: string]: string
-    }
-
-    secrets?: {
-        [key: string]: string
-    }
+    configs?: keyValue
+    secrets?: keyValue
 
     volumes?: Volume[]
 
     ports?: number | Port[]
+
 }
 
 
