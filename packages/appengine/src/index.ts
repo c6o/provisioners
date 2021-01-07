@@ -1,6 +1,6 @@
 import { mix } from "mixwith"
 import { ProvisionerBase } from "@provisioner/common"
-import { AppEngineAppObject, AppEngineState, AppManifest } from "./appObject"
+import { AppEngineAppObject } from "./appObject"
 
 import {
     createApplyMixin,
@@ -22,6 +22,4 @@ export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, cre
             return this._manifestHelper
         return this._manifestHelper = new AppEngineAppObject(this.manager.document)
     }
-
-    state: AppEngineState
 }

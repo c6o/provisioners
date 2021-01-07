@@ -1,12 +1,10 @@
-
-import { LabelsMetadata } from '../contracts'
-import { getLabels } from './labels'
+import { keyValue } from "../contracts"
 
 export function getDeploymentTemplate(
     name: string,
     namespace: string,
     image: string,
-    labels: LabelsMetadata,
+    labels: keyValue,
     tag?: string,
     imagePullPolicy?: string,
     command?: string[],
@@ -27,7 +25,7 @@ export function getDeploymentTemplate(
         metadata: {
             namespace: namespace,
             name: name,
-            labels: getLabels(name, labels)
+            labels
         },
         spec: {
             selector: {
@@ -37,7 +35,7 @@ export function getDeploymentTemplate(
             },
             template: {
                 metadata: {
-                    labels: getLabels(name, labels)
+                    labels
                 },
                 spec: {
                     containers: [{

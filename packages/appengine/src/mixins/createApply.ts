@@ -1,8 +1,6 @@
 import { KubeDocument } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
-import { ApplierFactory as applierFactory } from '../applying/'
 import createDebug from 'debug'
-import { AppEngineAppObject, AppManifest, TimingReporter, AppEngineState, Helper } from '../appObject'
 import { keyValue } from '../contracts'
 import * as templates from '../templates/'
 
@@ -10,18 +8,18 @@ const debug = createDebug('@appengine:createApply')
 
 declare module '../' {
     export interface Provisioner {
-        createDeployment: KubeDocument
+        createDeploymentDocument: KubeDocument
     }
 }
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    createDeployment: KubeDocument
+    createDeploymentDocument: KubeDocument
 
-    get createDeploymentContainer() { return this.createDeployment.spec.template.spec.containers[0] }
+    get createDeploymentContainer() { return this.createDeploymentDocument.spec.template.spec.containers[0] }
     get createDeploymentContainerEnvFrom() {
-        if (this.createDeployment.spec.template.spec.containers[0].envFrom)
-            this.createDeployment.spec.template.spec.containers[0].envFrom = []
-        return this.createDeployment.spec.template.spec.containers[0].envFrom
+        if (this.createDeploymentDocument.spec.template.spec.containers[0].envFrom)
+            this.createDeploymentDocument.spec.template.spec.containers[0].envFrom = []
+        return this.createDeploymentDocument.spec.template.spec.containers[0].envFrom
     }
 
     pods(namespace, app) {
@@ -46,10 +44,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.createConfigs()
             await this.createSecrets()
 
-            // Ports
-            // Volumes
+            await this.createServices()
+            await this.createVolumes()
 
-            // Deployments
+            await this.createDeployment()
         }
         finally {
             this.manager.status?.pop()
@@ -70,9 +68,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureCreateDeployment() {
-        if (this.createDeployment)
+        if (this.createDeploymentDocument)
             return
-        this.createDeployment = await templates.getDeploymentTemplate(
+        this.createDeploymentDocument = await templates.getDeploymentTemplate(
             this.manifestHelper.name,
             this.manifestHelper.namespace,
             this.manifestHelper.image,
@@ -153,7 +151,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         // TODO: RobC
     }
 
-    async applyServices() {
+    async createServices() {
         let skipped = false
         try {
             if (!this.manifestHelper.hasPorts) {
@@ -183,52 +181,21 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
-    helper = new Helper()
-    async oldCreateApply() {
-        const manifest = new AppEngineAppObject(this.manager.document)
-
-        if (!this.state) {
-            this.state = new AppEngineState(
-                {
-                    name: manifest.name,
-                    appId: manifest.appId,
-                    partOf: manifest.appId,
-                    edition: manifest.edition,
-                })
-        }
-
-        this.writeToLog('createApply - manifest', manifest)
-        this.writeToLog('createApply - state', this.state)
-        if (!this.state.publicDNS) {
-            this.state.publicDNS = await this.helper.getApplicationDNS(this.manager, manifest.name, manifest.namespace)
-            this.state.publicURI = await this.helper.getApplicationURI(this.manager, manifest.name, manifest.namespace)
-        }
-
-        this.state.startTimer('apply')
-        await this.ensureServiceNamespacesExist()
-        await this.installApp(manifest)
-        await this.ensureAppIsRunning(manifest)
-        this.state.endTimer('apply')
-        new TimingReporter().report(this.state)
+    async createDeployment() {
+        await this.manager.cluster
+        .begin('Creating the deployment')
+            .addOwner(this.manager.document)
+            .upsert(this.createDeploymentDocument)
+        .end()
     }
 
-    async installApp(manifest: AppManifest) {
-        this.state.startTimer('install')
-        const applierType = manifest.provisioner.applier || 'ObjectApplier'
-        await applierFactory.getApplier(applierType).apply(manifest, this.state, this.manager)
-        if ((manifest as any).fieldTypes) delete (manifest as any).fieldTypes
-        this.state.endTimer('install')
-    }
-
-    async ensureAppIsRunning(manifest: AppManifest) {
-        this.state.startTimer('watch-pod')
+    async ensureAppIsRunning() {
         await this.manager.cluster.
-            begin(`Ensure ${manifest.displayName} services are running`)
-            .beginWatch(this.pods(manifest.namespace, manifest.appId))
-            .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
-                processor.endWatch()
-            })
+            begin(`Ensure ${this.manifestHelper.name} services are running`)
+                .beginWatch(this.pods(this.manifestHelper.name, this.manifestHelper.appId))
+                .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
+                    processor.endWatch()
+                })
             .end()
-        this.state.endTimer('watch-pod')
     }
 }

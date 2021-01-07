@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
-    "build": "tsc -b && yarn run bundle",
+    "build": "tsc -b",
     "develop": "tsc -b -w --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

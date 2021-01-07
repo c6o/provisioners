@@ -1,5 +1,4 @@
 import { baseProvisionerType } from '../index'
-import { AppEngineState, AppManifest, AppEngineAppObject, Helper } from '../appObject'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import { inspect } from 'util'
 import createDebug from 'debug'
@@ -10,7 +9,7 @@ const debug = createDebug('@appengine:createInquire')
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async createInquire(args) {
-        if (!!this.manifestHelper.image)
+        if (!this.manifestHelper.image)
             await this.inquireApplicationImage(args)
 
         // Steps will come from the applicationSpec but for now, we use test data

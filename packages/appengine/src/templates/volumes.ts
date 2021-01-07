@@ -1,7 +1,6 @@
-import { LabelsMetadata, Volume } from '../../contracts'
-import { getLabels } from './labels'
+import { Volume, keyValue } from '../contracts'
 
-export function getPVCTemplate(volume: Volume, namespace: string, metaData: LabelsMetadata) {
+export function getPVCTemplate(volume: Volume, namespace: string, labels?: keyValue) {
 
     return {
         kind: 'PersistentVolumeClaim',
@@ -9,7 +8,7 @@ export function getPVCTemplate(volume: Volume, namespace: string, metaData: Labe
         metadata: {
             name: volume.name.toLowerCase(),
             namespace: namespace,
-            labels: getLabels(volume.name, metaData)
+            labels
         },
         spec: {
             accessModes: [

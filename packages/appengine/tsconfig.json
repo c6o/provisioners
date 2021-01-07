@@ -1,7 +1,6 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "resolveJsonModule": true,
         "rootDir": "./src",
         "outDir": "./lib"
     },
@@ -11,5 +10,11 @@
     ],
     "include": [
         "./src"
+    ],
+    "exclude": [
+        "src/ui",
+        "test",
+        "**/*.unit.ts",
+        "node_modules"
     ]
 }
