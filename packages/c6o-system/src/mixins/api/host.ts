@@ -3,7 +3,8 @@ import { baseProvisionerType } from '../../'
 export const hostApiMixin = (base: baseProvisionerType) => class extends base {
 
     async getApplicationFQDN(appName: string, namespace: string) {
-        const result = await this.manager.cluster.read(this.systemServerConfigMap)
+        // TODO: Make this not require a namespace
+        const result = await this.manager.cluster.read(this.systemServerConfigMap('c6o-system'))
         if (result.error) {
             // TODO: log failure
             return void 0

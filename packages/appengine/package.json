@@ -38,6 +38,7 @@
     "@c6o/kubeclient": "^0.0.7",
     "@provisioner/common": "^0.0.26",
     "@provisioner/contracts": "^0.0.26",
+    "@provisioner/c6o-system": "^0.0.26",
     "chalk": "^4.1.0",
     "debug": "^4.2.0",
     "generate-password": "^1.5.1",

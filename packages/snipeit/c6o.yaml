@@ -100,14 +100,15 @@ editions:
               - type: password
                 name: DB_PASSWORD
                 message: The database user password
+                validate: return !!value
                 c6o:
                   label: Database user password
-                  target: secret
+                  target: secrets
               - type: input
                 name: APP_KEY
                 message: App encryption key
                 c6o:
-                  target: secret
+                  target: secrets
                   generate:
                     length: 16
         configs:

@@ -3,6 +3,7 @@ import { ProvisionerManager } from '@provisioner/common'
 import { AppObject } from '@provisioner/contracts'
 import { AppEngineAppDocument, FlowResult, isPortNumber, keyValue, ServicePort, DeploymentPort, LabelsMetadata } from './contracts'
 import * as fs from 'fs'
+import * as path from 'path'
 const debug = createDebug('@appengine:timing')
 
 export class AppEngineAppObject extends AppObject {
@@ -17,9 +18,8 @@ export class AppEngineAppObject extends AppObject {
     get hasSecrets() { return this.document.spec.provisioner?.secrets && Object.keys(this.document.spec.provisioner.secrets).length }
     get base64Secrets() {
         const secrets: keyValue = { }
-        for(const key in this.document.spec.provisioner?.secrets) {
-            secrets[key] = Buffer.from(secrets[key]).toString('base64')
-        }
+        for(const key in this.secrets)
+            secrets[key] = Buffer.from(this.secrets[key]).toString('base64')
         return secrets
     }
 
@@ -49,16 +49,16 @@ export class AppEngineAppObject extends AppObject {
     }
 
     getComponentLabels(): keyValue {
-        const packageJSON = JSON.parse(fs.readFileSync('../package.json').toString('utf8'))
+        const packageJSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json')).toString('utf8'))
         return {
             app: this.name,
             name: this.name,
             'system.codezero.io/appengine': packageJSON .version,
             'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
             'system.codezero.io/id': this.instanceId,
+            'system.codezero.io/edition': this.edition,
             'app.kubernetes.io/name': this.name,
-            'app.kubernetes.io/managed-by': 'codezero',
-            'system.codezero.io/edition': this.edition
+            'app.kubernetes.io/managed-by': 'codezero'
         }
     }
 

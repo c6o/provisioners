@@ -33,13 +33,12 @@ export class FlowProcessor {
 
             this.postProcessGenerates()
 
-
             // Post process the results into the various target
             // in the results object - we use the extensionsMap for this
             for(const pair of this.extensionsMap) {
                 const [stepName, ext] = pair
                 debug('Post processing step %s %o', stepName, ext)
-                const target = ext?.target || 'config'
+                const target = ext?.target || 'configs'
                 result[target][stepName] = this.responses[stepName]
             }
         }
@@ -165,7 +164,7 @@ export class FlowProcessor {
             if (!step.mask)
                 step.mask = '*'
             if (step.c6o)
-                step.c6o.target = 'secret' // passwords have to be secret
+                step.c6o.target = 'secrets' // passwords have to be secret
         }
     }
 

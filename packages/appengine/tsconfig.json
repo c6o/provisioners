@@ -6,7 +6,8 @@
     },
     "references": [
         { "path":  "../common" },
-        { "path":  "../contracts" }
+        { "path":  "../contracts" },
+        { "path":  "../c6o-system" }
     ],
     "include": [
         "./src"

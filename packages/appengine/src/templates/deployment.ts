@@ -42,8 +42,7 @@ export function getDeploymentTemplate(
                         name,
                         image,
                         imagePullPolicy,
-                        command,
-                        env: []
+                        command
                     }]
                 }
             }

@@ -17,7 +17,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     get createDeploymentContainer() { return this.createDeploymentDocument.spec.template.spec.containers[0] }
     get createDeploymentContainerEnvFrom() {
-        if (this.createDeploymentDocument.spec.template.spec.containers[0].envFrom)
+        if (!this.createDeploymentDocument.spec.template.spec.containers[0].envFrom)
             this.createDeploymentDocument.spec.template.spec.containers[0].envFrom = []
         return this.createDeploymentDocument.spec.template.spec.containers[0].envFrom
     }
@@ -38,8 +38,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push(`Applying App Engine to ${this.manifestHelper.name}`)
 
-            // Handle templates
             await this.ensureCreateDeployment()
+
+            // Handle templates
             await this.processTemplates()
             await this.createConfigs()
             await this.createSecrets()
@@ -48,6 +49,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.createVolumes()
 
             await this.createDeployment()
+            await this.ensureAppIsRunning()
         }
         finally {
             this.manager.status?.pop()
@@ -96,7 +98,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 this.manifestHelper.getComponentLabels()
             )
 
-            this.manager.cluster
+            await this.manager.cluster
                 .begin()
                     .addOwner(this.manager.document)
                     .upsert(createConfigMap)
@@ -125,10 +127,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const createSecrets = templates.getSecretTemplate(
                 this.manifestHelper.name,
                 this.manifestHelper.namespace,
+                this.manifestHelper.base64Secrets,
                 this.manifestHelper.getComponentLabels()
             )
 
-            this.manager.cluster
+            await this.manager.cluster
                 .begin()
                     .addOwner(this.manager.document)
                     .upsert(createSecrets)
@@ -183,10 +186,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async createDeployment() {
         await this.manager.cluster
-        .begin('Creating the deployment')
-            .addOwner(this.manager.document)
-            .upsert(this.createDeploymentDocument)
-        .end()
+            .begin('Creating the deployment')
+                .addOwner(this.manager.document)
+                .upsert(this.createDeploymentDocument)
+            .end()
     }
 
     async ensureAppIsRunning() {

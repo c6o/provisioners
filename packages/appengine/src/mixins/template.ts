@@ -21,7 +21,7 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
     async ensureSystemProvisioner() {
         if (this.systemProvisioner)
             return
-        this.systemProvisioner = await this.manager.getAppProvisioner('system', 'c6o-system')
+        this.systemProvisioner = await this.manager.getAppProvisioner('c6o-system', 'c6o-system')
     }
 
     async processTemplate(map: keyValueOrGenerator, stageName: string) {
@@ -38,11 +38,10 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
                     this._setPassword(map, key, value.generate)
                 else {
                     await this.ensureSystemProvisioner()
-
                     if (value.includes('$PUBLIC_FQDN'))
-                        this._interpolateValue(map, key, '$PUBLIC_FQDN', this.systemProvisioner.getApplicationFQDN(this.app.name, this.app.namespace))
+                        this._interpolateValue(map, key, '$PUBLIC_FQDN', await this.systemProvisioner.getApplicationFQDN(this.manifestHelper.name, this.manifestHelper.namespace))
                     else if (value.includes('$PUBLIC_URL'))
-                        this._interpolateValue(map, key, '$PUBLIC_URL', this.systemProvisioner.getApplicationURL(this.app.name, this.app.namespace))
+                        this._interpolateValue(map, key, '$PUBLIC_URL', await this.systemProvisioner.getApplicationURL(this.manifestHelper.name, this.manifestHelper.namespace))
 
                 }
             }

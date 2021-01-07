@@ -17,7 +17,7 @@ export const choiceSeparator = '<<separator>>'
 export type choiceSeparatorType = '<<separator>>'
 
 export interface c6oExtensions {
-    target?: 'config' | 'secret' | 'transient'
+    target?: 'configs' | 'secrets' | 'transient'
     label?: string
     required?: boolean
     generate?: generatorOptions

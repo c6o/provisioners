@@ -1,4 +1,4 @@
-import { KubeDocument, KubeObject, Metadata } from '@c6o/kubeclient-contracts'
+import { KubeDocument, KubeObject } from '@c6o/kubeclient-contracts'
 
 export interface MenuItems {
     type: string,
@@ -42,6 +42,7 @@ export interface ServicesType {
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
 export interface LabelsMetadata {
+    'system.codezero.io/app'?: string
     name?: string
     appId?: string
     instanceId?: string
@@ -114,7 +115,7 @@ export class AppObject extends KubeObject {
     get appId() { return this.document.metadata.name }
 
     /** This can be used to fetch the resource from system server */
-    get instanceId() { return `${this.namespace}/${this.name}` }
+    get instanceId() { return `${this.namespace}-${this.name}` }
 
     get name() { return this.document.metadata.name }
     get namespace() { return this.document.metadata.namespace }
