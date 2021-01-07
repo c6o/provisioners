@@ -49,3 +49,13 @@ export function getDeploymentTemplate(
         }
     }
 }
+
+export const getPodTemplate = (name: string, namespace: string) => ({
+    kind: 'Pod',
+    metadata: {
+        namespace,
+        labels: {
+            app: name // Has to match matchLabels above
+        }
+    }
+})

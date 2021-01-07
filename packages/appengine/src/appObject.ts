@@ -25,6 +25,8 @@ export class AppEngineAppObject extends AppObject {
 
 
     get volumes()  { return this.document.spec.provisioner?.volumes  }
+    get hasVolumes() { return this.document.spec.provisioner?.volumes?.length }
+
     get ports() { return this.document.spec.provisioner?.ports  }
     get hasPorts() { return !!this.ports }
 

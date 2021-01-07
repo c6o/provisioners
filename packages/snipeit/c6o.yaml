@@ -63,8 +63,6 @@ editions:
       routes:
         - type: http
           targetService: snipeit
-        - type: tcp
-          targetService: db-connection
       provisioner:
         package: '@provisioner/appengine'
         image: snipe/snipe-it

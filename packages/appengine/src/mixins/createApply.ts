@@ -22,18 +22,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         return this.createDeploymentDocument.spec.template.spec.containers[0].envFrom
     }
 
-    pods(namespace, app) {
-        return {
-            kind: 'Pod',
-            metadata: {
-                namespace,
-                labels: {
-                    app
-                }
-            }
-        }
-    }
-
     async createApply() {
         try {
             this.manager.status?.push(`Applying App Engine to ${this.manifestHelper.name}`)
@@ -86,6 +74,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createConfigs() {
         let skipped = false
         try {
+            this.manager.status?.push('Installing configuration settings')
+
             if (!this.manifestHelper.hasConfigs) {
                 skipped = true
                 return
@@ -100,8 +90,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.manager.cluster
                 .begin()
-                    .addOwner(this.manager.document)
-                    .upsert(createConfigMap)
+                .addOwner(this.manager.document)
+                .upsert(createConfigMap)
                 .end()
 
             this.createDeploymentContainerEnvFrom.push({
@@ -119,6 +109,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createSecrets() {
         let skipped = false
         try {
+            this.manager.status?.push('Installing secret settings')
+
             if (!this.manifestHelper.hasConfigs) {
                 skipped = true
                 return
@@ -133,8 +125,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.manager.cluster
                 .begin()
-                    .addOwner(this.manager.document)
-                    .upsert(createSecrets)
+                .addOwner(this.manager.document)
+                .upsert(createSecrets)
                 .end()
 
             this.createDeploymentContainerEnvFrom.push({
@@ -151,12 +143,29 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
 
     async createVolumes() {
+        let skipped = false
+
+        try {
+            if (!this.manifestHelper.hasVolumes) {
+                skipped = true
+                return
+            }
+
+            this.manager.status?.push('Installing Volumes')
+
         // TODO: RobC
+
+        }
+        finally {
+            this.manager.status?.pop(skipped)
+        }
     }
 
     async createServices() {
         let skipped = false
         try {
+            this.manager.status?.push('Installing Networking Services')
+
             if (!this.manifestHelper.hasPorts) {
                 skipped = true
                 return
@@ -187,18 +196,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createDeployment() {
         await this.manager.cluster
             .begin('Creating the deployment')
-                .addOwner(this.manager.document)
-                .upsert(this.createDeploymentDocument)
+            .addOwner(this.manager.document)
+            .upsert(this.createDeploymentDocument)
             .end()
     }
 
     async ensureAppIsRunning() {
         await this.manager.cluster.
             begin(`Ensure ${this.manifestHelper.name} services are running`)
-                .beginWatch(this.pods(this.manifestHelper.name, this.manifestHelper.appId))
-                .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
-                    processor.endWatch()
-                })
+            .beginWatch(templates.getPodTemplate(this.manifestHelper.name, this.manifestHelper.namespace))
+            .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
+                processor.endWatch()
+            })
             .end()
     }
 }
