@@ -9,6 +9,7 @@ import {
     postAppMixin,
     removeApplyMixin,
     choicesApiMixin,
+    hostApiMixin,
     loggerApiMixin,
     npmApiMixin,
     metricsMixin
@@ -26,6 +27,7 @@ export class Provisioner extends mix(ProvisionerBase).with(
     createValidateMixin,
     createInquireMixin,
     choicesApiMixin,
+    hostApiMixin,
     loggerApiMixin,
     npmApiMixin,
     metricsMixin) {

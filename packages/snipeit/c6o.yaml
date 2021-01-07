@@ -111,50 +111,13 @@ editions:
                   generate:
                     length: 16
         configs:
-          - name: DB_HOST
-            label: Database Host
-            hint: The name of the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: DNS
-            value: mysql.database
-
-
-          - name: DB_PORT
-            label: Database Port
-            hint: The port of the database
-            required: true
-            autoselect: true
-            fieldType: text
-            value: 3306
-
-
-          - name: DB_DATABASE
-            label: Database name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: snipeit
-
-          - name: DB_USERNAME
-            label: Database user name
-            hint: The username for the database user
-            required: true
-            autoselect: true
-            fieldType: text
-            value: snipeit
+          FOO_URL: '$PUBLIC_URL/index.html' # http://app-namespace.foo.codezero.cloud
+          BAR_URL: '$PUBLIC_FQDN/index.html' # app-namespace.foo.codezero.cloud
 
         secrets:
-          - name: DB_PASSWORD
-            label: Database password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
-
-          - name: APP_KEY
-            value: $RANDOM:32
+          TEST_APP_KEY:
+            generate:
+              length: 16
       marina:
         launch:
           type: inline

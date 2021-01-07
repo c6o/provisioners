@@ -113,6 +113,8 @@ export class AppObject extends KubeObject {
     /** @todo This does not give you the app._id but the app.metadata.name and is expected to change */
     get appId() { return this.document.metadata.name }
 
+    /** This can be used to fetch the resource from system server */
+    get instanceId() { return `${this.namespace}/${this.name}` }
 
     get name() { return this.document.metadata.name }
     get namespace() { return this.document.metadata.namespace }
@@ -122,7 +124,6 @@ export class AppObject extends KubeObject {
     get edition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
     get displayName() { return this.document.metadata.annotations?.['system.codezero.io/display'] || this.name }
     get iconUrl() { return this.document.metadata.annotations?.['system.codezero.io/iconUrl'] }
-
 
     get provisioner() { return this.spec.provisioner }
     get routes() { return this.spec.routes }

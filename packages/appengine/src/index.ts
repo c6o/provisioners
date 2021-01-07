@@ -4,16 +4,17 @@ import { AppEngineAppObject, AppEngineState, AppManifest } from "./appObject"
 
 import {
     createApplyMixin,
-    createInquireMixin
+    createInquireMixin,
+
+    // helpers
+    templateHelperMixin
 } from './mixins'
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export interface Provisioner extends ProvisionerBase {
-    parseInputsToSpec(args: any)
-}
+export interface Provisioner extends ProvisionerBase { }
 
-export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin) {
+export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin, templateHelperMixin) {
 
     _manifestHelper
     get manifestHelper(): AppEngineAppObject {
