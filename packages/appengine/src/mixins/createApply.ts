@@ -102,6 +102,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
+            debugger
             this.manager.status?.pop(skipped)
         }
     }
@@ -146,12 +147,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         let skipped = false
 
         try {
+            this.manager.status?.push('Installing volumes')
+
             if (!this.manifestHelper.hasVolumes) {
                 skipped = true
                 return
             }
-
-            this.manager.status?.push('Installing Volumes')
 
         // TODO: RobC
 
@@ -164,7 +165,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createServices() {
         let skipped = false
         try {
-            this.manager.status?.push('Installing Networking Services')
+            this.manager.status?.push('Installing networking services')
 
             if (!this.manifestHelper.hasPorts) {
                 skipped = true
