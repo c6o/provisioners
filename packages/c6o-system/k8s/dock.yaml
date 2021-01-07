@@ -8,3 +8,5 @@ apps:
     namespace: c6o-system
   - name: navstation
     namespace: c6o-system
+  - name: harbourmaster
+    namespace: c6o-system

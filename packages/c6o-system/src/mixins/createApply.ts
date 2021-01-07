@@ -128,6 +128,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .addOwner(this.manager.document)
                 .upsertFile('../../k8s/marina.yaml', options)
                 .upsertFile('../../k8s/store.yaml', options)
+                .upsertFile('../../k8s/harbourmaster.yaml', options)
                 .upsertFile('../../k8s/navstation.yaml', options)
                 .upsertFile('../../k8s/apps.yaml', options)
                 .clearOwners()
