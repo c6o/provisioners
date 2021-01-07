@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: c6o-system
+  name: system-harbourmaster
+  labels:
+    role: system
+    app: harbourmaster
+    system.codezero.io/app: harbourmaster
+spec:
+  selector:
+    matchLabels:
+      role: system
+      app: harbourmaster
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: system
+        app: harbourmaster
+    spec:
+      containers:
+      - name: system-harbourmaster
+        image: c6oio/system-harbourmaster:{{tag}}
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: c6o-system
+    name: system-harbourmaster
+    labels:
+      role: system
+      app: harbourmaster
+      system.codezero.io/app: harbourmaster
+spec:
+    ports:
+    - port: 80
+      name: http
+    type: NodePort
+    selector:
+      role: system
+      app: harbourmaster
