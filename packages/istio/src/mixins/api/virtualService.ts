@@ -15,7 +15,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const vs = this.virtualService(app, gateway)
 
         for (const route of app.spec.routes) {
-            if (route.disabled)
+            if (route.disabled || route.private)
                 return
 
             if (route.type === 'http')
@@ -49,7 +49,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             return
 
         for (const route of app.spec.routes) {
-            if (route.disabled)
+            if (route.disabled || route.private)
                 return
 
             if (route.type === 'tcp') {
