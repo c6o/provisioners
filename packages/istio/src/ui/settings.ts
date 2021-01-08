@@ -72,9 +72,10 @@ export class IstioSettings extends LitElement {
                 ${this.renderGrafanaLink()}
             </div>
             <c6o-checkbox
-                @checked-changed=${this.httpsRedirectChanged}
+                ?checked=${this.httpsRedirect}
                 ?disabled=${this.busy}
-                ?checked=${this.httpsRedirect}>
+                @checked-changed=${this.httpsRedirectChanged}
+            >
                 Enable https redirect
             </c6o-checkbox>
             <div class="btn-footer">
@@ -102,18 +103,19 @@ export class IstioSettings extends LitElement {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }
                     id='grafana-combo-box'
+                    .items=${this.grafanaOptions}
                     label='Select Grafana Installation'
                     required
                     value=${this.grafanaOptions[0]}
-                    .items=${this.grafanaOptions}
-                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken }
                 ></c6o-combo-box>
                 <c6o-button
                     class="inline"
+                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}
                     theme="tertiary"
                     @click=${this.linkGrafana}
-                    ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}>
+                >
                     Link Grafana
                 </c6o-button>
             </c6o-form-layout>
@@ -127,9 +129,10 @@ export class IstioSettings extends LitElement {
                     <h3>Prometheus Linked</h3>
                     <c6o-button
                         class="inline"
+                        ?disabled=${this.busy}
                         theme="tertiary"
                         @click=${this.unlinkPrometheus}
-                        ?disabled=${this.busy}>
+                    >
                         Unlink Prometheus in ${this.prometheusNamespace}
                     </c6o-button>
                 </c6o-form-layout>
@@ -138,18 +141,19 @@ export class IstioSettings extends LitElement {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    ?disabled=${this.busy}
                     id='prometheus-combo-box'
+                    .items=${this.prometheusOptions}
                     label='Select Prometheus Installation'
                     required
                     value=${this.prometheusOptions[0]}
-                    .items=${this.prometheusOptions}
-                    ?disabled=${this.busy}
                 ></c6o-combo-box>
                 <c6o-button
                     class="inline"
+                    ?disabled=${this.busy}
                     theme="tertiary"
                     @click=${this.linkPrometheus}
-                    ?disabled=${this.busy}>
+                >
                     Link Prometheus
                 </c6o-button>
             </c6o-form-layout>

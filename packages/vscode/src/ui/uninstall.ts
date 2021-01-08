@@ -12,9 +12,19 @@ export class UninstallVSCode extends LitElement implements StoreFlowStep {
     render() {
         return html`
         <c6o-form-layout>
-        <c6o-checkbox @checked-changed=${this.checkHandler('keep-ip')} ?checked=${!!this.serviceSpec.deprovision['keep-ip']}>Keep IP address</c6o-checkbox>
+        <c6o-checkbox
+            ?checked=${!!this.serviceSpec.deprovision['keep-ip']}
+            @checked-changed=${this.checkHandler('keep-ip')}
+        >
+            Keep IP address
+        </c6o-checkbox>
         <br />
-        <c6o-checkbox @checked-changed=${this.checkHandler('keep-vol')} ?checked=${!!this.serviceSpec.deprovision['keep-vol']}>Keep data volume</c6o-checkbox>
+        <c6o-checkbox
+            ?checked=${!!this.serviceSpec.deprovision['keep-vol']}
+            @checked-changed=${this.checkHandler('keep-vol')}
+        >
+            Keep data volume
+        </c6o-checkbox>
         </c6o-form-layout>
         `
     }

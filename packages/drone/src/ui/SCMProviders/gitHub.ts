@@ -14,18 +14,23 @@ export class DroneGitHubSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3><br />
+                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="GitHub Client ID"
+                    required
+                    value=${this.serviceSpec.githubClientId}
                     @input=${inputChanged(this.serviceSpec, 'githubClientId')}
-                    label="GitHub ClientId" value=${this.serviceSpec.githubClientId}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="GitHub Client Secret"
+                    required
+                    value=${this.serviceSpec.githubClientSecret}
                     @input=${inputChanged(this.serviceSpec, 'githubClientSecret')}
-                    label="GitHub Client Secret" value=${this.serviceSpec.githubClientSecret}
-                    autoselect required>
-                </c6o-text-field>
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

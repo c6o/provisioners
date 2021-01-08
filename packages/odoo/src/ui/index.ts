@@ -14,8 +14,22 @@ export class OdooSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-combo-box @selected-item-changed=${this.databaseSizeSelected} label="Database Storage Size" value=${this.serviceSpec.databaseSize} required allow-custom-value .items=${this.storageSizeChoices}></c6o-combo-box>
-                <c6o-combo-box @selected-item-changed=${this.shopAddonsDatabaseSizeSelected} label="User Addons Storage Size" value=${this.serviceSpec.shopAddonsDatabaseSize} required allow-custom-value .items=${this.storageSizeChoices}></c6o-combo-box>
+                <c6o-combo-box
+                    allow-custom-value
+                    .items=${this.storageSizeChoices}
+                    label="Database Storage Size"
+                    required
+                    value=${this.serviceSpec.databaseSize}
+                    @selected-item-changed=${this.databaseSizeSelected}
+                ></c6o-combo-box>
+                <c6o-combo-box
+                    allow-custom-value
+                    .items=${this.storageSizeChoices}
+                    label="User Addons Storage Size"
+                    required
+                    value=${this.serviceSpec.shopAddonsDatabaseSize}
+                    @selected-item-changed=${this.shopAddonsDatabaseSizeSelected}
+                ></c6o-combo-box>
             </c6o-form-layout>
         `
     }

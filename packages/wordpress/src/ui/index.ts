@@ -12,8 +12,20 @@ export class WordpressSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-text-field @input=${this.usernameChanged} label="MySql Username" value=${this.serviceSpec.username || ''} autoselect required></c6o-text-field>
-                <c6o-password-field @input=${this.passwordChanged} label="MySql Password" value=${this.serviceSpec.password || ''} autoselect required></c6o-password-field>
+                <c6o-text-field
+                    autoselect
+                    label="MySql Username"
+                    required
+                    value=${this.serviceSpec.username || ''}
+                    @input=${this.usernameChanged}
+                ></c6o-text-field>
+                <c6o-password-field
+                    autoselect
+                    label="MySql Password"
+                    required
+                    value=${this.serviceSpec.password || ''}
+                    @input=${this.passwordChanged}
+                ></c6o-password-field>
             </c6o-form-layout>
         `
     }

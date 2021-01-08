@@ -14,30 +14,34 @@ export class DroneGitHubEnterpriseSettings extends LitElement implements StoreFl
     render() {
         return html`
             <c6o-form-layout>
-                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3><br />
+                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-checkbox
+                    ?checked=${this.serviceSpec.alwaysAuth}
                     @checked-changed=${inputChanged(this.serviceSpec, 'alwaysAuth')}
-                    ?checked=${this.serviceSpec.alwaysAuth}>
+                >
                     Always authenticate (If private mode enabled)
                 </c6o-checkbox>
-                <br />
                 <c6o-text-field
-                    @input=${inputChanged(this.serviceSpec, 'githubClientId')}
+                    autoselect
+                    colspan="2"
                     label="GitHub ClientId" value=${this.serviceSpec.githubClientId}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                    required
+                    @input=${inputChanged(this.serviceSpec, 'githubClientId')}
+                ></c6o-text-field>
                 <c6o-text-field
-                    @input=${inputChanged(this.serviceSpec, 'githubClientSecret')}
+                    autoselect
+                    colspan="2"
                     label="GitHub Client Secret" value=${this.serviceSpec.githubClientSecret}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                    required
+                    @input=${inputChanged(this.serviceSpec, 'githubClientSecret')}
+                ></c6o-text-field>
                 <c6o-text-field
-                    @input=${inputChanged(this.serviceSpec, 'githubServer')}
+                    autoselect
+                    colspan="2"
                     label="GitHub Server URL" value=${this.serviceSpec.githubServer}
-                    autoselect required>
-                </c6o-text-field>
+                    required
+                    @input=${inputChanged(this.serviceSpec, 'githubServer')}
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

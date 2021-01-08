@@ -12,8 +12,20 @@ export class MosquittoSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-text-field @input=${this.usernameChanged} label="Username" value=${this.serviceSpec.username || ''} autoselect required></c6o-text-field>
-                <c6o-password-field @input=${this.passwordChanged} label="Password" value=${this.serviceSpec.password || ''} autoselect required></c6o-password-field>
+                <c6o-text-field
+                    autoselect
+                    label="Username"
+                    required
+                    value=${this.serviceSpec.username || ''}
+                    @input=${this.usernameChanged}
+                ></c6o-text-field>
+                <c6o-password-field
+                    autoselect
+                    label="Password"
+                    required
+                    value=${this.serviceSpec.password || ''}
+                    @input=${this.passwordChanged}
+                ></c6o-password-field>
             </c6o-form-layout>
         `
     }

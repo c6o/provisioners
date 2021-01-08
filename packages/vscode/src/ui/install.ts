@@ -16,12 +16,12 @@ export class VSCodeCapacity extends LitElement implements StoreFlowStep {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
-                    @selected-item-changed=${this.storageSelected}
+                    allow-custom-value
+                    .items=${this.values}
                     label='Data Volume Size'
                     required
-                    allow-custom-value
-                    .items=${this.values}>
-                </c6o-combo-box>
+                    @selected-item-changed=${this.storageSelected}
+                ></c6o-combo-box>
                 <c6o-form-item label-position="top" colspan="2">
                     <label slot="label">Public Key</label>
                     <vaadin-upload max-files="1" @upload-request=${this.upload}>

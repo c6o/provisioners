@@ -14,12 +14,31 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-text-field @input=${this.usernameChanged} label="Administrator username" value=${this.serviceSpec.suitecrmusername} autoselect required></c6o-text-field>
+                <c6o-text-field
+                    autoselect
+                    label="Administrator username"
+                    required
+                    value=${this.serviceSpec.suitecrmusername}
+                    @input=${this.usernameChanged}
+                ></c6o-text-field>
                 <br />
-                <c6o-password-field @input=${this.passwordChanged} label="Administrator password" value=${this.serviceSpec.suitecrmpassword} autoselect required></c6o-password-field>
+                <c6o-password-field
+                    autoselect
+                    label="Administrator password"
+                    required
+                    value=${this.serviceSpec.suitecrmpassword}
+                    @input=${this.passwordChanged}
+                ></c6o-password-field>
             </c6o-form-layout>
             <c6o-form-layout>
-                <c6o-combo-box @selected-item-changed=${this.storageSelected} label="Database Storage" value=${this.serviceSpec.databasesize} required allow-custom-value .items=${this.storageSizeChoices}></c6o-combo-box>
+                <c6o-combo-box
+                    allow-custom-value
+                    .items=${this.storageSizeChoices}
+                    label="Database Storage"
+                    required
+                    value=${this.serviceSpec.databasesize}
+                    @selected-item-changed=${this.storageSelected}
+                ></c6o-combo-box>
             </c6o-form-layout>
         `
     }

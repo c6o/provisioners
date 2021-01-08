@@ -17,12 +17,37 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-combo-box @selected-item-changed=${this.storageSelected} label='Storage' value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></c6o-combo-box>
-                <c6o-combo-box @selected-item-changed=${this.editionSelected} label='Edition' value=${this.serviceSpec.edition || 'evaluation'} required .items=${this.editions}></c6o-combo-box>
+                <c6o-combo-box
+                    allow-custom-value
+                    .items=${this.values}
+                    label='Storage'
+                    required
+                    value=${this.serviceSpec.storage}
+                    @selected-item-changed=${this.storageSelected}
+                ></c6o-combo-box>
+                <c6o-combo-box
+                    .items=${this.editions}
+                    label='Edition'
+                    required
+                    value=${this.serviceSpec.edition || 'evaluation'}
+                    @selected-item-changed=${this.editionSelected}
+                ></c6o-combo-box>
             </c6o-form-layout>
             <c6o-form-layout>
-                <c6o-text-field @input=${this.usernameChanged} label="Docker username" value=${this.serviceSpec.dockerUsername || ''} autoselect required></c6o-text-field>
-                <c6o-password-field @input=${this.passwordChanged} label="Docker password" value=${this.serviceSpec.dockerPassword || ''} autoselect required></c6o-password-field>
+                <c6o-text-field
+                    autoselect
+                    label="Docker username"
+                    required
+                    value=${this.serviceSpec.dockerUsername || ''}
+                    @input=${this.usernameChanged}
+                ></c6o-text-field>
+                <c6o-password-field
+                    autoselect
+                    label="Docker password"
+                    required
+                    value=${this.serviceSpec.dockerPassword || ''}
+                    @input=${this.passwordChanged}
+                ></c6o-password-field>
             </c6o-form-layout>
         `
     }

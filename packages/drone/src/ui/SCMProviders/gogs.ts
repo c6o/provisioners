@@ -16,10 +16,13 @@ export class DroneGogsSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <h3>${this.serviceSpec.scmChoice} SCM Setup</h3><br />
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Gogs Server URL"
+                    required
+                    value=${this.serviceSpec.gogsServer}
                     @input=${inputChanged(this.serviceSpec, 'gogsServer')}
-                    label="Gogs Server URL" value=${this.serviceSpec.gogsServer}
-                    autoselect required>
-                </c6o-text-field>
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

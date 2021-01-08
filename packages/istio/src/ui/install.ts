@@ -40,25 +40,53 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
             <section c6o="grid 6">
                 <c6o-form-layout>
                     <h3>Optional Components:</h3>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('httpsRedirect')} ?checked=${this.serviceSpec.httpsRedirect}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.httpsRedirect}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('httpsRedirect')}
+                    >
                         Enable https redirect
                     </c6o-checkbox>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('autoInjectEnabled')} ?checked=${this.serviceSpec.autoInjectEnabled}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.autoInjectEnabled}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('autoInjectEnabled')}
+                    >
                         Auto Injection
                     </c6o-checkbox>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('citadelEnabled')} ?checked=${this.serviceSpec.citadelEnabled}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.citadelEnabled}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('citadelEnabled')}
+                    >
                         Citadel (Authentication and Identity)
                     </c6o-checkbox>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('coreDnsEnabled')} ?checked=${this.serviceSpec.coreDnsEnabled}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.coreDnsEnabled}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('coreDnsEnabled')}
+                    >
                         Core DNS
                     </c6o-checkbox>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('galleyEnabled')} ?checked=${this.serviceSpec.galleyEnabled}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.galleyEnabled}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('galleyEnabled')}
+                    >
                         Galley (Configuration)
                     </c6o-checkbox>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('policyEnabled')} ?checked=${this.serviceSpec.policyEnabled}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.policyEnabled}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('policyEnabled')}
+                    >
                         Policy
                     </c6o-checkbox>
-                    <c6o-checkbox theme="condensed" @checked-changed=${this.updateHandler('telemetryEnabled')} ?checked=${this.serviceSpec.telemetryEnabled}>
+                    <c6o-checkbox
+                        ?checked=${this.serviceSpec.telemetryEnabled}
+                        theme="condensed"
+                        @checked-changed=${this.updateHandler('telemetryEnabled')}
+                    >
                         Telemetry (Analytics)
                     </c6o-checkbox>
                 </c6o-form-layout>

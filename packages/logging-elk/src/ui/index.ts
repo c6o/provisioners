@@ -16,9 +16,10 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
                 <c6o-combo-box
                     allow-custom-value
                     colspan="2"
-                    label='Log Storage' value=${this.serviceSpec.storage}
-                    required
                     .items=${this.values}
+                    label='Log Storage'
+                    required
+                    value=${this.serviceSpec.storage}
                     @selected-item-changed=${this.storageSelected}
                 ></c6o-combo-box>
                 <c6o-text-field
