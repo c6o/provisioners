@@ -18,22 +18,22 @@ export class DroneSettingsMain extends LitElement implements StoreFlowStep {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
-                    @selected-item-changed=${inputChanged(this.serviceSpec, 'storageSize')}
-                    label="Server Storage"
-                    value=${this.serviceSpec.storageSize}
-                    required
                     allow-custom-value
-                    .items=${this.storageChoices}>
-                </c6o-combo-box>
+                    .items=${this.storageChoices}
+                    label="Server Storage"
+                    required
+                    value=${this.serviceSpec.storageSize}
+                    @selected-item-changed=${inputChanged(this.serviceSpec, 'storageSize')}
+                ></c6o-combo-box>
             </c6o-form-layout>
             <c6o-form-layout>
                 <c6o-combo-box
-                    @selected-item-changed=${inputChanged(this.serviceSpec, 'scmChoice')}
+                    .items=${this.scmChoices}
                     label="Source Control System"
-                    value=${this.serviceSpec.scmChoice}
                     required
-                    .items=${this.scmChoices}>
-                </c6o-combo-box>
+                    value=${this.serviceSpec.scmChoice}
+                    @selected-item-changed=${inputChanged(this.serviceSpec, 'scmChoice')}
+                ></c6o-combo-box>
                 </c6o-select>
             </c6o-form-layout>
         `

@@ -22,41 +22,37 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
-                    id="userCountList"
-                    @selected-item-changed=${this.usersSelected}
                     error-message="Please select an expected number of users"
-                    value="100"
-                    required
-                    label="Expected users count (100)"
+                    id="userCountList"
                     .items=${this.userCountChoices}
+                    label="Expected users count (100)"
+                    required
+                    value="100"
+                    @selected-item-changed=${this.usersSelected}
                 ></c6o-combo-box>
-
                 <c6o-text-field
                     colspan="2"
                     label="Mattermost license secret (optional)"
                     @change=${this.handleSearch}
                 ></c6o-text-field>
-
                 <c6o-combo-box
-                    id="databaseSizeList"
-                    @selected-item-changed=${this.dbSizeSelected}
                     error-message="Please select a database size."
-                    value="2Gi"
-                    required
+                    id="databaseSizeList"
+                    .items=${this.storageSizeChoices}
                     label="Amount of storage for the database"
-                    .items=${this.storageSizeChoices}
-                ></c6o-combo-box>
-
-                <c6o-combo-box
-                    id="minioSizeList"
-                    @selected-item-changed=${this.minioSizeSelected}
-                    error-message="Please select an expected size."
-                    value="2Gi"
                     required
-                    label="Amount of storage for media files"
-                    .items=${this.storageSizeChoices}
+                    value="2Gi"
+                    @selected-item-changed=${this.dbSizeSelected}
                 ></c6o-combo-box>
-
+                <c6o-combo-box
+                    error-message="Please select an expected size."
+                    id="minioSizeList"
+                    .items=${this.storageSizeChoices}
+                    label="Amount of storage for media files"
+                    required
+                    value="2Gi"
+                    @selected-item-changed=${this.minioSizeSelected}
+                ></c6o-combo-box>
         </c6o-form-layout>
         `
     }
@@ -64,12 +60,15 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
     minioSizeSelected = (e) => {
         this.serviceSpec.minioStorageSize = e.detail.value
     }
+
     dbSizeSelected = (e) => {
         this.serviceSpec.databaseStorageSize = e.detail.value
     }
+
     usersSelected = (e) => {
         this.serviceSpec.users = e.detail.value
     }
+
     handleSearch = (e) => {
         this.serviceSpec.mattermostLicenseSecret = e.detail.value
     }

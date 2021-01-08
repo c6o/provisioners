@@ -14,37 +14,47 @@ export class DroneBitbucketServerSettings extends LitElement implements StoreFlo
     render() {
         return html`
             <c6o-form-layout>
-                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3><br />
+                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Git Username"
+                    required
+                    value=${this.serviceSpec.gitUsername}
                     @input=${inputChanged(this.serviceSpec, 'gitUsername')}
-                    label="Git Username" value=${this.serviceSpec.gitUsername}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Git Password"
+                    required
+                    value=${this.serviceSpec.gitPassword}
                     @input=${inputChanged(this.serviceSpec, 'gitPassword')}
-                    label="Git Password" value=${this.serviceSpec.gitPassword}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Stash Consumer Key"
+                    required
+                    value=${this.serviceSpec.stashConsumerKey}
                     @input=${inputChanged(this.serviceSpec, 'stashConsumerKey')}
-                    label="Stash Consumer Key" value=${this.serviceSpec.stashConsumerKey}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Stash Private Key"
+                    required
+                    value=${this.serviceSpec.stashPrivateKey}
                     @input=${inputChanged(this.serviceSpec, 'stashPrivateKey')}
-                    label="Stash Private Key" value=${this.serviceSpec.stashPrivateKey}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="Stash Server"
+                    required
+                    value=${this.serviceSpec.stashServer}
                     @input=${inputChanged(this.serviceSpec, 'stashServer')}
-                    label="Stash Server" value=${this.serviceSpec.stashServer}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

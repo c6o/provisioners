@@ -14,24 +14,31 @@ export class DroneGitLabSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3><br />
+                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="GitLab Client ID"
+                    required
+                    value=${this.serviceSpec.gitlabClientId}
                     @input=${inputChanged(this.serviceSpec, 'gitlabClientId')}
-                    label="GitLab ClientId" value=${this.serviceSpec.gitlabClientId}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="GitLab Client Secret"
+                    required
+                    value=${this.serviceSpec.gitlabClientSecret}
                     @input=${inputChanged(this.serviceSpec, 'gitlabClientSecret')}
-                    label="GitLab Client Secret" value=${this.serviceSpec.gitlabClientSecret}
-                    autoselect required>
-                </c6o-text-field>
-                <br />
+                ></c6o-text-field>
                 <c6o-text-field
+                    autoselect
+                    colspan="2"
+                    label="GitLab Server URL"
+                    required
+                    value=${this.serviceSpec.gitlabUrl}
                     @input=${inputChanged(this.serviceSpec, 'gitlabUrl')}
-                    label="GitLab Server URL" value=${this.serviceSpec.gitlabUrl}
-                    autoselect required>
-                </c6o-text-field>
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

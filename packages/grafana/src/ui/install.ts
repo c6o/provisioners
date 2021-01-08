@@ -16,12 +16,31 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-combo-box @selected-item-changed=${this.storageSelected} label="Grafana Storage" value=${this.serviceSpec.storage} required allow-custom-value .items=${this.values}></c6o-combo-box>
+                <c6o-combo-box
+                    allow-custom-value
+                    .items=${this.values}
+                    label="Grafana Storage"
+                    required
+                    value=${this.serviceSpec.storage}
+                    @selected-item-changed=${this.storageSelected}
+                ></c6o-combo-box>
             </c6o-form-layout>
             <c6o-form-layout>
-                <c6o-text-field @input=${this.usernameChanged} label="Administrator username" value=${this.serviceSpec.adminUsername} autoselect required></c6o-text-field>
+                <c6o-text-field
+                    autoselect
+                    label="Administrator username"
+                    required
+                    value=${this.serviceSpec.adminUsername}
+                    @input=${this.usernameChanged}
+                ></c6o-text-field>
                 <br />
-                <c6o-text-field @input=${this.passwordChanged} label="Administrator password" value=${this.serviceSpec.adminPassword} autoselect required></c6o-text-field>
+                <c6o-text-field
+                    autoselect
+                    label="Administrator password"
+                    required
+                    value=${this.serviceSpec.adminPassword}
+                    @input=${this.passwordChanged}
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

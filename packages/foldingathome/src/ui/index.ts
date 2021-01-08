@@ -12,12 +12,27 @@ export class FoldingAtHomeSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <a href='https://apps.foldingathome.org/team' target='_new'>Sign up here</a>
-                <br />
-                <br />
-                <c6o-text-field @input=${this.usernameChanged} label="Username" value=${this.serviceSpec.username || ''} autoselect></c6o-text-field>
-                <c6o-password-field @input=${this.passwordChanged} label="Pass Key" value=${this.serviceSpec.passkey || ''} autoselect></c6o-password-field>
-                <c6o-text-field @input=${this.teamChanged} label="Team Number" value=${this.serviceSpec.teamNumber || ''} autoselect></c6o-text-field>
+                <p>
+                    <a href='https://apps.foldingathome.org/team' target='_new'>Sign up here</a>
+                </p>
+                <c6o-text-field
+                    autoselect
+                    label="Username"
+                    value=${this.serviceSpec.username || ''}
+                    @input=${this.usernameChanged}
+                ></c6o-text-field>
+                <c6o-password-field
+                    autoselect
+                    label="Pass Key"
+                    value=${this.serviceSpec.passkey || ''}
+                    @input=${this.passwordChanged}
+                ></c6o-password-field>
+                <c6o-text-field
+                    autoselect
+                    label="Team Number"
+                    value=${this.serviceSpec.teamNumber || ''}
+                    @input=${this.teamChanged}
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

@@ -13,9 +13,21 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
     render() {
         return html`
             <c6o-form-layout>
-                <c6o-combo-box @selected-item-changed=${this.enviroSelected} label='Environment' value=${this.serviceSpec.environment || 'staging'} required .items=${this.enviroValues}></c6o-combo-box>
+                <c6o-combo-box
+                    .items=${this.enviroValues}
+                    label='Environment'
+                    required
+                    value=${this.serviceSpec.environment || 'staging'}
+                    @selected-item-changed=${this.enviroSelected}
+                ></c6o-combo-box>
                 <br />
-                <c6o-text-field @input=${this.emailChanged} label="Notify email address" value=${this.serviceSpec.notifyEmail || ''} autoselect required></c6o-text-field>
+                <c6o-text-field
+                    autoselect
+                    label="Notify email address"
+                    required
+                    value=${this.serviceSpec.notifyEmail || ''}
+                    @input=${this.emailChanged}
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

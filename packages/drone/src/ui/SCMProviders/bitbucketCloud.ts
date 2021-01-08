@@ -14,18 +14,22 @@ export class DroneBitbucketCloudSettings extends LitElement implements StoreFlow
     render() {
         return html`
             <c6o-form-layout>
-                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3><br />
+                <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-text-field
+                    autoselect
+                    label="BitBucket Client Id"
+                    required
+                    value=${this.serviceSpec.bitbucketClientId}
                     @input=${inputChanged(this.serviceSpec, 'bitbucketClientId')}
-                    label="BitBucket Client Id" value=${this.serviceSpec.bitbucketClientId}
-                    autoselect required>
-                </c6o-text-field>
+                ></c6o-text-field>
                 <br />
                 <c6o-text-field
+                    autoselect
+                    label="BitBucket Client Secret"
+                    required
+                    value=${this.serviceSpec.bitbucketClientSecret}
                     @input=${inputChanged(this.serviceSpec, 'bitbucketClientSecret')}
-                    label="BitBucket Client Secret" value=${this.serviceSpec.bitbucketClientSecret}
-                    autoselect required>
-                </c6o-text-field>
+                ></c6o-text-field>
             </c6o-form-layout>
         `
     }

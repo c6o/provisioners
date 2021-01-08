@@ -143,21 +143,22 @@ export class TraxittSystemSettings extends LitElement {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    ?disabled=${this.busy}
                     id='npm-combo-box'
+                    .items=${this.npmOptionsList}
                     label='Select NPM Registry'
                     required
                     value=${this.npmOptionsList[0]}
-                    .items=${this.npmOptionsList}
-                    ?disabled=${this.busy}
                 ></c6o-combo-box>
-                <c6o-text-field id='npm-url' label="Registry URL" autoselect></c6o-text-field>
-                <c6o-text-field id='npm-username' label="Registry username" autoselect required></c6o-text-field>
-                <vaadin-password-field id='npm-password' label="Registry password" autoselect required></vaadin-password-field>
+                <c6o-text-field autoselect id='npm-url' label="Registry URL" </c6o-text-field>
+                <c6o-text-field autoselect id='npm-username' label="Registry username" required></c6o-text-field>
+                <vaadin-password-field autoselect id='npm-password' label="Registry password" required></vaadin-password-field>
                 <c6o-button
                     class="inline"
+                    ?disabled=${this.busy}
                     theme="tertiary"
                     @click=${this.linkNpm}
-                    ?disabled=${this.busy}>
+                >
                     Link NPM Registry
                 </c6o-button>
             </c6o-form-layout>
@@ -171,9 +172,11 @@ export class TraxittSystemSettings extends LitElement {
                     <h3>Logger Linked</h3>
                     <c6o-button
                         class="inline"
+                        ?disabled=${this.busy}
                         theme="tertiary"
                         @click=${this.unlinkLogger}
-                        ?disabled=${this.busy}>Unlink logger in ${this.loggingLink}
+                    >
+                        Unlink logger in ${this.loggingLink}
                     </c6o-button>
                 </c6o-form-layout>
             `
@@ -181,18 +184,19 @@ export class TraxittSystemSettings extends LitElement {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    ?disabled=${this.busy}
                     id='logger-combo-box'
+                    .items=${this.loggerOptions}
                     label='Select Logger Installation'
                     required
                     value=${this.loggerOptions[0]}
-                    .items=${this.loggerOptions}
-                    ?disabled=${this.busy}
                 ></c6o-combo-box>
                 <c6o-button
                     class="inline"
+                    ?disabled=${this.busy}
                     theme="tertiary"
                     @click=${this.linkLogger}
-                    ?disabled=${this.busy}>
+                >
                     Link Logger
                 </c6o-button>
             </c6o-form-layout>
@@ -206,9 +210,10 @@ export class TraxittSystemSettings extends LitElement {
                     <h3>Prometheus Linked</h3>
                     <c6o-button
                         class="inline"
+                        ?disabled=${this.busy}
                         theme="tertiary"
                         @click=${this.unlinkPrometheus}
-                        ?disabled=${this.busy}>
+                    >
                         Unlink Prometheus in ${this.prometheusLink} for Metrics
                     </c6o-button>
                 </c6o-form-layout>
@@ -217,18 +222,19 @@ export class TraxittSystemSettings extends LitElement {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    ?disabled=${this.busy}
                     id='prometheus-combo-box'
+                    .items=${this.prometheusOptions}
                     label='Select Prometheus for Metrics'
                     required
                     value=${this.prometheusOptions[0]}
-                    .items=${this.prometheusOptions}
-                    ?disabled=${this.busy}
                 ></c6o-combo-box>
                 <c6o-button
                     class="inline"
+                    ?disabled=${this.busy}
                     theme="tertiary"
                     @click=${this.linkPrometheus}
-                    ?disabled=${this.busy}>
+                >
                     Link Prometheus
                 </c6o-button>
             </c6o-form-layout>
@@ -242,9 +248,10 @@ export class TraxittSystemSettings extends LitElement {
                     <h3>Grafana Linked</h3>
                     <c6o-button
                         class="inline"
+                        ?disabled=${this.busy}
                         theme="tertiary"
                         @click=${this.unlinkGrafana}
-                        ?disabled=${this.busy}>
+                    >
                         Unlink Grafana in ${this.grafanaLink} for Metrics
                     </c6o-button>
                 </c6o-form-layout>
@@ -253,18 +260,19 @@ export class TraxittSystemSettings extends LitElement {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    ?disabled=${this.busy}
                     id='grafana-combo-box'
+                    .items=${this.grafanaOptions}
                     label='Select Grafana for Metrics'
                     required
                     value=${this.grafanaOptions[0]}
-                    .items=${this.grafanaOptions}
-                    ?disabled=${this.busy}
                 ></c6o-combo-box>
                 <c6o-button
                     class="inline"
+                    ?disabled=${this.busy}
                     theme="tertiary"
                     @click=${this.linkGrafana}
-                    ?disabled=${this.busy}>
+                >
                     Link Grafana
                 </c6o-button>
             </c6o-form-layout>
