@@ -1,4 +1,4 @@
-import { keyValue } from "../contracts"
+import { keyValue } from '@provisioner/appengine-contracts'
 
 export function getDeploymentTemplate(
     name: string,

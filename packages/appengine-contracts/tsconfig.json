@@ -6,16 +6,9 @@
     },
     "references": [
         { "path":  "../common" },
-        { "path":  "../contracts" },
-        { "path":  "../appengine-contracts" }
+        { "path":  "../contracts" }
     ],
     "include": [
         "./src"
-    ],
-    "exclude": [
-        "src/ui",
-        "test",
-        "**/*.unit.ts",
-        "node_modules"
     ]
 }

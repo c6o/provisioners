@@ -1,29 +1,47 @@
 import { StoreFlowStep } from '@provisioner/common'
-import { customElement } from 'lit-element'
-import { TimingReporter } from '../appObject'
-import { AppEngineBaseView } from './views/appEngineBaseView'
+import { LitElement, customElement, html } from 'lit-element'
+import { AppEngineAppObject, Step, each } from '@provisioner/appengine-contracts'
+import { AppEngineStep } from './step'
 import createDebug from 'debug'
+
 const debug = createDebug('@appengine:AppEngineSettings')
 
+export interface AppEngineSettings extends StoreFlowStep {
+
+}
+
 @customElement('appengine-install-main')
-export class AppEngineSettings extends AppEngineBaseView implements StoreFlowStep {
+export class AppEngineSettings extends LitElement implements StoreFlowStep {
+
+    _manifestHelper
+    get manifestHelper(): AppEngineAppObject {
+        if (this._manifestHelper)
+            return this._manifestHelper
+        return this._manifestHelper = new AppEngineAppObject(this.mediator.applicationSpec)
+    }
 
     // NARAYAN: This is a temporary fix - do not document or use elsewhere
     skipMediatorRender = true
 
     async begin() {
 
-        await super.init()
+        if (this.manifestHelper.flow) {
 
-        this.state.startTimer('ui-main-begin')
+            debug('Received flow', this.manifestHelper.flow)
+            console.log('NSX', this.manifestHelper.flow)
 
-        if (this.manifest.hasCustomConfigFields())
-            this.mediator.appendFlow('appengine-install-configs')
-        else if (this.manifest.hasCustomSecretFields())
-            this.mediator.appendFlow('appengine-install-secrets')
-        else
-            new TimingReporter().report(this.state)
+            const stepViews = []
+            for(const step of each(this.manifestHelper.flow)) {
+                const stepView = document.createElement('appengine-step') as AppEngineStep
+                stepView.step = step as Step
+                stepViews.push(stepView)
+            }
 
-        this.state.endTimer('ui-main-begin')
+            this.mediator.appendFlow(...stepViews)
+        }
     }
+
+    // async end() {
+    //     return true
+    // }
 }

@@ -4,6 +4,7 @@
   "description": "CodeZero provisioner for appengine",
   "main": "lib/index.js",
   "scripts": {
+    "bundle-develop": "parcel serve ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
     "build": "tsc -b",
     "develop": "tsc -b -w --preserveWatchOutput",
@@ -36,9 +37,9 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@c6o/kubeclient": "^0.0.7",
+    "@provisioner/appengine-contracts": "^0.0.26",
     "@provisioner/common": "^0.0.26",
     "@provisioner/contracts": "^0.0.26",
-    "@provisioner/c6o-system": "^0.0.26",
     "chalk": "^4.1.0",
     "debug": "^4.2.0",
     "generate-password": "^1.5.1",

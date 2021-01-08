@@ -1,6 +1,6 @@
-import { mix } from "mixwith"
-import { ProvisionerBase } from "@provisioner/common"
-import { AppEngineAppObject } from "./appObject"
+import { mix } from 'mixwith'
+import { ProvisionerBase } from '@provisioner/common'
+import { AppEngineAppObject } from '@provisioner/appengine-contracts'
 
 import {
     createApplyMixin,

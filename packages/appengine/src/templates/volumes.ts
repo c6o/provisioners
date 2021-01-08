@@ -1,4 +1,4 @@
-import { Volume, keyValue } from '../contracts'
+import { Volume, keyValue } from '@provisioner/appengine-contracts'
 
 export function getPVCTemplate(volume: Volume, namespace: string, labels?: keyValue) {
 

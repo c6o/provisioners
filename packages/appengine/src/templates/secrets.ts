@@ -1,4 +1,4 @@
-import { keyValue } from '../contracts'
+import { keyValue } from '@provisioner/appengine-contracts'
 
 export function getSecretTemplate(name: string, namespace: string, data: keyValue, labels?: keyValue ) {
 

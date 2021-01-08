@@ -1,4 +1,4 @@
-import * as contracts from '../contracts'
+import * as contracts from '@provisioner/appengine-contracts'
 
 const simpleInquire: contracts.PromptType = {
     type: 'input',

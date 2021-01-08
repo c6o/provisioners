@@ -1,7 +1,7 @@
 import { KubeDocument } from '@c6o/kubeclient-contracts'
+import { keyValue } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
-import { keyValue } from '../contracts'
 import * as templates from '../templates/'
 
 const debug = createDebug('@appengine:createApply')
@@ -117,10 +117,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 return
             }
 
+            const base64Secrets : keyValue = { }
+            for(const key in this.manifestHelper.secrets)
+                base64Secrets[key] = Buffer.from(this.manifestHelper.secrets[key]).toString('base64')
+
             const createSecrets = templates.getSecretTemplate(
                 this.manifestHelper.name,
                 this.manifestHelper.namespace,
-                this.manifestHelper.base64Secrets,
+                base64Secrets,
                 this.manifestHelper.getComponentLabels()
             )
 

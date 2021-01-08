@@ -70,45 +70,133 @@ editions:
         port: 80
         automated: true
         flow:
+          - name: section1
             prompts:
-              - type: input
-                name: DB_HOST
-                message: The name of the database server (Service)
-                default: mysql.database
-                c6o:
-                  label: Database Host
-              - type: number
-                name: DB_PORT
-                message: The port of the database
-                default: 3306
-                c6o:
-                  label: Database Port
-              - type: input
-                name: DB_DATABASE
-                message: The name of the database to use
-                default: snipeit
-                c6o:
-                  label: Database name
-              - type: input
-                name: DB_USERNAME
-                message: The database user name
-                default: snipeit
-                c6o:
-                  label: Database user name
-              - type: password
-                name: DB_PASSWORD
-                message: The database user password
-                validate: return !!value
-                c6o:
-                  label: Database user password
-                  target: secrets
-              - type: input
-                name: APP_KEY
-                message: App encryption key
-                c6o:
-                  target: secrets
-                  generate:
-                    length: 16
+            - type: input
+              name: DB_HOST
+              message: The name of the database server (Service)
+              default: mysql.database
+              c6o:
+                label: Database Host
+            - type: number
+              name: DB_PORT
+              message: The port of the database
+              default: 3306
+              c6o:
+                label: Database Port
+            - type: input
+              name: DB_DATABASE
+              message: The name of the database to use
+              default: snipeit
+              c6o:
+                label: Database name
+          - name: section2
+            prompts:
+            - type: input
+              name: DB_USERNAME
+              message: The database user name
+              default: snipeit
+              c6o:
+                label: Database user name
+            - type: password
+              name: DB_PASSWORD
+              message: The database user password
+              validate: return !!value
+              c6o:
+                label: Database user password
+                target: secrets
+            - type: input
+              name: APP_KEY
+              message: App encryption key
+              c6o:
+                target: secrets
+                generate:
+                  length: 16
+
+          # sections:
+          #   - title: Configs
+          #     prompts:
+          #     - type: input
+          #       name: DB_HOST
+          #       message: The name of the database server (Service)
+          #       default: mysql.database
+          #       c6o:
+          #         label: Database Host
+          #     - type: number
+          #       name: DB_PORT
+          #       message: The port of the database
+          #       default: 3306
+          #       c6o:
+          #         label: Database Port
+          #     - type: input
+          #       name: DB_DATABASE
+          #       message: The name of the database to use
+          #       default: snipeit
+          #       c6o:
+          #         label: Database name
+          #   - title: Secrets
+          #     prompts:
+          #     - type: input
+          #       name: DB_USERNAME
+          #       message: The database user name
+          #       default: snipeit
+          #       c6o:
+          #         label: Database user name
+          #     - type: password
+          #       name: DB_PASSWORD
+          #       message: The database user password
+          #       validate: return !!value
+          #       c6o:
+          #         label: Database user password
+          #         target: secrets
+          #     - type: input
+          #       name: APP_KEY
+          #       message: App encryption key
+          #       c6o:
+          #         target: secrets
+          #         generate:
+          #           length: 16
+
+
+            # prompts:
+            #   - type: input
+            #     name: DB_HOST
+            #     message: The name of the database server (Service)
+            #     default: mysql.database
+            #     c6o:
+            #       label: Database Host
+            #   - type: number
+            #     name: DB_PORT
+            #     message: The port of the database
+            #     default: 3306
+            #     c6o:
+            #       label: Database Port
+            #   - type: input
+            #     name: DB_DATABASE
+            #     message: The name of the database to use
+            #     default: snipeit
+            #     c6o:
+            #       label: Database name
+            #   - type: input
+            #     name: DB_USERNAME
+            #     message: The database user name
+            #     default: snipeit
+            #     c6o:
+            #       label: Database user name
+            #   - type: password
+            #     name: DB_PASSWORD
+            #     message: The database user password
+            #     validate: return !!value
+            #     c6o:
+            #       label: Database user password
+            #       target: secrets
+            #   - type: input
+            #     name: APP_KEY
+            #     message: App encryption key
+            #     c6o:
+            #       target: secrets
+            #       generate:
+            #         length: 16
         configs:
           FOO_URL: '$PUBLIC_URL/index.html' # http://app-namespace.foo.codezero.cloud
           BAR_URL: '$PUBLIC_FQDN/index.html' # app-namespace.foo.codezero.cloud

@@ -1,5 +1,5 @@
+import * as contracts from '@provisioner/appengine-contracts'
 import { generate } from 'generate-password'
-import * as contracts from '../contracts'
 import chalk from 'chalk'
 import createDebug from 'debug'
 
@@ -55,7 +55,9 @@ export class FlowProcessor {
 
         if (step.skip) {
             debug('Processing skip function %o', step.skip)
-            const skipFunction =  new Function('answers',  step.skip)
+            const skipFunction = typeof step.skip === 'string' ?
+                new Function('answers',  step.skip) :
+                step.skip
             const skip = skipFunction.call(this.fnContext, this.responses)
             debug('Skip function says %s', skip)
             if (skip)

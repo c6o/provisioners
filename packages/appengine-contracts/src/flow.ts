@@ -58,7 +58,7 @@ export interface Section {
 // or inquirer questions
 export interface Step {
     name?: string
-    skip?: string
+    skip?: functionExpression
 
     // Has to have one and only one of the below
     sections?: Section[]

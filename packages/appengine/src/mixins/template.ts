@@ -2,7 +2,7 @@ import createDebug from 'debug'
 import { generate, Options } from 'generate-password'
 import { ProvisionerBase } from '@provisioner/common'
 import { baseProvisionerType } from '../'
-import { keyValueOrGenerator, isGenerateOptions } from '../contracts'
+import { keyValueOrGenerator, isGenerateOptions } from '@provisioner/appengine-contracts'
 
 const debug = createDebug('@appengine:template')
 

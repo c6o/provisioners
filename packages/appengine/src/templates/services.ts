@@ -1,5 +1,5 @@
 
-import { keyValue, ServicePort } from '../contracts'
+import { keyValue, ServicePort } from '@provisioner/appengine-contracts'
 
 export function getServiceTemplate(name: string, namespace: string, ports: ServicePort[], labels?: keyValue) {
     return {
