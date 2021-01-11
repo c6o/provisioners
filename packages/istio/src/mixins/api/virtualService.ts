@@ -1,6 +1,9 @@
 import { Result } from '@c6o/kubeclient-contracts'
 import { AppDocument, RoutesType } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
+import createDebug from 'debug'
+
+const debug = createDebug('istio:api:virtualService:')
 
 export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
 
@@ -16,7 +19,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
         for (const route of app.spec.routes) {
             if (route.disabled || route.private)
-                return
+                continue
 
             if (route.type === 'http')
                 vs.spec.http.push(this.simpleHttpSection(route))
