@@ -29,5 +29,5 @@ export class AppEngineSection extends LitElement {
             `
     }
 
-    renderTitle = () => this.section.title ? html`<h2>${this.section?.title}</h2>` : ''
+    renderTitle = () => this.section?.title ? html`<h2>${this.section.title}</h2>` : ''
 }

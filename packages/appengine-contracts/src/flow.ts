@@ -22,6 +22,7 @@ export interface c6oExtensions {
     required?: boolean
     generate?: generatorOptions
     generateMessage?: string
+    value: any
 }
 
 export interface InquirePrompt {

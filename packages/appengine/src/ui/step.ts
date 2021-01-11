@@ -1,9 +1,12 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { StoreFlowScreen } from '@provisioner/common'
+import { StoreFlowScreen, StoreFlowMediator } from '@provisioner/common'
 import { Step, each, AppEngineAppObject } from '@provisioner/appengine-contracts'
+
 
 @customElement('appengine-step')
 export class AppEngineStep extends LitElement implements StoreFlowScreen {
+
+    mediator: StoreFlowMediator
 
     @property({type: Object})
     manifestHelper: AppEngineAppObject
@@ -19,19 +22,8 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
         return html `<appengine-section .prompts=${this.step.prompts}></appengine-section>`
     }
 
-    *flattenPrompts() {
-        for(const prompt of each(this.step.prompts))
-            yield prompt
-        for(const section of this.step.sections)
-            for(const prompt of each(section.prompts))
-                yield prompt
-    }
-
     async end() {
-        // We are navigating away.
-        for(const prompt of this.flattenPrompts()) {
-
-        }
+        this.mediator.applicationSpec = this.manifestHelper.document
         return true
     }
 }

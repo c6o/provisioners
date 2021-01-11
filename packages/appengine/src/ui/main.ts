@@ -2,6 +2,7 @@ import { StoreFlowStep } from '@provisioner/common'
 import { LitElement, customElement, html } from 'lit-element'
 import { AppEngineAppObject, Step, each } from '@provisioner/appengine-contracts'
 import { AppEngineStep } from './step'
+import { AppEngineEndSettings } from './end'
 import createDebug from 'debug'
 
 const debug = createDebug('@appengine:AppEngineSettings')
@@ -29,6 +30,11 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
             debug('Received flow', this.manifestHelper.flow)
 
+            //@ts-ignore
+            window.manifestFlow = this.manifestHelper.flow
+            //@ts-ignore
+            window.mediator = this.mediator
+
             const stepViews = []
             for(const step of each(this.manifestHelper.flow)) {
                 const stepView = document.createElement('appengine-step') as AppEngineStep
@@ -37,7 +43,9 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
                 stepViews.push(stepView)
             }
 
-            this.mediator.appendFlow(...stepViews)
+            const endView = document.createElement('appengine-install-end') as AppEngineEndSettings
+
+            this.mediator.appendFlow(...stepViews, endView)
         }
     }
 

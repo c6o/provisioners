@@ -20,6 +20,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
             this.manager.document
         }
+
+        this.manifestHelper.postInquire()
     }
 
     async inquireApplicationImage(args) {
