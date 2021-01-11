@@ -21,7 +21,8 @@ export interface RoutesType {
     type: 'tcp' | 'http',
     targetService: string,
     targetPort?: number,
-    disabled?: boolean
+    disabled?: boolean,
+    private?: boolean,
     http?: {
         prefix?: string,
         rewrite?: string

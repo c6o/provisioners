@@ -87,6 +87,8 @@ spec:
                         type: number
                       disabled:
                         type: boolean
+                      private:
+                        type: boolean
                       http:
                         type: object
                         properties:
