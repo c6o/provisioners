@@ -17,7 +17,7 @@ export class AppEngineSection extends LitElement {
     render() {
         if (this.renderPrompts)
             return html`
-                ${this.section?.title ? html`<h2>${this.section?.title}</h2>` : ''}
+                ${this.renderTitle()}
                 <c6o-form-layout>
                     ${Array.isArray(this.renderPrompts) ?
                         this.renderPrompts.map(prompt => {
@@ -28,4 +28,6 @@ export class AppEngineSection extends LitElement {
                 </c6o-form-layout>
             `
     }
+
+    renderTitle = () => this.section.title ? html`<h2>${this.section?.title}</h2>` : ''
 }

@@ -28,11 +28,11 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
         if (this.manifestHelper.flow) {
 
             debug('Received flow', this.manifestHelper.flow)
-            console.log('NSX', this.manifestHelper.flow)
 
             const stepViews = []
             for(const step of each(this.manifestHelper.flow)) {
                 const stepView = document.createElement('appengine-step') as AppEngineStep
+                stepView.manifestHelper = this.manifestHelper
                 stepView.step = step as Step
                 stepViews.push(stepView)
             }
