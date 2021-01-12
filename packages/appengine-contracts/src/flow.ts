@@ -23,6 +23,7 @@ export interface c6oExtensions {
     generate?: generatorOptions
     generateMessage?: string
     value: any
+    maxlength?: number
 }
 
 export interface InquirePrompt {

@@ -72,24 +72,81 @@ editions:
         flow:
           - name: section1
             prompts:
+            - type: list
+              name: DB_HOST_list
+              message: list Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: LIST
+            - type: rawlist
+              name: DB_HOST_rawlist
+              message: rawlist Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: rawlist
+            - type: expand
+              name: DB_HOST_expand
+              message: expand Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: expand
+            - type: checkbox
+              name: DB_HOST_CHECKBOX
+              message: CHECKBOX Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: CHECKBOX
+            - type: confirm
+              name: DB_HOST_CONFIRM
+              message: CONFIRM Title
+              default: true
+              c6o:
+                label: CONFIRM
+            - type: editor
+              name: DB_HOST_EDITOR
+              message: EDITOR The name of the database server (Service)
+              default: |
+                  editor data goes here
+                  hello world
+                  this is long content
+              c6o:
+                label: EDITOR
+                maxlength: 255
             - type: input
               name: DB_HOST
               message: The name of the database server (Service)
               default: mysql.database
               c6o:
-                label: Database Host
+                label: INPUT
             - type: number
               name: DB_PORT
               message: The port of the database
               default: 3306
+              max: 32767
+              min: 1
+              step: 1
               c6o:
-                label: Database Port
-            - type: input
-              name: DB_DATABASE
-              message: The name of the database to use
-              default: snipeit
-              c6o:
-                label: Database name
+                label: NUMBER
           - name: section2
             prompts:
             - type: input
