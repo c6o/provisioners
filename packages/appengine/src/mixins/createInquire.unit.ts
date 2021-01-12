@@ -68,7 +68,7 @@ describe('App Engine Create Inquire', () => {
 
     describe('App Engine createInquire', () => {
 
-        test('App Engine: createInquire, no spec', async () => {
+        test.skip('App Engine: createInquire, no spec', async () => {
             const appEngine: Provisioner = new AppEngine()
             const no_spec_doc = { document: {} }
             appEngine.manager = no_spec_doc as any
@@ -76,7 +76,7 @@ describe('App Engine Create Inquire', () => {
             expect(result).toBeUndefined()
         })
 
-        test('App Engine: createInquire, no steps', async () => {
+        test.skip('App Engine: createInquire, no steps', async () => {
             const appEngine: Provisioner = new AppEngine()
             const provisionerMock = jest.fn()
             const no_steps_doc = { document: { spec: { provisioner: provisionerMock } } }
@@ -85,7 +85,7 @@ describe('App Engine Create Inquire', () => {
             expect(result).toBeUndefined()
         })
 
-        test('App Engine: createInquire, steps', async () => {
+        test.skip('App Engine: createInquire, steps', async () => {
             const appEngine: Provisioner = new AppEngine()
             const provisionerMock = {
                 config: {
