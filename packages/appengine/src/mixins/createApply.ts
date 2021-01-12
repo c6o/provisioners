@@ -1,89 +1,218 @@
+import { KubeDocument } from '@c6o/kubeclient-contracts'
+import { keyValue } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
-import { ApplierFactory as applierFactory } from '../applying/'
 import createDebug from 'debug'
-import { AppObject, AppManifest, TimingReporter, AppEngineState, Helper } from '../appObject'
+import * as templates from '../templates/'
 
 const debug = createDebug('@appengine:createApply')
 
+declare module '../' {
+    export interface Provisioner {
+        createDeploymentDocument: KubeDocument
+    }
+}
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    writeToLog(title, ...args) {
-        const msg = `APPX - ${title} - ${JSON.stringify(args).split('\n').join('')}`
-        debug(msg)
-        console.log(msg)
+    createDeploymentDocument: KubeDocument
+
+    get createDeploymentContainer() { return this.createDeploymentDocument.spec.template.spec.containers[0] }
+    get createDeploymentContainerEnvFrom() {
+        if (!this.createDeploymentDocument.spec.template.spec.containers[0].envFrom)
+            this.createDeploymentDocument.spec.template.spec.containers[0].envFrom = []
+        return this.createDeploymentDocument.spec.template.spec.containers[0].envFrom
     }
 
-    helper = new Helper()
-
-    pods(namespace, app) {
-        return {
-            kind: 'Pod',
-            metadata: {
-                namespace,
-                labels: {
-                    app
-                }
-            }
-        }
-    }
     async createApply() {
-        const manifest = new AppObject(this.manager.document) as AppManifest
-
-
-        if (!this.state) {
-            this.state = new AppEngineState(
-                {
-                    name: manifest.name,
-                    appId: manifest.appId,
-                    partOf: manifest.appId,
-                    edition: manifest.edition,
-                })
-        }
-
-        this.writeToLog('createApply - manifest', manifest)
-        this.writeToLog('createApply - state', this.state)
-
         try {
-            this.state.startTimer('apply')
-            await this.ensureServiceNamespacesExist()
-            await this.installApp(manifest)
-            await this.ensureAppIsRunning(manifest)
-            this.state.endTimer('apply')
-            new TimingReporter().report(this.state)
-        } catch (e) {
-            this.writeToLog('createApply', e)
+            this.manager.status?.push(`Applying App Engine to ${this.manifestHelper.name}`)
+
+            await this.ensureCreateDeployment()
+
+            // Handle templates
+            await this.processTemplates()
+            await this.createConfigs()
+            await this.createSecrets()
+
+            await this.createServices()
+            await this.createVolumes()
+
+            await this.createDeployment()
+            await this.ensureAppIsRunning()
+        }
+        finally {
+            this.manager.status?.pop()
         }
     }
 
-    async installApp(manifest: AppManifest) {
+
+    async processTemplates() {
         try {
+            this.manager.status?.push('Processing templates')
 
-            this.state.startTimer('install')
-
-            const applierType = manifest.provisioner.applier || 'ObjectApplier'
-            await applierFactory.getApplier(applierType).apply(manifest, this.state, this.manager)
-            if((manifest as any).fieldTypes) delete (manifest as any).fieldTypes
-            this.state.endTimer('install')
-        } catch (e) {
-            this.writeToLog('installApp', e)
+            await this.processTemplate(this.manifestHelper.configs, 'Processing configs templates')
+            await this.processTemplate(this.manifestHelper.secrets, 'Processing secrets templates')
+        }
+        finally {
+            this.manager.status?.pop()
         }
     }
 
-    async ensureAppIsRunning(manifest: AppManifest) {
-        try {
+    async ensureCreateDeployment() {
+        if (this.createDeploymentDocument)
+            return
+        this.createDeploymentDocument = await templates.getDeploymentTemplate(
+            this.manifestHelper.name,
+            this.manifestHelper.namespace,
+            this.manifestHelper.image,
+            this.manifestHelper.getComponentLabels(),
+            this.manifestHelper.tag,
+            this.manifestHelper.imagePullPolicy,
+            this.manifestHelper.command,
+        )
+    }
 
-            this.state.startTimer('watch-pod')
-            await this.manager.cluster.
-                begin(`Ensure ${manifest.displayName} services are running`)
-                .beginWatch(this.pods(manifest.namespace, manifest.appId))
-                .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
-                    processor.endWatch()
-                })
+    async createConfigs() {
+        let skipped = false
+        try {
+            this.manager.status?.push('Installing configuration settings')
+
+            if (!this.manifestHelper.hasConfigs) {
+                skipped = true
+                return
+            }
+
+            const createConfigMap = templates.getConfigTemplate(
+                this.manifestHelper.name,
+                this.manifestHelper.namespace,
+                this.manifestHelper.configs as keyValue,
+                this.manifestHelper.getComponentLabels()
+            )
+
+            await this.manager.cluster
+                .begin()
+                .addOwner(this.manager.document)
+                .upsert(createConfigMap)
                 .end()
-            this.state.endTimer('watch-pod')
-        } catch (e) {
-            this.writeToLog('ensureAppIsRunning', e)
+
+            this.createDeploymentContainerEnvFrom.push({
+                configMapRef: {
+                    name: createConfigMap.metadata.name
+                }
+            })
+
+        }
+        finally {
+            debugger
+            this.manager.status?.pop(skipped)
         }
     }
 
+    async createSecrets() {
+        let skipped = false
+        try {
+            this.manager.status?.push('Installing secret settings')
+
+            if (!this.manifestHelper.hasConfigs) {
+                skipped = true
+                return
+            }
+
+            const base64Secrets : keyValue = { }
+            for(const key in this.manifestHelper.secrets)
+                base64Secrets[key] = Buffer.from(this.manifestHelper.secrets[key]).toString('base64')
+
+            const createSecrets = templates.getSecretTemplate(
+                this.manifestHelper.name,
+                this.manifestHelper.namespace,
+                base64Secrets,
+                this.manifestHelper.getComponentLabels()
+            )
+
+            await this.manager.cluster
+                .begin()
+                .addOwner(this.manager.document)
+                .upsert(createSecrets)
+                .end()
+
+            this.createDeploymentContainerEnvFrom.push({
+                secretRef: {
+                    name: createSecrets.metadata.name
+                }
+            })
+
+        }
+        finally {
+            this.manager.status?.pop(skipped)
+        }
+    }
+
+
+    async createVolumes() {
+        let skipped = false
+
+        try {
+            this.manager.status?.push('Installing volumes')
+
+            if (!this.manifestHelper.hasVolumes) {
+                skipped = true
+                return
+            }
+
+        // TODO: RobC
+
+        }
+        finally {
+            this.manager.status?.pop(skipped)
+        }
+    }
+
+    async createServices() {
+        let skipped = false
+        try {
+            this.manager.status?.push('Installing networking services')
+
+            if (!this.manifestHelper.hasPorts) {
+                skipped = true
+                return
+            }
+
+            const createService = templates.getServiceTemplate(
+                this.manifestHelper.name,
+                this.manifestHelper.namespace,
+                this.manifestHelper.getServicePorts(),
+                this.manifestHelper.getComponentLabels()
+            )
+
+            debug('Installing Networking Services: %O', this.deployment)
+
+            await this.manager.cluster
+                .begin()
+                    .addOwner(this.manager.document)
+                    .upsert(createService)
+                .end()
+
+            this.createDeploymentContainer.ports = this.manifestHelper.getDeploymentPorts()
+        }
+        finally {
+            this.manager.status?.pop(skipped)
+        }
+    }
+
+    async createDeployment() {
+        await this.manager.cluster
+            .begin('Creating the deployment')
+            .addOwner(this.manager.document)
+            .upsert(this.createDeploymentDocument)
+            .end()
+    }
+
+    async ensureAppIsRunning() {
+        await this.manager.cluster.
+            begin(`Ensure ${this.manifestHelper.name} services are running`)
+            .beginWatch(templates.getPodTemplate(this.manifestHelper.name, this.manifestHelper.namespace))
+            .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
+                processor.endWatch()
+            })
+            .end()
+    }
 }
