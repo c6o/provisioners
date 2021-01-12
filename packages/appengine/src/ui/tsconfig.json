@@ -9,7 +9,7 @@
         "removeComments": true,
         "noLib": false,
         "outDir": "./lib",
-        "rootDir": "./",
+        "rootDir": "../",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,
@@ -22,8 +22,8 @@
         ],
     },
     "references": [
-        {
-            "path": "../../../common"
-        }
+        { "path": "../../../common" },
+        { "path": "../../../contracts" },
+        { "path": "../../../appengine-contracts" }
     ]
 }

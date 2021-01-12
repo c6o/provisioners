@@ -18,7 +18,7 @@ export interface ProvisionerManager {
     toNamespaceObject(namespace) : KubeObject
     getProvisioner(appDoc: AppDocument, service?: string): Promise<ProvisionerBase>
     getInstalledServices(interfaceName): Promise<Array<AppDocument>>
-    getAppProvisioner(appName: string, appNamespace: string)
+    getAppProvisioner(appName: string, appNamespace: string): Promise<ProvisionerBase>
     getProvisionerModule(serviceName: string, npmPackage?:string ): Promise<ProvisionerBase>
     getInstalledApp(name: string, namespace: string ): Promise<AppDocument>
     getInstalledApps(appName: string): Promise<Array<AppDocument>>

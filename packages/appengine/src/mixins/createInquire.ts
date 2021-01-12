@@ -1,160 +1,96 @@
 import { baseProvisionerType } from '../index'
-import { parser } from '../parser'
-import { AppEngineState, AppManifest, AppObject, Helper } from '../appObject'
+import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import createDebug from 'debug'
+import { keyValue } from '@provisioner/appengine-contracts'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
-    helper = new Helper()
-
     async createInquire(args) {
-        const manifest = new AppObject(this.manager.document) as AppManifest
+        if (!this.manifestHelper.image)
+            await this.inquireApplicationImage(args)
 
-        this.state = new AppEngineState(
-            {
-                name: manifest.name,
-                appId: manifest.appId,
-                partOf: manifest.appId,
-                edition: manifest.edition,
-            }, args)
-
-        this.state.platform = 'Console'
-        this.state.startTimer('inquire')
-
-        const answers = {
-            image: args['image'] || manifest.provisioner.image,
-            name: args['name'] || manifest.appId,
+        // Steps will come from the applicationSpec but for now, we use test data
+        if (this.manifestHelper.flow) {
+            // Let the flowProcessor run inquire
+            const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
+            const result = await flowProcessor.process(this.manifestHelper.flow)
+            this.manifestHelper.processResult(result)
         }
 
-        const automated = args['automated'] || manifest.provisioner.automated
+        this.manifestHelper.postInquire()
+    }
 
-        debug('Inquire started\n', 'manifest:\n', manifest, 'args:\n', args)
+    async inquireApplicationImage(args) {
+        const answers = {
+            tag: this.manifestHelper.tag || 'latest',
+            image: this.manifestHelper.image
+        }
 
         const responses = await this.manager.inquirer?.prompt([
             {
                 type: 'input',
                 name: 'image',
                 message: 'Which docker image would you like to use?',
-                default: 'xperimental/goecho:v1.7',
                 validate: r => r !== '' //non empty string
             },
             {
                 type: 'input',
-                name: 'name',
-                message: 'What would you like to name this deployment?',
-                default: 'echoserver',
+                name: 'tag',
+                message: 'Which image tag would you like to use?',
                 validate: r => r !== '' //non empty string
             }
         ], answers)
 
+        this.manifestHelper.provisioner.tag = responses.tag
+        this.manifestHelper.provisioner.image = responses.image
 
-
-        manifest.provisioner.image = responses.image
-        manifest.provisioner.name = responses.name
-        manifest.provisioner.edition = manifest.edition
-
-        await parser.parseInputsToSpec(args, manifest)
-
-        manifest.provisioner.configs = await this.askConfig(args, automated, manifest.provisioner.configs)
-        manifest.provisioner.secrets = await this.askSecrets(args, automated, manifest.provisioner.secrets)
-        manifest.provisioner.ports = await this.askPorts(args, automated, manifest.provisioner.ports)
-        manifest.provisioner.volumes = await this.askVolumes(args, automated, manifest.provisioner.volumes)
-
-        this.state.endTimer('inquire')
+        await this.askSettings('configs', args)
+        await this.askSettings('secrets', args)
+        // TODO: Volumes and Ports
 
     }
 
-
-    async askConfig(args, automated, configs) {
-
-        if (configs.length > 0 || automated) return configs
-
-        let responses = { hasConfig: false, configName: '', configValue: '', envName: '' }
-
+    async askSettings(type: 'configs' | 'secrets', args) {
+        const configs: keyValue = {}
+        const typeDisplay = type === 'configs' ? 'configuration' : 'secret'
         do {
-            responses = await this.manager.inquirer?.prompt([
+            const responses = await this.manager.inquirer?.prompt([
                 {
                     type: 'confirm',
-                    name: 'hasConfig',
-                    message: 'Would you like to add a configuration parameter?',
+                    name: 'hasVal',
+                    message: `Would you like to add a ${typeDisplay} parameter?`,
                     default: false,
                 },
                 {
                     type: 'input',
-                    name: 'configName',
-                    message: 'What is configuration parameter name?',
+                    name: 'key',
+                    message: `What is ${typeDisplay} parameter name?`,
                     when: r => r.hasConfig,
                     validate: r => r !== '' //non empty string
                 },
                 {
                     type: 'input',
-                    name: 'configValue',
-                    message: 'What is configuration parameter value?',
+                    name: 'value',
+                    message: `What is ${typeDisplay} parameter value?`,
                     when: r => r.hasConfig,
                     validate: r => r !== '' //non empty string
-                },
-                {
-                    type: 'input',
-                    name: 'envName',
-                    message: 'Container environment variable name (optional)?',
-                    when: r => r.hasConfig
                 }
             ])
 
-            if (responses.hasConfig)
-                configs.push({ name: responses.configName, value: responses.configValue, env: responses.envName })
+            if (responses.hasVal)
+                configs[responses.key] = responses.value
+            else
+                break
 
-        } while (responses.hasConfig)
+        } while (true)
 
-        return configs
-
-    }
-
-    async askSecrets(args, automated, secrets) {
-
-        if (secrets && secrets.length > 0 || automated) return secrets
-
-        let responses = { hasSecret: false, secretName: '', secretValue: '', envName: '' }
-
-        do {
-            responses = await this.manager.inquirer?.prompt([
-                {
-                    type: 'confirm',
-                    name: 'hasSecret',
-                    message: 'Would you like to add a secret?',
-                    default: false
-                },
-                {
-                    type: 'input',
-                    name: 'secretName',
-                    message: 'What is secret name?',
-                    when: r => r.hasSecret,
-                    validate: r => r !== '' //non empty string
-                },
-                {
-                    type: 'input',
-                    name: 'secretValue',
-                    message: 'What is secret value?',
-                    when: r => r.hasSecret,
-                    validate: r => r !== '' //non empty string
-                },
-                {
-                    type: 'input',
-                    name: 'envName',
-                    message: 'Container environment variable name (optional)?',
-                    when: r => r.hasSecret
-                }
-            ])
-
-            if (responses.hasSecret)
-                secrets.push({ name: responses.secretName, value: responses.secretValue, env: responses.envName })
-
-        } while (responses.hasSecret)
-
-        return secrets
-
+        this.manifestHelper.processResult({
+            [type]: {
+                ...configs
+            }
+        })
     }
 
     async askPorts(args, automated, ports) {

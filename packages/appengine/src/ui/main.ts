@@ -1,29 +1,55 @@
 import { StoreFlowStep } from '@provisioner/common'
-import { customElement } from 'lit-element'
-import { TimingReporter } from '../appObject'
-import { AppEngineBaseView } from './views/appEngineBaseView'
+import { LitElement, customElement, html } from 'lit-element'
+import { AppEngineAppObject, Step, each } from '@provisioner/appengine-contracts'
+import { AppEngineStep } from './step'
+import { AppEngineEndSettings } from './end'
 import createDebug from 'debug'
+
 const debug = createDebug('@appengine:AppEngineSettings')
 
+export interface AppEngineSettings extends StoreFlowStep {
+
+}
+
 @customElement('appengine-install-main')
-export class AppEngineSettings extends AppEngineBaseView implements StoreFlowStep {
+export class AppEngineSettings extends LitElement implements StoreFlowStep {
+
+    _manifestHelper
+    get manifestHelper(): AppEngineAppObject {
+        if (this._manifestHelper)
+            return this._manifestHelper
+        return this._manifestHelper = new AppEngineAppObject(this.mediator.applicationSpec)
+    }
 
     // NARAYAN: This is a temporary fix - do not document or use elsewhere
     skipMediatorRender = true
 
     async begin() {
 
-        await super.init()
+        if (this.manifestHelper.flow) {
 
-        this.state.startTimer('ui-main-begin')
+            debug('Received flow', this.manifestHelper.flow)
 
-        if (this.manifest.hasCustomConfigFields())
-            this.mediator.appendFlow('appengine-install-configs')
-        else if (this.manifest.hasCustomSecretFields())
-            this.mediator.appendFlow('appengine-install-secrets')
-        else
-            new TimingReporter().report(this.state)
+            //@ts-ignore
+            window.manifestFlow = this.manifestHelper.flow
+            //@ts-ignore
+            window.mediator = this.mediator
 
-        this.state.endTimer('ui-main-begin')
+            const stepViews = []
+            for(const step of each(this.manifestHelper.flow)) {
+                const stepView = document.createElement('appengine-step') as AppEngineStep
+                stepView.manifestHelper = this.manifestHelper
+                stepView.step = step as Step
+                stepViews.push(stepView)
+            }
+
+            const endView = document.createElement('appengine-install-end') as AppEngineEndSettings
+
+            this.mediator.appendFlow(...stepViews, endView)
+        }
     }
+
+    // async end() {
+    //     return true
+    // }
 }

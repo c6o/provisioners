@@ -69,53 +69,209 @@ editions:
         tag-prefix: appengine
         port: 80
         automated: true
+        flow:
+          - name: section1
+            prompts:
+            - type: list
+              name: DB_HOST_list
+              message: list Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: LIST
+            - type: rawlist
+              name: DB_HOST_rawlist
+              message: rawlist Title
+              default: 0
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: rawlist
+            - type: expand
+              name: DB_HOST_expand
+              message: expand Title
+              default: false
+              choices:
+                - key: y
+                  name: Overwrite
+                  value: overwrite
+                - key: a
+                  name: Overwrite this one and all next
+                  value: overwrite_all
+                - key: d
+                  name: Show Diff
+                  value: diff
+                - <<separator>>
+                - key: x
+                  name: Abort
+                  value: abort
 
-        config:
+              c6o:
+                label: expand
+            - type: checkbox
+              name: DB_HOST_CHECKBOX
+              message: CHECKBOX Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: CHECKBOX
+            - type: confirm
+              name: DB_HOST_CONFIRM
+              message: CONFIRM Title
+              default: true
+              c6o:
+                label: CONFIRM
+            - type: editor
+              name: DB_HOST_EDITOR
+              message: EDITOR The name of the database server (Service)
+              default: |
+                  editor data goes here
+                  hello world
+                  this is long content
+              c6o:
+                label: EDITOR
+                maxlength: 255
+            - type: input
+              name: DB_HOST
+              message: The name of the database server (Service)
+              default: mysql.database
+              c6o:
+                label: INPUT
+            - type: number
+              name: DB_PORT
+              message: The port of the database
+              default: 3306
+              max: 32767
+              min: 1
+              step: 1
+              c6o:
+                label: NUMBER
+          - name: section2
+            prompts:
+            - type: input
+              name: DB_USERNAME
+              message: The database user name
+              default: snipeit
+              c6o:
+                label: Database user name
+            - type: password
+              name: DB_PASSWORD
+              message: The database user password
+              validate: return !!value
+              c6o:
+                label: Database user password
+                target: secrets
+            - type: input
+              name: APP_KEY
+              message: App encryption key
+              c6o:
+                target: secrets
+                generate:
+                  length: 16
 
-          - name: DB_HOST
-            label: Database Host
-            hint: The name of the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: mysql.database
+          # sections:
+          #   - title: Configs
+          #     prompts:
+          #     - type: input
+          #       name: DB_HOST
+          #       message: The name of the database server (Service)
+          #       default: mysql.database
+          #       c6o:
+          #         label: Database Host
+          #     - type: number
+          #       name: DB_PORT
+          #       message: The port of the database
+          #       default: 3306
+          #       c6o:
+          #         label: Database Port
+          #     - type: input
+          #       name: DB_DATABASE
+          #       message: The name of the database to use
+          #       default: snipeit
+          #       c6o:
+          #         label: Database name
+          #   - title: Secrets
+          #     prompts:
+          #     - type: input
+          #       name: DB_USERNAME
+          #       message: The database user name
+          #       default: snipeit
+          #       c6o:
+          #         label: Database user name
+          #     - type: password
+          #       name: DB_PASSWORD
+          #       message: The database user password
+          #       validate: return !!value
+          #       c6o:
+          #         label: Database user password
+          #         target: secrets
+          #     - type: input
+          #       name: APP_KEY
+          #       message: App encryption key
+          #       c6o:
+          #         target: secrets
+          #         generate:
+          #           length: 16
 
 
-          - name: DB_PORT
-            label: Database Port
-            hint: The port of the database
-            required: true
-            autoselect: true
-            fieldType: text
-            value: 3306
+            # prompts:
+            #   - type: input
+            #     name: DB_HOST
+            #     message: The name of the database server (Service)
+            #     default: mysql.database
+            #     c6o:
+            #       label: Database Host
+            #   - type: number
+            #     name: DB_PORT
+            #     message: The port of the database
+            #     default: 3306
+            #     c6o:
+            #       label: Database Port
+            #   - type: input
+            #     name: DB_DATABASE
+            #     message: The name of the database to use
+            #     default: snipeit
+            #     c6o:
+            #       label: Database name
+            #   - type: input
+            #     name: DB_USERNAME
+            #     message: The database user name
+            #     default: snipeit
+            #     c6o:
+            #       label: Database user name
+            #   - type: password
+            #     name: DB_PASSWORD
+            #     message: The database user password
+            #     validate: return !!value
+            #     c6o:
+            #       label: Database user password
+            #       target: secrets
+            #   - type: input
+            #     name: APP_KEY
+            #     message: App encryption key
+            #     c6o:
+            #       target: secrets
+            #       generate:
+            #         length: 16
+        configs:
+          FOO_URL: '$PUBLIC_URL/index.html' # http://app-namespace.foo.codezero.cloud
+          BAR_URL: '$PUBLIC_FQDN/index.html' # app-namespace.foo.codezero.cloud
 
-
-          - name: DB_DATABASE
-            label: Database name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: snipeit
-
-          - name: DB_USERNAME
-            label: Database user name
-            hint: The username for the database user
-            required: true
-            autoselect: true
-            fieldType: text
-            value: snipeit
-
-        secret:
-          - name: DB_PASSWORD
-            label: Database password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
-
-          - name: APP_KEY
-            value: $RANDOM:32
+        secrets:
+          TEST_APP_KEY:
+            generate:
+              length: 16
       marina:
         launch:
           type: inline
@@ -134,120 +290,6 @@ editions:
         tag-prefix: appengine
         port: 80
         automated: true
-
-#stages:
-#1. Scan all "features", and create specs internally for each
-#2. Take the "values" and apply them to each features spec
-#3. Apply all features into the cluster
-#4. Apply the "script" section to the feature.  This will be very hard coded
-#5. Take the finished spec from each feature, and apply mappings to the App being installed
-#6. Install the App requested
-
-#Drawback, cant map values from one feature to another
-#Scripts and their relationship with the feature will be very fixed (mysql, mariadb, etc..)  AppEngine will need to support all database types and such to execute these scripts against
-
-
-        link:
-            #WHICH DEPENDANCIES/FEATURES TO INSTALL
-            dependancies:
-              - name: mysql
-                spec:
-                  edition: internal
-                  package: '@provisioner/appengine'
-                  tag-prefix: appengine
-                  tag: latest
-                  image: mysql
-                  ports:
-                    - port: 3306
-                      protocol: TCP
-                      name: mysql
-                  volumes:
-                    - size: 5Gi
-                      mountPath: /data
-                      name: mysql-data
-                #POST INSTALL THE FEATURE
-                  #RUN THE SCRIPT AGAINST THE DATABASE
-                  #CAPTURE OUTPUT, CONSOLE.LOG THE RESULT
-                  scripts:
-                      - script: CREATE DATABASE snipeit;
-                      - script: CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
-                      - script: ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
-                      - script: GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
-                      - script: FLUSH PRIVILEGES;
-
-                  #RUN THE SCRIPT AGAINST THE CLUSTER/NAMESPACE/POD
-                  #kubectl exec shell-demo -- ls -la
-                  #will take the output and console.log the result
-                  # command:
-                  #   ls -la
-              #PRE INSTALL FEATURES
-            values:
-              - item:
-                  source:
-                      value: $RANDOM:32
-                  destination:
-                      name: mysql
-                      type: secrets
-                      field: MYSQL_ROOT_PASSWORD
-              - item:
-                  source:
-                      value: 3306
-                  destination:
-                      name: snipeit
-                      type: configs
-                      field: DB_PORT
-
-              - item:
-                  source:
-                      value: 3306
-                  destination:
-                      name: mysql
-                      type: configs
-                      field: DB_PORT
-
-              - item:
-                  source:
-                      value: snipeit
-                  destination:
-                      name: snipeit
-                      type: configs
-                      field: DB_DATABASE
-
-              - item:
-                  source:
-                      value: snipeit
-                  destination:
-                      name: snipeit
-                      type: configs
-                      field: DB_USERNAME
-
-              - item:
-                  source:
-                    value: '88888888'
-                  destination:
-                      name: snipeit
-                      type: secrets
-                      field: DB_PASSWORD
-
-              - item:
-                  source:
-                      value: $RANDOM:32
-                  destination:
-                      name: snipeit
-                      type: configs
-                      field: APP_KEY
-
-            #POST INSTALL ALL FEATURES, PRE INSTALL APP
-            mappings:
-              - item:
-                  source:
-                    name: mysql
-                    type: configs
-                    field: DB_HOST
-                  destination:
-                      name: snipeit
-                      type: configs
-                      field: DB_HOST
 
       marina:
         launch:
