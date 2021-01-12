@@ -86,7 +86,7 @@ editions:
             - type: rawlist
               name: DB_HOST_rawlist
               message: rawlist Title
-              default: false
+              default: 0
               choices:
                 - Order a pizza
                 - Make a reservation
@@ -99,10 +99,20 @@ editions:
               message: expand Title
               default: false
               choices:
-                - Order a pizza
-                - Make a reservation
-                - Ask for opening hours
-                - Talk to the receptionist
+                - key: y
+                  name: Overwrite
+                  value: overwrite
+                - key: a
+                  name: Overwrite this one and all next
+                  value: overwrite_all
+                - key: d
+                  name: Show Diff
+                  value: diff
+                - <<separator>>
+                - key: x
+                  name: Abort
+                  value: abort
+
               c6o:
                 label: expand
             - type: checkbox

@@ -17,8 +17,6 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
             const result = await flowProcessor.process(this.manifestHelper.flow)
             this.manifestHelper.processResult(result)
-
-            this.manager.document
         }
 
         this.manifestHelper.postInquire()
