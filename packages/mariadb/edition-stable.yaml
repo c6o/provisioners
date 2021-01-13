@@ -1,0 +1,30 @@
+name: stable
+status: public
+default: true
+spec:
+  routes:
+    - type: tcp
+      targetService: mysql
+      tcp:
+        port: 3306
+        name: mariadb
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: mariadb
+    port: 3306
+    flow:
+      prompts:
+        - type: password
+          name: MYSQL_ROOT_PASSWORD
+          message: Password for the root user
+          c6o:
+            label: Root password
+            target: secrets
+            generateMessage: Generate a root user password?
+            generate:
+              length: 16
+    volume:
+      - size: 5Gi
+        mountPath: /data
+        name: mariadb-data

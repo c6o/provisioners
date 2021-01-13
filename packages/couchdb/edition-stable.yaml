@@ -1,0 +1,37 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: couchdb
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: couchdb
+    port: 5984
+    flow:
+      prompts:
+        - type: input
+          name: COUCHDB_USER
+          default: root
+          message: The administrator username
+          c6o:
+            label: Admin Username
+        - type: password
+          name: COUCHDB_PASSWORD
+          message: Password for the administrator user
+          c6o:
+            label: Admin Password
+            target: secrets
+            generateMessage: Generate a strong password?
+            generate:
+              length: 16
+    volume:
+      - size: 5Gi
+        mountPath: /opt/couchdb/data
+        name: couchdb-data
+  marina:
+    launch:
+      type: inline
+      popUp: true
+      path: /_utils/

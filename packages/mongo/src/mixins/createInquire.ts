@@ -1,5 +1,10 @@
 import { baseProvisionerType } from '../'
 
+declare module '../' {
+    export interface Provisioner {
+        hasDatabasesToConfigure: boolean
+    }
+}
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     get hasDatabasesToConfigure() {
@@ -11,28 +16,24 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     }
 
     async inquire(args) {
-        if (this.hasDatabasesToConfigure && !this.providedSecretKeyRef(args)) {
-            // Spec has databases to be configured but does not specify
-            // the secret key reference where to put the connection strings once configured
-
-            const answers = {
-                storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
-                secretKeyRef: args['secret-key-ref'] || this.spec.secretKeyRef
-            }
-
-            const responses = await this.manager.inquirer?.prompt(
-                this.inquireStorageClass({
-                    name: 'storageClass'
-                }),
-                {
-                    type: 'input',
-                    name: 'secretKeyRef',
-                    default: 'mongo-connections',
-                    message: 'Where should connection strings be stored?'
-                }, answers)
-
-            return responses
+        const answers = {
+            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
+            secretKeyRef: args['secret-key-ref'] || this.spec.secretKeyRef
         }
+
+        const responses = await this.manager.inquirer?.prompt(
+            this.inquireStorageClass({
+                name: 'storageClass'
+            }),
+            {
+                type: 'input',
+                name: 'secretKeyRef',
+                default: 'mongo-connections',
+                message: 'Where should connection strings be stored?',
+                when: () => this.hasDatabasesToConfigure && !this.providedSecretKeyRef(args)
+            }, answers)
+
+        return responses
     }
 
     async createInquire(args) {

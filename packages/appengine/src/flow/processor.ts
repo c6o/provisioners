@@ -26,8 +26,8 @@ export class FlowProcessor {
         }
 
         // Extract the responses and extensions from steps
-        if (steps !== '$unset')
-        {
+        if (steps !== '$unset') {
+
             for (const step of contracts.each(steps))
                 await this.processStep(step)
 
@@ -170,6 +170,9 @@ export class FlowProcessor {
         }
     }
 
+    // This will likely have to move somewhere the web ui can use
+    toGenerateQueryName = (name) => `${name}-C60-GENERATE`
+
     /**
      * Adds a pre-prompt if the field allows a generated answer
      * @param inquire
@@ -177,7 +180,7 @@ export class FlowProcessor {
      */
     handleGenerate(inquire: contracts.InquirePrompt, c6o: contracts.c6oExtensions, prompts: contracts.InquirePrompt[]) {
         if (c6o?.generate) {
-            const queryName = `${inquire.name}-C60-GENERATE`
+            const queryName = this.toGenerateQueryName(inquire.name)
 
             // Prompt the user if they would like to use a generated value
             const query: contracts.InquirePrompt = {
@@ -203,8 +206,11 @@ export class FlowProcessor {
     postProcessGenerates() {
         for(const pair of this.generates) {
             const [stepName, generateOptions] = pair
-            debug('Post processing generate step %s %o', stepName, generate)
-            this.responses[stepName] = generate(generateOptions)
+            // generateQueryName holds whether the user confirmed generate
+            const generateQueryName = this.toGenerateQueryName(stepName)
+            debug('Post processing generate step %s %s %o', generateQueryName, stepName, generate)
+            if (this.responses[generateQueryName])
+                this.responses[stepName] = generate(generateOptions)
         }
     }
 }
