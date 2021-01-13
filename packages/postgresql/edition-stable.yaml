@@ -1,0 +1,36 @@
+name: stable
+status: public
+spec:
+  routes:
+      - type: tcp
+        targetService: postgresql
+        tcp:
+          port: 5432
+          name: postgresql
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    tag: 12-alpine
+    image: postgres
+    port: 5432
+    volume:
+      - size: 5Gi
+        mountPath: /data
+        name: postgresql-data
+    flow:
+      prompts:
+        - type: input
+          name: POSTGRES_USER
+          default: root
+          message: The administrator username
+          c6o:
+            label: Admin Username
+        - type: password
+          name: POSTGRES_PASSWORD
+          message: Password for the administrator user
+          c6o:
+            label: Admin Password
+            target: secrets
+            generateMessage: Generate a strong password?
+            generate:
+              length: 16

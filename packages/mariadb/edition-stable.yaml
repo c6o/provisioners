@@ -15,7 +15,7 @@ spec:
     port: 3306
     flow:
       prompts:
-        - type: input
+        - type: password
           name: MYSQL_ROOT_PASSWORD
           message: Password for the root user
           c6o:
