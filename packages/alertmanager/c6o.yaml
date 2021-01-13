@@ -25,20 +25,4 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
-    status: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: alertmanager
-      provisioner:
-        tag-prefix: appengine
-        package: '@provisioner/appengine'
-        image: prom/alertmanager
-        port: 9093
-        automated: true
-      marina:
-        launch:
-          type: inline
-          popUp: true
+  - edition-stable.yaml
