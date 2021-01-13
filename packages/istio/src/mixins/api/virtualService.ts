@@ -1,4 +1,4 @@
-import { Result } from '@c6o/kubeclient-contracts'
+import { Result, KubeDocument } from '@c6o/kubeclient-contracts'
 import { AppDocument, RoutesType } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
 
@@ -159,9 +159,20 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         }
     })
 
-    async getGateway() {
-        return await this.manager.cluster.read(this.gateway)
+    async getGateway(): Promise<KubeDocument> {
+        const result = await this.manager.cluster.read(this.gateway)
+        if (result.error)
+            throw new Error(result.errorMessage)
+        return result.object
     }
+
+    async getLoadBalancer(): Promise<KubeDocument> {
+        const result = await this.manager.cluster.read(this.loadBalancer)
+        if (result.error)
+            throw new Error(result.errorMessage)
+        return result.object
+    }
+
 
     generateUsablePortNumber() {
         return Math.floor(Math.random() * (65535 - 1024 + 1)) + 1024 // usable port range between 1024 and 65535
@@ -172,7 +183,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         let portNumber = this.getTcpPortNumber(route)
 
         // the LoadBalancer is the source of truth since it's the first layer
-        const loadBalancerPorts = (await this.getLoadBalancer()).object.spec.ports
+        const loadBalancer = await this.getLoadBalancer()
+        const loadBalancerPorts = loadBalancer.spec.ports
         let conflict = loadBalancerPorts.some(item => item.port === portNumber && item.name !== portName)
         if (conflict && route.tcp?.strictPort)
             throw new Error('Port conflict encountered with .tcp.strictPort route setting')
@@ -186,7 +198,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     }
 
     async addTcpPortGateway(route: RoutesType) {
-        const gatewayServers = (await this.getGateway()).object.spec.servers
+        const gateway = await this.getGateway()
+        const gatewayServers: any[] = gateway.spec.servers
 
         const item = this.gatewayTcpPortTemplate(route)
         const alreadyExists = gatewayServers.find(item => item.port?.name === this.getTcpPortName(route))
@@ -198,7 +211,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     }
 
     async removeTcpPortGateway(route: RoutesType) {
-        const gatewayServers: any[] = (await this.getGateway()).object.spec.servers
+        const gateway = await this.getGateway()
+        const gatewayServers: any[] = gateway.spec.servers
 
         const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route));
         if (index !== -1) {
@@ -215,10 +229,6 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         }
     }
 
-    async getLoadBalancer() {
-        return await this.manager.cluster.read(this.loadBalancer)
-    }
-
     loadBalancerTcpPortTemplate = (route: RoutesType) => ({
         name: this.getTcpPortName(route),
         protocol: 'TCP',
@@ -227,7 +237,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     })
 
     async addTcpPortLoadBalancer(route: RoutesType) {
-        const loadBalancerPorts = (await this.getLoadBalancer()).object.spec.ports
+        const loadBalancer = await this.getLoadBalancer()
+        const loadBalancerPorts = loadBalancer.spec.ports
 
         const item = this.loadBalancerTcpPortTemplate(route)
         const alreadyExists = loadBalancerPorts.find(item => item.name === this.getTcpPortName(route))

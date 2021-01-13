@@ -102,7 +102,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            debugger
             this.manager.status?.pop(skipped)
         }
     }
@@ -112,7 +111,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing secret settings')
 
-            if (!this.manifestHelper.hasConfigs) {
+            if (!this.manifestHelper.hasSecrets) {
                 skipped = true
                 return
             }
