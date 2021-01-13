@@ -30,7 +30,7 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: developer
+  - name: stable
     status: public
     default: true
     spec:
@@ -46,44 +46,18 @@ editions:
         image: mariadb
         port: 3306
         automated: true
-        secret:
-          - name: MYSQL_ROOT_PASSWORD
-            label: Root password
-            hint: Password for the root user
-            required: true
-            autoselect: true
-            fieldType: password
+        flow:
+          prompts:
+            - type: input
+              name: MYSQL_ROOT_PASSWORD
+              message: Password for the root user
+              c6o:
+                label: Root password
+                target: secrets
+                generateMessage: Generate a root user password?
+                generate:
+                  length: 16
         volume:
           - size: 5Gi
             mountPath: /data
             name: mariadb-data
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-  - name: developerinternal
-    status: public
-    default: true
-    spec:
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: mariadb
-        port: 3306
-        automated: true
-        config:
-        secret:
-          - name: MYSQL_ROOT_PASSWORD
-            label: Root password
-            hint: Password for the root user
-            required: true
-            autoselect: true
-            fieldType: password
-        volume:
-          - size: 5Gi
-            mountPath: /data
-            name: mariadb-data
-      marina:
-        launch:
-          type: none
