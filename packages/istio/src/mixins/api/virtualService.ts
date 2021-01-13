@@ -9,7 +9,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
     app: AppDocument
 
-    async createVirtualService(app: AppDocument, gateway: string): Promise<Result> {
+    async upsertVirtualService(app: AppDocument, gateway: string): Promise<Result> {
         this.app = app
 
         if (!app.spec.routes)
