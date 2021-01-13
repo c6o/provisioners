@@ -31,20 +31,4 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
-    status: public
-    default: true
-    spec:
-      routes:
-        - type: http
-          targetService: chronograf
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: chronograf
-        port: 8888
-        automated: true
-      marina:
-        launch:
-          type: inline
-          popUp: true
+  - edition-stable.yaml
