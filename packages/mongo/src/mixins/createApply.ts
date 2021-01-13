@@ -95,6 +95,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     
     /** Port forwards and connects to the mongoDb and initiates a provision */
     async ensureMongoDbIsProvisioned() {
+        if (!this.hasDatabasesToConfigure) {
+            this.manager.status?.push('Setting up mongo databases')
+            this.manager.status?.pop(true)
+            return
+        }
+
         await this.manager.cluster
             .begin('Setting up mongo databases')
                 .beginForward(27017, this.runningPod)

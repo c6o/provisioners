@@ -1,0 +1,8 @@
+
+
+name: stable
+spec:
+  provisioner:
+    name: mongo
+    tag: 4
+    rootUser: root
