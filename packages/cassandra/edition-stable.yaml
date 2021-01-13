@@ -1,0 +1,44 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: tcp
+      targetService: cassandra
+      tcp:
+        port: 7000
+        name: cassandra
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: cassandra
+    ports:
+      - port: 7000
+        name: jmx
+        protocol: TCP
+      - port: 9160
+        name: client
+        protocol: TCP
+      - port: 9042
+        name: cqlnative
+        protocol: TCP
+    flow:
+      prompts:
+        - type: input
+          name: CASSANDRA_USERNAME
+          default: root
+          message: The administrator username
+          c6o:
+            label: Admin Username
+        - type: password
+          name: CASSANDRA_PASSWORD
+          message: The administrator password
+          c6o:
+            label: Admin Password
+            target: secrets
+            generateMessage: Generate a strong password?
+            generate:
+              length: 16
+    volume:
+      - size: 10Gi
+        mountPath: /var/lib/cassandra
+        name: cassandra-data
