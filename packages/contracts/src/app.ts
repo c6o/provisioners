@@ -127,7 +127,11 @@ export class AppObject extends KubeObject {
     get iconUrl() { return this.document.metadata.annotations?.['system.codezero.io/iconUrl'] }
 
     get provisioner() { return this.spec.provisioner }
+
     get routes() { return this.spec.routes }
+    get hasRoutes() { return this.routes?.length }
+    get httpRoute() { return this.routes?.find(item => item.type === 'http') }
+
     get spec() { return this.document.spec }
 
     /** @deprecated */
