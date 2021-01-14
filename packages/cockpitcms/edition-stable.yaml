@@ -11,7 +11,7 @@ spec:
     ports: 80
     services:
     - mongo:
-        secretKeyRef: foo-bar
+        secretKeyRef: cockpitcms-mongodb
         config:
           - cockpitCMSDB:
               user: cockpitUser
@@ -20,10 +20,11 @@ spec:
               secretKey: COCKPIT_DATABASE_SERVER
     configs:
       COCKPIT_DATABASE_NAME: cockpitCMSDB
-    secrets:
       COCKPIT_SALT:
         generate:
           length: 32
+    secretRefs:
+      - cockpitcms-mongodb
   marina:
     launch:
       type: inline

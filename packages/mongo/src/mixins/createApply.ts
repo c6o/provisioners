@@ -174,9 +174,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const port = 27017
 
             const connectionString = this.toConnectionString({ user, password, host, port, db: dbName })
-            if (process.env.TRAXITT_ENV == 'development') {
+            if (process.env.TRAXITT_ENV == 'development')
                 this.manager.status?.info(`Connection string ${connectionString}`)
-            }
 
             this.configMap[config.secretKey] = Buffer.from(connectionString).toString('base64')
         }

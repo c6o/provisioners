@@ -50,6 +50,9 @@ export interface AppEngineAppSpecProvisioner extends AppDocumentSpec {
     configs?: keyValueOrGenerator
     secrets?: keyValueOrGenerator
 
+    configMapRefs?: string[]
+    secretRefs?: string[]
+
     volumes?: Volume[]
     ports?: portType
 
