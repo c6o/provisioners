@@ -57,3 +57,21 @@ spec:
         action: settings
   provisioner: ignore
 status: Running
+---
+apiVersion: system.codezero.io/v1
+kind: App
+metadata:
+  name: harbourmaster
+  namespace: c6o-system
+  annotations:
+    system.codezero.io/display: Security
+    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/harbourmaster/icon'
+spec:
+  marina:
+    launch:
+      type: inline
+      tag: c6o-harbourmaster-app
+      api: true
+      path: /harbourmaster/
+  provisioner: ignore
+status: Running

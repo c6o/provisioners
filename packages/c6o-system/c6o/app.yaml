@@ -28,9 +28,9 @@ editions:
 ---
 _id: harbourmaster
 appId: harbourmaster
-name: Harbour Master
+name: Security
 icon: harbourMasterIcon.svg
-system: true
+#system: true
 summary: The Harbour Master is where you manage users, applications and integrations.
 editions:
   - name: latest
@@ -80,7 +80,7 @@ editions:
 ---
 _id: navstation
 appId: navstation
-name: Nav Station
+name: Settings
 icon: navStationIcon.svg
 system: true
 summary: The Nav Station is the Settings Application where you can manage preferences and configuration of installed Applications.
@@ -108,7 +108,7 @@ editions:
 ---
 _id: marina
 appId: marina
-name: Marina
+name: Desktop
 system: true
 icon: marinaIcon.svg
 summary: The Marina is the CodeZero desktop UI for Kubernetes. It is the first Application that launches when you navigate to a CodeZero Cloud.
