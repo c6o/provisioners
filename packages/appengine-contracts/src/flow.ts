@@ -22,15 +22,21 @@ export interface c6oExtensions {
     required?: boolean
     generate?: generatorOptions
     generateMessage?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any
     maxlength?: number
+    min?: number
+    max?: number
+    step?: number
+    hasControls?: boolean
+    errorMessage?: string
 }
 
 export interface InquirePrompt {
     type: 'input' | 'number' | 'confirm' | 'list' | 'rawlist' | 'expand' | 'checkbox' | 'password' | 'editor'
     name: string
     message?: string
-    default?: string | number | boolean | string[] | number | boolean
+    default?: string | number | boolean | string[]
     askAnswered?: boolean
     mask?: string // technically a char but typescript does not have a char
 

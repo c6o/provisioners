@@ -1,8 +1,13 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { Prompt } from '@provisioner/appengine-contracts'
+import { Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
+import c from 'config'
 
 @customElement('appengine-prompt')
 export class AppEnginePrompt extends LitElement {
+
+
+    seperator = new Array(50 + 1).join( '─' )
+    inquireSeperator = '<<separator>>'
 
     @property({ type: Object })
     prompt: Prompt
@@ -11,12 +16,26 @@ export class AppEnginePrompt extends LitElement {
     showGenerateInput = false
 
     render() {
+        //at this point, we are just going to copy all default values over to the value itself
+        //and when the UI loads, we will use the value to pre-populate the UI
+        //after testing some of the UI controls did not handle setting default values consistently
+        //so we do things explicitly
+
+        //set default values to the actual values
+        this.prompt.c6o = this.prompt.c6o || {} as c6oExtensions
+        if(this.prompt.default) {
+            this.prompt.c6o.value = this.prompt.default
+
+            //if we have a choices array, pluck the item from the array
+            if(this.prompt.choices) this.prompt.c6o.value = this.prompt.choices[this.prompt.default as number]
+        }
+
         //https://www.npmjs.com/package/inquirer
         //Possible values: input, number, confirm, list, rawlist, expand, checkbox, password, editor
         switch (this.prompt.type) {
             //text input
             case 'input':
-                return this.prompt.c6o?.generate ? this.renderGenerate() : this.renderInput()
+                return this.prompt.c6o.generate ? this.renderGenerate() : this.renderInput()
 
             //number input
             case 'number':
@@ -29,8 +48,10 @@ export class AppEnginePrompt extends LitElement {
             //combo box, select single
             case 'list':
             case 'rawlist':
-            case 'expand':
                 return this.renderList()
+
+            case 'expand':
+                return this.renderExpand()
 
             //drop down list, select multiple
             case 'checkbox':
@@ -46,37 +67,125 @@ export class AppEnginePrompt extends LitElement {
         }
     }
 
+    handleInput = (e) => {
+
+        console.log('APPX handleInput target', e.target)
+
+        if (typeof e.target.checked != 'undefined')
+            this.prompt.c6o.value = e.target.checked
+        else
+            this.prompt.c6o.value = e.target.value
+
+        if(this.prompt.type === 'number') this.prompt.c6o.value = Number(this.prompt.c6o.value)
+
+        console.log('APPX handleInput prompt', this.prompt)
+
+    }
+
+
+    comboboxRenderer = (root, owner, model) => {
+        //pull out all model items
+        let { name, label, value, disabled } = model.item
+        //default to not disabled
+        if(typeof disabled === 'undefined') disabled = false
+
+        //model is a plain string
+        if(typeof model.item === 'string') {
+            label = value = name = model.item
+            //disable only if the value is our seperator
+            disabled = (label === this.inquireSeperator)
+        }
+
+        //in the case of expand, make sure label is set correctly
+        if(name && !label) {
+            label = name
+            //set the label so it renders, should only be in the "expand" situation where name/value is provided and not label/value
+            model.item.label = label
+        }
+
+        //if we have a seperator, set the label to be the seperator value
+        if(label === this.inquireSeperator) label = this.seperator
+
+        // toggle disabled state
+        const item = root.getRootNode().host
+        if (disabled) {
+            item.setAttribute('disabled', '')
+            item.style.pointerEvents = 'none'
+            item.style.opacity = '0.75'
+        } else {
+            item.removeAttribute('disabled')
+            item.style.pointerEvents = ''
+            item.style.opacity = ''
+        }
+
+        root.textContent = label
+        root.value = value
+    }
+
+    renderExpand = () => html`
+        <c6o-combo-box
+            label=${this.prompt.c6o.label}
+            title=${this.prompt.message}
+            .items=${this.prompt.choices}
+            value=${this.prompt.c6o.value || ''}
+            @selected-item-changed=${this.handleInput}
+            .renderer=${this.comboboxRenderer}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
+        >
+        </c6o-combo-box>
+    `
+    renderList = () => html`
+        <c6o-combo-box
+            label=${this.prompt.c6o.label}
+            title=${this.prompt.message}
+            .items=${this.prompt.choices}
+            item-label-path='name'
+            item-value-path='value'
+            value=${this.prompt.c6o.value || ''}
+            @selected-item-changed=${this.handleInput}
+            .renderer=${this.comboboxRenderer}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
+        >
+        </c6o-combo-box>
+    `
+
     renderInput = () => this.prompt.c6o.generate ? '' : html`
         <c6o-text-field
-            label=${this.prompt.c6o?.label}
+            label=${this.prompt.c6o.label}
             title=${this.prompt.message}
-            value=${this.prompt.default || ''}
+            value=${this.prompt.c6o.value || ''}
             @input=${this.handleInput}
-            ?required=${this.prompt.c6o?.required}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
         >
         </c6o-text-edit>
     `
 
     renderNumber = () => html`
         <c6o-number-field
-            label=${this.prompt.c6o?.label}
-            min=${this.prompt.min || 1}
-            max=${this.prompt.max || 32767}
-            step=${this.prompt.step || 1}
+            label=${this.prompt.c6o.label}
+            min=${this.prompt.c6o.min || 1}
+            max=${this.prompt.c6o.max || 32767}
+            step=${this.prompt.c6o.step || 1}
             value=${this.prompt.default || 1000}
-            @input=${this.handleInput}
-            ?required=${this.prompt.c6o?.required}
+            @change=${this.handleInput}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
+            ?has-controls=${this.prompt.c6o.hasControls || true}
         >
         </c6o-number-field>
         `
 
     renderPassword = () => html`
         <c6o-password-field
-            label=${this.prompt.c6o?.label}
+            label=${this.prompt.c6o.label}
             title=${this.prompt.message}
-            value=${this.prompt.default || ''}
+            value=${this.prompt.c6o.value || ''}
             @input=${(e) => this.prompt.c6o.value = e.target.value}
-            ?required=${this.prompt.c6o?.required}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
         >
         </c6o-password-field>
     `
@@ -84,69 +193,61 @@ export class AppEnginePrompt extends LitElement {
 
     renderGenerate = () => html`
         <c6o-checkbox
-            title=${this.prompt.c6o?.generateMessage || `Generate a value for ${this.prompt.name}`}
+            title=${this.prompt.c6o.generateMessage || `Generate a value for ${this.prompt.name}`}
             @checked-changed=${(e) => this.showGenerateInput = !this.showGenerateInput}
             ?checked=${!this.prompt.default}
         >
-            ${this.prompt.c6o?.label}
+            ${this.prompt.c6o.label}
         </c6o-checkbox>
         <c6o-text-field
             ?hidden=${!this.showGenerateInput}
-            label=${this.prompt.c6o?.label}
+            label=${this.prompt.c6o.label}
             title=${this.prompt.message}
-            @input=${(e) => this.prompt.c6o.value = e.target.value}
+            @input=${this.handleInput}
             required
         >
         </c6o-text-field>
     `
     renderEditor = () => html`
         <c6o-text-area
-            label=${this.prompt.c6o?.label}
+            label=${this.prompt.c6o.label}
             title=${this.prompt.message}
-            value=${this.prompt.default || ''}
+            value=${this.prompt.c6o.value || ''}
             @input=${this.handleInput}
-            maxlength=${this.prompt.c6o?.maxlength}
-            ?required=${this.prompt.c6o?.required}
+            maxlength=${this.prompt.c6o.maxlength}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
         >
         </c6o-text-area>
     `
-    renderList = () => html `
+
+    renderMultipleList = () => html`
         <c6o-combo-box
-            label=${this.prompt.c6o?.label}
+            label=${this.prompt.c6o.label}
             title=${this.prompt.message}
             .items=${this.prompt.choices}
-            ?required=${this.prompt.c6o?.required}
-        >
-        </c6o-combo-box>
-    `
-    renderMultipleList = () => html `
-        <c6o-combo-box
-            label=${this.prompt.c6o?.label}
-            title=${this.prompt.message}
-            .items=${this.prompt.choices}
-            ?required=${this.prompt.c6o?.required}
+            value=${this.prompt.c6o.value || ''}
+            @selected-item-changed=${this.handleInput}
+            .renderer=${this.comboboxRenderer}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
         >
         </c6o-combo-box>
     `
 
     renderCheckbox = () => html`
         <c6o-checkbox
-                label=${this.prompt.c6o?.label}
-                title=${this.prompt.message}
-                ?checked=${!this.prompt.default}
-                ?required=${this.prompt.c6o?.required}
-        >
-        ${this.prompt.c6o?.label}
+            label=${this.prompt.c6o.label}
+            title=${this.prompt.message}
+            ?checked=${!this.prompt.default}
+            @change=${this.handleInput}
+            ?required=${this.prompt.c6o.required}
+            error-message=${this.prompt.c6o.errorMessage}
+            >
+            ${this.prompt.c6o.label}
         </c6o-checkbox>
     `
-
-    handleInput = (e) => {
-        this.prompt.c6o.value = e.target.value
-        console.log('APPX VALUE SET', this.prompt)
-    }
-
     async connectedCallback() {
-        console.log('APPX connectedCallback', this)
         // TODO: Have proper handling for choices etc. as the following only works for input
         this.prompt.c6o = this.prompt.c6o || { value: this.prompt.default }
         await super.connectedCallback()

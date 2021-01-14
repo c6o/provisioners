@@ -45,30 +45,63 @@ editions:
         package: '@provisioner/appengine'
         image: adminer
         port: 8080
-        automated: true
         tag-prefix: appengine
-        config:
-          - name: URI
-            value: $PUBLIC_URI
-          - name: FULL_URI
-            value: $PUBLIC_URI/this/is/a/path?foo=bar&x=y
-          - name: RANDOM
-            value: $RANDOM
-          - name: RANDOM32
-            value: $RANDOM:32
-          - name: DNS
-            value: $PUBLIC_DNS
-        secret:
-          - name: URI
-            value: $PUBLIC_URI
-          - name: FULL_URI
-            value: $PUBLIC_URI/this/is/a/path?foo=bar&x=y
-          - name: RANDOM
-            value: $RANDOM
-          - name: RANDOM32
-            value: $RANDOM:32
-          - name: DNS
-            value: $PUBLIC_DNS
+        flow:
+          - name: section1
+            prompts:
+            - type: input
+              name: input none
+              message: input none
+              c6o:
+                label: input none
+
+            - type: input
+              name: input default
+              message: input default
+              default: input default
+              c6o:
+                label: input default
+
+            - type: input
+              name: input with required
+              message: input with required
+              c6o:
+                label: input with required
+                required: true
+
+
+            - type: input
+              name: input with error message
+              message: input with error message
+              c6o:
+                label: input with error message
+                errorMessage: input with error message
+
+            - type: input
+              name: input default+required
+              message: input default+required
+              default: input default+required
+              c6o:
+                label: input default+required
+                required: true
+
+            - type: input
+              name: input default+required+errormessage
+              message: input default+required+errormessage
+              default: input default+required+errormessage
+              c6o:
+                label: input default+required+errormessage
+                required: true
+                errorMessage: input default+required+errormessage
+
+            - type: input
+              name: input required+error
+              message: input required+error
+              c6o:
+                label: input required+error
+                required: true
+                errorMessage: input required+error
+
       marina:
         launch:
           type: inline
