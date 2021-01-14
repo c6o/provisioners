@@ -30,7 +30,7 @@ _id: harbourmaster
 appId: harbourmaster
 name: Security
 icon: harbourMasterIcon.svg
-#system: true
+system: true
 summary: The Harbour Master is where you manage users, applications and integrations.
 editions:
   - name: latest
