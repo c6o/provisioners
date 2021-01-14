@@ -35,3 +35,4 @@ provisioner:
 
 editions:
   - edition-stable.yaml
+  - edition-develop.yaml

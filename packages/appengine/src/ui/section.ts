@@ -4,10 +4,10 @@ import { PromptType, Section } from '@provisioner/appengine-contracts'
 @customElement('appengine-section')
 export class AppEngineSection extends LitElement {
 
-    @property({type: Object})
+    @property({ type: Object })
     section: Section
 
-    @property({type: Object})
+    @property({ type: Object })
     prompts: PromptType
 
     get renderPrompts() {
@@ -20,11 +20,11 @@ export class AppEngineSection extends LitElement {
                 ${this.renderTitle()}
                 <c6o-form-layout>
                     ${Array.isArray(this.renderPrompts) ?
-                        this.renderPrompts.map(prompt => {
-                            return html `<appengine-prompt .prompt=${prompt}></appengine-prompt>`
-                        }) :
-                        html `<appengine-prompt .prompt=${this.renderPrompts}></appengine-prompt>`
-                    }
+                    this.renderPrompts.map(prompt => {
+                        return html`<appengine-prompt .prompt=${prompt}></appengine-prompt>`
+                    }) :
+                    html`<appengine-prompt .prompt=${this.renderPrompts}></appengine-prompt>`
+                }
                 </c6o-form-layout>
             `
     }
