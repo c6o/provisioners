@@ -12,7 +12,8 @@ data:
         'FEATURE_AUTHORIZATION_KEY': '{{featureAuthKey}}',
         'HUB_SERVER_URL': '{{hubServerURL}}',
         'STRIPE_PUBLISHABLE_KEY': '{{stripePublishableKey}}',
-        'SYSTEM_SERVER_URL': '{{systemServerURL}}'
+        'SYSTEM_SERVER_URL': '{{systemServerURL}}',
+        'SYSTEM_SERVER_COOKIE_DOMAIN': '{{systemServerCookieDomain}}',
       }
 ---
 apiVersion: apps/v1

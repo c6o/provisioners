@@ -75,6 +75,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         return `${this.spec.protocol}://${this.host}`
     }
 
+    get systemServerCookieDomain() {
+        return `.${this.clusterDomain}`
+    }
+
     async provisionSystem() {
         const jwtKey = [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('') // generate random key
         const options = {
@@ -119,8 +123,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterDomain: this.spec.clusterDomain,
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
+            systemServerCookieDomain: this.systemServerCookieDomain,
             featureAuthKey: this.spec.featureAuthKey,
-            stripePublishableKey: this.spec.stripePublishableKey
+            stripePublishableKey: this.spec.stripePublishableKey,
         }
 
         await this.manager.cluster
