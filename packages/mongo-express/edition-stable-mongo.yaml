@@ -1,0 +1,41 @@
+name: stable-mongo
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: mongo-express
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: mongo-express
+    ports: 8081
+    services:
+    - mongo: {}
+    flow:
+      prompts:
+        - type: password
+          name: ME_CONFIG_SITE_SESSIONSECRET
+          message: Session secret
+          c6o:
+            label: Session secret
+            target: secrets
+            generateMessage: Generate a strong session secret?
+            generate:
+              length: 32
+        - type: password
+          name: ME_CONFIG_SITE_COOKIESECRET
+          message: Cookie secret
+          c6o:
+            label: Cookie secret
+            target: secrets
+            generateMessage: Generate a strong cookie secret?
+            generate:
+              length: 32
+    configs:
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_SERVER: mongo-svc
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  marina:
+    launch:
+      type: inline
+      popUp: true

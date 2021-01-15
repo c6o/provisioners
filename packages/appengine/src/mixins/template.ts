@@ -36,14 +36,15 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
 
                 if (isGenerateOptions(value))
                     this._setPassword(map, key, value.generate)
-                else {
+                else if (typeof value === 'string') {
                     await this.ensureSystemProvisioner()
                     if (value.includes('$PUBLIC_FQDN'))
                         this._interpolateValue(map, key, '$PUBLIC_FQDN', await this.systemProvisioner.getApplicationFQDN(this.manifestHelper.name, this.manifestHelper.namespace))
                     else if (value.includes('$PUBLIC_URL'))
                         this._interpolateValue(map, key, '$PUBLIC_URL', await this.systemProvisioner.getApplicationURL(this.manifestHelper.name, this.manifestHelper.namespace))
-
                 }
+                else if (typeof value === 'number')
+                    map[key] = (value as number).toString()
             }
         }
         finally {

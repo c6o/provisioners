@@ -1,0 +1,56 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: mongo-express
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: mongo-express
+    ports: 8081
+    flow:
+      prompts:
+        - type: number
+          name: ME_CONFIG_MONGODB_PORT
+          message: MongoDb Port
+          default: 27017
+        - type: input
+          name: ME_CONFIG_MONGODB_SERVER
+          default: mongo
+          message: MongoDb Server
+        - type: input
+          name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          default: mongo
+          message: MongoDb Username
+        - type: input
+          name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          default: mongo
+          message: MongoDb Password
+          c6o:
+            target: secrets
+            generateMessage: Generate a strong password?
+            generate:
+              length: 16
+        - type: password
+          name: ME_CONFIG_SITE_SESSIONSECRET
+          message: Session secret
+          c6o:
+            label: Session secret
+            target: secrets
+            generateMessage: Generate a strong session secret?
+            generate:
+              length: 32
+        - type: password
+          name: ME_CONFIG_SITE_COOKIESECRET
+          message: Cookie secret
+          c6o:
+            label: Cookie secret
+            target: secrets
+            generateMessage: Generate a strong cookie secret?
+            generate:
+              length: 32
+    marina:
+      launch:
+        type: inline
+        popUp: true
