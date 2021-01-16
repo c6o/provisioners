@@ -73,5 +73,9 @@ spec:
       tag: c6o-harbourmaster-app
       api: true
       path: /harbourmaster/
+    menus:
+      - type: apps
+        display: Uninstall...
+        action: uninstall
   provisioner: ignore
 status: Running
