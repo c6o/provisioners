@@ -28,7 +28,7 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
         console.log('APPX step end triggered prompts', this.step.prompts)
 
         const validation = new PromptValidation()
-        const invalidPrompts = validation.validateSectionAndPrompts(this.step.sections, this.step.prompts)
+        const invalidPrompts = validation.validateSectionAndPrompts(this.manifestHelper, this.step.sections, this.step.prompts)
 
         if (invalidPrompts.length > 0) return this.renderInvalid(invalidPrompts)
 

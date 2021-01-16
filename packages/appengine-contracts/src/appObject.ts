@@ -1,6 +1,6 @@
 import createDebug from 'debug'
 import { AppObject } from '@provisioner/contracts'
-import { AppEngineAppDocument, FlowResult, isPortNumber, keyValue, ServicePort, DeploymentPort, LabelsMetadata } from './'
+import { AppEngineAppDocument, FlowResult, isPortNumber, keyValue, ServicePort, DeploymentPort, each } from './'
 // import * as fs from 'fs'
 // import * as path from 'path'
 const debug = createDebug('@appengine:timing')
@@ -86,5 +86,19 @@ export class AppEngineAppObject extends AppObject {
             ...rest
         }
     })
+
+    public *flattenPrompts() {
+        for(const step of each(this.flow)) {
+            if (typeof step === 'string')
+                continue
+            if (step.prompts)
+                for(const prompt of each(step.prompts))
+                    yield prompt
+            if (step.sections)
+                for(const section of step.sections)
+                    for(const prompt of each(section.prompts))
+                        yield prompt
+        }
+    }
 
 }
