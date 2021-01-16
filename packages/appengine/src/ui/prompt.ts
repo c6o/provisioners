@@ -25,9 +25,16 @@ export class AppEnginePrompt extends LitElement {
         this.prompt.c6o = this.prompt.c6o || {} as c6oExtensions
         if(this.prompt.default) {
             this.prompt.c6o.value = this.prompt.default
-
             //if we have a choices array, pluck the item from the array
             if(this.prompt.choices) this.prompt.c6o.value = this.prompt.choices[this.prompt.default as number]
+        }
+        if(this.prompt.type === 'number') {
+            this.prompt.c6o.value = this.prompt.c6o.value || 1000
+            if(this.prompt.c6o.min && this.prompt.c6o.value < this.prompt.c6o.min) this.prompt.c6o.value = this.prompt.c6o.min
+            if(this.prompt.c6o.max && this.prompt.c6o.value > this.prompt.c6o.max) this.prompt.c6o.value = this.prompt.c6o.max
+        }
+        if(this.prompt.type === 'confirm') {
+            this.prompt.c6o.value = this.prompt.default || false
         }
 
         //https://www.npmjs.com/package/inquirer
@@ -169,7 +176,7 @@ export class AppEnginePrompt extends LitElement {
             min=${this.prompt.c6o.min || 1}
             max=${this.prompt.c6o.max || 32767}
             step=${this.prompt.c6o.step || 1}
-            value=${this.prompt.default || 1000}
+            value=${this.prompt.c6o.value || 1000}
             @change=${this.handleInput}
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}
@@ -195,7 +202,7 @@ export class AppEnginePrompt extends LitElement {
         <c6o-checkbox
             title=${this.prompt.c6o.generateMessage || `Generate a value for ${this.prompt.name}`}
             @checked-changed=${(e) => this.showGenerateInput = !this.showGenerateInput}
-            ?checked=${!this.prompt.default}
+            ?checked=${this.prompt.c6o.value}
         >
             ${this.prompt.c6o.label}
         </c6o-checkbox>
@@ -239,7 +246,7 @@ export class AppEnginePrompt extends LitElement {
         <c6o-checkbox
             label=${this.prompt.c6o.label}
             title=${this.prompt.message}
-            ?checked=${!this.prompt.default}
+            ?checked=${this.prompt.c6o.value}
             @change=${this.handleInput}
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}

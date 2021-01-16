@@ -28,19 +28,7 @@ export class AppEngineEndSettings extends LitElement implements StoreFlowStep {
     //     return html`${json}`
     // }
 
-    *flattenPrompts() {
-        for(const step of each(this.manifestHelper.flow)) {
-            if (typeof step === 'string')
-                continue
-            if (step.prompts)
-                for(const prompt of each(step.prompts))
-                    yield prompt
-            if (step.sections)
-                for(const section of step.sections)
-                    for(const prompt of each(section.prompts))
-                        yield prompt
-        }
-    }
+
 
     async end() {
         const result: FlowResult = {
@@ -49,7 +37,7 @@ export class AppEngineEndSettings extends LitElement implements StoreFlowStep {
             secrets: {}
         }
 
-        for(const prompt of this.flattenPrompts()) {
+        for(const prompt of this._manifestHelper.flattenPrompts()) {
             const target = prompt.c6o.target || 'configs'
             result[target][prompt.name] = prompt.c6o.value
         }
