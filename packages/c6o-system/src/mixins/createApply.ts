@@ -76,7 +76,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     get systemServerCookieDomain() {
-        return `.${this.clusterDomain}`
+        return `.${this.host}`
     }
 
     async provisionSystem() {
