@@ -80,7 +80,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionSystem() {
-        const jwtKey = [...Array(64)].map(i=>(~~(Math.random()*36)).toString(36)).join('') // generate random key
         const options = {
             tag: this.spec.tag,
             clusterId: this.spec.clusterId,
@@ -88,7 +87,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
             host: this.host,
-            jwtKey: Buffer.from(jwtKey).toString('base64')
+            jwtKey: this.spec.clusterKey
         }
 
         await this.manager.cluster

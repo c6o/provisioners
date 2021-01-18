@@ -18,7 +18,6 @@ metadata:
   namespace: c6o-system
 data:
   CLUSTER_KEY: '{{clusterKey}}'
-  JWT_KEY: '{{jwtKey}}'
 ---
 apiVersion: apps/v1
 kind: Deployment
