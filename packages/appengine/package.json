@@ -6,7 +6,7 @@
   "scripts": {
     "bundle-develop": "parcel serve ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
     "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
-    "build": "tsc -b",
+    "build": "tsc -b && yarn run bundle",
     "develop": "tsc -b -w --preserveWatchOutput",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

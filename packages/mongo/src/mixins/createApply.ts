@@ -42,6 +42,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.ensureMongoDbIsProvisioned()
     }
 
+    async ensureRootPassword() {
+        if (this.rootPassword) return
+        const result = await this.manager.cluster.read(this.rootSecret)
+        if (!result.object)
+            throw new Error('Failed to load rootSecret')
+        const keys = Object.keys(result.object.data)
+        if (keys?.length !== 1)
+            throw new Error('Failed to load rootSecret')
+
+        this.rootPassword = Buffer.from(result.object.data[keys[0]], 'base64').toString()
+    }
+
     /** Looks for mongo pods and if none are found, applies the appropriate yaml */
     async ensureMongoDbIsInstalled() {
 
@@ -57,25 +69,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     this.rootPassword = super.processPassword(this.spec.rootPassword)
                     const namespace = this.serviceNamespace
                     const storageClass = this.spec.storageClass
+                    const rootPasswordKey = this.spec.rootPasswordKey || 'password'
 
                     // Install mongodb
                     processor
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
                         .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword })
                         .upsertFile('../../k8s/service.yaml', { namespace })
-                        .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
-
-                }
-                else {
-                    // Mongodb is already installed. Fetch the rootPassword
-
-                    processor
-                        .read(this.rootSecret)
-                        .do(result => {
-                            if (!result.object)
-                                throw new Error('Failed to load rootSecret')
-                            this.rootPassword = Buffer.from(result.object.data.password, 'base64').toString()
-                        })
+                        .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
                 }
             })
             .end()
@@ -113,6 +114,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     
     /** Attempts to connect to MongoDb and sets the mongoDbClient */
     async connectMongoDbClient(processor, attempt) {
+        this.ensureRootPassword()
         const connectionString = `mongodb://root:${this.rootPassword}@localhost:${processor.lastResult.other.localPort}`
         this.manager.status?.info(`Attempt ${attempt + 1} to connect to mongo on local port ${processor.lastResult.other.localPort}`)
         return this.mongoDbClient = await MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
