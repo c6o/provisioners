@@ -2151,10 +2151,10 @@
     "@vaadin/vaadin-themable-mixin" "^1.6.1"
     cookieconsent "^3.0.6"
 
-"@vaadin/vaadin-core@^14.4.5":
-  version "14.4.5"
-  resolved "https://registry.yarnpkg.com/@vaadin/vaadin-core/-/vaadin-core-14.4.5.tgz#23349fa36791d55ea515252496b8734a7c8bfe42"
-  integrity sha512-WBey1rq11Xi1LXSmjoh/e89C8GgtgrIKx5n6G9wHm3ISuFfFAUHvfmuuPs+vXXrjTssGtJV0tVF5Dey2sD9dDQ==
+"@vaadin/vaadin-core@^14.4.6":
+  version "14.4.6"
+  resolved "https://registry.yarnpkg.com/@vaadin/vaadin-core/-/vaadin-core-14.4.6.tgz#9bb22e01d101b40adb77226b47ffa15d63ffe981"
+  integrity sha512-IbPADRxYLxx1UAsDEDNQoabFyNUG5lTwR3VJGS8dIUqrDV6vU/EdlaDIR12aIp2V2KHRwHO6Tjq8ymOsajG0Aw==
   dependencies:
     "@polymer/iron-a11y-announcer" "^3.0.2"
     "@polymer/iron-a11y-keys-behavior" "^3.0.1"
@@ -2619,16 +2619,16 @@
   dependencies:
     "@vaadin/vaadin-development-mode-detector" "^2.0.0"
 
-"@vaadin/vaadin@^14.0.11":
-  version "14.4.5"
-  resolved "https://registry.yarnpkg.com/@vaadin/vaadin/-/vaadin-14.4.5.tgz#49667a317eab7124f4bc1c13370d25a1ec9a36c0"
-  integrity sha512-D0ozYEWk6loFyDHRtiHr0d4cs/ogDx5pi1FsHGnXyQWNdQQPi4tWqvi8xZzdZjxGVwhO14HgldcnBqDbTKRwOQ==
+"@vaadin/vaadin@^14.4.5":
+  version "14.4.6"
+  resolved "https://registry.yarnpkg.com/@vaadin/vaadin/-/vaadin-14.4.6.tgz#437c495e4c43c1c8d5e49dfc4b0ca5eef7b10200"
+  integrity sha512-z/A40FjCMlO7/2wMQ/1xQcwPn5LEAQT41fqdDUxBWKRmsQSzTZYT09kH4+m+jbqZB4jtGvG3CqJpUWUIQeFi9w==
   dependencies:
     "@vaadin/vaadin-board" "^2.2.0"
     "@vaadin/vaadin-charts" "^6.3.1"
     "@vaadin/vaadin-confirm-dialog" "^1.3.0"
     "@vaadin/vaadin-cookie-consent" "^1.2.0"
-    "@vaadin/vaadin-core" "^14.4.5"
+    "@vaadin/vaadin-core" "^14.4.6"
     "@vaadin/vaadin-crud" "^1.3.0"
     "@vaadin/vaadin-grid-pro" "^2.2.2"
     "@vaadin/vaadin-rich-text-editor" "^1.3.0"

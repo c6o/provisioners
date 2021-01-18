@@ -23,9 +23,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     manager: ProvisionerManager
     serviceName: string
     moduleLocation: string
-
     taskSpec: any
-
     spec: any
 
     // Has other API functions

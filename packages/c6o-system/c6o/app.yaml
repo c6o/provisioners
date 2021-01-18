@@ -26,6 +26,34 @@ editions:
               kialiEnabled: false
               prometheusEnabled: false
 ---
+_id: harbourmaster
+appId: harbourmaster
+name: Security
+icon: harbourMasterIcon.svg
+system: true
+summary: The Harbour Master is where you manage users, applications and integrations.
+editions:
+  - name: latest
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: system-harbourmaster
+          http:
+            prefix: /harbourmaster/
+            rewrite: /
+      provisioner: ignore
+      marina:
+        launch:
+          type: inline
+          port: 1239
+          tag: c6o-harbourmaster-app
+          path: /index.html
+        menus:
+          - type: apps
+            display: Settings...
+            action: settings
+---
 _id: store
 name: Store
 appId: store
@@ -52,7 +80,7 @@ editions:
 ---
 _id: navstation
 appId: navstation
-name: Nav Station
+name: Settings
 icon: navStationIcon.svg
 system: true
 summary: The Nav Station is the Settings Application where you can manage preferences and configuration of installed Applications.
@@ -80,7 +108,7 @@ editions:
 ---
 _id: marina
 appId: marina
-name: Marina
+name: Desktop
 system: true
 icon: marinaIcon.svg
 summary: The Marina is the CodeZero desktop UI for Kubernetes. It is the first Application that launches when you navigate to a CodeZero Cloud.

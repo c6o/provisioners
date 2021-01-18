@@ -32,6 +32,17 @@ spec:
     - destination:
         host: system-navstation
   - match:
+      - uri:
+          prefix: /harbourmaster/
+        headers:
+          :authority:
+            regex: ^{{host}}$
+    rewrite:
+      uri: /
+    route:
+      - destination:
+          host: system-harbourmaster
+  - match:
     - uri:
         prefix: /api/
       headers:
@@ -49,3 +60,12 @@ spec:
     route:
     - destination:
         host: system-marina
+  - match: # apps
+    - uri:
+        prefix: /
+      headers:
+        :authority:
+          regex: ^.+--.+\.{{host}}$
+    route:
+    - destination:
+        host: system-server

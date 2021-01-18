@@ -75,6 +75,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         return `${this.spec.protocol}://${this.host}`
     }
 
+    get systemServerCookieDomain() {
+        return `.${this.host}`
+    }
+
     async provisionSystem() {
         const options = {
             tag: this.spec.tag,
@@ -82,7 +86,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterKey: this.spec.clusterKey,
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
-            host: this.host
+            host: this.host,
+            jwtKey: this.spec.clusterKey
         }
 
         await this.manager.cluster
@@ -117,8 +122,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             clusterDomain: this.spec.clusterDomain,
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
+            systemServerCookieDomain: this.systemServerCookieDomain,
             featureAuthKey: this.spec.featureAuthKey,
-            stripePublishableKey: this.spec.stripePublishableKey
+            stripePublishableKey: this.spec.stripePublishableKey,
         }
 
         await this.manager.cluster
@@ -126,6 +132,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .addOwner(this.manager.document)
                 .upsertFile('../../k8s/marina.yaml', options)
                 .upsertFile('../../k8s/store.yaml', options)
+                .upsertFile('../../k8s/harbourmaster.yaml', options)
                 .upsertFile('../../k8s/navstation.yaml', options)
                 .upsertFile('../../k8s/apps.yaml', options)
                 .clearOwners()
@@ -151,7 +158,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionRoutes() {
-        const host = this.host.replace(".", "\\.")
+        const host = this.host.split(".").join("\\.")
 
         await this.manager.cluster
             .begin(`Provision messaging sub-system`)

@@ -1,12 +1,15 @@
 import { Result, KubeDocument } from '@c6o/kubeclient-contracts'
 import { AppDocument, RoutesType } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
+import createDebug from 'debug'
+
+const debug = createDebug('istio:api:virtualService:')
 
 export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
 
     app: AppDocument
 
-    async createVirtualService(app: AppDocument, gateway: string): Promise<Result> {
+    async upsertVirtualService(app: AppDocument, gateway: string): Promise<Result> {
         this.app = app
 
         if (!app.spec.routes)
@@ -15,8 +18,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const vs = this.virtualService(app, gateway)
 
         for (const route of app.spec.routes) {
-            if (route.disabled)
-                return
+            if (route.disabled || route.private)
+                continue
 
             if (route.type === 'http')
                 vs.spec.http.push(this.simpleHttpSection(route))
@@ -49,7 +52,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             return
 
         for (const route of app.spec.routes) {
-            if (route.disabled)
+            if (route.disabled || route.private)
                 return
 
             if (route.type === 'tcp') {
