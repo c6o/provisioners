@@ -38,7 +38,8 @@ type generateObject = { generate: generatorOptions }
 type generatorValue =  string | generateObject
 export type keyValueOrGenerator = keyValue | {[key:string] : generatorValue }
 
-export const isGenerateOptions = (value: generatorValue): value is generateObject => typeof value !== 'string'
+export const isGenerateOptions = (value: generatorValue): value is generateObject =>
+    !!(value as generateObject).generate
 
 export type portType = number | ServicePort[]
 export const isPortNumber =(value: portType): value is number => typeof value === 'number'
@@ -49,6 +50,9 @@ export interface AppEngineAppSpecProvisioner extends AppDocumentSpec {
 
     configs?: keyValueOrGenerator
     secrets?: keyValueOrGenerator
+
+    configMapRefs?: string[]
+    secretRefs?: string[]
 
     volumes?: Volume[]
     ports?: portType

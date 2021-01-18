@@ -8,7 +8,7 @@ spec:
     package: '@provisioner/appengine'
     tag-prefix: appengine
     image: couchdb
-    port: 5984
+    ports: 5984
     flow:
       prompts:
         - type: input

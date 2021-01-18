@@ -1,15 +1,16 @@
-name: stable
+name: preview
 status: public
 spec:
   routes:
     - type: http
-      targetService: adminer
+      targetService: cockpitcms
   provisioner:
     package: '@provisioner/appengine'
-    image: adminer
-    ports: 8080
     tag-prefix: appengine
+    image: aheinze/cockpit
+    ports: 80
   marina:
     launch:
       type: inline
       popUp: true
+      path: /install/

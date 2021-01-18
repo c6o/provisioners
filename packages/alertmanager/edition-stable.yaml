@@ -1,14 +1,16 @@
+
 name: stable
 status: public
+default: true
 spec:
   routes:
     - type: http
-      targetService: adminer
+      targetService: alertmanager
   provisioner:
-    package: '@provisioner/appengine'
-    image: adminer
-    ports: 8080
     tag-prefix: appengine
+    package: '@provisioner/appengine'
+    image: prom/alertmanager
+    ports: 9093
   marina:
     launch:
       type: inline

@@ -21,7 +21,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             secretKeyRef: args['secret-key-ref'] || this.spec.secretKeyRef
         }
 
-        const responses = await this.manager.inquirer?.prompt(
+        const responses = await this.manager.inquirer?.prompt([
             this.inquireStorageClass({
                 name: 'storageClass'
             }),
@@ -31,7 +31,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 default: 'mongo-connections',
                 message: 'Where should connection strings be stored?',
                 when: () => this.hasDatabasesToConfigure && !this.providedSecretKeyRef(args)
-            }, answers)
+            }], answers)
 
         return responses
     }
