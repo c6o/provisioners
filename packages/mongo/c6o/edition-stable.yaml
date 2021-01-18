@@ -1,4 +1,5 @@
 name: stable
+status: public
 spec:
   provisioner:
     name: mongo

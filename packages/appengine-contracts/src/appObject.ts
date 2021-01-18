@@ -13,8 +13,14 @@ export class AppEngineAppObject extends AppObject {
     get configs() { return this.document.spec.provisioner?.configs }
     get hasConfigs() { return this.document.spec.provisioner?.configs && Object.keys(this.document.spec.provisioner.configs).length }
 
+    get configMapRefs() { return this.document.spec.provisioner?.configMapRefs  }
+    get hasConfigMapRefs() { return this.document.spec.provisioner?.configMapRefs?.length }
+
     get secrets() { return this.document.spec.provisioner?.secrets  }
     get hasSecrets() { return this.document.spec.provisioner?.secrets && Object.keys(this.document.spec.provisioner.secrets).length }
+
+    get secretRefs() { return this.document.spec.provisioner?.secretRefs  }
+    get hasSecretRefs() { return this.document.spec.provisioner?.secretRefs?.length }
 
     get volumes()  { return this.document.spec.provisioner?.volumes  }
     get hasVolumes() { return this.document.spec.provisioner?.volumes?.length }

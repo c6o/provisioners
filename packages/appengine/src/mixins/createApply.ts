@@ -33,6 +33,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.createConfigs()
             await this.createSecrets()
 
+            await this.createSecretRefs()
+            await this.createConfigMapRefs()
+
             await this.createServices()
             await this.createVolumes()
 
@@ -139,6 +142,43 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 }
             })
 
+        }
+        finally {
+            this.manager.status?.pop(skipped)
+        }
+    }
+
+    async createConfigMapRefs() {
+        let skipped = false
+        try {
+            this.manager.status?.push('Installing configMap refs')
+
+            if (!this.manifestHelper.hasConfigMapRefs) {
+                skipped = true
+                return
+            }
+
+            const configMapRefs = this.manifestHelper.configMapRefs.map(name => ({ configMapRef: { name } }))
+            this.createDeploymentContainerEnvFrom.push(...configMapRefs)
+
+        }
+        finally {
+            this.manager.status?.pop(skipped)
+        }
+    }
+
+    async createSecretRefs() {
+        let skipped = false
+        try {
+            this.manager.status?.push('Installing secret refs')
+
+            if (!this.manifestHelper.hasSecretRefs) {
+                skipped = true
+                return
+            }
+
+            const secretRefs = this.manifestHelper.secretRefs.map(name => ({ secretRef: { name } }))
+            this.createDeploymentContainerEnvFrom.push(...secretRefs)
         }
         finally {
             this.manager.status?.pop(skipped)

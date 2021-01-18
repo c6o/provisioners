@@ -3,12 +3,12 @@ status: public
 spec:
   routes:
     - type: http
-      targetService: adminer
+      targetService: chronograf
   provisioner:
     package: '@provisioner/appengine'
-    image: adminer
-    ports: 8080
     tag-prefix: appengine
+    image: chronograf
+    ports: 8888
   marina:
     launch:
       type: inline

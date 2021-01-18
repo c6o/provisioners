@@ -12,7 +12,7 @@ spec:
     tag-prefix: appengine
     tag: 12-alpine
     image: postgres
-    port: 5432
+    ports: 5432
     volume:
       - size: 5Gi
         mountPath: /data

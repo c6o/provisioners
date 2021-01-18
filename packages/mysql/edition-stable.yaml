@@ -10,7 +10,7 @@ spec:
     package: '@provisioner/appengine'
     tag-prefix: appengine
     image: mysql
-    port: 3306
+    ports: 3306
     flow:
       prompts:
         - type: password
