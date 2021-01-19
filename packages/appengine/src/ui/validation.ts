@@ -54,11 +54,13 @@ export class PromptValidation {
                 for(const p of manifestHelper.flattenPrompts()) prompts.push(p)
                 const result = func.call(manifestHelper, prompt.c6o?.value, prompts)
                 if(!result) {
+                    //intentionally left in for 3rd party developers working on their own provisioners
                     console.log('APPX Validation Failed for Prompt:', prompt, result)
                     invalidPrompts.push(prompt)
                     return
                 }
             } catch(e) {
+                //intentionally left in for 3rd party developers working on their own provisioners
                 console.log('APPX Validation Exception for Prompt:', {prompt, e})
                 invalidPrompts.push(prompt)
                 throw e

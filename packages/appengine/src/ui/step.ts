@@ -22,24 +22,28 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
         //if(this.hasError) html`<c6o-label @visible='${this.hasError}' theme='error'>'There was an error, please correct the issues before proceeding.'</c6o-label>`
         if (this.step.sections)
             return html`${this.step.sections.map(section =>
-                html`<appengine-section .section=${section}></appengine-section><c6o-label theme='error'>${this.hasError?'There was an error, please correct the issues before proceeding.':''}</c6o-label>`)}`
+                html`<appengine-section .section=${section} .manifestHelper=${this.manifestHelper}></appengine-section>
+                     <c6o-label theme='error'>${this.hasError?'There was an error, please correct the issues before proceeding.':''}</c6o-label>`)}`
 
-        return html`<appengine-section .prompts=${this.step.prompts}></appengine-section><c6o-label theme='error'>${this.hasError?'There was an error, please correct the issues before proceeding.':''}</c6o-label>`
+        return  html`<appengine-section .prompts=${this.step.prompts} .manifestHelper=${this.manifestHelper}></appengine-section>
+                     <c6o-label theme='error'>${this.hasError?'There was an error, please correct the issues before proceeding.':''}</c6o-label>`
     }
 
     async end() {
+
+        //validate
         const validation = new PromptValidation()
         const invalidPrompts = validation.validateSectionAndPrompts(this.manifestHelper, this.step.sections, this.step.prompts)
 
+        //if invalid, indicate so in the UI
         if (invalidPrompts.length > 0) return this.renderInvalid(invalidPrompts)
 
+        //if valid, update appspec
         this.mediator.applicationSpec = this.manifestHelper.document
         return true
     }
 
     renderInvalid(prompts: PromptType) {
-        //TODO: Show some UI element to indicate required items failed
-        console.log('APPX RENDER INVALID', prompts)
         this.hasError = true
         this.render()
         return false

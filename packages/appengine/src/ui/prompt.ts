@@ -1,12 +1,10 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
-import c from 'config'
-
+import { Prompt, c6oExtensions, isFunctionString, AppEngineAppObject } from '@provisioner/appengine-contracts'
 @customElement('appengine-prompt')
 export class AppEnginePrompt extends LitElement {
 
 
-    seperator = new Array(50 + 1).join( '─' )
+    seperator = new Array(50 + 1).join('─')
     inquireSeperator = '<<separator>>'
 
     @property({ type: Object })
@@ -14,6 +12,32 @@ export class AppEnginePrompt extends LitElement {
 
     @property({ type: Boolean })
     showGenerateInput = false
+
+    @property({ type: AppEngineAppObject })
+    manifestHelper: AppEngineAppObject
+
+
+    get isDisabled() {
+        if (this.prompt.when && isFunctionString(this.prompt.when)) {
+            console.log('APPX WHEN isDisabled', this.prompt.when)
+
+            try {
+                const prompts = []
+                for (const p of this.manifestHelper.flattenPrompts()) prompts[p.name] = p
+                const func = new Function('answers', this.prompt.when)
+                const result = func.call(this.manifestHelper, prompts)
+                console.log('APPX WHEN result', prompt, result)
+                return !result
+
+            } catch (e) {
+                //intentionally left in for 3rd party developers working on their own provisioners
+                console.log('APPX WHEN Exception:', { prompt, e })
+                throw e
+            }
+            //default to not disabled
+            return false
+        }
+    }
 
     render() {
         //at this point, we are just going to copy all default values over to the value itself
@@ -23,17 +47,17 @@ export class AppEnginePrompt extends LitElement {
 
         //set default values to the actual values
         this.prompt.c6o = this.prompt.c6o || {} as c6oExtensions
-        if(this.prompt.default) {
+        if (this.prompt.default) {
             this.prompt.c6o.value = this.prompt.default
             //if we have a choices array, pluck the item from the array
-            if(this.prompt.choices) this.prompt.c6o.value = this.prompt.choices[this.prompt.default as number]
+            if (this.prompt.choices) this.prompt.c6o.value = this.prompt.choices[this.prompt.default as number]
         }
-        if(this.prompt.type === 'number') {
+        if (this.prompt.type === 'number') {
             this.prompt.c6o.value = this.prompt.c6o.value || 1000
-            if(this.prompt.c6o.min && this.prompt.c6o.value < this.prompt.c6o.min) this.prompt.c6o.value = this.prompt.c6o.min
-            if(this.prompt.c6o.max && this.prompt.c6o.value > this.prompt.c6o.max) this.prompt.c6o.value = this.prompt.c6o.max
+            if (this.prompt.c6o.min && this.prompt.c6o.value < this.prompt.c6o.min) this.prompt.c6o.value = this.prompt.c6o.min
+            if (this.prompt.c6o.max && this.prompt.c6o.value > this.prompt.c6o.max) this.prompt.c6o.value = this.prompt.c6o.max
         }
-        if(this.prompt.type === 'confirm') {
+        if (this.prompt.type === 'confirm') {
             this.prompt.c6o.value = this.prompt.default || false
         }
 
@@ -76,17 +100,17 @@ export class AppEnginePrompt extends LitElement {
 
     handleInput = (e) => {
 
-        console.log('APPX handleInput target', e.target)
-
         if (typeof e.target.checked != 'undefined')
             this.prompt.c6o.value = e.target.checked
         else
             this.prompt.c6o.value = e.target.value
 
-        if(this.prompt.type === 'number') this.prompt.c6o.value = Number(this.prompt.c6o.value)
+        if (this.prompt.type === 'number') this.prompt.c6o.value = Number(this.prompt.c6o.value)
 
-        console.log('APPX handleInput prompt', this.prompt)
+        console.log('APPX input updated model', this.prompt)
 
+        //force a re-render so the WHEN can take effect
+        this.requestUpdate()
     }
 
 
@@ -94,28 +118,28 @@ export class AppEnginePrompt extends LitElement {
         //pull out all model items
         let { name, label, value, disabled } = model.item
         //default to not disabled
-        if(typeof disabled === 'undefined') disabled = false
+        if (typeof disabled === 'undefined') disabled = false
 
         //model is a plain string
-        if(typeof model.item === 'string') {
+        if (typeof model.item === 'string') {
             label = value = name = model.item
             //disable only if the value is our seperator
             disabled = (label === this.inquireSeperator)
         }
 
         //in the case of expand, make sure label is set correctly
-        if(name && !label) {
+        if (name && !label) {
             label = name
             //set the label so it renders, should only be in the "expand" situation where name/value is provided and not label/value
             model.item.label = label
         }
 
         //if we have a seperator, set the label to be the seperator value
-        if(label === this.inquireSeperator) label = this.seperator
+        if (label === this.inquireSeperator) label = this.seperator
 
         // toggle disabled state
         const item = root.getRootNode().host
-        if (disabled) {
+        if (disabled || this.isDisabled) {
             item.setAttribute('disabled', '')
             item.style.pointerEvents = 'none'
             item.style.opacity = '0.75'
@@ -166,6 +190,7 @@ export class AppEnginePrompt extends LitElement {
             @input=${this.handleInput}
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}
+            @disabled=${this.isDisabled}
         >
         </c6o-text-edit>
     `
@@ -181,6 +206,7 @@ export class AppEnginePrompt extends LitElement {
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}
             ?has-controls=${this.prompt.c6o.hasControls || true}
+            @disabled=${this.isDisabled}
         >
         </c6o-number-field>
         `
@@ -193,6 +219,7 @@ export class AppEnginePrompt extends LitElement {
             @input=${(e) => this.prompt.c6o.value = e.target.value}
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}
+            @disabled=${this.isDisabled}
         >
         </c6o-password-field>
     `
@@ -224,6 +251,7 @@ export class AppEnginePrompt extends LitElement {
             maxlength=${this.prompt.c6o.maxlength}
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}
+            @disabled=${this.isDisabled}
         >
         </c6o-text-area>
     `
@@ -250,6 +278,7 @@ export class AppEnginePrompt extends LitElement {
             @change=${this.handleInput}
             ?required=${this.prompt.c6o.required}
             error-message=${this.prompt.c6o.errorMessage}
+            @disabled=${this.isDisabled}
             >
             ${this.prompt.c6o.label}
         </c6o-checkbox>
