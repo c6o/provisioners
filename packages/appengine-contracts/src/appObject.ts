@@ -81,6 +81,13 @@ export class AppEngineAppObject extends AppObject {
         }
     })
 
+    get answers() {
+        return Array.from(this.flattenPrompts()).reduce( (obj, prompt) => {
+            obj[prompt.name] = prompt.c6o?.value
+            return obj
+        }, {})
+    }
+
     public *flattenPrompts() {
         for(const step of each(this.flow)) {
             if (typeof step === 'string')
