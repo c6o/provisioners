@@ -65,14 +65,16 @@ editions:
                 required: true
                 errorMessage: password required+errormessage
 
-
-          - name: section2
-            prompts:
-            - type: editor
-              name: editor2 none
-              message: editor2 none
+            - type: input
+              name: input none
+              message: input none
+              when: |
+                //return { 'manifest': this, 'answers' : answers, password: answers['password required+error'] }
+                //example: return true IF the password field is left blank
+                return (answers['password required+error'].c6o.value === '')
               c6o:
-                label: editor2 none
+                label: input none
+
       marina:
         launch:
           type: inline
