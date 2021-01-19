@@ -96,6 +96,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .addOwner(this.manager.document)
                 .upsertFile('../../k8s/server.yaml', options)
                 .patch(this.traxittNamespace, this.traxittNamespacePatch)
+                .upsertFile('../../k8s/ns-default.yaml')
             .end()
     }
 
