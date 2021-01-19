@@ -1,5 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { PromptType, Section } from '@provisioner/appengine-contracts'
+import { AppEngineAppObject, PromptType, Section } from '@provisioner/appengine-contracts'
 
 @customElement('appengine-section')
 export class AppEngineSection extends LitElement {
@@ -9,6 +9,9 @@ export class AppEngineSection extends LitElement {
 
     @property({ type: Object })
     prompts: PromptType
+
+    @property({ type: AppEngineAppObject })
+    manifestHelper: AppEngineAppObject
 
     get renderPrompts() {
         return this.section?.prompts || this.prompts
@@ -21,9 +24,9 @@ export class AppEngineSection extends LitElement {
                 <c6o-form-layout>
                     ${Array.isArray(this.renderPrompts) ?
                     this.renderPrompts.map(prompt => {
-                        return html`<appengine-prompt .prompt=${prompt}></appengine-prompt>`
+                        return html`<appengine-prompt .manifestHelper=${this.manifestHelper} .prompt=${prompt}></appengine-prompt>`
                     }) :
-                    html`<appengine-prompt .prompt=${this.renderPrompts}></appengine-prompt>`
+                        html`<appengine-prompt .manifestHelper=${this.manifestHelper} .prompt=${this.renderPrompts}></appengine-prompt>`
                 }
                 </c6o-form-layout>
             `
