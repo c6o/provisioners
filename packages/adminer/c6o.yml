@@ -47,19 +47,23 @@ editions:
             - type: editor
               name: editor none
               message: editor none
-              validate: |
-                return (typeof value !== 'undefined' && value !== '' && value.length > 10)
+              default: |
+                  asd afsddifjasd;lfkasdjf;lks djas;lkdfjafsd;kl jas;lkdjfas;kl defaultasdflk;jaj
+
+                  klasdjfasdklfj
+              # validate: |
+              #   return value.length > 10
               c6o:
                 label: editor none
 
             - type: password
-              name: password required+error
+              name: foopassword
               message: password required+errormessage
               default: foobar
-              validate: |
-                if (typeof value === 'undefined' || value === '') return false
-                //https://stackoverflow.com/questions/2370015/regular-expression-for-password-validation
-                return (new RegExp('^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$')).test(value)
+              # validate: |
+              #   if (typeof value === 'undefined' || value === '') return false
+              #   //https://stackoverflow.com/questions/2370015/regular-expression-for-password-validation
+              #   return (new RegExp('^.*(?=.{8,})(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "]).*$')).test(value)
               c6o:
                 label: password required+errormessage
                 required: true
@@ -69,9 +73,7 @@ editions:
               name: input none
               message: input none
               when: |
-                //return { 'manifest': this, 'answers' : answers, password: answers['password required+error'] }
-                //example: return true IF the password field is left blank
-                return (answers['password required+error'].c6o.value === '')
+                return !!answers['foopassword']
               c6o:
                 label: input none
 

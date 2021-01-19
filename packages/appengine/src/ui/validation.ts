@@ -46,13 +46,14 @@ export class PromptValidation {
     }
 
     private validatePrompt(manifestHelper: AppEngineAppObject, prompt: Prompt, invalidPrompts: Array<Prompt>) {
+        console.log("APPX VALIDATE validating prompt", prompt)
 
         if (prompt.validate && isFunctionString(prompt.validate)) {
             try {
                 const func = new Function('value', 'answers', prompt.validate)
-                const prompts = []
-                for(const p of manifestHelper.flattenPrompts()) prompts.push(p)
-                const result = func.call(manifestHelper, prompt.c6o?.value, prompts)
+                const result = func.call(manifestHelper.document, prompt.c6o?.value, manifestHelper.answers)
+                //intentionally left in for 3rd party developers working on their own provisioners
+                console.log('APPX Validation Result:', prompt, result)
                 if(!result) {
                     //intentionally left in for 3rd party developers working on their own provisioners
                     console.log('APPX Validation Failed for Prompt:', prompt, result)
@@ -64,12 +65,10 @@ export class PromptValidation {
                 console.log('APPX Validation Exception for Prompt:', {prompt, e})
                 invalidPrompts.push(prompt)
                 throw e
-                return
             }
         }
 
         switch (prompt.type) {
-            //text input
             case 'number':
                 this.validateNumber(prompt, invalidPrompts)
                 break
@@ -101,6 +100,7 @@ export class PromptValidation {
         } else {
             this.validatePromptType(manifestHelper, prompts, invalidPrompts)
         }
+        console.log('APPX VALIDATION results', invalidPrompts)
         return invalidPrompts
     }
 }
