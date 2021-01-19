@@ -43,6 +43,17 @@ spec:
       - destination:
           host: system-harbourmaster
   - match:
+      - uri:
+          prefix: /lifeboat/
+        headers:
+          :authority:
+            regex: ^{{host}}$
+    rewrite:
+      uri: /
+    route:
+      - destination:
+          host: system-lifeboat
+  - match:
     - uri:
         prefix: /api/
       headers:
