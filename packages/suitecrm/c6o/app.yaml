@@ -52,3 +52,16 @@ editions:
         launch:
           type: inline
           popUp: true
+  - name: preview with oxd
+    status: public
+    spec:
+      routes:
+      - type: http
+        targetService: suitecrm
+      provisioner:
+        package: '@conneryn/suitecrm-with-oxd'
+        includeOxd: true
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -29,6 +29,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             suitecrmusername,
             suitecrmpassword,
             databasesize,
+
+            includeOxd,
         } = this.spec
 
         const username = Buffer.from(suitecrmusername).toString('base64')
@@ -70,7 +72,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install SuiteCRM Deployment')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/6-deployment.yaml', { namespace, includeOxd: true })
+            .upsertFile('../../k8s/latest/6-deployment.yaml', { namespace, includeOxd })
             .end()
 
 
