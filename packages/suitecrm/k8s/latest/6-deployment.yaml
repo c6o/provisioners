@@ -23,6 +23,11 @@ spec:
         hostnames:
         - "status.localhost"
       containers:
+{{#if includeOxd}}
+      - name: oxd
+        image: conneryn/oxd-3.1.4:latest
+        imagePullPolicy: "IfNotPresent"
+{{/if}}
       - name: suitecrm
         image: docker.io/bitnami/suitecrm:7.11.13-debian-10-r27
         imagePullPolicy: "IfNotPresent"

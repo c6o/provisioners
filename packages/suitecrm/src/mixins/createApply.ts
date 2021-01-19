@@ -70,7 +70,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Install SuiteCRM Deployment')
             .addOwner(this.manager.document)
-            .upsertFile('../../k8s/latest/6-deployment.yaml', { namespace })
+            .upsertFile('../../k8s/latest/6-deployment.yaml', { namespace, includeOxd: true })
             .end()
 
 
