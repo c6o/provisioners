@@ -1,5 +1,6 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { Prompt, c6oExtensions, isFunctionString, keyValue, AppEngineAppDocument } from '@provisioner/appengine-contracts'
+import { Prompt, c6oExtensions, isFunctionString, keyValue, AppEngineAppDocument, AppEngineAppObject } from '@provisioner/appengine-contracts'
+import { PromptValidation } from './validation'
 @customElement('appengine-prompt')
 export class AppEnginePrompt extends LitElement {
 
@@ -19,6 +20,11 @@ export class AppEnginePrompt extends LitElement {
     @property({ type: Object })
     document: AppEngineAppDocument
 
+    validation = new PromptValidation()
+
+    get isInValid() {
+        return !this.validation.validatePrompt(this.document, this.answers, this.prompt)
+    }
 
     get isDisabled() {
         if (this.prompt.when && isFunctionString(this.prompt.when)) {
