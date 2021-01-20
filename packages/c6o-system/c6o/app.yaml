@@ -57,9 +57,9 @@ editions:
 _id: lifeboat
 appId: lifeboat
 name: Persistence
-icon: harbourMasterIcon.svg
+icon: lifeboatIcon.svg
 system: true
-summary: The Harbour Master is where you manage users, applications and integrations.
+summary: The Lifeboat is where you manage persistent volumes.
 editions:
   - name: latest
     status: public
