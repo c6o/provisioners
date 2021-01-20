@@ -1,4 +1,4 @@
-import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject } from '@provisioner/appengine-contracts'
+import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject, keyValue, AppEngineAppDocument } from '@provisioner/appengine-contracts'
 export class PromptValidation {
 
 
@@ -45,13 +45,21 @@ export class PromptValidation {
         }
     }
 
-    private validatePrompt(manifestHelper: AppEngineAppObject, prompt: Prompt, invalidPrompts: Array<Prompt>) {
+    public validatePrompt(document: AppEngineAppDocument, answers: keyValue, prompt: Prompt) : boolean {
+        const invalidPrompts = new Array<Prompt>()
+        this.validatePromptInternal(document, answers, prompt, invalidPrompts)
+        console.log("APPX VALIDATE validatePromptInternal", prompt, invalidPrompts, invalidPrompts.length == 0)
+
+        return invalidPrompts.length == 0
+    }
+
+    private validatePromptInternal(document: AppEngineAppDocument, answers: keyValue, prompt: Prompt, invalidPrompts: Array<Prompt>) {
         console.log("APPX VALIDATE validating prompt", prompt)
 
         if (prompt.validate && isFunctionString(prompt.validate)) {
             try {
                 const func = new Function('value', 'answers', prompt.validate)
-                const result = func.call(manifestHelper.document, prompt.c6o?.value, manifestHelper.answers)
+                const result = func.call(document, prompt.c6o?.value, answers)
                 //intentionally left in for 3rd party developers working on their own provisioners
                 console.log('APPX Validation Result:', prompt, result)
                 if(!result) {
@@ -82,9 +90,9 @@ export class PromptValidation {
         if (typeof prompt == 'undefined') return //if we have no prompts, it is valid
         if (Array.isArray(prompt))
             for (const p of prompt)
-                this.validatePrompt(manifestHelper, p, invalidPrompts)
+                this.validatePromptInternal(manifestHelper.document, manifestHelper.answers, p, invalidPrompts)
         else
-            this.validatePrompt(manifestHelper, prompt, invalidPrompts)
+            this.validatePromptInternal(manifestHelper.document, manifestHelper.answers, prompt, invalidPrompts)
     }
     private validateSectionPrompts(manifestHelper: AppEngineAppObject, sections: Section[], invalidPrompts: Array<Prompt>) {
         if (typeof sections == 'undefined') return //if we have no sections, it is valid

@@ -51,8 +51,8 @@ editions:
                   asd afsddifjasd;lfkasdjf;lks djas;lkdfjafsd;kl jas;lkdjfas;kl defaultasdflk;jaj
 
                   klasdjfasdklfj
-              # validate: |
-              #   return value.length > 10
+              validate: |
+                return value.length > 10
               c6o:
                 label: editor none
 
