@@ -1,5 +1,5 @@
 import { KubeDocument } from '@c6o/kubeclient-contracts'
-import { keyValue } from '@provisioner/appengine-contracts'
+import { keyValue, Volume } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
@@ -15,7 +15,15 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     createDeploymentDocument: KubeDocument
 
+    get createDeploymentVolumes() {
+        return this.createDeploymentDocument.spec.template.spec.volumes = this.createDeploymentDocument.spec.template.spec.volumes || []
+    }
+    get createDeploymentVolumeMounts() {
+        return this.createDeploymentContainer.volumeMounts = this.createDeploymentContainer.volumeMounts || []
+    }
+
     get createDeploymentContainer() { return this.createDeploymentDocument.spec.template.spec.containers[0] }
+
     get createDeploymentContainerEnvFrom() {
         if (!this.createDeploymentDocument.spec.template.spec.containers[0].envFrom)
             this.createDeploymentDocument.spec.template.spec.containers[0].envFrom = []
@@ -119,8 +127,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 return
             }
 
-            const base64Secrets : keyValue = { }
-            for(const key in this.manifestHelper.secrets)
+            const base64Secrets: keyValue = {}
+            for (const key in this.manifestHelper.secrets)
                 base64Secrets[key] = Buffer.from(this.manifestHelper.secrets[key]).toString('base64')
 
             const createSecrets = templates.getSecretTemplate(
@@ -197,8 +205,32 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 return
             }
 
-        // TODO: RobC
+            // TODO: RobC
+            for (const volume of this.manifestHelper.volumes) {
 
+                //k8s likes lowercase volume names
+                volume.name = volume.name.toLowerCase()
+
+                const createVolume = templates.getPVCTemplate(
+                    volume,
+                    this.manifestHelper.namespace,
+                    this.manifestHelper.getComponentLabels()
+                )
+
+                await this.manager.cluster
+                    .begin()
+                    .addOwner(this.manager.document)
+                    .upsert(createVolume)
+                    .end()
+
+                this.createDeploymentVolumes.push({ name: volume.name, persistentVolumeClaim: { claimName: volume.name } })
+
+                if (volume.mountPath) {
+                    const mount: any = { name: volume.name, mountPath: volume.mountPath }
+                    if (volume.subPath) mount.subPath = volume.subPath
+                    this.createDeploymentVolumeMounts.push(mount)
+                }
+            }
         }
         finally {
             this.manager.status?.pop(skipped)
@@ -222,12 +254,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 this.manifestHelper.getComponentLabels()
             )
 
-            debug('Installing Networking Services: %O', this.deployment)
-
             await this.manager.cluster
                 .begin()
-                    .addOwner(this.manager.document)
-                    .upsert(createService)
+                .addOwner(this.manager.document)
+                .upsert(createService)
                 .end()
 
             this.createDeploymentContainer.ports = this.manifestHelper.getDeploymentPorts()

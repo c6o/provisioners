@@ -1,0 +1,28 @@
+name: test-volumes
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  provisioner:
+    package: '@provisioner/appengine'
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    volumes:
+      - name: embyserver-config
+        size: 1Gi
+        mountPath: /config
+      - name: embyserver-tvshows
+        size: 100Gi
+        mountPath: /data/tvshows
+      - name: embyserver-movies
+        size: 100Gi
+        mountPath: /data/movies
+      - name: embyserver-transcode
+        size: 50Gi
+        mountPath: /transcode
+  marina:
+    launch:
+      type: inline
+      popUp: true

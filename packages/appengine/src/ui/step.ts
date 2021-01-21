@@ -30,10 +30,10 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
     }
 
     async begin() {
-        Array.from(this.manifestHelper.flattenPrompts()).forEach(p => this.setDefaultValue(p))
+        Array.from(this.manifestHelper.flattenPrompts()).forEach(p => this.setDefaultValueAndRequired(p))
     }
 
-    setDefaultValue(prompt: Prompt) {
+    setDefaultValueAndRequired(prompt: Prompt) {
         //at this point, we are just going to copy all default values over to the value itself
         //and when the UI loads, we will use the value to pre-populate the UI
         //after testing some of the UI controls did not handle setting default values consistently
@@ -56,6 +56,13 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
                 prompt.c6o.value = prompt.default || false
             }
         }
+
+        //if we have a validation expression and it is NOT required, set the fact that it is now required
+        if(prompt.validate && !prompt.c6o?.required) {
+            prompt.c6o = prompt.c6o || { value : '' }
+            prompt.c6o.required = true
+        }
+
     }
     async end() {
 

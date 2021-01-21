@@ -1,6 +1,8 @@
 import { LitElement, customElement, html, property } from 'lit-element'
 import { Prompt, c6oExtensions, isFunctionString, keyValue, AppEngineAppDocument, AppEngineAppObject } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
+import createDebug from 'debug'
+const debug = createDebug('@appengine:Prompt')
 @customElement('appengine-prompt')
 export class AppEnginePrompt extends LitElement {
 
@@ -30,6 +32,7 @@ export class AppEnginePrompt extends LitElement {
         if (this.prompt.when && isFunctionString(this.prompt.when)) {
             const func = new Function('answers', this.prompt.when)
             const result = func.call(this.document, this.answers)
+            debug('WHEN Evaluated for prompt', prompt, result)
             return result
         }
         return false

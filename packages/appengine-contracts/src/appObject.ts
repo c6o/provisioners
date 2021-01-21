@@ -1,11 +1,13 @@
 import createDebug from 'debug'
 import { AppObject } from '@provisioner/contracts'
 import { AppEngineAppDocument, FlowResult, isPortNumber, keyValue, ServicePort, DeploymentPort, each } from './'
-// import * as fs from 'fs'
-// import * as path from 'path'
 const debug = createDebug('@appengine:timing')
 
 export class AppEngineAppObject extends AppObject {
+
+    version = '1.0'
+
+
     document: AppEngineAppDocument
 
     get flow() { return this.document.spec.provisioner?.flow  }
@@ -49,12 +51,10 @@ export class AppEngineAppObject extends AppObject {
     }
 
     getComponentLabels(): keyValue {
-        // const packageJSON = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json')).toString('utf8'))
-        const packageJSON = { version: 'v1'}
         return {
             app: this.name,
             name: this.name,
-            'system.codezero.io/appengine': packageJSON.version,
+            'system.codezero.io/appengine': this.version,
             'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
             'system.codezero.io/id': this.instanceId,
             'system.codezero.io/edition': this.edition,

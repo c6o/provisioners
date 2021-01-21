@@ -21,6 +21,7 @@ export interface Volume {
     name: string
     size: string
     mountPath: string
+    subPath?: string
 }
 
 //https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/

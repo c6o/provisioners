@@ -2,7 +2,6 @@ import * as contracts from '@provisioner/appengine-contracts'
 import { generate } from 'generate-password'
 import chalk from 'chalk'
 import createDebug from 'debug'
-
 const debug = createDebug('@appengine:FlowProcessor')
 
 export class FlowProcessor {
