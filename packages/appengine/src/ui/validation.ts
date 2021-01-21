@@ -54,7 +54,6 @@ export class PromptValidation {
     }
 
     private validatePromptInternal(document: AppEngineAppDocument, answers: keyValue, prompt: Prompt, invalidPrompts: Array<Prompt>) {
-        console.log("APPX VALIDATE validating prompt", prompt)
 
         if (prompt.validate && isFunctionString(prompt.validate)) {
             try {
