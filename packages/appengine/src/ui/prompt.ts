@@ -28,7 +28,6 @@ export class AppEnginePrompt extends LitElement {
 
     get isDisabled() {
         if (this.prompt.when && isFunctionString(this.prompt.when)) {
-            console.log('APPX WHEN isDisabled', this.prompt.when, this.answers)
             try {
                 const func = new Function('answers', this.prompt.when)
                 const result = func.call(this.document, this.answers)
