@@ -93,7 +93,6 @@ export class AppEnginePrompt extends LitElement {
 
         if (this.prompt.type === 'number') this.prompt.c6o.value = Number(this.prompt.c6o.value)
 
-        console.log('APPX input updated model', this.prompt)
 
         //force a re-render so the WHEN can take effect
         this.dispatchEvent(new CustomEvent('update-requested', {
