@@ -1,13 +1,9 @@
 
 //https://gist.githubusercontent.com/ykessler/3349960/raw/05b3fc013d231189441f9c097368eb53dfe04876/timezones
-export function getTimeZonesFlatten() {
-    const flat = []
-    for(const groups of getTimeZones()) {
-        for(const zone of groups.zones) {
-            flat.push(zone)
-        }
-    }
-    return flat
+export function *getTimeZonesFlatten() {
+    for(const groups of getTimeZones())
+        for(const zone of groups.zones)
+            yield zone
 }
 export function getTimeZones() {
     return [
