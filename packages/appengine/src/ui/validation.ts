@@ -106,7 +106,6 @@ export class PromptValidation {
         } else {
             this.validatePromptType(manifestHelper, prompts, invalidPrompts)
         }
-        console.log('APPX VALIDATION results', invalidPrompts)
         return invalidPrompts
     }
 }
