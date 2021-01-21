@@ -227,7 +227,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
                 if (volume.mountPath) {
                     const mount: any = { name: volume.name, mountPath: volume.mountPath }
-                    if(volume.subPath) mount.subPath = volume.subPath
+                    if (volume.subPath) mount.subPath = volume.subPath
                     this.createDeploymentVolumeMounts.push(mount)
                 }
             }
