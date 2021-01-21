@@ -91,10 +91,9 @@ export class FlowProcessor {
         for(const field of inquireFields) {
             if(field.c6o?.dataSource === 'timezone') {
                 if(!field.choices) field.choices = []
-                field.choices = field.choices.concat(getTimeZonesFlatten())
+                field.choices = field.choices.concat(Array.from(getTimeZonesFlatten()))
             }
         }
-
         const asks = inquireFields.reduce(this.convertPrompts.bind(this), new Array<contracts.InquirePrompt>())
 
         const responses = await this.inquirer.prompt(asks)

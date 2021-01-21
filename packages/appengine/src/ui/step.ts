@@ -66,7 +66,7 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
 
         if (prompt.c6o?.dataSource === 'timezone') {
             if (!prompt.choices) prompt.choices = []
-            prompt.choices = prompt.choices.concat(getTimeZonesFlatten())
+            prompt.choices = prompt.choices.concat(Array.from(getTimeZonesFlatten()))
         }
 
 
