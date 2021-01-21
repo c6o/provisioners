@@ -23,25 +23,6 @@ export class AppEngineEndSettings extends LitElement implements StoreFlowStep {
     // NARAYAN: This is a temporary fix - do not document or use elsewhere
     skipMediatorRender = true;
 
-    // render() {
-    //     const json = JSON.stringify(this.mediator.applicationSpec, null, 4)
-    //     return html`${json}`
-    // }
-
-    *flattenPrompts() {
-        for(const step of each(this.manifestHelper.flow)) {
-            if (typeof step === 'string')
-                continue
-            if (step.prompts)
-                for(const prompt of each(step.prompts))
-                    yield prompt
-            if (step.sections)
-                for(const section of step.sections)
-                    for(const prompt of each(section.prompts))
-                        yield prompt
-        }
-    }
-
     async end() {
         const result: FlowResult = {
             transient: {},
@@ -49,7 +30,7 @@ export class AppEngineEndSettings extends LitElement implements StoreFlowStep {
             secrets: {}
         }
 
-        for(const prompt of this.flattenPrompts()) {
+        for(const prompt of this.manifestHelper.flattenPrompts()) {
             const target = prompt.c6o.target || 'configs'
             result[target][prompt.name] = prompt.c6o.value
         }
