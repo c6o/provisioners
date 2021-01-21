@@ -55,7 +55,7 @@ export class AppEngineAppObject extends AppObject {
             app: this.name,
             name: this.name,
             'system.codezero.io/appengine': this.version,
-            'system.codezero.io/app': this.name, // This this.versiond to render GetInfo in Marina
+            'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
             'system.codezero.io/id': this.instanceId,
             'system.codezero.io/edition': this.edition,
             'app.kubernetes.io/name': this.name,
