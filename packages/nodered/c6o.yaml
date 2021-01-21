@@ -40,7 +40,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nodered/node-red
-        port: 1880
+        ports: 1880
         automated: true
         config:
 
