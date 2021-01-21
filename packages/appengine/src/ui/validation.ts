@@ -60,7 +60,6 @@ export class PromptValidation {
                 const func = new Function('value', 'answers', prompt.validate)
                 const result = func.call(document, prompt.c6o?.value, answers)
                 //intentionally left in for 3rd party developers working on their own provisioners
-                console.log('APPX Validation Result:', prompt, result)
                 if(!result) {
                     //intentionally left in for 3rd party developers working on their own provisioners
                     invalidPrompts.push(prompt)
