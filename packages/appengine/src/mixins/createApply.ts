@@ -16,8 +16,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     createDeploymentDocument: KubeDocument
 
     get createDeploymentVolumes() {
-        this.createDeploymentDocument.spec.template.spec.volumes = this.createDeploymentDocument.spec.template.spec.volumes || []
-        return this.createDeploymentDocument.spec.template.spec.volumes
+        return this.createDeploymentDocument.spec.template.spec.volumes = this.createDeploymentDocument.spec.template.spec.volumes || []
     }
     get createDeploymentVolumeMounts() {
         this.createDeploymentContainer.volumeMounts = this.createDeploymentContainer.volumeMounts || []
