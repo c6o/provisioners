@@ -1,4 +1,7 @@
 import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject, keyValue, AppEngineAppDocument } from '@provisioner/appengine-contracts'
+import createDebug from 'debug'
+const debug = createDebug('@appengine:Validation')
+
 export class PromptValidation {
 
 
@@ -57,6 +60,7 @@ export class PromptValidation {
             try {
                 const func = new Function('value', 'answers', prompt.validate)
                 const result = func.call(document, prompt.c6o?.value, answers)
+                debug('Validation Evaluated for prompt', prompt, result)
                 //intentionally left in for 3rd party developers working on their own provisioners
                 if(!result) {
                     //intentionally left in for 3rd party developers working on their own provisioners

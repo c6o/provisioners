@@ -35,3 +35,5 @@ provisioner:
 
 editions:
   - edition-stable.yaml
+  - edition-test-inputs.yaml
+  - edition-test-volumes.yaml
