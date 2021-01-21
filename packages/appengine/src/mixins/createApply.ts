@@ -207,8 +207,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 return
             }
 
-            this.createDeploymentContainer.volumeMounts = this.createDeploymentContainer.volumeMounts || []
-
             // TODO: RobC
             for (const volume of this.manifestHelper.volumes) {
 
