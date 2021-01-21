@@ -32,7 +32,6 @@ export class AppEnginePrompt extends LitElement {
                 const func = new Function('answers', this.prompt.when)
                 const result = func.call(this.document, this.answers)
                 //intentionally left in for 3rd party developers working on their own provisioners
-                console.log('APPX WHEN result', prompt, result)
                 return result
 
             } catch (e) {
