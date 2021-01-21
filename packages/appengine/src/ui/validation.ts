@@ -63,7 +63,6 @@ export class PromptValidation {
                 console.log('APPX Validation Result:', prompt, result)
                 if(!result) {
                     //intentionally left in for 3rd party developers working on their own provisioners
-                    console.log('APPX Validation Failed for Prompt:', prompt, result)
                     invalidPrompts.push(prompt)
                     return
                 }
