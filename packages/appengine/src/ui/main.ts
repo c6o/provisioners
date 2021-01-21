@@ -27,14 +27,6 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
     async begin() {
 
         if (this.manifestHelper.flow) {
-
-            debug('Received flow', this.manifestHelper.flow)
-
-            //@ts-ignore
-            window.manifestFlow = this.manifestHelper.flow
-            //@ts-ignore
-            window.mediator = this.mediator
-
             const stepViews = []
             for(const step of each(this.manifestHelper.flow)) {
                 const stepView = document.createElement('appengine-step') as AppEngineStep
@@ -48,8 +40,4 @@ export class AppEngineSettings extends LitElement implements StoreFlowStep {
             this.mediator.appendFlow(...stepViews, endView)
         }
     }
-
-    // async end() {
-    //     return true
-    // }
 }

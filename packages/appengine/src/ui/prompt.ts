@@ -28,25 +28,14 @@ export class AppEnginePrompt extends LitElement {
 
     get isDisabled() {
         if (this.prompt.when && isFunctionString(this.prompt.when)) {
-            try {
-                const func = new Function('answers', this.prompt.when)
-                const result = func.call(this.document, this.answers)
-                //intentionally left in for 3rd party developers working on their own provisioners
-                return result
-
-            } catch (e) {
-                //intentionally left in for 3rd party developers working on their own provisioners
-                console.log('APPX WHEN Exception:', { prompt, e })
-                throw e
-            }
-            //default to not disabled
-            return false
+            const func = new Function('answers', this.prompt.when)
+            const result = func.call(this.document, this.answers)
+            return result
         }
+        return false
     }
 
     render() {
-
-
         //https://www.npmjs.com/package/inquirer
         //Possible values: input, number, confirm, list, rawlist, expand, checkbox, password, editor
         switch (this.prompt.type) {
