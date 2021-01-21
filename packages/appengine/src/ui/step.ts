@@ -1,7 +1,8 @@
-import { LitElement, customElement, html, property, eventOptions } from 'lit-element'
+import { LitElement, customElement, html, property } from 'lit-element'
 import { StoreFlowScreen, StoreFlowMediator } from '@provisioner/common'
 import { Step, AppEngineAppObject, PromptType, Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
+import { getTimeZonesFlatten } from '../templates/timeZones'
 
 @customElement('appengine-step')
 export class AppEngineStep extends LitElement implements StoreFlowScreen {
@@ -58,10 +59,16 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
         }
 
         //if we have a validation expression and it is NOT required, set the fact that it is now required
-        if(prompt.validate && !prompt.c6o?.required) {
-            prompt.c6o = prompt.c6o || { value : '' }
+        if (prompt.validate && !prompt.c6o?.required) {
+            prompt.c6o = prompt.c6o || { value: '' }
             prompt.c6o.required = true
         }
+
+        if (prompt.c6o?.valueSource === 'timezone') {
+            if (!prompt.choices) prompt.choices = []
+            prompt.choices = prompt.choices.concat(getTimeZonesFlatten())
+        }
+
 
     }
     async end() {

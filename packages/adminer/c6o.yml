@@ -37,3 +37,4 @@ editions:
   - edition-stable.yaml
   - edition-test-inputs.yaml
   - edition-test-volumes.yaml
+  - edition-test-timezone.yaml
