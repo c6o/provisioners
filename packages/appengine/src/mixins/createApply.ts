@@ -21,13 +21,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     get createDeploymentVolumeMounts() {
         return this.createDeploymentContainer.volumeMounts = this.createDeploymentContainer.volumeMounts || []
     }
-
-    get createDeploymentContainer() { return this.createDeploymentDocument.spec.template.spec.containers[0] }
-
+    get createDeploymentContainer() {
+        return this.createDeploymentDocument.spec.template.spec.containers[0]
+    }
     get createDeploymentContainerEnvFrom() {
-        if (!this.createDeploymentDocument.spec.template.spec.containers[0].envFrom)
-            this.createDeploymentDocument.spec.template.spec.containers[0].envFrom = []
-        return this.createDeploymentDocument.spec.template.spec.containers[0].envFrom
+        return this.createDeploymentDocument.spec.template.spec.containers[0].envFrom = this.createDeploymentDocument.spec.template.spec.containers[0].envFrom || []
     }
 
     async createApply() {

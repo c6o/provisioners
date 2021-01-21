@@ -1,5 +1,6 @@
 import * as contracts from '@provisioner/appengine-contracts'
 import { generate } from 'generate-password'
+import { getTimeZonesFlatten } from '../templates/timeZones'
 import chalk from 'chalk'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:FlowProcessor')
@@ -87,7 +88,15 @@ export class FlowProcessor {
             [inquireField]
 
 
+        for(const field of inquireFields) {
+            if(field.c6o?.dataSource === 'timezone') {
+                if(!field.choices) field.choices = []
+                field.choices = field.choices.concat(getTimeZonesFlatten())
+            }
+        }
+
         const asks = inquireFields.reduce(this.convertPrompts.bind(this), new Array<contracts.InquirePrompt>())
+
         const responses = await this.inquirer.prompt(asks)
 
         // Add to the responses bag - new responses overwrite old responses
