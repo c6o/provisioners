@@ -30,7 +30,7 @@ export interface c6oExtensions {
     step?: number
     hasControls?: boolean
     errorMessage?: string
-    valueSource: string
+    dataSource: string
 }
 
 export interface InquirePrompt {

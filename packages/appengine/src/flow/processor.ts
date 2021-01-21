@@ -89,7 +89,7 @@ export class FlowProcessor {
 
 
         for(const field of inquireFields) {
-            if(field.c6o?.valueSource === 'timezone') {
+            if(field.c6o?.dataSource === 'timezone') {
                 if(!field.choices) field.choices = []
                 field.choices = field.choices.concat(getTimeZonesFlatten())
             }
