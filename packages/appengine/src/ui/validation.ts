@@ -48,8 +48,6 @@ export class PromptValidation {
     public validatePrompt(document: AppEngineAppDocument, answers: keyValue, prompt: Prompt) : boolean {
         const invalidPrompts = new Array<Prompt>()
         this.validatePromptInternal(document, answers, prompt, invalidPrompts)
-        console.log("APPX VALIDATE validatePromptInternal", prompt, invalidPrompts, invalidPrompts.length == 0)
-
         return invalidPrompts.length == 0
     }
 
@@ -92,18 +90,17 @@ export class PromptValidation {
     }
     private validateSectionPrompts(manifestHelper: AppEngineAppObject, sections: Section[], invalidPrompts: Array<Prompt>) {
         if (typeof sections == 'undefined') return //if we have no sections, it is valid
-        for (const section of sections) {
+        for (const section of sections)
             this.validatePromptType(manifestHelper, section.prompts, invalidPrompts)
-        }
     }
 
     public validateSectionAndPrompts(manifestHelper: AppEngineAppObject, sections: Section[], prompts: PromptType): Array<Prompt> {
         const invalidPrompts: Prompt[] = new Array<Prompt>()
-        if (sections) {
+        if (sections)
             this.validateSectionPrompts(manifestHelper, sections, invalidPrompts)
-        } else {
+        else
             this.validatePromptType(manifestHelper, prompts, invalidPrompts)
-        }
+
         return invalidPrompts
     }
 }
