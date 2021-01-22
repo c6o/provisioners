@@ -59,7 +59,7 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
         await this.setPrometheusNamespace()
         const jobFile = options['addJob']
         const jobYaml = await fs.readFile(resolvePath(jobFile), 'utf8')
-        this.jobConfig = yaml.safeLoad(jobYaml)
+        this.jobConfig = yaml.load(jobYaml)
     }
 
     async preRemoveJob(options) {

@@ -105,11 +105,11 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         const mainConfigMap = result.object
 
         const ownerPrefix = `${appNamespace}-${appName}`
-        const dbProviders: any = yaml.safeLoad(result.object.data['dashboardproviders.yaml'])
+        const dbProviders: any = yaml.load(result.object.data['dashboardproviders.yaml'])
         dbProviders.providers = dbProviders.providers || []
         dbProviders.providers = dbProviders.providers.filter(entry => entry.folder !== ownerPrefix)
 
-        const dbSources: any = yaml.safeLoad(result.object.data['datasources.yaml'])
+        const dbSources: any = yaml.load(result.object.data['datasources.yaml'])
         dbSources.datasources = dbSources.datasources || []
         dbSources.datasources = dbSources.datasources.filter(entry => !entry.name.startsWith(ownerPrefix))
 
@@ -197,7 +197,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         let modified = false
 
         // add dashboard provider folders if needed
-        const dbProviders: any = yaml.safeLoad(result.object.data['dashboardproviders.yaml'])
+        const dbProviders: any = yaml.load(result.object.data['dashboardproviders.yaml'])
         dbProviders.providers = dbProviders.providers || []
         const index = dbProviders.providers.findIndex(entry => entry.folder == folder)
         if (index === -1) {
@@ -215,7 +215,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         }
 
         // add and remove datasource
-        const dbSources: any = yaml.safeLoad(result.object.data['datasources.yaml'])
+        const dbSources: any = yaml.load(result.object.data['datasources.yaml'])
         dbSources.datasources = dbSources.datasources || []
 
         for (const source of this.datasources) {

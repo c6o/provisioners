@@ -72,7 +72,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
             throw result.error
 
         this.configMap = result.object
-        this.prometheusConfig = yaml.safeLoad(this.configMap.data['prometheus.yml'])
+        this.prometheusConfig = yaml.load(this.configMap.data['prometheus.yml'])
         this.hasConfigChanged = false
 
         this.addedSecrets = []

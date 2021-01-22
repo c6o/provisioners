@@ -57,10 +57,10 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
     async loadYaml(file, params?: any) {
         const source = await fs.readFile(file, 'utf8')
         if (!params)
-            return yaml.safeLoad(source)
+            return yaml.load(source)
 
         const template = Handlebars.compile(source, { noEscape: true })
         const content = template(params)
-        return yaml.safeLoad(content)
+        return yaml.load(content)
     }
 }
