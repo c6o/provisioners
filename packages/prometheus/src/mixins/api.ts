@@ -9,7 +9,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
     prometheusNamespace: string
     clientApp: string
     clientNamespace: string
-    
+
     configMap: any
     prometheusConfig: any
     hasConfigChanged: boolean
@@ -137,11 +137,11 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
 
     /**
      * Add TLS configuration cert files for use in jobs.
-     * 
+     *
      * ca_file: CA certificate to validate API server certificate with.
      * cert_file: Certificate for client cert authentication to the server.
      * key_file: Key for client cert authentication to the server.
-     * 
+     *
      * Will be mounted in:
      *      /etc/certs/{clientNamespace}-{clientApp}-{name}/ca.pem
      *      /etc/certs/{clientNamespace}-{clientApp}-{name}/cert.pem
@@ -159,7 +159,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         secretsData['ca.pem'] = certs.ca_file ? Buffer.from(certs.ca_file).toString('base64'):''
         secretsData['cert.pem'] = certs.cert_file ? Buffer.from(certs.cert_file).toString('base64'):''
         secretsData['key.pem'] = certs.key_file ? Buffer.from(certs.key_file).toString('base64'):''
-        
+
         this.addedSecrets.push(newSecret)
 
         // update the deployment
@@ -180,7 +180,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         let index = volumeArray.findIndex(vol => vol.name === volume.name)
         if (index === -1)
             volumeArray.push(volume)
-        
+
         // container 1 is the prometheus server
         const volumeMountArray = this.runningDeployment.spec.template.spec.containers[1].volumeMounts
         index = volumeMountArray.findIndex(vol => vol.name === volumeMount.name)
@@ -198,14 +198,14 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         const certName = `${this.clientNamespace}-${this.clientApp}-${name}`
         const removeSecret = this.certSecret(name, namespace)
         this.removedSecrets.push(removeSecret)
-   
+
         const volumeName = `cert-${certName}`
         // remove the dashboard volume and volume mount from the deployment
         const volumeArray = this.runningDeployment.spec.template.spec.volumes
         let index = volumeArray.findIndex(vol => vol.name === volumeName)
         if (index !== -1)
             volumeArray.splice(index,1)
-        
+
         const volumeMountArray = this.runningDeployment.spec.template.spec.containers[1].volumeMounts
         index = volumeMountArray.findIndex(vol => vol.name === volumeName)
         if (index !== -1)
@@ -237,7 +237,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         if (this.hasConfigChanged) {
             const result = await this.manager.cluster.patch(this.configMap, {
                 data: {
-                    'prometheus.yml': yaml.safeDump(this.prometheusConfig)
+                    'prometheus.yml': yaml.dump(this.prometheusConfig)
                 }
             })
             if (result.error)

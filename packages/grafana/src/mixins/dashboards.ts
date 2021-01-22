@@ -115,8 +115,8 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
         result = await this.manager.cluster.patch(mainConfigMap, {
             data: {
-                'dashboardproviders.yaml': yaml.safeDump(dbProviders),
-                'datasources.yaml': yaml.safeDump(dbSources)
+                'dashboardproviders.yaml': yaml.dump(dbProviders),
+                'datasources.yaml': yaml.dump(dbSources)
             }
         })
         if (result.error)
@@ -237,8 +237,8 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         if (modified) {
             result = await this.manager.cluster.patch(result.object, {
                 data: {
-                    'dashboardproviders.yaml': yaml.safeDump(dbProviders),
-                    'datasources.yaml': yaml.safeDump(dbSources)
+                    'dashboardproviders.yaml': yaml.dump(dbProviders),
+                    'datasources.yaml': yaml.dump(dbSources)
                 }
             })
             if (result.error)
