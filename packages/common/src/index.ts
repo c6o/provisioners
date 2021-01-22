@@ -1,4 +1,5 @@
 export * from './manager'
+export * from './manifests'
 export * from './mixins'
 export * from './provisioner'
 export * from './store'
