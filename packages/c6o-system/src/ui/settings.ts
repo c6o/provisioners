@@ -1,7 +1,7 @@
 import { LitElement, html, customElement, property, css, CSSResult } from 'lit-element'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
-import { AppStatuses } from '@provisioner/common/src/app'
+import { AppStatuses } from '@provisioner/contracts'
 import { unlinkToken } from '@provisioner/c6o-system/src/constants'
 
 @customElement('c6o-system-settings-main')

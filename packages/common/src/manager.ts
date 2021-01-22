@@ -1,7 +1,7 @@
 
 import { Cluster, KubeObject, Status } from '@c6o/kubeclient-contracts'
+import { AppDocument } from '@provisioner/contracts'
 import { ProvisionerBase } from './provisioner'
-import { AppDocument } from '.'
 
 export type optionFunctionType = (string, description: string, autocomplete?: ReadonlyArray<string>) => void
 

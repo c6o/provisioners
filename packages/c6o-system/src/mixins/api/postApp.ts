@@ -1,4 +1,4 @@
-import { AppDocument } from '@provisioner/common'
+import { AppDocument } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 const debug = createDebug('c6o-system:api:postAppMixin:')

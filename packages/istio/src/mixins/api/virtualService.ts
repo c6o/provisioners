@@ -1,5 +1,5 @@
 import { Result, KubeDocument } from '@c6o/kubeclient-contracts'
-import { AppDocument, RoutesType } from '@provisioner/common'
+import { AppDocument, RoutesType } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
