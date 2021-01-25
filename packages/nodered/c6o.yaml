@@ -1,6 +1,6 @@
 name: Node RED
 appId: nodered
-package: "@provisioner/appengine"
+package: '@provisioner/appengine'
 icon: icon.svg
 summary: Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things.
 
@@ -34,7 +34,7 @@ editions:
         - type: http
           targetService: nodered
       provisioner:
-        package: "@provisioner/appengine"
+        package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nodered/node-red
         ports: 1880

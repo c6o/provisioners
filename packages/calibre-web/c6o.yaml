@@ -1,6 +1,6 @@
 name: Calibre Web
 appId: calibre-web #App internal name (all lower, no spaces); minimum 5 characters
-package: "@provisioner/appengine"
+package: '@provisioner/appengine'
 icon: icon.svg
 description:
   Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
@@ -90,7 +90,7 @@ editions:
         - type: http
           targetService: calibre-web
       provisioner:
-        package: "@provisioner/appengine"
+        package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/calibre-web
         ports: 8083

@@ -1,6 +1,6 @@
 name: Next Cloud
 appId: next-cloud
-package: "@provisioner/appengine"
+package: '@provisioner/appengine'
 icon: icon.svg
 description:
   Share and collaborate on documents, send and receive email, manage your calendar and have video chats without data leaks
@@ -62,7 +62,7 @@ editions:
         - type: http
           targetService: next-cloud
       provisioner:
-        package: "@provisioner/appengine"
+        package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
         ports:
@@ -81,7 +81,7 @@ editions:
         - type: http
           targetService: next-cloud
       provisioner:
-        package: "@provisioner/appengine"
+        package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
         ports: 80
