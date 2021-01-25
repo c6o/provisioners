@@ -58,17 +58,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -101,17 +101,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -146,17 +146,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -190,17 +190,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -235,17 +235,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -280,17 +280,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -325,17 +325,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -370,17 +370,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -414,17 +414,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -458,17 +458,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -502,17 +502,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi
@@ -546,17 +546,17 @@ editions:
           PUID: 0
           PGID: 0
           AUTO_UPDATE: true
-          
+
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
         volumes:
           - size: 5Gi

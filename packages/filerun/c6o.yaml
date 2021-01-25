@@ -143,25 +143,25 @@ editions:
               name: FR_DB_HOST
               message: Specify the host name of your database server service (mysql)
               default: mysql.database
-              required: true
               c6o:
                 label: Database Server
+                required: true
 
             - type: input
               name: FR_DB_USER
               message: Specify the username of your database server service
               default: mysql.database
-              required: true
               c6o:
                 label: Database User name
+                required: true
 
             - type: password
               name: FR_DB_PASS
               message: Specify the password of your database server service
-              default: 88888888
-              required: true
               c6o:
+                target: secrets
                 label: Database Password
+                required: true
 
         configs:
           - FR_DB_PORT: 3306

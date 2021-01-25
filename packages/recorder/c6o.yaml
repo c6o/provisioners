@@ -41,43 +41,44 @@ editions:
               name: OTR_HOST
               message: Specify the hostname for your MQTT Server (Service)
               default: mqtt.services
-              required: true
               c6o:
                 label: MQTT Host
+                required: true
             - type: input
               name: OTR_USER
               message: Specify the username for your MQTT instance
               default: admin
-              required: false
               c6o:
                 label: MQTT User
+                required: false
             - type: number
               name: OTR_PORT
               message: Specify the port for your MQTT Server (Service)
               default: 1883
-              required: false
               c6o:
                 label: MQTT Port
+                required: false
             - type: input
               name: OTR_GEOKEY
               message: API key for reverse-geo lookups
               default: 1883
-              required: false
               c6o:
                 label: Reverse Geo API Key
+                required: false
             - type: input
               name: OTR_BROWSERAPIKEY
               message: Google Maps Api Key
-              required: false
               c6o:
                 label: Google maps browser API key
+                required: false
 
             - type: password
               name: OTR_PASS
               message: Specify the MQTT Password
-              required: false
               c6o:
                 label: MQTT Password
+                required: false
+                target: secrets
 
       marina:
         launch:

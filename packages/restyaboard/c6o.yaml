@@ -65,52 +65,51 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
             - type: input
               name: POSTGRES_HOST
               message: The name of the database server (Service)
-              required: true
               default: restyaboard
               c6o:
                 label: Database Host
+                required: true
 
             - type: input
               name: POSTGRES_ADMIN_USER
               message: The username for the database user
-              required: true
               default: root
               c6o:
                 label: Database Admin user name
+                required: true
 
 
             - type: password
               name: POSTGRES_ADMIN_PASS
               message: The password for the database user
-              required: true
-              default: 88888888
               c6o:
                 label: Database Admin password
+                required: true
+                target: secrets
 
             - type: input
               name: RESTYA_DB_USERNAME
               message: Restya Database User Name
-              required: true
               default: restyaboard
               c6o:
                 label: Restya Database User Name
-
+                required: true
 
             - type: password
               name: RESTYA_DB_USERPASS
               message: Restya Database Password
-              required: true
-              default: 88888888
               c6o:
                 label: Restya Database Password
+                required: true
+                target: secrets
 
         configs:
           - POSTGRES_PORT : 5432

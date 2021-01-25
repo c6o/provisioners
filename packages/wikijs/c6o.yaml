@@ -71,17 +71,17 @@ editions:
               name: DB_HOST
               message: Specify the host name of your database server service (mysql)
               default: mysql.database
-              required: true
               c6o:
                 label: Database Server
+                required: true
 
             - type: list
               name: DB_TYPE
               message: The type of the database to use
               default: 2
-              required: true
               c6o:
                 label: Database type
+                required: true
                 items:
                   - value: mysql
                   - value: postgres
@@ -93,34 +93,33 @@ editions:
               name: DB_PORT
               message: The port of the database
               default: 3306
-              required: true
               c6o:
                 label: Database Port
-
+                required: true
 
             - type: input
               name: DB_NAME
               message: The name of the database to use
               default: wikijs
-              required: true
               c6o:
                 label: Database name
+                required: true
 
             - type: input
               name: DB_USER
               message: The username for the database user
               default: wikijs
-              required: true
               c6o:
                 label: Database Username
+                required: true
 
             - type: password
               name: DB_PASS
               message: The password for the database user
-              default: 88888888
-              required: true
               c6o:
                 label: Database password
+                required: true
+                target: secrets
 
       marina:
         launch:

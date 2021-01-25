@@ -91,33 +91,33 @@ editions:
               name: MYSQL_USER
               message: Specify the username for your database
               default: nextcloud
-              required: true
               c6o:
                 label: Database user name
+                required: true
 
             - type: password
               name: MYSQL_PASSWORD
               message: Specify the password for the database
-              default: 88888888
-              required: true
               c6o:
+                target: secrets
                 label: Database password
+                required: true
 
             - type: input
               name: NEXTCLOUD_ADMIN_USER
               message: NextCloud Admin User
               default: admin
-              required: true
               c6o:
                 label: Specify the admin user name
+                required: true
 
             - type: password
               name: NEXTCLOUD_ADMIN_PASSWORD
               message: NextCloud Admin Password
-              default: 88888888
-              required: true
               c6o:
+                target: secrets
                 label: Specify the password for the admin user
+                required: true
 
         configs:
           - NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_DNS

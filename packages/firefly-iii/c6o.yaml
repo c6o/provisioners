@@ -86,25 +86,25 @@ editions:
               name: DB_HOST
               message: Specify the host name of your database server service (mysql)
               default: mysql.database
-              required: true
               c6o:
                 label: Database Server
+                required: true
 
             - type: input
               name: DB_USERNAME
               message: Specify the username of your database server service
-              default: mysql.database
-              required: true
+              default: firefly
               c6o:
                 label: Database Username
+                required: true
 
             - type: password
-              name: DB_USERNAME
+              name: DB_PASSWORD
               message: Specify the password of your database server service
-              default: mysql.database
-              required: true
               c6o:
+                target: secrets
                 label: Database Password
+                required: true
 
         configs:
           - APP_ENV: local

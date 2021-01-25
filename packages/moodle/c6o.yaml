@@ -70,66 +70,67 @@ editions:
               name: MOODLE_DATABASE_HOST
               message: Host for the database server (Service)
               default: mariadb.database
-              required: true
               c6o:
                 label: Database Host
+                required: true
 
             - type: input
               name: MOODLE_DATABASE_USER
               message: Username for the database
               default: moodle
-              required: true
               c6o:
                 label: Database Username
+                required: true
 
             - type: password
               name: MOODLE_DATABASE_PASSWORD
               message: Database Password
-              default: 88888888
-              required: true
               c6o:
+                target: secrets
                 label: Database Password
+                required: true
 
             - type: input
               name: MOODLE_USERNAME
               message: Username for the admin user
               default: admin
-              required: true
               c6o:
                 label: Administrator username
+                required: true
 
             - type: password
               name: MOODLE_PASSWORD
               message: Password for the admin user
-              default: 88888888
-              required: true
               c6o:
+                target: secrets
                 label: Administrator password
+                required: true
 
             - type: input
               name: MOODLE_EMAIL
               message:  Email address for the admin user
               default: admin@mysite.com
-              required: true
               c6o:
                 label: Administrator email address
+                required: true
 
 
             - type: input
               name: MOODLE_DATABASE_TYPE
               message:  Database Type
               default: mariadb
-              required: true
               c6o:
                 label: Database Type
+                required: true
 
             - type: input
               name: MOODLE_DATABASE_NAME
               message:  Database Name
               default: moodle
-              required: true
               c6o:
                 label: Database Name
+                required: true
+
         configs:
             - ALLOW_EMPTY_PASSWORD: no
 

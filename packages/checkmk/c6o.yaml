@@ -86,10 +86,10 @@ editions:
             - type: password
               name: CMK_PASSWORD
               message: The password for the cmkadmin user account
-              default: 88888888
-              required: true
               c6o:
                 label: The password for the cmkadmin user account
+                required: true
+                target: secrets
         volumes:
           - size: 5Gi
             name: checkmk-sites
@@ -122,10 +122,10 @@ editions:
             - type: password
               name: CMK_PASSWORD
               message: The password for the cmkadmin user account
-              default: 88888888
-              required: true
               c6o:
                 label: The password for the cmkadmin user account
+                required: true
+                target: secrets
         volumes:
           - size: 5Gi
             name: checkmk-sites

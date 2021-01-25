@@ -47,27 +47,27 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
             - type: input
               name: SEAFILE_ADMIN_EMAIL
               message: Specify an email address to use for the admin account
-              required: true
               default: restyaboard
               c6o:
                 label: Admin Email
+                required: true
 
 
             - type: password
               name: SEAFILE_ADMIN_PASSWORD
               message: Specify the password for the aministrator account
-              required: true
-              default: restyaboard
               c6o:
                 label: Admin Password
+                required: true
+                target: secrets
 
         volumes:
           - size: 500Gi

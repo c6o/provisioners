@@ -99,41 +99,41 @@ editions:
               name: MATOMO_DATABASE_HOST
               message: Specify the host name of your database server service (mariadb Service)
               default: mysql.database
-              required: true
               c6o:
                 label: Database Server
+                required: true
 
             - type: input
               name: MATOMO_DATABASE_ADAPTER
               message: Specify the database adapter of your database server service (mariadb Service)
               default: mariadb
-              required: true
               c6o:
                 label: Database Adapter
+                required: true
 
             - type: input
               name: MATOMO_DATABASE_DBNAME
               message: Specify the database name
               default: maotomo
-              required: true
               c6o:
                 label: Database Name
+                required: true
 
             - type: input
               name: MATOMO_DATABASE_USERNAME
               message: Username for the database
               default: matomo
-              required: true
               c6o:
                 label: Database Username
+                required: true
 
             - type: password
               name: MATOMO_DATABASE_PASSWORD
               message: Password for the database
-              default: matomo
-              required: true
               c6o:
+                target: secrets
                 label: Database password
+                required: true
 
         volumes:
           - name: matomo-data

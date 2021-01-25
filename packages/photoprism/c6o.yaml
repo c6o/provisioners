@@ -58,10 +58,11 @@ editions:
             - type: password
               name: PHOTOPRISM_ADMIN_PASSWORD
               message: Specify the admin users password
-              default: 1
-              required: true
               c6o:
+                required: true
+                target: secrets
                 label: Admin Password
+
             - type: confirm
               name: PHOTOPRISM_UPLOAD_NSFW
               message: Allow NSFW Uploads

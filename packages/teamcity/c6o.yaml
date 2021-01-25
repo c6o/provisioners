@@ -77,9 +77,9 @@ editions:
               name: SERVER_URL
               message: The url to your TeamCity Server (service, typically teamcity.NAMESPACE)
               default: http://teamcityserver.develop:8111
-              required: true
               c6o:
                 label: TeamCity Server Url
+                required: true
 
       marina:
         launch:

@@ -88,17 +88,17 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
             - type: password
               name: PASSWORD
               message: Specify the password to use for the UI
-              default: 88888888
-              required: true
               c6o:
                 label: Password
+                required: true
+                target: secrets
         secrets:
           # - name: SUDO_PASSWORD
           #   label: Root Password (abc)

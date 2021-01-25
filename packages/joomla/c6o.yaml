@@ -43,30 +43,30 @@ editions:
               name: JOOMLA_DB_HOST
               message: Specify the host name of your database server service (mysql)
               default: mysql.database
-              required: true
               c6o:
                 label: Database Server
+                required: true
             - type: input
               name: JOOMLA_DB_NAME
               message: Specify the host name of your Joomla database
               default: joomla
-              required: true
               c6o:
                 label: Database Name
+                required: true
             - type: input
               name: JOOMLA_DB_USER
               message: Specify the database username
               default: joomla
-              required: true
               c6o:
                 label: Database User
+                required: true
             - type: password
               name: JOOMLA_DB_PASSWORD
               message: Specify the database password
-              default: mysql.database
-              required: true
               c6o:
+                target: secrets
                 label: Database password
+                required: true
 
 
       marina:

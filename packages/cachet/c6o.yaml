@@ -63,33 +63,33 @@ editions:
               name: DB_HOST
               message: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
               default: postgresql.database
-              required: true
               c6o:
                 label: Postgres Server Host
+                required: true
 
             - type: input
               name: DB_DATABASE
               message: The name of the database to use
               default: cachet
-              required: true
               c6o:
                 label: Database name
+                required: true
 
             - type: input
               name: DB_USERNAME
               message: The username for the database user
               default: cachet
-              required: true
               c6o:
                 label: Database user name
+                required: true
 
             - type: password
               name: DB_PASSWORD
               message: The password for the database user
-              default: 88888888
-              required: true
               c6o:
                 label: Database password
+                required: true
+                target: secrets
 
 
         configs:

@@ -46,9 +46,9 @@ editions:
               name: KAPACITOR_INFLUXDB_0_URLS_0
               message: Influx Urls (Service)
               default: http://influxdb:8086
-              required: true
               c6o:
                 label: Influx Urls
+                required: true
         volumes:
           - name: kapacitor-data
             size: 5Gi

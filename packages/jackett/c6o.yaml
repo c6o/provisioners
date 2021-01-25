@@ -40,7 +40,7 @@ editions:
         tag-prefix: appengine
         image: linuxserver/jackett
         ports: 9117
-        
+
         volumes:
           - size: 1Gi
             mountPath: /config
@@ -60,10 +60,10 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
       marina:
         launch:
           type: inline

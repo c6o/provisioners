@@ -53,25 +53,25 @@ editions:
               name: CASSANDRA_USERNAME
               message: The Username used to login to your database.
               default: root
-              required: true
               c6o:
                 label: Database User name
+                required: true
 
             - type: input
               name: CASSANDRA_HOST
               message: The host name of your cassandra server
               default: cassandra
-              required: true
               c6o:
                 label: Database Host name
+                required: true
 
             - type: password
               name: CASSANDRA_PASSWORD
               message: The Password used to login to your database.
-              default: 88888888
-              required: true
               c6o:
                 label: Database Password
+                required: true
+                target: secrets
 
 
         configs:

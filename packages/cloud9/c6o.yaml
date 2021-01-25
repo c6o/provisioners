@@ -56,26 +56,25 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
             - type: input
               name: USERNAME
               message: The Username to login to the IDE
               default: root
-              required: true
               c6o:
                 label: IDE Username
+                required: true
 
             - type: input
               name: PASSWORD
               message: The Password to login to the IDE
-              default: 88888888
-              required: true
               c6o:
                 label: IDE Password
+                required: true
 
       marina:
         launch:
@@ -108,26 +107,25 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
+                required: true
                 dataSource: timezone
 
             - type: input
               name: USERNAME
               message: The Username to login to the IDE
               default: root
-              required: true
               c6o:
                 label: IDE Username
+                required: true
 
             - type: input
               name: PASSWORD
               message: The Password to login to the IDE
-              default: 88888888
-              required: true
               c6o:
                 label: IDE Password
+                required: true
 
       marina:
         launch:
@@ -161,26 +159,25 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
             - type: input
               name: USERNAME
               message: The Username to login to the IDE
               default: root
-              required: true
               c6o:
                 label: IDE Username
+                required: true
 
             - type: input
               name: PASSWORD
               message: The Password to login to the IDE
-              default: 88888888
-              required: true
               c6o:
                 label: IDE Password
+                required: true
 
       marina:
         launch:
@@ -214,26 +211,25 @@ editions:
               name: TZ
               message: Specify a timezone to use.
               default: 1
-              required: true
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
             - type: input
               name: USERNAME
               message: The Username to login to the IDE
               default: root
-              required: true
               c6o:
                 label: IDE Username
+                required: true
 
             - type: input
               name: PASSWORD
               message: The Password to login to the IDE
-              default: 88888888
-              required: true
               c6o:
                 label: IDE Password
+                required: true
 
       marina:
         launch:

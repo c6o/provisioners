@@ -75,98 +75,97 @@ editions:
               name: DB_HOST
               message: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
               default: postgresql.database
-              required: true
               c6o:
                 label: Postgres Server Host
+                required: true
 
             - type: input
               name: DB_VENDOR
               message: Database Vendor
               default: postgres
-              required: true
               c6o:
                 label: The type of database to use (postgres or mysql)
+                required: true
 
             - type: input
               name: DB_NAME
               message: The name of the database to use
               default: bonitadb
-              required: true
               c6o:
                 label: Database name
+                required: true
 
             - type: input
               name: DB_USER
               message: The username of the database to use
               default: bonita
-              required: true
               c6o:
                 label: Database user
+                required: true
 
             - type: password
               name: DB_PASS
               message: The password used to login to your database.
-              default: 88888888
-              required: true
               c6o:
+                target: secrets
                 label: Database Password
+                required: true
 
             - type: input
               name: TENANT_LOGIN
               message: The username for the tenant user
               default: install
-              required: true
               c6o:
                 label: Tenant Username
+                required: true
 
             - type: password
               name: TENANT_PASSWORD
               message: The Password used to login to the system as the Tenant.
-              default: install
-              required: true
               c6o:
+                target: secrets
                 label: Tenant password
+                required: true
 
             - type: input
               name: PLATFORM_LOGIN
               message: The username for the platform adminstrator
               default: platformAdmin
-              required: true
               c6o:
                 label: Platform Admin Username
+                required: true
 
             - type: password
               name: TENANT_PLATFORM_PASSWORD
               message: The Password used to login to the system as the platform administrator.
-              default: platform
-              required: true
               c6o:
+                target: secrets
                 label: Platform admin password
+                required: true
 
             - type: input
               name: BIZ_DB_NAME
               message: The name of the database for the Business
               default: bonitabusinessdb
-              required: true
               c6o:
                 label: Business Database Name
+                required: true
 
             - type: input
               name: BIZ_DB_USER
               message: The name of the user for the database for the Business
               default: bonitabusiness
-              required: true
               c6o:
                 label: Business Database Username
+                required: true
 
             - type: password
               name: BIZ_DB_PASS
               message: The password of the user for the database for the Business
-              default: 88888888
-              required: true
               c6o:
                 label: Business Database Password
-
+                required: true
+                target: secrets
 
       marina:
         launch:

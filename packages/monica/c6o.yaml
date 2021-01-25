@@ -61,33 +61,32 @@ editions:
               name: DB_HOST
               message: Specify the host name of your database server service (mysql)
               default: mysql.database
-              required: true
               c6o:
                 label: Database Server
+                required: true
 
             - type: input
               name: DB_USERNAME
               message: Username for the admin user
               default: monica
-              required: true
               c6o:
                 label: Database Username
+                required: true
 
             - type: input
               name: DB_DATABASE
               message: Specify the database name
               default: monica
-              required: true
               c6o:
                 label: Database Name
+                required: true
 
             - type: input
               name: DB_PASSWORD
               message: Password for the admin user
-              default: 88888888
-              required: true
               c6o:
                 label: Database Password
+                required: true
 
 
         secrets:

@@ -44,15 +44,19 @@ editions:
         tag-prefix: appengine
         image: splunk/splunk
         ports: 8000
-        config:
-          - SPLUNK_START_ARGS: --accept-license
-        secret:
-          - name: SPLUNK_PASSWORD
-            label: Password
-            hint: Splunk password
-            required: true
-            autoselect: true
-            fieldType: password
+        flow:
+          prompts:
+            - type: password
+              name: SPLUNK_PASSWORD
+              message: Splunk password
+              c6o:
+                label: Splunk password
+                required: true
+                target: secrets
+
+        configs:
+          - SPLUNK_START_ARGS: "--accept-license"
+
 
       marina:
         launch:

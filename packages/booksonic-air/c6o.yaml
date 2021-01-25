@@ -70,11 +70,11 @@ editions:
             - type: list
               name: TZ
               message: Specify a timezone to use.
-              default: 1
-              required: true
+              default: 1              
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
+                required: true
 
       marina:
         launch:
