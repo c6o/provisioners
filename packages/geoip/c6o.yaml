@@ -26,7 +26,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -35,8 +34,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: supermasita/geoip-flask
-        port: 8888
-        automated: true
+        ports: 8888
       marina:
         launch:
           type: inline
@@ -44,14 +42,12 @@ editions:
 
   - name: previewinternal
     status: public
-    default: true
     spec:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image:  supermasita/geoip-flask
-        port: 8888
-        automated: true
+        ports: 8888
       marina:
         launch:
           type: inline

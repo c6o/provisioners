@@ -5,7 +5,6 @@ package: '@provisioner/appengine'
 editions:
   - name: preview
     status: private
-    default: true
     spec:
       routes:
         - type: http
@@ -14,14 +13,13 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: rocket.chat
-        port: 3000
-        automated: true
+        ports: 3000
         secret:
           - name: MONGO_OPLOG_URL
             value: mongodb://root:admin@mongodb/local
           - name: MONGO_URL
             value: mongodb://root:admin@mongodb/rocketchat
-        volume:
+        volumes:
           - name: rocketchat-uploads
             size: 50Gi
             mountPath: /app/uploads

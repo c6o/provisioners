@@ -1,6 +1,5 @@
 name: stable
 status: public
-default: true
 spec:
   routes:
     - type: tcp
@@ -24,7 +23,7 @@ spec:
             generateMessage: Generate a root user password?
             generate:
               length: 16
-    volume:
+    volumes:
       - size: 5Gi
         mountPath: /data
         name: mariadb-data

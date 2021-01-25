@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,15 +36,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: influxdb
-        port:
+        ports:
           - port: 8086
             name: http
             protocol: TCP
           - port: 2003
             name: graphite
             protocol: TCP
-        automated: true
-        volume:
+        volumes:
           - name: influxdb-data
             size: 50Gi
             mountPath: /var/lib/influxdb

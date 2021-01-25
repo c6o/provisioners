@@ -29,7 +29,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -38,13 +37,12 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/photoshow
-        port: 80
-        automated: true
+        ports: 80
+
+        configs:
+          PUID: 0
+          PGID: 0
         config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
           - name: TZ
             label: Timezone
             hint: Specify a timezone to use.
@@ -52,7 +50,7 @@ editions:
             fieldType: timezone
             value: America/Vancouver
 
-        volume:
+        volumes:
           - size: 1Gi
             mountPath: /config
             name: photoshow-config

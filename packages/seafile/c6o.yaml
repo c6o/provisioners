@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,21 +36,22 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: seafileltd/seafile
-        port: 80
-        automated: true
+        ports: 80
+        configs:
+          PUID: 0
+          PGID: 0
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
         config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
-
-
           - name: SEAFILE_ADMIN_EMAIL
             label: Admin Email
             hint: Specify an email address to use for the admin account
@@ -67,7 +67,7 @@ editions:
             autoselect: true
             fieldType: password
 
-        volume:
+        volumes:
           - size: 500Gi
             mountPath: /shared
             name: seafile-shared

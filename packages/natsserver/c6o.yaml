@@ -27,13 +27,12 @@ provisioner:
 editions:
   - name: preview-internal
     status: public
-    default: true
     spec:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nats
-        port:
+        ports:
           - name: clients
             port: 4222
             protocol: TCP
@@ -43,7 +42,6 @@ editions:
           - name: http
             port: 8222
             protocol: TCP
-        automated: true
       marina:
         launch:
           type: inline

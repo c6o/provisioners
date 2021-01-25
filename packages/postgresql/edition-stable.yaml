@@ -13,7 +13,7 @@ spec:
     tag: 12-alpine
     image: postgres
     ports: 5432
-    volume:
+    volumes:
       - size: 5Gi
         mountPath: /data
         name: postgresql-data

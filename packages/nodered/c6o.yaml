@@ -41,8 +41,7 @@ editions:
         tag-prefix: appengine
         image: nodered/node-red
         ports: 1880
-        automated: true
-        config:
+                config:
 
           - name: NODE_RED_ENABLE_PROJECTS
             label: Enable Projects

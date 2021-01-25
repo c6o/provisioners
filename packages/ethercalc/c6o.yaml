@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,8 +36,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: audreyt/ethercalc
-        port: 8000
-        automated: true
+        ports: 8000
       marina:
         launch:
           type: inline

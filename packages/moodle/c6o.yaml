@@ -55,7 +55,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -64,8 +63,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: bitnami/moodle
-        automated: true
-        port:
+        ports:
           - port: 8080
             name: http
             protocol: TCP
@@ -106,7 +104,6 @@ editions:
               autoselect: true
               fieldType: text
 
-
             - name: MOODLE_USERNAME
               label: Administrator username
               hint: Username for the admin user
@@ -114,7 +111,6 @@ editions:
               autoselect: true
               fieldType: text
               value: admin
-
 
             - name: MOODLE_EMAIL
               label: Administrator email address
@@ -132,7 +128,7 @@ editions:
 
             - name: ALLOW_EMPTY_PASSWORD
               value: no
-        volume:
+        volumes:
             - size: 5Gi
               mountPath: /bitnami
               name: moodle-data

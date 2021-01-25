@@ -37,7 +37,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -46,39 +45,39 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: ipushc/cassandra-web
-        port: 80
-        config:
-          - name: CASSANDRA_USERNAME
-            label: Database User name
-            hint: The Username used to login to your database.
-            required: true
-            autoselect: true
-            fieldType: text
-            value: root
+        ports: 80
 
-          - name: CASSANDRA_HOST
-            label: Database Host name
-            hint: The host name of your cassandra server
-            required: true
-            autoselect: true
-            fieldType: text
-            value: cassandra
+        flow:
+          prompts:
+            - type: input
+              name: CASSANDRA_USERNAME
+              message: The Username used to login to your database.
+              default: root
+              required: true
+              c6o:
+                label: Database User name
 
-        secret:
-          - name: CASSANDRA_PASSWORD
-            label: Database Password
-            hint: The Password used to login to your database.
-            required: true
-            autoselect: true
-            fieldType: password
+            - type: input
+              name: CASSANDRA_HOST
+              message: The host name of your cassandra server
+              default: cassandra
+              required: true
+              c6o:
+                label: Database Host name
+
+            - type: password
+              name: CASSANDRA_PASSWORD
+              message: The Password used to login to your database.
+              default: 88888888
+              required: true
+              c6o:
+                label: Database Password
 
 
-          - name: HOST_PORT
-            value: ":80"
-          - name: CASSANDRA_PORT
-            value: 9042
+        configs:
+          - HOST_PORT: ":80"
+          - CASSANDRA_PORT: 9042
 
-        automated: true
       marina:
         launch:
           type: inline

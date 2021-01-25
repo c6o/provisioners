@@ -53,12 +53,12 @@ editions:
     provisioner:
       package: '@provisioner/appengine'
       image: linuxserver/papermerge
-      port: 8000
+      ports: 8000
+
+      configs:
+        PUID: 0
+        PGID: 0
       config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
           - name: TZ
             label: Timezone
             hint: Specify a timezone to use.
@@ -66,15 +66,14 @@ editions:
             fieldType: timezone
             value: America/Vancouver
 
-      volume:
+      volumes:
         - size: 5Gi
           mountPath: /config
           name: papermerge-config
         - size: 10Gi
           mountPath: /data
           name: papermerge-data
-      automated: true
-    marina:
+          marina:
       launch:
         type: inline
         popUp: true

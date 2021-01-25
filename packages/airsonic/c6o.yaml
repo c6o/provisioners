@@ -1,6 +1,6 @@
 name: Airsonic
 appId: airsonic
-package: '@provisioner/appengine'
+package: "@provisioner/appengine"
 icon: icon.svg
 description:
   Airsonic is a free, web-based media streamer, providing ubiquitous access to your music. Use it to share your music with friends, or to listen to your own music while at work. You can stream to multiple players simultaneously, for instance to one player in your kitchen and another in your living room.
@@ -16,7 +16,6 @@ description:
 
 
   Based on Java technology, Airsonic runs on most platforms, including Windows, Mac, Linux and Unix variants.
-
 
 summary: Airsonic is a free, web-based media streamer, providing ubiquitous access to your music. Use it to share your music with friends, or to listen to your own music while at work. You can stream to multiple players simultaneously, for instance to one player in your kitchen and another in your living room.
 category: media
@@ -38,40 +37,34 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
           targetService: airsonic
       provisioner:
         package: "@provisioner/appengine"
-        image: linuxserver/airsonic
-        port:
-          - port: 4040
-            name: http
-            protocol: TCP
-            probe:
-              - type: startup
-                timeoutSeconds: 5
-                failureThreshold: 5
-                periodSeconds: 5
-                successThreshold: 1
-                initialDelaySeconds: 20
-        automated: true
         tag-prefix: appengine
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        image: linuxserver/airsonic
+        ports:
+        - port: 4040
+          name: airsonic
+          protocol: TCP
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
 
-        volume:
+        configs:
+          PUID: 0
+          PGID: 0
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: airsonic-config

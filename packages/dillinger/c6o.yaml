@@ -33,7 +33,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -42,27 +41,30 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/dillinger
-        port: 8080
-        volume:
+        ports: 8080
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: dillinger-config
           - size: 50Gi
             mountPath: /data
             name: dillinger-data
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
 
-        automated: true
+        configs:
+          PUID: 0
+          PGID: 0
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+
       marina:
         launch:
           type: inline

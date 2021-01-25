@@ -62,15 +62,14 @@ editions:
         config:
           - name: appendonly
             value: yes
-        port:
+        ports:
           - port: 6379
             name: tcp
             protocol: TCP
-        volume:
+        volumes:
           - size: 5Gi
             mountPath: /data
             name: redis-data
-        automated: true
       marina:
         launch:
           type: inline
@@ -86,15 +85,14 @@ editions:
         config:
           - name: appendonly
             value: yes
-        port:
+        ports:
           - port: 6379
             name: tcp
             protocol: TCP
-        volume:
+        volumes:
           - size: 5Gi
             mountPath: /data
             name: redis-data
-        automated: true
       marina:
         launch:
           type: inline

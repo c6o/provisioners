@@ -35,7 +35,6 @@ provisioner:
 editions:
   - name: local
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -44,8 +43,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: splunk/splunk
-        port: 8000
-        automated: true
+        ports: 8000
         config:
           - name: SPLUNK_START_ARGS
             value: --accept-license

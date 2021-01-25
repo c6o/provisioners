@@ -61,7 +61,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -70,37 +69,37 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/code-server
-        port: 8443
-        automated: true
-        volume:
+        ports: 8443
+        volumes:
           - name: codeserver-config
             mountPath: /config
             size: 1Gi
           - name: codeserver-code
             mountPath: /code
             size: 5Gi
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
 
+        configs:
+          PUID: 0
+          PGID: 0
 
-        secret:
-
-          - name: PASSWORD
-            label: Password
-            hint: Specify the password to use for the UI
-            required: true
-            autoselect: true
-            fieldType: password
-
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+            - type: password
+              name: PASSWORD
+              message: Specify the password to use for the UI
+              default: 88888888
+              required: true
+              c6o:
+                label: Password
+        secrets:
           # - name: SUDO_PASSWORD
           #   label: Root Password (abc)
           #   hint: Specify the password to use for the sudo user
@@ -108,8 +107,9 @@ editions:
           #   autoselect: true
           #   fieldType: password
 
-          - name: SUDO_PASSWORD
-            value: '$RANDOM'
+          - SUDO_PASSWORD:
+              generator:
+                length: 32
       marina:
         launch:
           type: inline

@@ -31,7 +31,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -40,17 +39,17 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: kapacitor
-        port: 9092
-        automated: true
-        config:
-          - name: KAPACITOR_INFLUXDB_0_URLS_0
-            label: Influx Urls
-            hint: Influx Urls (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: http://influxdb:8086
-        volume:
+        ports: 9092
+        flow:
+          prompts:
+            - type: input
+              name: KAPACITOR_INFLUXDB_0_URLS_0
+              message: Influx Urls (Service)
+              default: http://influxdb:8086
+              required: true
+              c6o:
+                label: Influx Urls
+        volumes:
           - name: kapacitor-data
             size: 5Gi
             mountPath: /var/lib/kapacitor

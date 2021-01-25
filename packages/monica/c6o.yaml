@@ -41,7 +41,6 @@ provisioner:
 editions:
   - name: preview
     status: private  #SSL issue
-    default: true
     spec:
       routes:
         - type: http
@@ -50,42 +49,52 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: monica
-        port: 80
-        automated: true
-        volume:
+        ports: 80
+        volumes:
           - size: 5Gi
             mountPath: /var/www/html/storage
             name: monica-data
 
+        flow:
+          prompts:
+            - type: input
+              name: DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              required: true
+              c6o:
+                label: Database Server
 
-      secret:
-          - name: DB_PASSWORD
-            label: Database Password
-            hint: Password for the admin user
-            required: true
-            autoselect: true
-            fieldType: password
+            - type: input
+              name: DB_USERNAME
+              message: Username for the admin user
+              default: monica
+              required: true
+              c6o:
+                label: Database Username
 
-          - name: APP_KEY
-            value: $RANDOM:32
+            - type: input
+              name: DB_DATABASE
+              message: Specify the database name
+              default: monica
+              required: true
+              c6o:
+                label: Database Name
 
-      config:
-          - name: DB_HOST
-            label: Database Host
-            hint: Host for the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: input
+              name: DB_PASSWORD
+              message: Password for the admin user
+              default: 88888888
+              required: true
+              c6o:
+                label: Database Password
 
-          - name: DB_USERNAME
-            label: Database Username
-            hint: Username for the admin user
-            required: true
-            autoselect: true
-            fieldType: text
 
-          - name: DB_DATABASE
-            value: monica
+        secrets:
+            APP_KEY:
+              generate:
+                length: 32
+
 
       marina:
         launch:

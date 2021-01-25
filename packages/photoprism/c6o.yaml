@@ -44,7 +44,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -53,8 +52,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: photoprism/photoprism
-        port: 2342
-        automated: true
+        ports: 2342
         config:
           - name: PHOTOPRISM_UPLOAD_NSFW
             value: true
@@ -70,7 +68,7 @@ editions:
             required: true
             autoselect: true
             fieldType: text
-        volume:
+        volumes:
           - size: 500Gi
             mountPath: /photoprism/storage
             name: photoprism-storage

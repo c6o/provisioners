@@ -66,7 +66,6 @@ provisioner:
 editions:
   - name: local
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -75,8 +74,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: adolfintel/speedtest
-        port: 80
-        automated: true
+        ports: 80
       marina:
         launch:
           type: inline

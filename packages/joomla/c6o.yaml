@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,40 +36,39 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: joomla
-        port: 80
-        automated: true
-        config:
-          - name: JOOMLA_DB_HOST
-            label: Database Host
-            hint: Database Host Server Name (Service)
-            required: true
-            autoselect: true
-            fieldType: text
+        ports: 80
+        flow:
+          prompts:
+            - type: input
+              name: JOOMLA_DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              required: true
+              c6o:
+                label: Database Server
+            - type: input
+              name: JOOMLA_DB_NAME
+              message: Specify the host name of your Joomla database
+              default: joomla
+              required: true
+              c6o:
+                label: Database Name
+            - type: input
+              name: JOOMLA_DB_USER
+              message: Specify the database username
+              default: joomla
+              required: true
+              c6o:
+                label: Database User
+            - type: password
+              name: JOOMLA_DB_PASSWORD
+              message: Specify the database password
+              default: mysql.database
+              required: true
+              c6o:
+                label: Database password
 
-          - name: JOOMLA_DB_NAME
-            label: Database Name
-            hint: Database Name
-            required: true
-            autoselect: true
-            fieldType: text
-            value: joomla
 
-          - name: JOOMLA_DB_USER
-            label: Database Username
-            hint: Database Username
-            required: true
-            autoselect: true
-            fieldType: text
-
-
-        secret:
-
-          - name: JOOMLA_DB_PASSWORD
-            label: Database Password
-            hint: Database Password
-            required: true
-            autoselect: true
-            fieldType: password
       marina:
         launch:
           type: inline

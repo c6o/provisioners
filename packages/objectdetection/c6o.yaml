@@ -29,17 +29,15 @@ provisioner:
 editions:
   - name: preview
     status: private
-    default: true
     spec:
       provisioner:
         package: '@provisioner/appengine'
         image: ancs21/tf-od-api
-        port:
+        ports:
           - name: api
             port: 5000
           - name: jupyter
             port: 8888
-        automated: true
         tag-prefix: appengine
         config:
           - name: port

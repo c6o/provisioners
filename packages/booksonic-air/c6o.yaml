@@ -37,7 +37,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -46,8 +45,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/booksonic-air
-        port: 4040
-        volume:
+        ports: 4040
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: booksonic-config
@@ -60,21 +59,23 @@ editions:
           - size: 5Gi
             mountPath: /othermedia
             name: booksonic-othermedia
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
 
-          - name: AUTO_UPDATE
-            value: true
-        automated: true
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+
       marina:
         launch:
           type: inline

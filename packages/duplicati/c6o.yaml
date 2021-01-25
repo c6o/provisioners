@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,9 +36,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: ghcr.io/linuxserver/duplicati
-        port: 8200
-        automated: true
-        volume:
+        ports: 8200
+        volumes:
           - name: duplicati-config
             size: 1Gi
             mountPath: /config
@@ -49,17 +47,22 @@ editions:
           - name: duplicati-source
             size: 10Gi
             mountPath: /source
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+
+        configs:
+          PUID: 0
+          PGID: 0
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+
       marina:
         launch:
           type: inline

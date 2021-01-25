@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: cpu
     status: public
-    default: true
     spec:
       marina:
         launch:
@@ -40,7 +39,6 @@ editions:
 
   - name: gpu-cpu
     status: public
-    default: true
     spec:
       marina:
         launch:
@@ -52,7 +50,6 @@ editions:
 
   - name: gpu
     status: public
-    default: true
     spec:
       marina:
         launch:

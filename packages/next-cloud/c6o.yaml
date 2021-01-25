@@ -68,8 +68,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
-        automated: true
-        port:
+        ports:
           - port: 80
             name: http
             protocol: TCP
@@ -88,8 +87,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
-        automated: true
-        port:
+        ports:
           - port: 80
             name: http
             protocol: TCP

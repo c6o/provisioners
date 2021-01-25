@@ -29,7 +29,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -39,19 +38,15 @@ editions:
         tag-prefix: appengine
         name: cryptpad
         image: promasu/cryptpad:latest
-        port:
+        ports:
           - port: 3000
             name: http
             protocol: TCP
 
-        automated: true
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          # - name: httpSafeOrigin
-          #   value: $PUBLIC_DNS
+        configs:
+          PUID: 0
+          PGID: 0
+          #httpSafeOrigin: $PUBLIC_DNS
       marina:
         launch:
           type: inline

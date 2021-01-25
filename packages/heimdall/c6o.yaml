@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,21 +36,23 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/heimdall
-        port: 80
-        automated: true
-        config:
-          - name: PUID
-            value: 1000
-          - name: PGID
-            value: 1000
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        ports: 80
 
-        volume:
+        configs:
+          PUID: 1000
+          PGID: 1000
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+        volumes:
           - name: heimdall-config
             size: 1Gi
             mountPath: /config

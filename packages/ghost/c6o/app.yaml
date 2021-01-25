@@ -27,7 +27,6 @@ provisioner:
 editions:
   - name: latest
     status: public
-    default: true
     spec:
       routes:
         - type: http

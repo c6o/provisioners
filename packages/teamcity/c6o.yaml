@@ -41,7 +41,6 @@ provisioner:
 editions:
   - name: server
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -50,12 +49,11 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jetbrains/teamcity-server
-        port: 8111
-        automated: true
+        ports: 8111
         config:
           - name: TEAMCITY_SERVER_MEM_OPTS
             value: -Xmx750m
-        volume:
+        volumes:
           - name: teamcityserver-data
             size: 10Gi
             mountPath: /data/teamcity_server/datadir
@@ -69,13 +67,11 @@ editions:
 
   - name: agent
     status: public
-    default: true
     spec:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jetbrains/teamcity-agent
-        automated: true
         config:
           - name: SERVER_URL
             value: http://teamcityserver:8111

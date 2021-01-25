@@ -15,27 +15,6 @@ description:
 
   Once installed, you will need to retreive your token, which is in the logs for the pod.
 
-  Here is a sample command which you can use to retreive the logs for the pod
-
-  ```
-
-  kubectl logs pod/minimal-6bc754894f-nbgwv -n jupyter
-
-  ```
-
-
-  'minimal-6bc754894f-nbgwv' is the name of the pod,  you will need to change that to match the pod which was created in  your case.  To get a list of pods run
-
-
-  ```
-
-  kubectl get pods -n jupyter
-
-  ```
-
-  Also take note of the namespace 'jupyter'.  Ensure you use the namespace which you installed your notebook into.
-
-
 
 category: ai
 keywords:
@@ -52,7 +31,6 @@ provisioner:
 editions:
   - name: scipy
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -61,15 +39,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/scipy-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -77,7 +54,6 @@ editions:
 
   - name: datascience
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -86,15 +62,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/datascience-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -103,7 +78,6 @@ editions:
 
   - name: tensorflow
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -112,15 +86,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/tensorflow-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -128,7 +101,6 @@ editions:
 
   - name: pyspark
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -137,15 +109,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/pyspark-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -154,7 +125,6 @@ editions:
 
   - name: basenotebook
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -163,15 +133,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/base-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -180,7 +149,6 @@ editions:
 
   - name: all-spark
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -189,15 +157,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/all-spark-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -206,7 +173,6 @@ editions:
 
   - name: minimal
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -215,15 +181,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/minimal-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -232,7 +197,6 @@ editions:
 
   - name: nbviewer
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -241,15 +205,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/nbviewer
-        port: 8080
-        volume:
+        ports: 8080
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -258,7 +221,6 @@ editions:
 
   - name: r-notebook
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -267,15 +229,14 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/r-notebook
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
+
       marina:
         launch:
           type: inline
@@ -285,7 +246,6 @@ editions:
 
   - name: nature-demo
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -294,15 +254,13 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jupyter/nature-demo
-        port: 8888
-        volume:
+        ports: 8888
+        volumes:
           - size: 10Gi
             mountPath: /home/jovyan/work
             name: jupyter-work
-        config:
-          - name: JUPYTER_ENABLE_LAB
-            value: yes
-        automated: true
+        configs:
+          - JUPYTER_ENABLE_LAB: yes
       marina:
         launch:
           type: inline

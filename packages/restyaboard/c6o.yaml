@@ -43,7 +43,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -53,9 +52,9 @@ editions:
         tag: dev
         image: restyaplatform/restyaboard
         tag-prefix: appengine
-        port: 80
+        ports: 80
 
-        volume:
+        volumes:
           - name: restyaboard-data
             mountPath: /usr/share/nginx/html/media
             size: 50Gi
@@ -88,10 +87,17 @@ editions:
             autoselect: true
             fieldType: text
             value: restyaboard
-
-          - name: TZ
-            value: PST
-
+            
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              required: true
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
         secret:
 
           - name: POSTGRES_ADMIN_PASS
