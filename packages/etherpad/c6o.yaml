@@ -36,7 +36,7 @@ editions:
 
         secrets:
           - ADMIN_PASSWORD:
-              generator:
+              generate:
                 length: 32
 
         config:

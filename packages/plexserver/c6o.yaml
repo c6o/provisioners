@@ -58,7 +58,6 @@ editions:
           PUID: 0
           PGID: 0
 
-          
         flow:
           prompts:
             - type: list

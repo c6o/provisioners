@@ -175,47 +175,56 @@ editions:
           - name: strapi-data
             mountPath: /srv/app
             size: 50Gi
-        config:
 
-          - name: DATABASE_HOST
-            label: Database Host
-            hint: The name of the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: strapi
+        flow:
+          prompts:
+            - type: input
+              name: DATABASE_HOST
+              message: The name of the database server (Service)
+              default: mariadb.database
+              required: true
+              c6o:
+                label: Database Host
 
-          - name: DATABASE_PORT
-            value: 27017
+            - type: number
+              name: DATABASE_PORT
+              message: The port of the database server (Service)
+              default: 27017
+              required: true
+              c6o:
+                label: Database Host Port
 
-          - name: DATABASE_CLIENT
-            value: mongo
+            - type: input
+              name: DATABASE_CLIENT
+              message: Database Client Driver
+              default: mongo
+              required: true
+              c6o:
+                label: Database Client Driver
 
-          - name: DATABASE_NAME
-            label: Database Name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: strapi
+            - type: input
+              name: DATABASE_NAME
+              message: The name of the database to use
+              default: strapi
+              required: true
+              c6o:
+                label: Database Name
 
-          - name: DATABASE_USERNAME
-            label: Database user name
-            hint: The username for the database user
-            required: true
-            autoselect: true
-            fieldType: text
-            value: strapi
+            - type: input
+              name: DATABASE_USERNAME
+              message: The username for the database user
+              default: strapi
+              required: true
+              c6o:
+                label: Database user name
 
-
-        secret:
-
-          - name: DATABASE_PASSWORD
-            label: Database password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
+            - type: password
+              name: DATABASE_PASSWORD
+              message: The password for the database user
+              default: strapi
+              required: true
+              c6o:
+                label: Database password
 
       marina:
         launch:

@@ -34,10 +34,11 @@ editions:
         tag: 11
         image: openproject/community
         ports: 80
-        
+
         secret:
-          - name: SECRET_KEY_BASE
-            value: $RANDOM
+          - SECRET_KEY_BASE:
+              generate:
+                length: 32
 
       marina:
         launch:

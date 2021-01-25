@@ -45,8 +45,7 @@ editions:
         image: splunk/splunk
         ports: 8000
         config:
-          - name: SPLUNK_START_ARGS
-            value: --accept-license
+          - SPLUNK_START_ARGS: --accept-license
         secret:
           - name: SPLUNK_PASSWORD
             label: Password

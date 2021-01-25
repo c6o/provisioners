@@ -53,21 +53,21 @@ editions:
         tag-prefix: appengine
         image: photoprism/photoprism
         ports: 2342
-        config:
-          - name: PHOTOPRISM_UPLOAD_NSFW
-            value: true
-            label: Allow NSFW Uploads
-            hint: Allow NSFW Uploads
-            required: true
-            autoselect: true
-            fieldType: text
-        secret:
-          - name: PHOTOPRISM_ADMIN_PASSWORD
-            label: Admin Password
-            hint: Specify the admin users password
-            required: true
-            autoselect: true
-            fieldType: text
+        flow:
+          prompts:
+            - type: password
+              name: PHOTOPRISM_ADMIN_PASSWORD
+              message: Specify the admin users password
+              default: 1
+              required: true
+              c6o:
+                label: Admin Password
+            - type: confirm
+              name: PHOTOPRISM_UPLOAD_NSFW
+              message: Allow NSFW Uploads
+              default: true
+              c6o:
+                label: Allow NSFW Uploads
         volumes:
           - size: 500Gi
             mountPath: /photoprism/storage

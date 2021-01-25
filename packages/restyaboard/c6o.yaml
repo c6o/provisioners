@@ -59,35 +59,6 @@ editions:
             mountPath: /usr/share/nginx/html/media
             size: 50Gi
 
-        config:
-
-          - name: POSTGRES_HOST
-            label: Database Host
-            hint: The name of the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: restyaboard
-
-          - name: POSTGRES_PORT
-            value: 5432
-
-          - name: POSTGRES_ADMIN_USER
-            label: Database Admin user name
-            hint: The username for the database user
-            required: true
-            autoselect: true
-            fieldType: text
-            value: root
-
-          - name: RESTYA_DB_USERNAME
-            label: Restya Database User Name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: restyaboard
-            
         flow:
           prompts:
             - type: list
@@ -98,23 +69,51 @@ editions:
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
-        secret:
 
-          - name: POSTGRES_ADMIN_PASS
-            label: Database Admin password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
+            - type: input
+              name: POSTGRES_HOST
+              message: The name of the database server (Service)
+              required: true
+              default: restyaboard
+              c6o:
+                label: Database Host
 
-          - name: RESTYA_DB_USERPASS
-            label: Restya Database Password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
+            - type: input
+              name: POSTGRES_ADMIN_USER
+              message: The username for the database user
+              required: true
+              default: root
+              c6o:
+                label: Database Admin user name
 
 
+            - type: password
+              name: POSTGRES_ADMIN_PASS
+              message: The password for the database user
+              required: true
+              default: 88888888
+              c6o:
+                label: Database Admin password
+
+            - type: input
+              name: RESTYA_DB_USERNAME
+              message: Restya Database User Name
+              required: true
+              default: restyaboard
+              c6o:
+                label: Restya Database User Name
+
+
+            - type: password
+              name: RESTYA_DB_USERPASS
+              message: Restya Database Password
+              required: true
+              default: 88888888
+              c6o:
+                label: Restya Database Password
+
+        configs:
+          - POSTGRES_PORT : 5432
 
       marina:
         launch:

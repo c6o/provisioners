@@ -41,9 +41,14 @@ editions:
         tag-prefix: appengine
         image: datalust/seq
         ports: 80
-        config:
-          - name: ACCEPT_EULA
-            value: y
+        flow:
+          prompts:
+              - type: confirm
+                name: ACCEPT_EULA
+                message: Accept EULA
+                default: true
+                c6o:
+                  label: Accept EULA
       marina:
         launch:
           type: inline

@@ -63,71 +63,76 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: bitnami/moodle
-        ports:
-          - port: 8080
-            name: http
-            protocol: TCP
-            probe:
-              - type: startup
-                timeoutSeconds: 5
-                failureThreshold: 5
-                periodSeconds: 5
-                successThreshold: 1
-                initialDelaySeconds: 180   #180 seconds or 3 minutes
-
-        secret:
-            - name: MOODLE_DATABASE_PASSWORD
-              label: Database Password
-              hint: Password for the admin user
+        ports: 8080
+        flow:
+          prompts:
+            - type: input
+              name: MOODLE_DATABASE_HOST
+              message: Host for the database server (Service)
+              default: mariadb.database
               required: true
-              autoselect: true
-              fieldType: password
+              c6o:
+                label: Database Host
 
-            - name: MOODLE_PASSWORD
-              label: Administrator password
-              hint: Password for the admin user
+            - type: input
+              name: MOODLE_DATABASE_USER
+              message: Username for the database
+              default: moodle
               required: true
-              autoselect: true
-              fieldType: password
-        config:
-            - name: MOODLE_DATABASE_HOST
-              label: Database Host
-              hint: Host for the database server (Service)
+              c6o:
+                label: Database Username
+
+            - type: password
+              name: MOODLE_DATABASE_PASSWORD
+              message: Database Password
+              default: 88888888
               required: true
-              autoselect: true
-              fieldType: text
+              c6o:
+                label: Database Password
 
-            - name: MOODLE_DATABASE_USER
-              label: Database Username
-              hint: Username for the database
+            - type: input
+              name: MOODLE_USERNAME
+              message: Username for the admin user
+              default: admin
               required: true
-              autoselect: true
-              fieldType: text
+              c6o:
+                label: Administrator username
 
-            - name: MOODLE_USERNAME
-              label: Administrator username
-              hint: Username for the admin user
+            - type: password
+              name: MOODLE_PASSWORD
+              message: Password for the admin user
+              default: 88888888
               required: true
-              autoselect: true
-              fieldType: text
-              value: admin
+              c6o:
+                label: Administrator password
 
-            - name: MOODLE_EMAIL
-              label: Administrator email address
-              hint: Email address for the admin user
+            - type: input
+              name: MOODLE_EMAIL
+              message:  Email address for the admin user
+              default: admin@mysite.com
               required: true
-              autoselect: true
-              fieldType: text
-              value: admin@mysite.com
+              c6o:
+                label: Administrator email address
 
-            - name: MOODLE_DATABASE_TYPE
-              value: mariadb
 
-            - name: MOODLE_DATABASE_NAME
-              value: moodle
+            - type: input
+              name: MOODLE_DATABASE_TYPE
+              message:  Database Type
+              default: mariadb
+              required: true
+              c6o:
+                label: Database Type
 
-            - name: ALLOW_EMPTY_PASSWORD
-              value: no
+            - type: input
+              name: MOODLE_DATABASE_NAME
+              message:  Database Name
+              default: moodle
+              required: true
+              c6o:
+                label: Database Name
+        configs:
+            - ALLOW_EMPTY_PASSWORD: no
+
         volumes:
             - size: 5Gi
               mountPath: /bitnami

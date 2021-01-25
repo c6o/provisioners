@@ -108,7 +108,7 @@ editions:
           #   fieldType: password
 
           - SUDO_PASSWORD:
-              generator:
+              generate:
                 length: 32
       marina:
         launch:

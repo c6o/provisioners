@@ -51,8 +51,7 @@ editions:
         image: jetbrains/teamcity-server
         ports: 8111
         config:
-          - name: TEAMCITY_SERVER_MEM_OPTS
-            value: -Xmx750m
+          - TEAMCITY_SERVER_MEM_OPTS: -Xmx750m
         volumes:
           - name: teamcityserver-data
             size: 10Gi
@@ -72,14 +71,16 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jetbrains/teamcity-agent
-        config:
-          - name: SERVER_URL
-            value: http://teamcityserver:8111
-            label: Server Url
-            hint: The url to your TeamCity Server (service, typically teamcity.NAMESPACE)
-            required: true
-            autoselect: true
-            fieldType: text
+        flow:
+          prompts:
+            - type: input
+              name: SERVER_URL
+              message: The url to your TeamCity Server (service, typically teamcity.NAMESPACE)
+              default: http://teamcityserver.develop:8111
+              required: true
+              c6o:
+                label: TeamCity Server Url
+
       marina:
         launch:
           type: inline

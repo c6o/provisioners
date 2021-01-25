@@ -39,13 +39,10 @@ editions:
           - name: jupyter
             port: 8888
         tag-prefix: appengine
-        config:
-          - name: port
-            value: 5000
-          - name: host
-            value: 0.0.0.0
-          - name: debug
-            value: true
+        configs:
+          - port: 5000
+          - host: 0.0.0.0
+          - debug: true
 
       marina:
         launch:

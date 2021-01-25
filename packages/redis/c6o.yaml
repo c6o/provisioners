@@ -59,9 +59,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: redis
-        config:
-          - name: appendonly
-            value: yes
+        configs:
+          - appendonly: yes
         ports:
           - port: 6379
             name: tcp
@@ -83,8 +82,7 @@ editions:
         tag-prefix: appengine
         image: redis
         config:
-          - name: appendonly
-            value: yes
+          - appendonly: yes
         ports:
           - port: 6379
             name: tcp
