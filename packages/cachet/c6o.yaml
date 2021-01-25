@@ -25,7 +25,7 @@ description:
 
   CREATE USER cachet WITH PASSWORD '88888888';
 
-  CREATE DATABASE cachet ;
+  CREATE DATABASE cachet;
 
   GRANT ALL PRIVILEGES ON DATABASE cachet to cachet;
 
@@ -90,7 +90,6 @@ editions:
                 label: Database password
                 required: true
                 target: secrets
-
 
         configs:
           - POSTGRES_PORT: 5432
