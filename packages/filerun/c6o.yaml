@@ -120,7 +120,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -129,53 +128,48 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: afian/filerun
-        port: 80
-        automated: true
-        volume:
+        ports: 80
+        volumes:
           - name: filerun-html
             mountPath: /var/www/html
             size: 5Gi
           - name: filerun-user-files
             mountPath: /user-files
             size: 10Gi
-        config:
 
-          - name: FR_DB_HOST
-            label: Database Server
-            hint: Specify the host name of your database server service (mysql)
-            required: true
-            autoselect: true
-            fieldType: text
+        flow:
+          prompts:
+            - type: input
+              name: FR_DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
 
-          - name: FR_DB_USER
-            label: Database User name
-            hint: Specify the username of your database server service
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: input
+              name: FR_DB_USER
+              message: Specify the username of your database server service
+              default: mysql.database
+              c6o:
+                label: Database User name
+                required: true
 
-          - name: FR_DB_PORT
-            value: 3306
-          - name: FR_DB_NAME
-            value: filerun
-          - name: APACHE_RUN_USER
-            value: www-data
-          - name: APACHE_RUN_USER_ID
-            value: 33
-          - name: APACHE_RUN_GROUP
-            value: www-data
-          - name: APACHE_RUN_GROUP_ID
-            value: 33
+            - type: password
+              name: FR_DB_PASS
+              message: Specify the password of your database server service
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
 
-
-        secret:
-
-          - name: FR_DB_PASS
-            label: Database Password
-            hint: Specify the password of your database server service
-            required: true
-            autoselect: true
-            fieldType: password
+        configs:
+          - FR_DB_PORT: 3306
+          - FR_DB_NAME: filerun
+          - APACHE_RUN_USER: www-data
+          - APACHE_RUN_USER_ID: 33
+          - APACHE_RUN_GROUP: www-data
+          - APACHE_RUN_GROUP_ID: 33
 
       marina:
         launch:

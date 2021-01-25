@@ -18,28 +18,25 @@ description:
   Here is a sample script to get you started
 
 
-    ~~~~
+  ~~~~
 
-    CREATE DATABASE nextcloud;
+  CREATE DATABASE nextcloud;
 
-    CREATE USER 'nextcloud'@'%' IDENTIFIED BY '88888888';
+  CREATE USER 'nextcloud'@'%' IDENTIFIED BY '88888888';
 
-    ALTER USER 'nextcloud'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+  ALTER USER 'nextcloud'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
 
-    GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'%';
+  GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'%';
 
-    FLUSH PRIVILEGES;
+  FLUSH PRIVILEGES;
 
-    SELECT User, Plugin FROM mysql.user;
+  SELECT User, Plugin FROM mysql.user;
 
-    ~~~~
+  ~~~~
 
-    Be sure to change the value '88888888' with a secure password.
+  Be sure to change the value '88888888' with a secure password.
 
-
-
-summary:
-  Powering collaboration - the most popular self-hosted collaboration solution for tens of millions of users at thousands of organizations across the globe
+summary: Powering collaboration - the most popular self-hosted collaboration solution for tens of millions of users at thousands of organizations across the globe
 
 category: dms
 keywords:
@@ -68,8 +65,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
-        automated: true
-        port:
+        ports:
           - port: 80
             name: http
             protocol: TCP
@@ -88,65 +84,43 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: nextcloud
-        automated: true
-        port:
-          - port: 80
-            name: http
-            protocol: TCP
-        config:
-          - name: MYSQL_DATABASE
-            value: nextcloud
-            label: Database name
-            hint: Specify the name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
+        ports: 80
+        flow:
+          prompts:
+            - type: input
+              name: MYSQL_USER
+              message: Specify the username for your database
+              default: nextcloud
+              c6o:
+                label: Database user name
+                required: true
 
-          - name: MYSQL_USER
-            value: nextcloud
-            label: Database user name
-            hint: Specify the username for your database
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: password
+              name: MYSQL_PASSWORD
+              message: Specify the password for the database
+              c6o:
+                target: secrets
+                label: Database password
+                required: true
 
-          - name: MYSQL_HOST
-            value: mariadb.database
-            label: Database Host (MySql or MariaDb)
-            hint: Specify the name of database host
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: input
+              name: NEXTCLOUD_ADMIN_USER
+              message: NextCloud Admin User
+              default: admin
+              c6o:
+                label: Specify the admin user name
+                required: true
 
+            - type: password
+              name: NEXTCLOUD_ADMIN_PASSWORD
+              message: NextCloud Admin Password
+              c6o:
+                target: secrets
+                label: Specify the password for the admin user
+                required: true
 
-          - name: NEXTCLOUD_ADMIN_USER
-            value: admin
-            label: Next Cloud Admin User
-            hint: Specify the admin user name
-            required: true
-            autoselect: true
-            fieldType: text
-
-          - name: NEXTCLOUD_TRUSTED_DOMAINS
-            value: $PUBLIC_DNS
-
-
-        secret:
-          - name: MYSQL_PASSWORD
-            value: 88888888
-            label: Database password
-            hint: Specify the password for the database
-            required: true
-            autoselect: true
-            fieldType: password
-
-          - name: NEXTCLOUD_ADMIN_PASSWORD
-            value: 88888888
-            label: Next Cloud Admin Password
-            hint: Specify the password for the admin user
-            required: true
-            autoselect: true
-            fieldType: password
+        configs:
+          - NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_DNS
 
         volumes:
           - name: nextcloud-file-data

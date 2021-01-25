@@ -47,7 +47,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -56,24 +55,28 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/emby
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
 
-        port:
+        configs:
+          PUID: 0
+          PGID: 0
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+
+        ports:
           - name: http
             port: 8096
             protocol: TCP
-        automated: true
-        volume:
+        volumes:
           - name: embyserver-config
             size: 1Gi
             mountPath: /config

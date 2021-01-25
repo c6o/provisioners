@@ -57,61 +57,58 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
           targetService: mautic
       provisioner:
         package: '@provisioner/appengine'
-        automated: true
         tag-prefix: appengine
         image: mautic/mautic
-        port: 80
+        ports: 80
 
-        volume:
+        volumes:
             - name: mautic-data
               size: 5Gi
               mountPath: /var/www/html
-        config:
-          - name: MAUTIC_DB_HOST
-            label: Database Server Host
-            hint: Typically the name of the Service for the MySql instance
-            required: true
-            autoselect: true
-            fieldType: text
 
-          - name: MAUTIC_DB_NAME
-            label: Database name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: mautic
+        flow:
+          prompts:
+            - type: input
+              name: MAUTIC_DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
 
-          - name: MAUTIC_DB_USER
-            label: Database user
-            hint: The username of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: mautic
+            - type: input
+              name: MAUTIC_DB_NAME
+              message: The name of the database to use
+              default: mautic
+              c6o:
+                label: Database Name
+                required: true
 
-          - name: MAUTIC_RUN_CRON_JOBS
-            value: true
+            - type: input
+              name: MAUTIC_DB_USER
+              message: The username of the database to use
+              default: mautic
+              c6o:
+                label: Database User
+                required: true
 
-          - name: MAUTIC_TRUSTED_PROXIES
-            value: 0.0.0.0/0
+            - type: password
+              name: MAUTIC_DB_PASSWORD
+              message: The password used to login to your database.
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
 
-        secret:
-          - name: MAUTIC_DB_PASSWORD
-            label: Database Password
-            hint: The password used to login to your database.
-            required: true
-            autoselect: true
-            fieldType: password
-
-
+        configs:
+          - MAUTIC_RUN_CRON_JOBS: true
+          - MAUTIC_TRUSTED_PROXIES: 0.0.0.0/0
 
       marina:
         launch:

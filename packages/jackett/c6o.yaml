@@ -31,7 +31,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -40,10 +39,9 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/jackett
-        port: 9117
-        automated: true
+        ports: 9117
 
-        volume:
+        volumes:
           - size: 1Gi
             mountPath: /config
             name: jackett-config
@@ -51,22 +49,21 @@ editions:
             mountPath: /downloads
             name: jackett-downloads
 
-        config:
-          - name: PUID
-            value: 1000
-          - name: PGID
-            value: 1000
+        configs:
+          PUID: 1000
+          PGID: 1000
+          AUTO_UPDATE: true
 
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
-
-
-          - name: AUTO_UPDATE
-            value: true
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
       marina:
         launch:
           type: inline

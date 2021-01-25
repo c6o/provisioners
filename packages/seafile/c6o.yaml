@@ -28,7 +28,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,37 +36,40 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: seafileltd/seafile
-        port: 80
-        automated: true
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        ports: 80
+        configs:
+          PUID: 0
+          PGID: 0
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+            - type: input
+              name: SEAFILE_ADMIN_EMAIL
+              message: Specify an email address to use for the admin account
+              default: restyaboard
+              c6o:
+                label: Admin Email
+                required: true
 
 
-          - name: SEAFILE_ADMIN_EMAIL
-            label: Admin Email
-            hint: Specify an email address to use for the admin account
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: password
+              name: SEAFILE_ADMIN_PASSWORD
+              message: Specify the password for the aministrator account
+              c6o:
+                label: Admin Password
+                required: true
+                target: secrets
 
-        secret:
-          - name: SEAFILE_ADMIN_PASSWORD
-            label: Admin Password
-            hint: Specify the password for the aministrator account
-            required: true
-            autoselect: true
-            fieldType: password
-
-        volume:
+        volumes:
           - size: 500Gi
             mountPath: /shared
             name: seafile-shared

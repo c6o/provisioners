@@ -62,7 +62,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -71,9 +70,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: thetarkus/funkwhale
-        port: 80
-        automated: true
-        volume:
+        ports: 80
+        volumes:
           - size: 5Gi
             mountPath: /data
             name: funkwhale-data

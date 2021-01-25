@@ -32,7 +32,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -41,11 +40,15 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: datalust/seq
-        port: 80
-        automated: true
-        config:
-          - name: ACCEPT_EULA
-            value: y
+        ports: 80
+        flow:
+          prompts:
+              - type: confirm
+                name: ACCEPT_EULA
+                message: Accept EULA
+                default: true
+                c6o:
+                  label: Accept EULA
       marina:
         launch:
           type: inline

@@ -24,7 +24,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -33,16 +32,15 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: etherpad/etherpad
-        port: 9001
-        automated: true
+        ports: 9001
 
-        secret:
-          - name: ADMIN_PASSWORD
-            value: $RANDOM
+        secrets:
+          - ADMIN_PASSWORD:
+              generate:
+                length: 32
 
         config:
-          - name: TRUST_PROXY
-            value: true
+          - TRUST_PROXY: true
 
       marina:
         launch:

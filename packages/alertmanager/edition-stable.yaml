@@ -1,7 +1,6 @@
 
 name: stable
 status: public
-default: true
 spec:
   routes:
     - type: http

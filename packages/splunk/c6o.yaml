@@ -35,7 +35,6 @@ provisioner:
 editions:
   - name: local
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -44,18 +43,20 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: splunk/splunk
-        port: 8000
-        automated: true
-        config:
-          - name: SPLUNK_START_ARGS
-            value: --accept-license
-        secret:
-          - name: SPLUNK_PASSWORD
-            label: Password
-            hint: Splunk password
-            required: true
-            autoselect: true
-            fieldType: password
+        ports: 8000
+        flow:
+          prompts:
+            - type: password
+              name: SPLUNK_PASSWORD
+              message: Splunk password
+              c6o:
+                label: Splunk password
+                required: true
+                target: secrets
+
+        configs:
+          - SPLUNK_START_ARGS: "--accept-license"
+
 
       marina:
         launch:

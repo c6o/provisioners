@@ -58,7 +58,7 @@ provisioner:
 editions:
   - name: latest
     status: public
-    default: true
+
     spec:
       routes:
         - type: http
@@ -67,8 +67,7 @@ editions:
         package: '@provisioner/appengine'
         image: snipe/snipe-it
         tag-prefix: appengine
-        port: 80
-        automated: true
+        ports: 80
         flow:
           - name: section1
             prompts:
@@ -279,7 +278,6 @@ editions:
 
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -288,8 +286,7 @@ editions:
         package: '@provisioner/appengine'
         image: snipe/snipe-it
         tag-prefix: appengine
-        port: 80
-        automated: true
+        ports: 80
 
       marina:
         launch:

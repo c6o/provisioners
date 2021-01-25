@@ -24,7 +24,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -34,8 +33,7 @@ editions:
         tag-prefix: appengine
         tag: 0.43.0-ubuntu
         image: n8nio/n8n
-        port: 5678
-        automated: true
+        ports: 5678
       marina:
         launch:
           type: inline

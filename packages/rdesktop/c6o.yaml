@@ -50,29 +50,30 @@ editions:
         tag-prefix: appengine
         tag: latest
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -92,29 +93,30 @@ editions:
         tag-prefix: appengine
         tag: xfce-bionic
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -136,29 +138,30 @@ editions:
         tag-prefix: appengine
         tag: kde-focal
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -179,29 +182,30 @@ editions:
         tag-prefix: appengine
         tag: kde-bionic
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -223,29 +227,30 @@ editions:
         tag-prefix: appengine
         tag: mate-focal
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -267,29 +272,30 @@ editions:
         tag-prefix: appengine
         tag: mate-bionic
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -311,29 +317,30 @@ editions:
         tag-prefix: appengine
         tag: i3-focal
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -355,29 +362,30 @@ editions:
         tag-prefix: appengine
         tag: i3-bionic
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -398,29 +406,30 @@ editions:
         tag-prefix: appengine
         tag: openbox-focal
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -441,29 +450,30 @@ editions:
         tag-prefix: appengine
         tag: openbox-bionic
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -484,29 +494,30 @@ editions:
         tag-prefix: appengine
         tag: icewm-focal
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
@@ -527,29 +538,30 @@ editions:
         tag-prefix: appengine
         tag: icewm-bionic
         image: linuxserver/rdesktop
-        port:
+        ports:
           - port: 3389
             name: tcp
             protocol: TCP
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+          AUTO_UPDATE: true
 
-          - name: AUTO_UPDATE
-            value: true
-        volume:
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 5Gi
             mountPath: /config
             name: rdesktop-work
-        automated: true
       marina:
         launch:
           type: inline
