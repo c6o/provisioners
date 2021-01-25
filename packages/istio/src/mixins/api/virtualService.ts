@@ -256,7 +256,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
     }
 
     async removeTcpPortLoadBalancer(route: RoutesType) {
-        const loadBalancerPorts: any[] = (await this.getLoadBalancer()).object.spec.ports
+        const loadBalancerPorts: any[] = (await this.getLoadBalancer()).spec.ports
 
         const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route));
         if (index !== -1) {
