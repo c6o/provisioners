@@ -70,7 +70,7 @@ editions:
             - type: list
               name: TZ
               message: Specify a timezone to use.
-              default: 1              
+              default: 1
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
