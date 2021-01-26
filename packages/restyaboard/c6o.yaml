@@ -112,7 +112,7 @@ editions:
                 target: secrets
 
         configs:
-          - POSTGRES_PORT : 5432
+          POSTGRES_PORT : 5432
 
       marina:
         launch:

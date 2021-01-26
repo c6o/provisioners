@@ -60,7 +60,7 @@ editions:
         tag-prefix: appengine
         image: redis
         configs:
-          - appendonly: yes
+          appendonly: yes
         ports:
           - port: 6379
             name: tcp
