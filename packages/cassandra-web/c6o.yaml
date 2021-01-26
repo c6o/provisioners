@@ -75,8 +75,8 @@ editions:
 
 
         configs:
-          - HOST_PORT: ":80"
-          - CASSANDRA_PORT: 9042
+          HOST_PORT: ":80"
+          CASSANDRA_PORT: "9042"
 
       marina:
         launch:

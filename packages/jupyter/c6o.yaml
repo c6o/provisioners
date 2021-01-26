@@ -45,7 +45,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -68,7 +68,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -92,7 +92,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -115,7 +115,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -139,7 +139,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -163,7 +163,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -187,7 +187,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -211,7 +211,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -235,7 +235,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
 
       marina:
         launch:
@@ -260,7 +260,7 @@ editions:
             mountPath: /home/jovyan/work
             name: jupyter-work
         configs:
-          - JUPYTER_ENABLE_LAB: yes
+          JUPYTER_ENABLE_LAB: yes
       marina:
         launch:
           type: inline

@@ -55,7 +55,7 @@ editions:
                 target: secrets
 
         configs:
-          - SPLUNK_START_ARGS: "--accept-license"
+          SPLUNK_START_ARGS: --accept-license
 
 
       marina:

@@ -107,16 +107,16 @@ editions:
                 required: true
 
         configs:
-          - APP_ENV: local
-          - DB_PORT: "3306"
-          - DB_CONNECTION: mysql
-          - DB_DATABASE: firefly
-          - TRUSTED_PROXIES: '**'
+          APP_ENV: local
+          DB_PORT: "3306"
+          DB_CONNECTION: mysql
+          DB_DATABASE: firefly
+          TRUSTED_PROXIES: '**'
 
         secrets:
-          - APP_KEY:
-              generate:
-                length: 16
+          APP_KEY:
+            generate:
+              length: 16
       marina:
         launch:
           type: inline
