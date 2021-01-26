@@ -90,10 +90,16 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 return
             }
 
+            const configs = {}
+            for(const key of Object.keys(this.manifestHelper.configs)) {
+                // Must be string, even if originally a boolean or number.
+                configs[key] = String(this.manifestHelper.configs[key])
+            }
+
             const createConfigMap = templates.getConfigTemplate(
                 this.manifestHelper.name,
                 this.manifestHelper.namespace,
-                this.manifestHelper.configs as keyValue,
+                configs,
                 this.manifestHelper.getComponentLabels()
             )
 
