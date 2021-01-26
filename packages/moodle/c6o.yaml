@@ -132,7 +132,7 @@ editions:
                 required: true
 
         configs:
-            - ALLOW_EMPTY_PASSWORD: no
+          ALLOW_EMPTY_PASSWORD: no
 
         volumes:
             - size: 5Gi

@@ -107,8 +107,8 @@ editions:
                 required: true
 
         configs:
-          - MAUTIC_RUN_CRON_JOBS: true
-          - MAUTIC_TRUSTED_PROXIES: 0.0.0.0/0
+          MAUTIC_RUN_CRON_JOBS: true
+          MAUTIC_TRUSTED_PROXIES: 0.0.0.0/0
 
       marina:
         launch:

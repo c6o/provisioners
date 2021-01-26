@@ -107,9 +107,9 @@ editions:
           #   autoselect: true
           #   fieldType: password
 
-          - SUDO_PASSWORD:
-              generate:
-                length: 32
+          SUDO_PASSWORD:
+            generate:
+              length: 32
       marina:
         launch:
           type: inline

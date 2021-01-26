@@ -92,9 +92,9 @@ editions:
                 target: secrets
 
         configs:
-          - POSTGRES_PORT: 5432
-          - APP_KEY: base64:04o0jBc+4hSNrJNS39i8J6185ubrC/YtOMwHGhw8v6o=
-          - DB_DRIVER: pgsql
+          POSTGRES_PORT: 5432
+          APP_KEY: base64:04o0jBc+4hSNrJNS39i8J6185ubrC/YtOMwHGhw8v6o=
+          DB_DRIVER: pgsql
 
       marina:
         launch:

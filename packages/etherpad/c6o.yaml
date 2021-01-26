@@ -35,12 +35,12 @@ editions:
         ports: 9001
 
         secrets:
-          - ADMIN_PASSWORD:
-              generate:
-                length: 32
+          ADMIN_PASSWORD:
+            generate:
+              length: 32
 
-        config:
-          - TRUST_PROXY: true
+        configs:
+          TRUST_PROXY: true
 
       marina:
         launch:
