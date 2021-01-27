@@ -3,6 +3,7 @@ import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
 import { KubeDocument } from '@c6o/kubeclient-contracts'
+import { AppObject } from '@provisioner/contracts'
 
 import {
     namespaceMixin,
@@ -29,9 +30,16 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     // Has other API functions
     [key: string]: any
 
-    help (command: string, options: optionFunctionType, messages: string[]) {}
+    help (command: string, options: optionFunctionType, messages: string[]) { }
 
     get edition(): string { return this.manager?.document?.metadata?.labels['system.codezero.io/edition'] }
+
+    _documentHelper
+    get documentHelper(): AppObject {
+        if (this._documentHelper || !this.manager?.document)
+            return this._documentHelper
+        return this._documentHelper = new AppObject(this.manager.document)
+    }
 
     serve(req, res, serverRoot = 'lib/ui') {
         const root = path.resolve(this.moduleLocation, serverRoot)
@@ -72,6 +80,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         return buffer.toString('utf-8')
     }
 
+    /** @deprecated */
     toTask = (namespace, ask: string, spec: any) => ({
         apiVersion: 'system.codezero.io/v1',
         kind: 'Task',
@@ -86,6 +95,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         spec
     })
 
+    /** @deprecated */
     async createTask(namespace, ask: string, spec: any) {
         const taskDocument = this.toTask(namespace, ask, spec)
         return await this.manager.cluster.create(taskDocument)

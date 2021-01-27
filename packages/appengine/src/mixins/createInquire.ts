@@ -1,31 +1,31 @@
+import { keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import createDebug from 'debug'
-import { keyValue } from '@provisioner/contracts'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async createInquire(args) {
-        if (!this.manifestHelper.image)
+        if (!this.documentHelper.image)
             await this.inquireApplicationImage(args)
 
         // Steps will come from the applicationSpec but for now, we use test data
-        if (this.manifestHelper.flow) {
+        if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
             const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-            const result = await flowProcessor.process(this.manifestHelper.flow)
-            this.manifestHelper.processResult(result)
+            const result = await flowProcessor.process(this.documentHelper.flow)
+            this.documentHelper.processResult(result)
         }
 
-        this.manifestHelper.postInquire()
+        this.documentHelper.postInquire()
     }
 
     async inquireApplicationImage(args) {
         const answers = {
-            tag: this.manifestHelper.tag || 'latest',
-            image: this.manifestHelper.image
+            tag: this.documentHelper.tag || 'latest',
+            image: this.documentHelper.image
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -43,8 +43,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             }
         ], answers)
 
-        this.manifestHelper.provisioner.tag = responses.tag
-        this.manifestHelper.provisioner.image = responses.image
+        this.documentHelper.provisioner.tag = responses.tag
+        this.documentHelper.provisioner.image = responses.image
 
         await this.askSettings('configs', args)
         await this.askSettings('secrets', args)
@@ -86,7 +86,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         } while (true)
 
-        this.manifestHelper.processResult({
+        this.documentHelper.processResult({
             [type]: {
                 ...configs
             }

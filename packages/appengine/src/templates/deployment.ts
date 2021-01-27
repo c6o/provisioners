@@ -1,4 +1,4 @@
-import { keyValue } from '@provisioner/contracts'
+import { keyValue } from '@c6o/kubeclient-contracts'
 
 export function getDeploymentTemplate(
     name: string,

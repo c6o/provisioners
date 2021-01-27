@@ -1,15 +1,13 @@
+import { keyValue } from '@c6o/kubeclient-contracts'
 
-import { keyValue } from '@provisioner/contracts'
-
-export function getConfigTemplate(name: string, namespace: string, data: keyValue, labels?: keyValue ) {
+export function getConfigTemplate(name: string, namespace: string, data: keyValue) {
 
     return {
         apiVersion: 'v1',
         kind: 'ConfigMap',
         metadata: {
             name: `${name}-config`,
-            namespace: namespace,
-            labels,
+            namespace: namespace
         },
         data
     }
