@@ -13,11 +13,17 @@ spec:
     matchLabels:
       role: server
       name: mongo
+      {{#each appLabels}}
+      {{@key}}: {{this}}
+      {{/each}}
   template:
     metadata:
       labels:
         role: server
         name: mongo
+        {{#each appLabels}}
+        {{@key}}: {{this}}
+        {{/each}}
     spec:
       terminationGracePeriodSeconds: 10
       volumes:
