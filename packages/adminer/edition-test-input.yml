@@ -1,0 +1,69 @@
+name: test-input
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: input
+            name: inputnone
+            message: input none
+            c6o:
+              label: input none
+
+          - type: input
+            name: inputdefault
+            message: input default
+            default: input default
+            c6o:
+              label: input default
+
+          - type: input
+            name: inputwithrequired
+            message: input with required
+            c6o:
+              label: input with required
+              required: true
+
+          - type: input
+            name: inputwitherrormessage
+            message: input with error message
+            c6o:
+              label: input with error message
+              errorMessage: input with error message
+
+          - type: input
+            name: inputdefaultrequired
+            message: input default+required
+            default: input default+required
+            c6o:
+              label: input default+required
+              required: true
+
+          - type: input
+            name: inputdefaultrequirederrormessage
+            message: input default+required+errormessage
+            default: input default+required+errormessage
+            c6o:
+              label: input default+required+errormessage
+              required: true
+              errorMessage: input default+required+errormessage
+
+          - type: input
+            name: inputrequirederror
+            message: input required+error
+            c6o:
+              label: input required+error
+              required: true
+              errorMessage: input required+error

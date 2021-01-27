@@ -1,0 +1,27 @@
+name: test-timezone
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: '@provisioner/appengine'
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+        - type: list
+          name: timezone
+          message: Pick your timezone
+          default: 1
+          c6o:
+            label: Choose your timezone
+            dataSource: timezone
+
+

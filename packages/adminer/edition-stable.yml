@@ -1,0 +1,15 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: '@provisioner/appengine'
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
