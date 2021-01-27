@@ -15,9 +15,6 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         if (!app.spec.routes)
             return
 
-        // if (process.env.NODE_ENV === 'development')
-        //     return // There is no gateway when we run czdev sys in development
-
         const vs = this.virtualService(app, gateway)
 
         for (const route of app.spec.routes) {
