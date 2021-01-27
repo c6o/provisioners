@@ -60,7 +60,7 @@ spec:
     route:
     - destination:
         host: system-marina
-  - match: # apps
+  - match: # apps ingress
     - uri:
         prefix: /
       headers:

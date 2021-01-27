@@ -21,9 +21,8 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             if (route.disabled || route.private)
                 continue
 
-            if (route.type === 'http')
-                vs.spec.http.push(this.simpleHttpSection(route))
-            else if (route.type === 'tcp') {
+            // http routes handled by ingressProxy
+            if (route.type === 'tcp') {
                 if (!route.tcp.port || route.tcp.port === 0)
                     route.tcp.port = this.generateUsablePortNumber()
 
@@ -34,7 +33,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             }
         }
 
-        if (vs.spec.http.length === 0 && vs.spec.tcp.length === 0)
+        if (vs.spec.tcp.length === 0)
             return
 
         const result = await this.manager.cluster
