@@ -1,5 +1,5 @@
-import { KubeDocument, KubeObject } from '@c6o/kubeclient-contracts'
-import { keyValue } from './keyValue'
+import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
+import { CodeZeroObject, CodeZeroLabels } from './codezero'
 
 export interface MenuItems {
     type: string,
@@ -41,17 +41,11 @@ export interface ServicesType {
     [key: string]: any
 }
 
-//https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels/
-export interface LabelsMetadata {
-    'system.codezero.io/app'?: string
-    name?: string
-    appId?: string
-    instanceId?: string
-    partOf?: string
-    component?: string
-    version?: string
-    edition?: string
-    [key: string]: string
+export interface AppDocumentLabels extends CodeZeroLabels {
+    'system.codezero.io/app': string
+    'system.codezero.io/id': string
+    'system.codezero.io/edition': string
+    'app.kubernetes.io/name': string
 }
 
 export interface AppDocumentSpec {
@@ -65,8 +59,9 @@ export interface AppDocumentSpec {
     routes?: Array<RoutesType>
 }
 
-export interface AppDocument extends KubeDocument {
-    spec: AppDocumentSpec
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface AppDocument extends KubeDocument<AppDocumentLabels, keyValue, AppDocumentSpec> {
+
 }
 
 export const AppStatuses = {
@@ -87,7 +82,7 @@ export const AppStatuses = {
     }
 }
 
-export class AppObject extends KubeObject {
+export class AppObject<T extends AppDocument = AppDocument> extends CodeZeroObject<T> {
     _services
 
     get services() {
@@ -108,24 +103,15 @@ export class AppObject extends KubeObject {
         ]
     }
 
-    constructor(public document: AppDocument) {
-        super(document)
-    }
-
     /** @todo This does not give you the app._id but the app.metadata.name and is expected to change */
     get appId() { return this.document.metadata.name }
 
     /** This can be used to fetch the resource from system server */
     get instanceId() { return `${this.namespace}-${this.name}` }
 
-    get name() { return this.document.metadata.name }
-    get namespace() { return this.document.metadata.namespace }
-
     get tag() { return this.document.spec.provisioner?.tag  }
     get description() { return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId }
     get edition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
-    get displayName() { return this.document.metadata.annotations?.['system.codezero.io/display'] || this.name }
-    get iconUrl() { return this.document.metadata.annotations?.['system.codezero.io/iconUrl'] }
 
     get provisioner() { return this.spec.provisioner }
 
@@ -146,13 +132,13 @@ export class AppObject extends KubeObject {
 
     get serviceNames() { return this.services.map(serviceObject => this.getServiceName(serviceObject)) }
 
-    get componentLabels(): keyValue {
+    get componentLabels(): AppDocumentLabels {
         return {
-            'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
+            ...super.componentLabels,
+            'system.codezero.io/app': this.name,
             'system.codezero.io/id': this.instanceId,
             'system.codezero.io/edition': this.edition,
-            'app.kubernetes.io/name': this.name,
-            'app.kubernetes.io/managed-by': 'codezero'
+            'app.kubernetes.io/name': this.name
         }
     }
 

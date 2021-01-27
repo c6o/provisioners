@@ -1,7 +1,7 @@
+import { keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import createDebug from 'debug'
-import { keyValue } from '@provisioner/contracts'
 
 const debug = createDebug('@appengine:createInquire')
 

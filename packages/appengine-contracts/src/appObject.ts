@@ -1,14 +1,9 @@
-import createDebug from 'debug'
-import { AppObject, keyValue } from '@provisioner/contracts'
+import { AppObject, AppDocumentLabels } from '@provisioner/contracts'
 import { AppEngineAppDocument, FlowResult, isPortNumber, ServicePort, DeploymentPort, each } from './'
-const debug = createDebug('@appengine:timing')
 
-export class AppEngineAppObject extends AppObject {
+export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDocument> extends AppObject<T> {
 
     version = '1.0'
-
-
-    document: AppEngineAppDocument
 
     get flow() { return this.document.spec.provisioner?.flow  }
 
@@ -35,10 +30,6 @@ export class AppEngineAppObject extends AppObject {
 
     get image() { return this.document.spec.provisioner?.image  }
 
-    constructor(document: AppEngineAppDocument) {
-        super(document)
-    }
-
     postInquire() {
         this.document.spec.provisioner['flow'] = '$unset'
     }
@@ -50,7 +41,7 @@ export class AppEngineAppObject extends AppObject {
         provisioner.secrets = Object.assign(provisioner.secrets || {}, result.secrets)
     }
 
-    get componentLabels(): keyValue {
+    get componentLabels(): AppDocumentLabels {
         return {
             ...super.componentLabels,
             app: this.name,

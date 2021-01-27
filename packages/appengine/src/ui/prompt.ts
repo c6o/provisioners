@@ -1,5 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { keyValue } from '@provisioner/contracts'
+import { keyValue } from '@c6o/kubeclient-contracts'
 import { Prompt, c6oExtensions, isFunctionString, AppEngineAppDocument, AppEngineAppObject } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
 import createDebug from 'debug'

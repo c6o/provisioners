@@ -1,4 +1,4 @@
-import { keyValue } from '@provisioner/contracts'
+import { keyValue } from '@c6o/kubeclient-contracts'
 import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject, AppEngineAppDocument } from '@provisioner/appengine-contracts'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:Validation')

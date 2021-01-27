@@ -1,5 +1,4 @@
-import { KubeDocument } from '@c6o/kubeclient-contracts'
-import { keyValue } from '@provisioner/contracts'
+import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
 import { Volume } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'

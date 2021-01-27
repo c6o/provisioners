@@ -1,5 +1,5 @@
 import { Options as generatorOptions } from 'generate-password'
-import { keyValue } from '@provisioner/contracts'
+import { keyValue } from '@c6o/kubeclient-contracts'
 export { Options as generatorOptions } from 'generate-password'
 
 export type functionExpression = string | Function // this is an inline function that's turned into an expression
