@@ -38,6 +38,10 @@ export function getDeploymentTemplate(
                     labels
                 },
                 spec: {
+                    securityContext: {
+                        // See https://github.com/c6o/provisioners/issues/182
+                        fsGroup: 1000,
+                    },
                     containers: [{
                         name,
                         image,
