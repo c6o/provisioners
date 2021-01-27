@@ -1,5 +1,6 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { Prompt, c6oExtensions, isFunctionString, keyValue, AppEngineAppDocument, AppEngineAppObject } from '@provisioner/appengine-contracts'
+import { keyValue } from '@provisioner/contracts'
+import { Prompt, c6oExtensions, isFunctionString, AppEngineAppDocument, AppEngineAppObject } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:Prompt')

@@ -1,5 +1,5 @@
 import { Options as generatorOptions } from 'generate-password'
-import { keyValue } from './keyValue'
+import { keyValue } from '@provisioner/contracts'
 export { Options as generatorOptions } from 'generate-password'
 
 export type functionExpression = string | Function // this is an inline function that's turned into an expression

@@ -1,7 +1,7 @@
 import { baseProvisionerType } from '../index'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import createDebug from 'debug'
-import { keyValue } from '@provisioner/appengine-contracts'
+import { keyValue } from '@provisioner/contracts'
 
 const debug = createDebug('@appengine:createInquire')
 

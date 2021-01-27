@@ -1,4 +1,5 @@
 import { KubeDocument, KubeObject } from '@c6o/kubeclient-contracts'
+import { keyValue } from './keyValue'
 
 export interface MenuItems {
     type: string,
@@ -144,6 +145,16 @@ export class AppObject extends KubeObject {
     get isNew() { return !!this.document.metadata.uid }
 
     get serviceNames() { return this.services.map(serviceObject => this.getServiceName(serviceObject)) }
+
+    getComponentLabels(): keyValue {
+        return {
+            'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
+            'system.codezero.io/id': this.instanceId,
+            'system.codezero.io/edition': this.edition,
+            'app.kubernetes.io/name': this.name,
+            'app.kubernetes.io/managed-by': 'codezero'
+        }
+    }
 
     // spec is the contents of the service object
     getServiceSpec(serviceName: string) {

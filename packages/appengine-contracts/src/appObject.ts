@@ -1,6 +1,6 @@
 import createDebug from 'debug'
-import { AppObject } from '@provisioner/contracts'
-import { AppEngineAppDocument, FlowResult, isPortNumber, keyValue, ServicePort, DeploymentPort, each } from './'
+import { AppObject, keyValue } from '@provisioner/contracts'
+import { AppEngineAppDocument, FlowResult, isPortNumber, ServicePort, DeploymentPort, each } from './'
 const debug = createDebug('@appengine:timing')
 
 export class AppEngineAppObject extends AppObject {
@@ -52,14 +52,10 @@ export class AppEngineAppObject extends AppObject {
 
     getComponentLabels(): keyValue {
         return {
+            ...super.getComponentLabels(),
             app: this.name,
             name: this.name,
-            'system.codezero.io/appengine': this.version,
-            'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
-            'system.codezero.io/id': this.instanceId,
-            'system.codezero.io/edition': this.edition,
-            'app.kubernetes.io/name': this.name,
-            'app.kubernetes.io/managed-by': 'codezero'
+            'system.codezero.io/appengine': this.version
         }
     }
 

@@ -1,5 +1,5 @@
 
-import { keyValue } from '@provisioner/appengine-contracts'
+import { keyValue } from '@provisioner/contracts'
 
 export function getConfigTemplate(name: string, namespace: string, data: keyValue, labels?: keyValue ) {
 

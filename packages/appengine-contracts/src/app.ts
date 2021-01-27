@@ -1,7 +1,6 @@
-import { AppDocument, AppDocumentSpec } from '@provisioner/contracts'
+import { AppDocument, AppDocumentSpec, keyValue } from '@provisioner/contracts'
 import { Options as generatorOptions } from 'generate-password'
 import { Flow } from './flow'
-import { keyValue } from './keyValue'
 
 export interface ServicePort {
     name?: string

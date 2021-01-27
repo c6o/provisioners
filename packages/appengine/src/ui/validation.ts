@@ -1,4 +1,5 @@
-import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject, keyValue, AppEngineAppDocument } from '@provisioner/appengine-contracts'
+import { keyValue } from '@provisioner/contracts'
+import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject, AppEngineAppDocument } from '@provisioner/appengine-contracts'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:Validation')
 
