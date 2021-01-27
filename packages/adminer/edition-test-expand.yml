@@ -1,0 +1,111 @@
+name: test-expand
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: expand
+            name: expandnone
+            message: expand none
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expand none
+
+          - type: expand
+            name: expanddefault
+            message: expand default
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expand default
+
+          - type: expand
+            name: expandwithrequired
+            message: expand with required
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expand with required
+              required: true
+
+          - type: expand
+            name: expandwitherrormessage
+            message: expand with error message
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expand with error message
+              errorMessage: expand with error message
+
+          - type: expand
+            name: expanddefaultrequired
+            message: expand default+required
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expand default+required
+              required: true
+
+          - type: expand
+            name: expanddefaultrequirederrormessage
+            message: expand default+required+errormessage
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expanddefaultrequirederrormessage
+              required: true
+              errorMessage: expand default+required+errormessage
+
+          - type: expand
+            name: expandrequirederror
+            message: expand required+error
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: expand required+error
+              required: true
+              errorMessage: expand required+error

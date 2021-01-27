@@ -1,0 +1,25 @@
+name: test-input-validation
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: input
+            name: inputwitherrormessage
+            message: input with error message
+            validate: return value != '' && value != 'test'
+            c6o:
+              label: input with error message
+              errorMessage: input with error message

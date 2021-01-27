@@ -1,0 +1,82 @@
+name: test-editor
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: editor
+            name: editornone
+            message: editor none
+            c6o:
+              label: editor none
+
+          - type: editor
+            name: editordefaultvaluemultiline
+            message: editor default value
+            default: |
+              editor default value1
+              editor default value2
+              editor default value3
+              editor default value4
+              editor default value5
+              editor default value6
+            c6o:
+              label: editor default value
+
+          - type: editor
+            name: editordefaultvalue
+            message: editor default value
+            default: editor default value
+            c6o:
+              label: editor default value
+
+          - type: editor
+            name: editorrequired
+            message: editor required
+            c6o:
+              label: editor required
+              required: true
+
+          - type: editor
+            name: editorerrormessage
+            message: editor error message
+            c6o:
+              label: editor error message
+              errorMessage: editor error message
+
+          - type: editor
+            name: editordefaultrequired
+            message: editor default+required
+            default: editor default+required
+            c6o:
+              label: editor default+required
+              required: true
+
+          - type: editor
+            name: editordefaultrequirederrormessage
+            message: editor default+required+errormessage
+            default: editor default+required+errormessage
+            c6o:
+              label: editor default+required+errormessage
+              required: true
+              errorMessage: editor default+required+errormessage
+
+          - type: editor
+            name: editorrequirederror
+            message: editor required+errormessage
+            c6o:
+              label: editor required+errormessage
+              required: true
+              errorMessage: editor required+errormessage
