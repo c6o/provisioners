@@ -7,10 +7,8 @@ export interface CodeZeroLabels extends keyValue {
     'system.codezero.io/iconUrl'?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface CodeZeroResource extends KubeDocument<CodeZeroLabels, keyValue> {
 
-}
+export type CodeZeroResource = KubeDocument<CodeZeroLabels>
 
 export class CodeZeroObject<T extends CodeZeroResource> extends KubeObject<T> {
     get name() { return this.document.metadata.name }

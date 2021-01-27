@@ -37,7 +37,6 @@ export interface RoutesType {
     }
 }
 export interface ServicesType {
-    // open
     [key: string]: any
 }
 
@@ -59,10 +58,7 @@ export interface AppDocumentSpec {
     routes?: Array<RoutesType>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppDocument extends KubeDocument<AppDocumentLabels, keyValue, AppDocumentSpec> {
-
-}
+export type AppDocument = KubeDocument<AppDocumentLabels, keyValue, AppDocumentSpec>
 
 export const AppStatuses = {
     create: {
