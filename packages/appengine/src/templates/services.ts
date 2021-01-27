@@ -2,14 +2,13 @@
 import { keyValue } from '@provisioner/contracts'
 import { ServicePort } from '@provisioner/appengine-contracts'
 
-export function getServiceTemplate(name: string, namespace: string, ports: ServicePort[], labels?: keyValue) {
+export function getServiceTemplate(name: string, namespace: string, ports: ServicePort[]) {
     return {
         apiVersion: 'v1',
         kind: 'Service',
         metadata: {
             name,
-            namespace: namespace,
-            labels
+            namespace: namespace
         },
         spec: {
             type: 'NodePort',

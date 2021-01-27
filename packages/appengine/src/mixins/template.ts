@@ -39,9 +39,9 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
                 else if (typeof value === 'string') {
                     await this.ensureSystemProvisioner()
                     if (value.includes('$PUBLIC_FQDN'))
-                        this._interpolateValue(map, key, '$PUBLIC_FQDN', await this.systemProvisioner.getApplicationFQDN(this.manifestHelper.name, this.manifestHelper.namespace))
+                        this._interpolateValue(map, key, '$PUBLIC_FQDN', await this.systemProvisioner.getApplicationFQDN(this.documentHelper.name, this.documentHelper.namespace))
                     else if (value.includes('$PUBLIC_URL'))
-                        this._interpolateValue(map, key, '$PUBLIC_URL', await this.systemProvisioner.getApplicationURL(this.manifestHelper.name, this.manifestHelper.namespace))
+                        this._interpolateValue(map, key, '$PUBLIC_URL', await this.systemProvisioner.getApplicationURL(this.documentHelper.name, this.documentHelper.namespace))
                 }
                 else if (typeof value === 'number')
                     map[key] = (value as number).toString()

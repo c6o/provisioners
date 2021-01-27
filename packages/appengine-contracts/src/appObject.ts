@@ -50,9 +50,9 @@ export class AppEngineAppObject extends AppObject {
         provisioner.secrets = Object.assign(provisioner.secrets || {}, result.secrets)
     }
 
-    getComponentLabels(): keyValue {
+    get componentLabels(): keyValue {
         return {
-            ...super.getComponentLabels(),
+            ...super.componentLabels,
             app: this.name,
             name: this.name,
             'system.codezero.io/appengine': this.version

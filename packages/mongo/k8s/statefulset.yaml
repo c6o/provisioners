@@ -6,7 +6,6 @@ metadata:
   labels:
     role: server
     name: mongo
-    system.codezero.io/app: mongo
 spec:
   serviceName: mongo
   replicas: 3
@@ -19,7 +18,6 @@ spec:
       labels:
         role: server
         name: mongo
-        system.codezero.io/app: mongo
     spec:
       terminationGracePeriodSeconds: 10
       volumes:

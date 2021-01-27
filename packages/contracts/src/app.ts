@@ -146,13 +146,21 @@ export class AppObject extends KubeObject {
 
     get serviceNames() { return this.services.map(serviceObject => this.getServiceName(serviceObject)) }
 
-    getComponentLabels(): keyValue {
+    get componentLabels(): keyValue {
         return {
             'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
             'system.codezero.io/id': this.instanceId,
             'system.codezero.io/edition': this.edition,
             'app.kubernetes.io/name': this.name,
             'app.kubernetes.io/managed-by': 'codezero'
+        }
+    }
+
+    get appComponentMergeDocument() {
+        return {
+            metadata: {
+                labels: this.componentLabels
+            }
         }
     }
 
