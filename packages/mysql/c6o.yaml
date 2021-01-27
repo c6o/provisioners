@@ -32,3 +32,4 @@ provisioner:
 
 editions:
   - edition-stable.yaml
+  - edition-stable-internal.yaml
