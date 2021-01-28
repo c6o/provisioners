@@ -79,15 +79,15 @@ editions:
               name: DB_TYPE
               message: The type of the database to use
               default: 2
+              choices:
+                - value: mysql
+                - value: postgres
+                - value: mariadb
+                - value: mssql
+                - value: sqlite
               c6o:
                 label: Database type
                 required: true
-                items:
-                  - value: mysql
-                  - value: postgres
-                  - value: mariadb
-                  - value: mssql
-                  - value: sqlite
 
             - type: input
               name: DB_PORT
