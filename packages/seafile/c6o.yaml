@@ -36,7 +36,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: seafileltd/seafile
-        ports: 80
+        ports: 8000
         configs:
           PUID: 0
           PGID: 0
