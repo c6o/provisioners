@@ -57,7 +57,7 @@ editions:
           prompts:
             - type: password
               name: PHOTOPRISM_ADMIN_PASSWORD
-              message: Specify the admin users password
+              message: Specify the password for the admin user
               c6o:
                 required: true
                 target: secrets
@@ -69,6 +69,12 @@ editions:
               default: true
               c6o:
                 label: Allow NSFW Uploads
+
+
+        configs:
+          PUID: 1000
+          PGID: 1000
+
         volumes:
           - size: 500Gi
             mountPath: /photoprism/storage

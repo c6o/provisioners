@@ -39,8 +39,8 @@ editions:
             name: muximux-config
 
         configs:
-          PUID: 0
-          PGID: 0
+          PUID: 1000
+          PGID: 1000
 
         flow:
           prompts:

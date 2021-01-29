@@ -98,6 +98,14 @@ editions:
           - size: 5Gi
             mountPath: /logs
             name: neo4j-logs
+        flow:
+          prompts:
+              - type: confirm
+                name: NEO4J_ACCEPT_LICENSE_AGREEMENT
+                message: Accept NEO4J License Agreement
+                default: true
+                c6o:
+                  label: Accept NEO4J License Agreement
       marina:
         launch:
           type: inline
