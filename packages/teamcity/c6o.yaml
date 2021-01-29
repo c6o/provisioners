@@ -44,7 +44,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: teamcityserver
+          targetService: teamcity
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
