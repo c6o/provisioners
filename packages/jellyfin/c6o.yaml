@@ -29,8 +29,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jellyfin/jellyfin
-        ports:
-          - 8096
+        ports: 8096
         volumes:
           - size: 1Gi
             mountPath: /config

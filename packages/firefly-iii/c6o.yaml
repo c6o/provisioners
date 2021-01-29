@@ -91,6 +91,14 @@ editions:
                 required: true
 
             - type: input
+              name: DB_DATABASE
+              message: Specify the database name to use
+              default: firefly
+              c6o:
+                label: Database Name
+                required: true
+
+            - type: input
               name: DB_USERNAME
               message: Specify the username of your database server service
               default: firefly
@@ -108,15 +116,13 @@ editions:
 
         configs:
           APP_ENV: local
-          DB_PORT: "3306"
           DB_CONNECTION: mysql
-          DB_DATABASE: firefly
           TRUSTED_PROXIES: '**'
 
         secrets:
           APP_KEY:
             generate:
-              length: 16
+              length: 32
       marina:
         launch:
           type: inline
