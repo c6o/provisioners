@@ -24,6 +24,8 @@ description:
 
     ~~~~
 
+  CREATE DATABASE restyaboard;
+
   CREATE USER restyaboard WITH PASSWORD '88888888';
 
 
@@ -72,8 +74,8 @@ editions:
 
             - type: input
               name: POSTGRES_HOST
-              message: The name of the database server (Service)
-              default: restyaboard
+              message: The name of the database server (Postgresql)
+              default: postgresql.database
               c6o:
                 label: Database Host
                 required: true

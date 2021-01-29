@@ -1,0 +1,111 @@
+name: test-rawlist
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: rawlist
+            name: rawlistnone
+            message: rawlist none
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist none
+
+          - type: rawlist
+            name: rawlistdefault
+            message: rawlist default
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist default
+
+          - type: rawlist
+            name: rawlistwithrequired
+            message: rawlist with required
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist with required
+              required: true
+
+          - type: rawlist
+            name: rawlistwitherrormessage
+            message: rawlist with error message
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist with error message
+              errorMessage: rawlist with error message
+
+          - type: rawlist
+            name: rawlistdefaultrequired
+            message: rawlist default+required
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist default+required
+              required: true
+
+          - type: rawlist
+            name: rawlistdefaultrequirederrormessage
+            message: rawlist default+required+errormessage
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist default+required+errormessage
+              required: true
+              errorMessage: rawlist default+required+errormessage
+
+          - type: rawlist
+            name: rawlistrequirederror
+            message: rawlist required+error
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: rawlist required+error
+              required: true
+              errorMessage: rawlist required+error

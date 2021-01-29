@@ -25,6 +25,34 @@ description:
 
   [Source](https://en.wikipedia.org/wiki/Drupal)
 
+
+  Setup
+
+  ----
+
+  Drupal requires access to a MariaDB (or mysql) database with a few users created in the database.  This has been created prior to the installation.
+
+
+  Here is a sample script, for mariadb to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE drupal;
+
+    CREATE USER 'drupal'@'%' IDENTIFIED BY '88888888';
+
+    GRANT ALL PRIVILEGES ON drupal.* TO 'moodle'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
 category: cms
 keywords:
   - Content Management System

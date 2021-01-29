@@ -69,12 +69,13 @@ editions:
                 label: IDE Username
                 required: true
 
-            - type: input
+            - type: password
               name: PASSWORD
               message: The Password to login to the IDE
               c6o:
                 label: IDE Password
                 required: true
+                target: secrets
 
       marina:
         launch:
@@ -120,12 +121,13 @@ editions:
                 label: IDE Username
                 required: true
 
-            - type: input
+            - type: password
               name: PASSWORD
               message: The Password to login to the IDE
               c6o:
                 label: IDE Password
                 required: true
+                target: secrets
 
       marina:
         launch:
@@ -172,12 +174,13 @@ editions:
                 label: IDE Username
                 required: true
 
-            - type: input
+            - type: password
               name: PASSWORD
               message: The Password to login to the IDE
               c6o:
                 label: IDE Password
                 required: true
+                target: secrets
 
       marina:
         launch:
@@ -224,12 +227,13 @@ editions:
                 label: IDE Username
                 required: true
 
-            - type: input
+            - type: password
               name: PASSWORD
               message: The Password to login to the IDE
               c6o:
                 label: IDE Password
                 required: true
+                target: secrets
 
       marina:
         launch:

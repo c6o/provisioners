@@ -61,7 +61,6 @@ editions:
             - type: input
               name: OTR_GEOKEY
               message: API key for reverse-geo lookups
-              default: 1883
               c6o:
                 label: Reverse Geo API Key
                 required: false

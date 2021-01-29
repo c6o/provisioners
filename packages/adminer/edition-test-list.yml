@@ -1,0 +1,111 @@
+name: test-list
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: list
+            name: listnone
+            message: list none
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list none
+
+          - type: list
+            name: listdefault
+            message: list default
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list default
+
+          - type: list
+            name: listwithrequired
+            message: list with required
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list with required
+              required: true
+
+          - type: list
+            name: listwitherrormessage
+            message: list with error message
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list with error message
+              errorMessage: list with error message
+
+          - type: list
+            name: listdefaultrequired
+            message: list default+required
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list default+required
+              required: true
+
+          - type: list
+            name: listdefaultrequirederrormessage
+            message: list default+required+errormessage
+            default: 1
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list default+required+errormessage
+              required: true
+              errorMessage: list default+required+errormessage
+
+          - type: list
+            name: listrequirederror
+            message: list required+error
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list required+error
+              required: true
+              errorMessage: list required+error

@@ -1,0 +1,93 @@
+name: test-confirm
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: confirm
+            name: confirmnone
+            message: confirm none
+            c6o:
+              label: confirm none
+
+          - type: confirm
+            name: confirmdefaultvaluefalse
+            message: confirm default value false
+            default: false
+            c6o:
+              label: confirm default value false
+
+          - type: confirm
+            name: confirmdefaultvaluetrue
+            message: confirm default value true
+            default: true
+            c6o:
+              label: confirm default value true
+
+          - type: confirm
+            name: confirmrequired
+            message: confirm required
+            c6o:
+              label: confirm required
+              required: true
+
+          - type: confirm
+            name: confirmerrorMessage
+            message: confirm errorMessage
+            c6o:
+              label: confirmerrorMessage
+              errorMessage: confirm errorMessage
+
+          - type: confirm
+            name: confirmdefaultrequiredtrue
+            message: confirm default+required true
+            default: true
+            c6o:
+              label: confirm default+required true
+              errorMessage: confirm default+required true
+
+          - type: confirm
+            name: confirmdefaultrequiredfalse
+            message: confirm default+required false
+            default: false
+            c6o:
+              label: confirm default+required false
+              errorMessage: confirm default+required false
+
+          - type: confirm
+            name: confirmdefaultrequirederrormessagefalse
+            message: confirm default+required+errormessage false
+            default: false
+            c6o:
+              label: confirm default+required+errormessage false
+              errorMessage: confirm default+required+errormessage false
+              required: true
+
+          - type: confirm
+            name: confirmdefaultrequirederrormessagetrue
+            message: confirm default+required+errormessage true
+            default: true
+            c6o:
+              label: confirm default+required+errormessage true
+              errorMessage: confirm default+required+errormessage true
+              required: true
+
+          - type: confirm
+            name: confirmrequirederror
+            message: confirm required+error
+            c6o:
+              label: confirm required+error
+              errorMessage: confirm required+error
+              required: true

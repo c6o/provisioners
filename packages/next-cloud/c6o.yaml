@@ -120,7 +120,7 @@ editions:
                 required: true
 
         configs:
-          NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_DNS
+          NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_FQDN
 
         volumes:
           - name: nextcloud-file-data

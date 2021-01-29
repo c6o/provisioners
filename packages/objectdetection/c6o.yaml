@@ -36,8 +36,10 @@ editions:
         ports:
           - name: api
             port: 5000
+            protocol: TCP
           - name: jupyter
             port: 8888
+            protocol: TCP
         tag-prefix: appengine
         configs:
           port: 5000

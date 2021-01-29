@@ -23,7 +23,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: private
+    status: public
     spec:
       routes:
         - type: http

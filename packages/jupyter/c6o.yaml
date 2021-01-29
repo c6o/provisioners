@@ -34,7 +34,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: scipy
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -57,7 +57,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: datascience
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -81,7 +81,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: tensorflow
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -104,7 +104,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: pyspark
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -128,7 +128,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: basenotebook
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -152,7 +152,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: all-spark
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -176,7 +176,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: minimal
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -200,7 +200,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: nbviewer
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -224,7 +224,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: r-notebook
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -249,7 +249,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: nature-demo
+          targetService: jupyter
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
