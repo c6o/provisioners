@@ -173,55 +173,21 @@ editions:
             mountPath: /srv/app
             size: 50Gi
 
-        flow:
-          prompts:
-            - type: input
-              name: DATABASE_HOST
-              message: The name of the database server (Service)
-              default: mariadb.database
-              required: true
-              c6o:
-                label: Database Host
+        configs:
+          DATABASE_CLIENT: mongo
+          DATABASE_PORT: 27017
+          DATABASE_HOST: mongo-svc
+          DATABASE_NAME: strapi
+          DATABASE_USERNAME: root
+          DATABASE_SSL: false
+          DATABASE_AUTHENTICATION_DATABASE: admin
 
-            - type: number
-              name: DATABASE_PORT
-              message: The port of the database server (Service)
-              default: 27017
-              required: true
-              c6o:
-                label: Database Host Port
+        services:
+          - mongo:
+              rootPasswordKey: DATABASE_PASSWORD
 
-            - type: input
-              name: DATABASE_CLIENT
-              message: Database Client Driver
-              default: mongo
-              required: true
-              c6o:
-                label: Database Client Driver
-
-            - type: input
-              name: DATABASE_NAME
-              message: The name of the database to use
-              default: strapi
-              required: true
-              c6o:
-                label: Database Name
-
-            - type: input
-              name: DATABASE_USERNAME
-              message: The username for the database user
-              default: strapi
-              required: true
-              c6o:
-                label: Database user name
-
-            - type: password
-              name: DATABASE_PASSWORD
-              message: The password for the database user
-              default: strapi
-              required: true
-              c6o:
-                label: Database password
+        secretRefs:
+          - mongo-root
 
       marina:
         launch:
