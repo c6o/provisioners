@@ -1,5 +1,5 @@
 name: Funk Whale
-appId: funkwhale                #App internal name (all lower, no spaces); minimum 5 characters
+appId: funkwhale
 package: '@provisioner/appengine'
 icon: icon.svg
 description:

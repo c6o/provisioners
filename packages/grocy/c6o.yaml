@@ -8,6 +8,13 @@ summary:
 description:
   ERP beyond your fridge - grocy is a web-based self-hosted groceries & household management solution for your home.
 
+
+  Setup
+
+  ----
+
+  Grocy has a default username and password, both of which are 'admin'.  Use it to login for the first time.
+
 category: analytics
 keywords:
   - Query
