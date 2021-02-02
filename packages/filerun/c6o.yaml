@@ -150,7 +150,7 @@ editions:
             - type: input
               name: FR_DB_USER
               message: Specify the username of your database server service
-              default: mysql.database
+              default: filerun
               c6o:
                 label: Database User name
                 required: true
