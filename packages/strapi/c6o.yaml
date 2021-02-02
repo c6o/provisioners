@@ -70,13 +70,14 @@ editions:
               - type: startup
                 periodSeconds: 10
                 initialDelaySeconds: 60
+      marina:
         launch:
           type: inline
           popUp: true
 
 
   - name: latest-postgresql
-    status: public
+    status: private
     spec:
       routes:
         - type: http
@@ -97,51 +98,47 @@ editions:
         volumes:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/
-            size: 50Gi
+            size: 1Gi
           - name: strapi-data
             mountPath: /srv/app
             size: 50Gi
-        config:
+        flow:
+          prompts:
+            - type: input
+              name: DATABASE_HOST
+              message: Specify the host name of your database server service (postgres)
+              default: postgres
+              c6o:
+                label: Database Host
+                required: true
 
-          - name: DATABASE_HOST
-            label: Database Host
-            hint: The name of the database server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: strapi
+            - type: input
+              name: DATABASE_NAME
+              message: The name of the database to use
+              default: strapi
+              c6o:
+                label: Database Name
+                required: true
 
-          - name: DATABASE_PORT
-            value: 5432
+            - type: input
+              name: DATABASE_USERNAME
+              message: The username for the database user
+              default: strapi
+              c6o:
+                label: Database User
+                required: true
 
-          - name: DATABASE_CLIENT
-            value: postgres
+            - type: password
+              name: DATABASE_PASSWORD
+              message: The password for the database user
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
 
-          - name: DATABASE_NAME
-            label: Database Name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: strapi
-
-          - name: DATABASE_USERNAME
-            label: Database user name
-            hint: The username for the database user
-            required: true
-            autoselect: true
-            fieldType: text
-            value: strapi
-
-
-        secret:
-
-          - name: DATABASE_PASSWORD
-            label: Database password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
+        configs:
+          DATABASE_PORT: 5432
+          DATABASE_CLIENT: postgres
 
       marina:
         launch:
@@ -150,7 +147,7 @@ editions:
 
 
   - name: latest-mongo
-    status: public
+    status: private
     spec:
       routes:
         - type: http
@@ -171,7 +168,7 @@ editions:
         volumes:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/
-            size: 50Gi
+            size: 1Gi
           - name: strapi-data
             mountPath: /srv/app
             size: 50Gi
