@@ -1,0 +1,6 @@
+name: stable
+status: public
+spec:
+  provisioner:
+    name: mysql
+    tag: 5.6.51
