@@ -2,6 +2,7 @@ import { LitElement, customElement, html, property } from 'lit-element'
 import { StoreFlowScreen, StoreFlowMediator } from '@provisioner/common'
 import { Step, AppEngineAppObject, PromptType, Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
+// @ts-ignore
 import { getTimeZonesFlatten } from '../templates/timeZones'
 
 @customElement('appengine-step')
