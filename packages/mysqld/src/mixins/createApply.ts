@@ -149,6 +149,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .upsert(configMapSecret)
         }
     }
+    toConnectionString = (options) =>
+        `server=${options.host}:${options.port};uid=${options.user};pwd=${options.password};database=${options.db}`
 
     /**
      * Creates a the database based on the dbConfig and adds the connection string to configMap
@@ -162,18 +164,28 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             this.manager.status?.push(`Configuring database ${dbName}`)
 
-            const db = this.mysqlClient.db(dbName)
+            const db = this.mysqlClient.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
             const user = config.user || 'devUser'
             const password = super.processPassword(config.password)
 
-            const roles = config.roles || ['readWrite']
+            const createUser = `
+            CREATE USER IF NOT EXISTS  '${user}'@'%' IDENTIFIED BY '${password}';
+            ALTER USER '${user}'@'%' IDENTIFIED WITH mysql_native_password BY '${password}';
+            GRANT ALL PRIVILEGES ON ${user}.* TO '${user}'@'%';
+            FLUSH PRIVILEGES;
+           `
 
-            await db.addUser(user, password, { roles })
+            await db.query(createUser)
 
             const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
             const port = 3306
 
-            this.configMap[config.secretKey] = Buffer.from(JSON.stringify({ user, password, host, port, database: dbName })).toString('base64')
+            const connectionString = this.toConnectionString({ user, password, host, port, db: dbName })
+            if (process.env.TRAXITT_ENV == 'development')
+                this.manager.status?.info(`Connection string ${connectionString}`)
+
+            this.configMap[config.secretKey] = Buffer.from(connectionString).toString('base64')
+
         }
         catch (ex) {
             if (!ex.code || ex.code != 51003) {
