@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ♻️ Chores
+
+* Bump "js-yaml" to v4.0.0 ([d00e402](https://github.com/c6o/provisioners/commit/d00e4025b6f02e39d74d4509ebda897cb34feac5))
+* Bump js-yaml to v4.0.0 ([aac8811](https://github.com/c6o/provisioners/commit/aac88113030ae673282f573d3a101c917f52432e))
+
+
+
+
+
 ## [0.0.26](https://github.com/c6o/provisioners/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 

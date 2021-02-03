@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ✨ Features
+
+* **c6o-system:** Initial release of Harbour Master ([#154](https://github.com/c6o/provisioners/issues/154)) ([a500e7f](https://github.com/c6o/provisioners/commit/a500e7f5a0b9232ab7d6c58308b2280d7cdde1b2)), closes [#155](https://github.com/c6o/provisioners/issues/155) [#1239](https://github.com/c6o/provisioners/issues/1239)
+
+
+### 🐛 Bug Fixes
+
+* **istio:** Removed http routing from virtual service ([#184](https://github.com/c6o/provisioners/issues/184)) ([ab0c33e](https://github.com/c6o/provisioners/commit/ab0c33e74618d0c8a871fadec5ebc3829bb0495d))
+* Removed reference to incorrect AppObject/AppDocument ([f988ede](https://github.com/c6o/provisioners/commit/f988ede1d5f38c632900169c11ead51a1af1c500))
+* **app-engine:** Secrets getting skipped ([acb0a0b](https://github.com/c6o/provisioners/commit/acb0a0b201acc3dc8debdd4166414ebeed8c711e))
+* **istio:** Do not handle virtualServices in develop/localhost ([d60dd6d](https://github.com/c6o/provisioners/commit/d60dd6df62422d7b01fe57813052c20032985a45))
+
+
+### 📦 Code Refactoring
+
+* **appengine:** Using contracts and using inquire flow in cli and UI ([#156](https://github.com/c6o/provisioners/issues/156)) ([4d612b9](https://github.com/c6o/provisioners/commit/4d612b909ac4eaa0ecddf3355363e7429e517204))
+
+
+### ♻️ Chores
+
+* Bumped kubeclient to 0.0.8. Removed local reference ([cc755f2](https://github.com/c6o/provisioners/commit/cc755f266ecd8322d3a31c292237da96b4db4b04))
+* **contracts:** Split labels between App and AppEngine contracts ([8e4671e](https://github.com/c6o/provisioners/commit/8e4671ee732eb302f603987c488890db219eaace))
+* **refactor manifests:** Initial refactor of all manifests ([#178](https://github.com/c6o/provisioners/issues/178)) ([67b39cb](https://github.com/c6o/provisioners/commit/67b39cb6e9277fe16d932ae16454e64ae39f6788))
+* Bump "js-yaml" to v4.0.0 ([d00e402](https://github.com/c6o/provisioners/commit/d00e4025b6f02e39d74d4509ebda897cb34feac5))
+* Code formatting changes only! ([2df4e69](https://github.com/c6o/provisioners/commit/2df4e69ed0b6050e0f6f9ddbf8400273e7c8eff0))
+
+
+
+
+
 ## [0.0.26](https://github.com/c6o/provisioners/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 

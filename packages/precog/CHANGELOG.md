@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ♻️ Chores
+
+* Code formatting changes only! ([2df4e69](https://github.com/c6o/provisioners/commit/2df4e69ed0b6050e0f6f9ddbf8400273e7c8eff0))
+
+
+
+
+
 ## [0.0.26](https://github.com/c6o/provisioners/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 

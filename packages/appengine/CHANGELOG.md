@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ✨ Features
+
+* **mongo:** Support for secretRefs and configMapRefs. Migrated mongo based provisioners ([#158](https://github.com/c6o/provisioners/issues/158)) ([00304f2](https://github.com/c6o/provisioners/commit/00304f28e5044dc59567b93f9909939ea74e5b31))
+
+
+### 🐛 Bug Fixes
+
+* **AppEngine:** add fsGroup to security context to fix [#182](https://github.com/c6o/provisioners/issues/182) ([#183](https://github.com/c6o/provisioners/issues/183)) ([f456230](https://github.com/c6o/provisioners/commit/f4562308cc8c9682440861f7466e7848cb875626))
+* AppEngine fails on ConfigMap with boolean or numeric values ([#181](https://github.com/c6o/provisioners/issues/181)) ([23fa9d4](https://github.com/c6o/provisioners/commit/23fa9d45d61c21d00c8f20af7b56b315f44c7905))
+* **app-engine:** Secrets getting skipped ([acb0a0b](https://github.com/c6o/provisioners/commit/acb0a0b201acc3dc8debdd4166414ebeed8c711e))
+
+
+### 📦 Code Refactoring
+
+* **appengine:** Using contracts and using inquire flow in cli and UI ([#156](https://github.com/c6o/provisioners/issues/156)) ([4d612b9](https://github.com/c6o/provisioners/commit/4d612b909ac4eaa0ecddf3355363e7429e517204))
+
+
+### ♻️ Chores
+
+* Bumped kubeclient to 0.0.8. Removed local reference ([cc755f2](https://github.com/c6o/provisioners/commit/cc755f266ecd8322d3a31c292237da96b4db4b04))
+* Using mergeWith to manage labels ([#185](https://github.com/c6o/provisioners/issues/185)) ([d37071f](https://github.com/c6o/provisioners/commit/d37071f6457ce1b4f3c300d5c10d860c79e75ae0))
+* **appengine-upgrade:** Continue with the Web UI for appengine upgrades ([e592561](https://github.com/c6o/provisioners/commit/e59256169ee0dba0f7b94d6f2046ba9f307105c1))
+* **contracts:** Split labels between App and AppEngine contracts ([8e4671e](https://github.com/c6o/provisioners/commit/8e4671ee732eb302f603987c488890db219eaace))
+* **refactor manifests:** Initial refactor of all manifests ([#178](https://github.com/c6o/provisioners/issues/178)) ([67b39cb](https://github.com/c6o/provisioners/commit/67b39cb6e9277fe16d932ae16454e64ae39f6788))
+* Migrated databases to use flow ([#157](https://github.com/c6o/provisioners/issues/157)) ([341a92f](https://github.com/c6o/provisioners/commit/341a92f534ea7e9c2b0ec27007b2a0dbeab6dbc2))
+
+
+
+
+
 ## [0.0.26](https://github.com/c6o/provisioners/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 
