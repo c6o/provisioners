@@ -4,9 +4,6 @@
         "rootDir": "./src",
         "outDir": "./lib"
     },
-    "references": [
-        { "path":  "../../../kubeclient/packages/contracts" }
-    ],
     "include": [
         "src"
     ]

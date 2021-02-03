@@ -36,7 +36,8 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient": "^0.0.7",
+    "@c6o/kubeclient": "^0.0.8",
+    "@c6o/kubeclient-contracts": "^0.0.8",
     "@provisioner/appengine-contracts": "^0.0.26",
     "@provisioner/common": "^0.0.26",
     "@provisioner/contracts": "^0.0.26",
