@@ -6,9 +6,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
-            storage: args['storage-size']|| this.spec.storage,
-            k8sLogIndexPrefix: args['log-index-prefix']|| this.spec.k8sLogIndexPrefix
+            storageClass: args['storage-class'] || args.answers['storage-class'] || await this.getDefaultStorageClass(),
+            storage: args['storage-size'] || args.answers['storage-size'] || this.spec.storage,
+            k8sLogIndexPrefix: args['log-index-prefix'] || args.answers['log-index-prefix'] || this.spec.k8sLogIndexPrefix
         }
 
         const responses = await this.manager.inquirer?.prompt([

@@ -5,9 +5,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         const answers = {
-            secret: args.secret || this.spec.secret,
-            authPassword: args['auth-password'] || this.spec.authPassword,
-            jvbPassword: args['jvb-password'] || this.spec.jvbPassword
+            secret: args.secret || args.answers['secret'] || this.spec.secret,
+            authPassword: args['auth-password'] || args.answers['auth-password'] || this.spec.authPassword,
+            jvbPassword: args['jvb-password'] || args.answers['jvb-password'] || this.spec.jvbPassword
         }
 
         const responses = await this.manager.inquirer?.prompt([

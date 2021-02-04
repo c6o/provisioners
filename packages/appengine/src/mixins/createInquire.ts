@@ -15,7 +15,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
             const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-            const result = await flowProcessor.process(this.documentHelper.flow)
+            const result = await flowProcessor.process(this.documentHelper.flow, args)
             this.documentHelper.processResult(result)
         }
 
@@ -24,8 +24,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquireApplicationImage(args) {
         const answers = {
-            tag: this.documentHelper.tag || 'latest',
-            image: this.documentHelper.image
+            tag: this.documentHelper.tag || args.answers.tag || 'latest',
+            image: this.documentHelper.image || args.answers.image,
+            ...args.answers
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -77,7 +78,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasConfig,
                     validate: r => r !== '' //non empty string
                 }
-            ])
+            ], args.answers)
 
             if (responses.hasVal)
                 configs[responses.key] = responses.value
@@ -143,7 +144,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasPorts,
                     validate: r => this.isNumeric(r)  //validate that it is a Number()
                 }
-            ])
+            ], args.answers)
 
             if (responses.hasPorts)
                 ports.push({ name: responses.name, protocol: responses.protocol, port: Number(responses.port), targetPort: Number(responses.targetPort) })
@@ -205,7 +206,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasVolumes,
                     validate: r => r !== '' //non empty string
                 }
-            ])
+            ], args.answers)
 
             if (responses.hasVolumes) {
                 volumes.push({ size: responses.storageSize, mountPath: responses.mountPath, name: responses.volumeName, subPath: responses.subPath })
