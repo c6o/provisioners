@@ -63,7 +63,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -72,52 +71,58 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: jc5x/firefly-iii
-        port: 8080
-        automated: true
-        volume:
+        ports: 8080
+        volumes:
           - name: firefly-iii-export
             size: 20Gi
             mountPath: /var/www/firefly-iii/storage/export
           - name: firefly-iii-upload
             size: 20Gi
             mountPath: /var/www/firefly-iii/storage/upload
-        secret:
-          - name: DB_PASSWORD
-            label: Database Password
-            hint: Database Password
-            required: true
-            autoselect: true
-            fieldType: password
 
-          - name: APP_KEY
-            value: '$RANDOM:32'
+        flow:
+          prompts:
+            - type: input
+              name: DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
 
-        config:
-          - name: APP_ENV
-            value: local
+            - type: input
+              name: DB_DATABASE
+              message: Specify the database name to use
+              default: firefly
+              c6o:
+                label: Database Name
+                required: true
 
-          - name: DB_USERNAME
-            label: Database Username
-            hint: Database Username
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: input
+              name: DB_USERNAME
+              message: Specify the username of your database server service
+              default: firefly
+              c6o:
+                label: Database Username
+                required: true
 
-          - name: DB_HOST
-            label: Database Server name
-            hint: Database Host Server Name (Service)
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: password
+              name: DB_PASSWORD
+              message: Specify the password of your database server service
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
 
-          - name: DB_PORT
-            value: "3306"
-          - name: DB_CONNECTION
-            value: mysql
-          - name: DB_DATABASE
-            value: firefly
-          - name: TRUSTED_PROXIES
-            value: '**'
+        configs:
+          APP_ENV: local
+          DB_CONNECTION: mysql
+          TRUSTED_PROXIES: '**'
+
+        secrets:
+          APP_KEY:
+            generate:
+              length: 32
       marina:
         launch:
           type: inline

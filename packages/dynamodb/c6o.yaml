@@ -25,7 +25,6 @@ provisioner:
 editions:
   - name: local
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -34,8 +33,7 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: amazon/dynamodb-local
-        port: 8000
-        automated: true
+        ports: 8000
       marina:
         launch:
           type: inline
@@ -43,14 +41,12 @@ editions:
 
   - name: local-internal
     status: public
-    default: true
     spec:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: amazon/dynamodb-local
-        port: 8000
-        automated: true
+        ports: 8000
       marina:
         launch:
           type: inline

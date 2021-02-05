@@ -62,7 +62,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -71,9 +70,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: matomo
-        port: 80
-        automated: true
-        volume:
+        ports: 80
+        volumes:
           - name: matomo-data
             size: 5Gi
             mountPath: /var/www/html
@@ -85,7 +83,6 @@ editions:
 
   - name: latest
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -94,38 +91,51 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: matomo
-        port: 80
-        automated: true
-        config:
-          - name: MATOMO_DATABASE_HOST
-            label: Database Host
-            hint: Host for the database (Service)
-            required: true
-            autoselect: true
-            fieldType: text
+        ports: 80
 
-          - name: MATOMO_DATABASE_ADAPTER
-            value: mariadb
+        flow:
+          prompts:
+            - type: input
+              name: MATOMO_DATABASE_HOST
+              message: Specify the host name of your database server service (mariadb Service)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
 
-          - name: MATOMO_DATABASE_USERNAME
-            label: Database Username
-            hint: Username for the database
-            required: true
-            autoselect: true
-            fieldType: text
+            - type: input
+              name: MATOMO_DATABASE_ADAPTER
+              message: Specify the database adapter of your database server service (mariadb Service)
+              default: mariadb
+              c6o:
+                label: Database Adapter
+                required: true
 
-          - name: MATOMO_DATABASE_DBNAME
-            value: matomo
+            - type: input
+              name: MATOMO_DATABASE_DBNAME
+              message: Specify the database name
+              default: maotomo
+              c6o:
+                label: Database Name
+                required: true
 
-        secret:
-          - name: MATOMO_DATABASE_PASSWORD
-            label: Database password
-            hint: Password for the database
-            required: true
-            autoselect: true
-            fieldType: password
+            - type: input
+              name: MATOMO_DATABASE_USERNAME
+              message: Username for the database
+              default: matomo
+              c6o:
+                label: Database Username
+                required: true
 
-        volume:
+            - type: password
+              name: MATOMO_DATABASE_PASSWORD
+              message: Password for the database
+              c6o:
+                target: secrets
+                label: Database password
+                required: true
+
+        volumes:
           - name: matomo-data
             size: 5Gi
             mountPath: /var/www/html

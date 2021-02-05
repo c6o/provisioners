@@ -4,6 +4,10 @@ spec:
   routes:
     - type: http
       targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
   provisioner:
     package: '@provisioner/appengine'
     image: adminer
@@ -22,7 +26,3 @@ spec:
       - name: embyserver-transcode
         size: 50Gi
         mountPath: /transcode
-  marina:
-    launch:
-      type: inline
-      popUp: true

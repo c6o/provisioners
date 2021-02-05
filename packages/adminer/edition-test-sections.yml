@@ -1,0 +1,45 @@
+name: test-sections
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: list
+            name: timezone
+            message: Pick your timezone
+            default: 1
+            c6o:
+              label: Choose your timezone
+              dataSource: timezone
+      - name: section2
+        prompts:
+          - type: input
+            name: inputnone
+            message: input none
+            c6o:
+              label: input none
+      - name: section3
+        prompts:
+          - type: list
+            name: listnone
+            message: list none
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: list none

@@ -1,11 +1,6 @@
-name: stable
+name: stable-internal
+status: private
 spec:
-  routes:
-    - type: tcp
-      targetService: mysql
-      tcp:
-        port: 3306
-        name: mysql
   provisioner:
     package: '@provisioner/appengine'
     tag-prefix: appengine
@@ -22,7 +17,7 @@ spec:
             generateMessage: Generate a root user password?
             generate:
               length: 16
-    volume:
+    volumes:
       - size: 5Gi
         mountPath: /data
         name: mysql-data

@@ -1,0 +1,97 @@
+name: test-checkbox
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: '@provisioner/appengine'
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: checkbox
+            name: checkboxnone
+            message: checkbox none
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: checkbox none
+
+          - type: checkbox
+            name: checkboxwithdefault
+            message: checkbox with default
+            default: 4
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: checkbox with default
+
+          - type: checkbox
+            name: checkboxwithdefaultrequired
+            message: checkbox with default required
+            default: 4
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: checkbox with default required
+              required: true
+
+          - type: checkbox
+            name: checkboxwithnodefault
+            message: checkbox with no default
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: checkbox with no default
+
+          - type: checkbox
+            name: checkboxdefaultrequirederrormessage
+            message: checkbox default+required+errormessage
+            default: 4
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: checkbox default+required+errormessage
+              required: true
+              errorMessage: checkbox default+required+errormessage
+
+          - type: checkbox
+            name: checkboxrequirederrormessage
+            message: checkbox required+errormessage
+            choices:
+              - Order a pizza
+              - Make a reservation
+              - Ask for opening hours
+              - <<separator>>
+              - Talk to the receptionist
+            c6o:
+              label: checkbox required+errormessage
+              required: true
+              errorMessage: checkbox required+errormessage

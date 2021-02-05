@@ -59,18 +59,16 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: redis
-        config:
-          - name: appendonly
-            value: yes
-        port:
+        configs:
+          appendonly: yes
+        ports:
           - port: 6379
             name: tcp
             protocol: TCP
-        volume:
+        volumes:
           - size: 5Gi
             mountPath: /data
             name: redis-data
-        automated: true
       marina:
         launch:
           type: inline
@@ -84,17 +82,15 @@ editions:
         tag-prefix: appengine
         image: redis
         config:
-          - name: appendonly
-            value: yes
-        port:
+          - appendonly: yes
+        ports:
           - port: 6379
             name: tcp
             protocol: TCP
-        volume:
+        volumes:
           - size: 5Gi
             mountPath: /data
             name: redis-data
-        automated: true
       marina:
         launch:
           type: inline

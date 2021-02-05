@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/common",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
   "scripts": {
@@ -29,9 +29,9 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@c6o/kubeclient": "^0.0.7",
-    "@c6o/kubeclient-contracts": "^0.0.7",
-    "@provisioner/contracts": "^0.0.26",
+    "@c6o/kubeclient": "^0.0.8",
+    "@c6o/kubeclient-contracts": "^0.0.8",
+    "@provisioner/contracts": "^0.0.27",
     "debug": "^4.1.1",
     "generate-password": "^1.4.1",
     "jsonpointer": "^4.1.0",

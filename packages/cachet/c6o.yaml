@@ -25,7 +25,7 @@ description:
 
   CREATE USER cachet WITH PASSWORD '88888888';
 
-  CREATE DATABASE cachet ;
+  CREATE DATABASE cachet;
 
   GRANT ALL PRIVILEGES ON DATABASE cachet to cachet;
 
@@ -47,7 +47,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -56,52 +55,46 @@ editions:
         package: '@provisioner/appengine'
         image: cachethq/docker
         tag-prefix: appengine
-        port: 8000
+        ports: 8000
 
-        config:
+        flow:
+          prompts:
+            - type: input
+              name: DB_HOST
+              message: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
+              default: postgresql.database
+              c6o:
+                label: Postgres Server Host
+                required: true
 
-          - name: DB_HOST
-            label: Database Host
-            hint: The name of the database server (Service postresql.[NAMESPACE])
-            required: true
-            autoselect: true
-            fieldType: text
-            value: postgresql.database
+            - type: input
+              name: DB_DATABASE
+              message: The name of the database to use
+              default: cachet
+              c6o:
+                label: Database name
+                required: true
 
-          - name: DB_DATABASE
-            label: Database name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: cachet
+            - type: input
+              name: DB_USERNAME
+              message: The username for the database user
+              default: cachet
+              c6o:
+                label: Database user name
+                required: true
 
-          - name: POSTGRES_PORT
-            value: 5432
+            - type: password
+              name: DB_PASSWORD
+              message: The password for the database user
+              c6o:
+                label: Database password
+                required: true
+                target: secrets
 
-          - name: APP_KEY
-            value: base64:04o0jBc+4hSNrJNS39i8J6185ubrC/YtOMwHGhw8v6o=
-
-          - name: DB_DRIVER
-            value: pgsql
-
-          - name: DB_USERNAME
-            label: Database user name
-            hint: The username for the database user
-            required: true
-            autoselect: true
-            fieldType: text
-            value: cachet
-
-        secret:
-
-          - name: DB_PASSWORD
-            label: Database password
-            hint: The password for the database user
-            required: true
-            autoselect: true
-            fieldType: password
-            value: 88888888
+        configs:
+          POSTGRES_PORT: 5432
+          APP_KEY: base64:04o0jBc+4hSNrJNS39i8J6185ubrC/YtOMwHGhw8v6o=
+          DB_DRIVER: pgsql
 
       marina:
         launch:

@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/nsainaney/traxitt/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ✨ Features
+
+* **mongo:** Support for secretRefs and configMapRefs. Migrated mongo based provisioners ([#158](https://github.com/nsainaney/traxitt/issues/158)) ([00304f2](https://github.com/nsainaney/traxitt/commit/00304f28e5044dc59567b93f9909939ea74e5b31))
+
+
+### ♻️ Chores
+
+* Bump "js-yaml" to v4.0.0 ([d00e402](https://github.com/nsainaney/traxitt/commit/d00e4025b6f02e39d74d4509ebda897cb34feac5))
+* Migrated databases to use flow ([#157](https://github.com/nsainaney/traxitt/issues/157)) ([341a92f](https://github.com/nsainaney/traxitt/commit/341a92f534ea7e9c2b0ec27007b2a0dbeab6dbc2))
+* Using mergeWith to manage labels ([#185](https://github.com/nsainaney/traxitt/issues/185)) ([d37071f](https://github.com/nsainaney/traxitt/commit/d37071f6457ce1b4f3c300d5c10d860c79e75ae0))
+
+
+
+
+
 ## [0.0.26](https://github.com/nsainaney/traxitt/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 

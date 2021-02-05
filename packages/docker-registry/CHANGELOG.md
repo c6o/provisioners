@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ♻️ Chores
+
+* **refactor manifests:** Initial refactor of all manifests ([#178](https://github.com/c6o/provisioners/issues/178)) ([67b39cb](https://github.com/c6o/provisioners/commit/67b39cb6e9277fe16d932ae16454e64ae39f6788))
+
+
+
+
+
 ## [0.0.26](https://github.com/c6o/provisioners/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 

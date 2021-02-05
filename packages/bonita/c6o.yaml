@@ -53,7 +53,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -62,116 +61,111 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: bonita
-        port:
+        ports:
           - port: 8080
             name: http
             protocol: TCP
-            probe:
-              - type: startup
-                timeoutSeconds: 5
-                failureThreshold: 5
-                periodSeconds: 5
-                successThreshold: 1
-                initialDelaySeconds: 5
-        automated: true
-        volume:
+        volumes:
           - size: 5Gi
             mountPath: /opt/bonita
             name: bonita-data
-        config:
-          - name: DB_HOST
-            label: Postgres Server Host
-            hint: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
-            required: true
-            autoselect: true
-            fieldType: text
-            value: postgresql.database
-          - name: DB_VENDOR
-            label: Database Vendor
-            hint: The type of database to use (postgres or mysql)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: postgres
-          - name: DB_NAME
-            label: Database name
-            hint: The name of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: bonitadb
-          - name: DB_USER
-            label: Database user
-            hint: The username of the database to use
-            required: true
-            autoselect: true
-            fieldType: text
-            value: bonita
+        flow:
+          prompts:
+            - type: input
+              name: DB_HOST
+              message: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
+              default: postgresql.database
+              c6o:
+                label: Postgres Server Host
+                required: true
 
+            - type: input
+              name: DB_VENDOR
+              message: Database Vendor
+              default: postgres
+              c6o:
+                label: The type of database to use (postgres or mysql)
+                required: true
 
-          - name: TENANT_LOGIN
-            label: Tenant Username
-            hint: The username for the tenant user
-            required: true
-            fieldType: text
-            value: install
-          - name: PLATFORM_LOGIN
-            label: Platform Admin Username
-            hint: The username for the platform adminstrator
-            required: true
-            autoselect: true
-            fieldType: text
-            value: platformAdmin
+            - type: input
+              name: DB_NAME
+              message: The name of the database to use
+              default: bonitadb
+              c6o:
+                label: Database name
+                required: true
 
-          - name: BIZ_DB_NAME
-            label: Business Database Name
-            hint: The name of the database for the Business
-            required: true
-            autoselect: true
-            fieldType: text
-            value: bonitabusinessdb
+            - type: input
+              name: DB_USER
+              message: The username of the database to use
+              default: bonita
+              c6o:
+                label: Database user
+                required: true
 
-          - name: BIZ_DB_USER
-            label: Business Database Username
-            hint: The name of the user for the database for the Business
-            required: true
-            autoselect: true
-            fieldType: text
-            value: bonitabusiness
+            - type: password
+              name: DB_PASS
+              message: The password used to login to your database.
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
 
+            - type: input
+              name: TENANT_LOGIN
+              message: The username for the tenant user
+              default: install
+              c6o:
+                label: Tenant Username
+                required: true
 
-        secret:
-          - name: DB_PASS
-            label: Database Password
-            hint: The password used to login to your database.
-            required: true
-            autoselect: true
-            fieldType: password
-            value: 88888888
+            - type: password
+              name: TENANT_PASSWORD
+              message: The Password used to login to the system as the Tenant.
+              c6o:
+                target: secrets
+                label: Tenant password
+                required: true
 
-          - name: TENANT_PASSWORD
-            label: Tenant password
-            hint: The Password used to login to the system as the Tenant.
-            required: true
-            autoselect: true
-            fieldType: password
-            value: install
+            - type: input
+              name: PLATFORM_LOGIN
+              message: The username for the platform adminstrator
+              default: platformAdmin
+              c6o:
+                label: Platform Admin Username
+                required: true
 
-          - name: PLATFORM_PASSWORD
-            label: Platform admin password
-            hint: The Password used to login to the system as the platform administrator.
-            required: true
-            autoselect: true
-            fieldType: password
-            value: platform
+            - type: password
+              name: TENANT_PLATFORM_PASSWORD
+              message: The Password used to login to the system as the platform administrator.
+              c6o:
+                target: secrets
+                label: Platform admin password
+                required: true
 
-          - name: BIZ_DB_PASS
-            label: Business Database Password
-            hint: The password of the user for the database for the Business
-            required: true
-            autoselect: true
-            fieldType: password
-            value: 88888888
+            - type: input
+              name: BIZ_DB_NAME
+              message: The name of the database for the Business
+              default: bonitabusinessdb
+              c6o:
+                label: Business Database Name
+                required: true
+
+            - type: input
+              name: BIZ_DB_USER
+              message: The name of the user for the database for the Business
+              default: bonitabusiness
+              c6o:
+                label: Business Database Username
+                required: true
+
+            - type: password
+              name: BIZ_DB_PASS
+              message: The password of the user for the database for the Business
+              c6o:
+                label: Business Database Password
+                required: true
+                target: secrets
 
       marina:
         launch:

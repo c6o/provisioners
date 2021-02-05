@@ -1,5 +1,5 @@
-import { KubeDocument } from '@c6o/kubeclient-contracts'
-import { keyValue, Volume } from '@provisioner/appengine-contracts'
+import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
+import { Volume } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
@@ -30,7 +30,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async createApply() {
         try {
-            this.manager.status?.push(`Applying App Engine to ${this.manifestHelper.name}`)
+            this.manager.status?.push(`Applying App Engine to ${this.documentHelper.name}`)
 
             await this.ensureCreateDeployment()
 
@@ -58,8 +58,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Processing templates')
 
-            await this.processTemplate(this.manifestHelper.configs, 'Processing configs templates')
-            await this.processTemplate(this.manifestHelper.secrets, 'Processing secrets templates')
+            await this.processTemplate(this.documentHelper.configs, 'Processing configs templates')
+            await this.processTemplate(this.documentHelper.secrets, 'Processing secrets templates')
         }
         finally {
             this.manager.status?.pop()
@@ -70,13 +70,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         if (this.createDeploymentDocument)
             return
         this.createDeploymentDocument = await templates.getDeploymentTemplate(
-            this.manifestHelper.name,
-            this.manifestHelper.namespace,
-            this.manifestHelper.image,
-            this.manifestHelper.getComponentLabels(),
-            this.manifestHelper.tag,
-            this.manifestHelper.imagePullPolicy,
-            this.manifestHelper.command,
+            this.documentHelper.name,
+            this.documentHelper.namespace,
+            this.documentHelper.image,
+            this.documentHelper.componentLabels,
+            this.documentHelper.tag,
+            this.documentHelper.imagePullPolicy,
+            this.documentHelper.command
         )
     }
 
@@ -85,21 +85,27 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing configuration settings')
 
-            if (!this.manifestHelper.hasConfigs) {
+            if (!this.documentHelper.hasConfigs) {
                 skipped = true
                 return
             }
 
+            const configs = {}
+            for(const key of Object.keys(this.documentHelper.configs)) {
+                // Must be string, even if originally a boolean or number.
+                configs[key] = String(this.documentHelper.configs[key])
+            }
+
             const createConfigMap = templates.getConfigTemplate(
-                this.manifestHelper.name,
-                this.manifestHelper.namespace,
-                this.manifestHelper.configs as keyValue,
-                this.manifestHelper.getComponentLabels()
+                this.documentHelper.name,
+                this.documentHelper.namespace,
+                configs
             )
 
             await this.manager.cluster
                 .begin()
                 .addOwner(this.manager.document)
+                .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createConfigMap)
                 .end()
 
@@ -120,25 +126,25 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing secret settings')
 
-            if (!this.manifestHelper.hasSecrets) {
+            if (!this.documentHelper.hasSecrets) {
                 skipped = true
                 return
             }
 
             const base64Secrets: keyValue = {}
-            for (const key in this.manifestHelper.secrets)
-                base64Secrets[key] = Buffer.from(this.manifestHelper.secrets[key]).toString('base64')
+            for (const key in this.documentHelper.secrets)
+                base64Secrets[key] = Buffer.from(this.documentHelper.secrets[key]).toString('base64')
 
             const createSecrets = templates.getSecretTemplate(
-                this.manifestHelper.name,
-                this.manifestHelper.namespace,
-                base64Secrets,
-                this.manifestHelper.getComponentLabels()
+                this.documentHelper.name,
+                this.documentHelper.namespace,
+                base64Secrets
             )
 
             await this.manager.cluster
                 .begin()
                 .addOwner(this.manager.document)
+                .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createSecrets)
                 .end()
 
@@ -159,12 +165,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing configMap refs')
 
-            if (!this.manifestHelper.hasConfigMapRefs) {
+            if (!this.documentHelper.hasConfigMapRefs) {
                 skipped = true
                 return
             }
 
-            const configMapRefs = this.manifestHelper.configMapRefs.map(name => ({ configMapRef: { name } }))
+            const configMapRefs = this.documentHelper.configMapRefs.map(name => ({ configMapRef: { name } }))
             this.createDeploymentContainerEnvFrom.push(...configMapRefs)
 
         }
@@ -178,12 +184,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing secret refs')
 
-            if (!this.manifestHelper.hasSecretRefs) {
+            if (!this.documentHelper.hasSecretRefs) {
                 skipped = true
                 return
             }
 
-            const secretRefs = this.manifestHelper.secretRefs.map(name => ({ secretRef: { name } }))
+            const secretRefs = this.documentHelper.secretRefs.map(name => ({ secretRef: { name } }))
             this.createDeploymentContainerEnvFrom.push(...secretRefs)
         }
         finally {
@@ -198,26 +204,26 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing volumes')
 
-            if (!this.manifestHelper.hasVolumes) {
+            if (!this.documentHelper.hasVolumes) {
                 skipped = true
                 return
             }
 
             // TODO: RobC
-            for (const volume of this.manifestHelper.volumes) {
+            for (const volume of this.documentHelper.volumes) {
 
                 //k8s likes lowercase volume names
                 volume.name = volume.name.toLowerCase()
 
                 const createVolume = templates.getPVCTemplate(
                     volume,
-                    this.manifestHelper.namespace,
-                    this.manifestHelper.getComponentLabels()
+                    this.documentHelper.namespace
                 )
 
                 await this.manager.cluster
                     .begin()
                     .addOwner(this.manager.document)
+                    .mergeWith(this.documentHelper.appComponentMergeDocument)
                     .upsert(createVolume)
                     .end()
 
@@ -240,25 +246,25 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push('Installing networking services')
 
-            if (!this.manifestHelper.hasPorts) {
+            if (!this.documentHelper.hasPorts) {
                 skipped = true
                 return
             }
 
             const createService = templates.getServiceTemplate(
-                this.manifestHelper.name,
-                this.manifestHelper.namespace,
-                this.manifestHelper.getServicePorts(),
-                this.manifestHelper.getComponentLabels()
+                this.documentHelper.name,
+                this.documentHelper.namespace,
+                this.documentHelper.getServicePorts()
             )
 
             await this.manager.cluster
                 .begin()
                 .addOwner(this.manager.document)
+                .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createService)
                 .end()
 
-            this.createDeploymentContainer.ports = this.manifestHelper.getDeploymentPorts()
+            this.createDeploymentContainer.ports = this.documentHelper.getDeploymentPorts()
         }
         finally {
             this.manager.status?.pop(skipped)
@@ -275,8 +281,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureAppIsRunning() {
         await this.manager.cluster.
-            begin(`Ensure ${this.manifestHelper.name} services are running`)
-            .beginWatch(templates.getPodTemplate(this.manifestHelper.name, this.manifestHelper.namespace))
+            begin(`Ensure ${this.documentHelper.name} services are running`)
+            .beginWatch(templates.getPodTemplate(this.documentHelper.name, this.documentHelper.namespace))
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
                 processor.endWatch()
             })

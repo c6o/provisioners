@@ -1,4 +1,4 @@
-import { keyValue } from '@provisioner/appengine-contracts'
+import { keyValue } from '@c6o/kubeclient-contracts'
 
 export function getDeploymentTemplate(
     name: string,
@@ -38,6 +38,10 @@ export function getDeploymentTemplate(
                     labels
                 },
                 spec: {
+                    securityContext: {
+                        // See https://github.com/c6o/provisioners/issues/182
+                        fsGroup: 1000,
+                    },
                     containers: [{
                         name,
                         image,

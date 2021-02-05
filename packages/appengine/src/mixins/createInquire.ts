@@ -1,31 +1,32 @@
+import { keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import createDebug from 'debug'
-import { keyValue } from '@provisioner/appengine-contracts'
 
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async createInquire(args) {
-        if (!this.manifestHelper.image)
+        if (!this.documentHelper.image)
             await this.inquireApplicationImage(args)
 
         // Steps will come from the applicationSpec but for now, we use test data
-        if (this.manifestHelper.flow) {
+        if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
             const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-            const result = await flowProcessor.process(this.manifestHelper.flow)
-            this.manifestHelper.processResult(result)
+            const result = await flowProcessor.process(this.documentHelper.flow, args)
+            this.documentHelper.processResult(result)
         }
 
-        this.manifestHelper.postInquire()
+        this.documentHelper.postInquire()
     }
 
     async inquireApplicationImage(args) {
         const answers = {
-            tag: this.manifestHelper.tag || 'latest',
-            image: this.manifestHelper.image
+            tag: this.documentHelper.tag || args.answers.tag || 'latest',
+            image: this.documentHelper.image || args.answers.image,
+            ...args.answers
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -43,8 +44,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             }
         ], answers)
 
-        this.manifestHelper.provisioner.tag = responses.tag
-        this.manifestHelper.provisioner.image = responses.image
+        this.documentHelper.provisioner.tag = responses.tag
+        this.documentHelper.provisioner.image = responses.image
 
         await this.askSettings('configs', args)
         await this.askSettings('secrets', args)
@@ -77,7 +78,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasConfig,
                     validate: r => r !== '' //non empty string
                 }
-            ])
+            ], args.answers)
 
             if (responses.hasVal)
                 configs[responses.key] = responses.value
@@ -86,7 +87,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         } while (true)
 
-        this.manifestHelper.processResult({
+        this.documentHelper.processResult({
             [type]: {
                 ...configs
             }
@@ -143,7 +144,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasPorts,
                     validate: r => this.isNumeric(r)  //validate that it is a Number()
                 }
-            ])
+            ], args.answers)
 
             if (responses.hasPorts)
                 ports.push({ name: responses.name, protocol: responses.protocol, port: Number(responses.port), targetPort: Number(responses.targetPort) })
@@ -205,7 +206,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasVolumes,
                     validate: r => r !== '' //non empty string
                 }
-            ])
+            ], args.answers)
 
             if (responses.hasVolumes) {
                 volumes.push({ size: responses.storageSize, mountPath: responses.mountPath, name: responses.volumeName, subPath: responses.subPath })

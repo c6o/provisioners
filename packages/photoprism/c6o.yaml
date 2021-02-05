@@ -44,7 +44,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -53,24 +52,30 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: photoprism/photoprism
-        port: 2342
-        automated: true
-        config:
-          - name: PHOTOPRISM_UPLOAD_NSFW
-            value: true
-            label: Allow NSFW Uploads
-            hint: Allow NSFW Uploads
-            required: true
-            autoselect: true
-            fieldType: text
-        secret:
-          - name: PHOTOPRISM_ADMIN_PASSWORD
-            label: Admin Password
-            hint: Specify the admin users password
-            required: true
-            autoselect: true
-            fieldType: text
-        volume:
+        ports: 2342
+        flow:
+          prompts:
+            - type: password
+              name: PHOTOPRISM_ADMIN_PASSWORD
+              message: Specify the password for the admin user
+              c6o:
+                required: true
+                target: secrets
+                label: Admin Password
+
+            - type: confirm
+              name: PHOTOPRISM_UPLOAD_NSFW
+              message: Allow NSFW Uploads
+              default: true
+              c6o:
+                label: Allow NSFW Uploads
+
+
+        configs:
+          PUID: 1000
+          PGID: 1000
+
+        volumes:
           - size: 500Gi
             mountPath: /photoprism/storage
             name: photoprism-storage

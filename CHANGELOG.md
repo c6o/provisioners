@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/c6o/node-monorepo/compare/v0.0.26...v0.0.27) (2021-02-03)
+
+
+### ✨ Features
+
+* **c6o-system:** Ensure default namespace is managed by c6o ([#151](https://github.com/c6o/node-monorepo/issues/151)) ([88fe2de](https://github.com/c6o/node-monorepo/commit/88fe2deb0be898aa073a83eaa1b6ba0a29dc215d))
+* **c6o-system:** Initial release of Harbour Master ([#154](https://github.com/c6o/node-monorepo/issues/154)) ([a500e7f](https://github.com/c6o/node-monorepo/commit/a500e7f5a0b9232ab7d6c58308b2280d7cdde1b2)), closes [#155](https://github.com/c6o/node-monorepo/issues/155) [#1239](https://github.com/c6o/node-monorepo/issues/1239)
+* **cli:** add shared manifest to app conversion ([#166](https://github.com/c6o/node-monorepo/issues/166)) ([5f63f18](https://github.com/c6o/node-monorepo/commit/5f63f18e14c64d3e291678464392edcd148aceda))
+* **mongo:** Support for secretRefs and configMapRefs. Migrated mongo based provisioners ([#158](https://github.com/c6o/node-monorepo/issues/158)) ([00304f2](https://github.com/c6o/node-monorepo/commit/00304f28e5044dc59567b93f9909939ea74e5b31))
+
+
+### 🐛 Bug Fixes
+
+* **AppEngine:** add fsGroup to security context to fix [#182](https://github.com/c6o/node-monorepo/issues/182) ([#183](https://github.com/c6o/node-monorepo/issues/183)) ([f456230](https://github.com/c6o/node-monorepo/commit/f4562308cc8c9682440861f7466e7848cb875626))
+* **istio:** Removed http routing from virtual service ([#184](https://github.com/c6o/node-monorepo/issues/184)) ([ab0c33e](https://github.com/c6o/node-monorepo/commit/ab0c33e74618d0c8a871fadec5ebc3829bb0495d))
+* **vscode:** Fix bad service template ([237d48b](https://github.com/c6o/node-monorepo/commit/237d48b9c6454c9feaeeb57ab11db9110ae805c2))
+* Added missing references ([6409cb7](https://github.com/c6o/node-monorepo/commit/6409cb7877df2f70b7b416c90ef0dd35e418f8fe))
+* AppEngine fails on ConfigMap with boolean or numeric values ([#181](https://github.com/c6o/node-monorepo/issues/181)) ([23fa9d4](https://github.com/c6o/node-monorepo/commit/23fa9d45d61c21d00c8f20af7b56b315f44c7905))
+* Configs and Secrets cannot be an array, must be KeyValue ([#180](https://github.com/c6o/node-monorepo/issues/180)) ([d04367d](https://github.com/c6o/node-monorepo/commit/d04367d75777eed6738fad907227001eaa2bd9c2))
+* Removed reference to incorrect AppObject/AppDocument ([f988ede](https://github.com/c6o/node-monorepo/commit/f988ede1d5f38c632900169c11ead51a1af1c500))
+* **app-engine:** Secrets getting skipped ([acb0a0b](https://github.com/c6o/node-monorepo/commit/acb0a0b201acc3dc8debdd4166414ebeed8c711e))
+* **istio:** Do not handle virtualServices in develop/localhost ([d60dd6d](https://github.com/c6o/node-monorepo/commit/d60dd6df62422d7b01fe57813052c20032985a45))
+* **nodered:** Fixed ports ([5eb901d](https://github.com/c6o/node-monorepo/commit/5eb901d26808a9f4bf0a6e75db503881034f942d))
+
+
+### 📦 Code Refactoring
+
+* **appengine:** Using contracts and using inquire flow in cli and UI ([#156](https://github.com/c6o/node-monorepo/issues/156)) ([4d612b9](https://github.com/c6o/node-monorepo/commit/4d612b909ac4eaa0ecddf3355363e7429e517204))
+
+
+### ♻️ Chores
+
+* Bumped kubeclient to 0.0.8. Removed local reference ([cc755f2](https://github.com/c6o/node-monorepo/commit/cc755f266ecd8322d3a31c292237da96b4db4b04))
+* **c6o-system:** Cleaned up host API ([0e00b11](https://github.com/c6o/node-monorepo/commit/0e00b114a0018f40ca57a97ab3646d5444dc0fae))
+* **contracts:** Split labels between App and AppEngine contracts ([8e4671e](https://github.com/c6o/node-monorepo/commit/8e4671ee732eb302f603987c488890db219eaace))
+* **manifest refactor:** new data model ([#192](https://github.com/c6o/node-monorepo/issues/192)) ([604e6a4](https://github.com/c6o/node-monorepo/commit/604e6a4ecbb964af88ecc59cd3bb8e344ae5a71a))
+* Code formatting changes only! ([2df4e69](https://github.com/c6o/node-monorepo/commit/2df4e69ed0b6050e0f6f9ddbf8400273e7c8eff0))
+* Migrated databases to use flow ([#157](https://github.com/c6o/node-monorepo/issues/157)) ([341a92f](https://github.com/c6o/node-monorepo/commit/341a92f534ea7e9c2b0ec27007b2a0dbeab6dbc2))
+* Migrated mariadb to flow ([1956390](https://github.com/c6o/node-monorepo/commit/19563904d0439e269d49078c1ef08e1a5a6b0cd5))
+* update Vaadin to 14.4.5 ([fa3cdde](https://github.com/c6o/node-monorepo/commit/fa3cddead8be2233dcf6960bb0191b535510e35f))
+* Using mergeWith to manage labels ([#185](https://github.com/c6o/node-monorepo/issues/185)) ([d37071f](https://github.com/c6o/node-monorepo/commit/d37071f6457ce1b4f3c300d5c10d860c79e75ae0))
+* **refactor manifests:** Initial refactor of all manifests ([#178](https://github.com/c6o/node-monorepo/issues/178)) ([67b39cb](https://github.com/c6o/node-monorepo/commit/67b39cb6e9277fe16d932ae16454e64ae39f6788))
+* Bump "js-yaml" to v4.0.0 ([d00e402](https://github.com/c6o/node-monorepo/commit/d00e4025b6f02e39d74d4509ebda897cb34feac5))
+* Bump js-yaml to v4.0.0 ([aac8811](https://github.com/c6o/node-monorepo/commit/aac88113030ae673282f573d3a101c917f52432e))
+* **appengine-upgrade:** Continue with the Web UI for appengine upgrades ([e592561](https://github.com/c6o/node-monorepo/commit/e59256169ee0dba0f7b94d6f2046ba9f307105c1))
+
+
+
+
+
 ## [0.0.26](https://github.com/c6o/node-monorepo/compare/v0.0.25...v0.0.26) (2021-01-01)
 
 

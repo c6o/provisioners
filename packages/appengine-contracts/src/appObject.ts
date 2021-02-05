@@ -1,14 +1,9 @@
-import createDebug from 'debug'
-import { AppObject } from '@provisioner/contracts'
-import { AppEngineAppDocument, FlowResult, isPortNumber, keyValue, ServicePort, DeploymentPort, each } from './'
-const debug = createDebug('@appengine:timing')
+import { AppObject, AppDocumentLabels } from '@provisioner/contracts'
+import { AppEngineAppDocument, FlowResult, isPortNumber, ServicePort, DeploymentPort, each } from './'
 
-export class AppEngineAppObject extends AppObject {
+export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDocument> extends AppObject<T> {
 
     version = '1.0'
-
-
-    document: AppEngineAppDocument
 
     get flow() { return this.document.spec.provisioner?.flow  }
 
@@ -35,10 +30,6 @@ export class AppEngineAppObject extends AppObject {
 
     get image() { return this.document.spec.provisioner?.image  }
 
-    constructor(document: AppEngineAppDocument) {
-        super(document)
-    }
-
     postInquire() {
         this.document.spec.provisioner['flow'] = '$unset'
     }
@@ -50,16 +41,12 @@ export class AppEngineAppObject extends AppObject {
         provisioner.secrets = Object.assign(provisioner.secrets || {}, result.secrets)
     }
 
-    getComponentLabels(): keyValue {
+    get componentLabels(): AppDocumentLabels {
         return {
+            ...super.componentLabels,
             app: this.name,
             name: this.name,
-            'system.codezero.io/appengine': this.version,
-            'system.codezero.io/app': this.name, // This is used to render GetInfo in Marina
-            'system.codezero.io/id': this.instanceId,
-            'system.codezero.io/edition': this.edition,
-            'app.kubernetes.io/name': this.name,
-            'app.kubernetes.io/managed-by': 'codezero'
+            'system.codezero.io/appengine': this.version
         }
     }
 

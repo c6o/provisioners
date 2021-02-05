@@ -26,7 +26,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -35,56 +34,50 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: owntracks/recorder
-        port: 8083
-        automated: true
-        config:
+        ports: 8083
+        flow:
+          prompts:
+            - type: input
+              name: OTR_HOST
+              message: Specify the hostname for your MQTT Server (Service)
+              default: mqtt.services
+              c6o:
+                label: MQTT Host
+                required: true
+            - type: input
+              name: OTR_USER
+              message: Specify the username for your MQTT instance
+              default: admin
+              c6o:
+                label: MQTT User
+                required: false
+            - type: number
+              name: OTR_PORT
+              message: Specify the port for your MQTT Server (Service)
+              default: 1883
+              c6o:
+                label: MQTT Port
+                required: false
+            - type: input
+              name: OTR_GEOKEY
+              message: API key for reverse-geo lookups
+              c6o:
+                label: Reverse Geo API Key
+                required: false
+            - type: input
+              name: OTR_BROWSERAPIKEY
+              message: Google Maps Api Key
+              c6o:
+                label: Google maps browser API key
+                required: false
 
-          - name: OTR_HOST
-            label: MQTT Host
-            hint: Specify the hostname for your MQTT Server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-
-
-          - name: OTR_USER
-            label: MQTT User
-            hint: Specify the username for your MQTT instance
-            required: false
-            autoselect: true
-            fieldType: password
-
-          - name: OTR_PORT
-            label: MQTT Port
-            hint: Specify the port for your MQTT Server (Service)
-            required: true
-            autoselect: true
-            fieldType: text
-            value: 1883
-
-
-          - name: OTR_GEOKEY
-            label: Reverse Geo API Key
-            hint: API key for reverse-geo lookups
-            required: false
-            autoselect: true
-            fieldType: text
-
-          - name: OTR_BROWSERAPIKEY
-            label: Google Maps Api Key
-            hint: Google maps browser API key
-            required: false
-            autoselect: true
-            fieldType: text
-
-        secret:
-
-          - name: OTR_PASS
-            label: MQTT Password
-            hint: Specify the MQTT Password
-            required: false
-            autoselect: true
-            fieldType: password
+            - type: password
+              name: OTR_PASS
+              message: Specify the MQTT Password
+              c6o:
+                label: MQTT Password
+                required: false
+                target: secrets
 
       marina:
         launch:

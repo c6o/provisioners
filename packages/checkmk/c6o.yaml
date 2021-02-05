@@ -71,7 +71,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -80,16 +79,18 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: checkmk/check-mk-raw
-        port: 5000
-        automated: true
-        secret:
-          - name: CMK_PASSWORD
-            label: The password for the cmkadmin user account
-            hint: The password for the cmkadmin user account
-            required: true
-            autoselect: true
-            fieldType: password
-        volume:
+        ports: 5000
+
+        flow:
+          prompts:
+            - type: password
+              name: CMK_PASSWORD
+              message: The password for the cmkadmin user account
+              c6o:
+                label: The password for the cmkadmin user account
+                required: true
+                target: secrets
+        volumes:
           - size: 5Gi
             name: checkmk-sites
             mountPath: /omd/sites
@@ -101,7 +102,6 @@ editions:
 
   - name: live-stats
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -110,22 +110,23 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: checkmk/check-mk-raw
-        port:
+        ports:
           - port: 5000
             name: http
             protocol: TCP
           - port: 6557
             name: live-stats
             protocol: TCP
-        automated: true
-        secret:
-          - name: CMK_PASSWORD
-            label: The password for the cmkadmin user account
-            hint: The password for the cmkadmin user account
-            required: true
-            autoselect: true
-            fieldType: password
-        volume:
+        flow:
+          prompts:
+            - type: password
+              name: CMK_PASSWORD
+              message: The password for the cmkadmin user account
+              c6o:
+                label: The password for the cmkadmin user account
+                required: true
+                target: secrets
+        volumes:
           - size: 5Gi
             name: checkmk-sites
             mountPath: /omd/sites

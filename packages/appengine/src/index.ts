@@ -16,10 +16,10 @@ export interface Provisioner extends ProvisionerBase { }
 
 export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin, templateHelperMixin) {
 
-    _manifestHelper
-    get manifestHelper(): AppEngineAppObject {
-        if (this._manifestHelper)
-            return this._manifestHelper
-        return this._manifestHelper = new AppEngineAppObject(this.manager.document)
+    // Override the documentHelper in ProvisionerBase
+    get documentHelper(): AppEngineAppObject {
+        if (this._documentHelper || !this.manager?.document)
+            return this._documentHelper
+        return this._documentHelper = new AppEngineAppObject(this.manager.document)
     }
 }

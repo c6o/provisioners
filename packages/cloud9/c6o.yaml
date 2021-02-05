@@ -31,7 +31,6 @@ provisioner:
 editions:
   - name: python
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -41,42 +40,43 @@ editions:
         tag-prefix: appengine
         tag: python
         image: linuxserver/cloud9
-        port: 8000
-        automated: true
-        volume:
+        ports: 8000
+        volumes:
           - name: cloud9-code
             mountPath: /code
             size: 5Gi
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
 
-          - name: USERNAME
-            label: Username
-            hint: The Username to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: text
-            value: root
+        configs:
+          PUID: 0
+          PGID: 0
 
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
 
+            - type: input
+              name: USERNAME
+              message: The Username to login to the IDE
+              default: root
+              c6o:
+                label: IDE Username
+                required: true
 
+            - type: password
+              name: PASSWORD
+              message: The Password to login to the IDE
+              c6o:
+                label: IDE Password
+                required: true
+                target: secrets
 
-        secret:
-          - name: PASSWORD
-            label: Password
-            hint: The Password to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: password
       marina:
         launch:
           type: inline
@@ -84,7 +84,6 @@ editions:
 
   - name: nodejs
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -94,41 +93,42 @@ editions:
         tag-prefix: appengine
         tag: nodejs
         image: linuxserver/cloud9
-        port: 8000
-        automated: true
-        volume:
+        ports: 8000
+        volumes:
           - name: cloud9-code
             mountPath: /code
             size: 5Gi
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
 
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                required: true
+                dataSource: timezone
 
+            - type: input
+              name: USERNAME
+              message: The Username to login to the IDE
+              default: root
+              c6o:
+                label: IDE Username
+                required: true
 
-          - name: USERNAME
-            label: Username
-            hint: The Username to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: text
-            value: root
+            - type: password
+              name: PASSWORD
+              message: The Password to login to the IDE
+              c6o:
+                label: IDE Password
+                required: true
+                target: secrets
 
-        secret:
-          - name: PASSWORD
-            label: Password
-            hint: The Password to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: password
       marina:
         launch:
           type: inline
@@ -137,7 +137,6 @@ editions:
 
   - name: go
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -147,42 +146,42 @@ editions:
         tag-prefix: appengine
         tag: go
         image: linuxserver/cloud9
-        port: 8000
-        automated: true
-        volume:
+        ports: 8000
+        volumes:
           - name: cloud9-code
             mountPath: /code
             size: 5Gi
-        config:
 
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
+        configs:
+          PUID: 0
+          PGID: 0
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
 
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+            - type: input
+              name: USERNAME
+              message: The Username to login to the IDE
+              default: root
+              c6o:
+                label: IDE Username
+                required: true
 
+            - type: password
+              name: PASSWORD
+              message: The Password to login to the IDE
+              c6o:
+                label: IDE Password
+                required: true
+                target: secrets
 
-          - name: USERNAME
-            label: Username
-            hint: The Username to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: text
-            value: root
-
-        secret:
-          - name: PASSWORD
-            label: Password
-            hint: The Password to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: password
       marina:
         launch:
           type: inline
@@ -191,7 +190,6 @@ editions:
 
   - name: ruby
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -201,41 +199,42 @@ editions:
         tag-prefix: appengine
         tag: ruby
         image: linuxserver/cloud9
-        port: 8000
-        automated: true
-        volume:
+        ports: 8000
+        volumes:
           - name: cloud9-code
             mountPath: /code
             size: 5Gi
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
 
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        configs:
+          PUID: 0
+          PGID: 0
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
 
+            - type: input
+              name: USERNAME
+              message: The Username to login to the IDE
+              default: root
+              c6o:
+                label: IDE Username
+                required: true
 
-          - name: USERNAME
-            label: Username
-            hint: The Username to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: text
-            value: root
+            - type: password
+              name: PASSWORD
+              message: The Password to login to the IDE
+              c6o:
+                label: IDE Password
+                required: true
+                target: secrets
 
-        secret:
-          - name: PASSWORD
-            label: Password
-            hint: The Password to login to the IDE
-            required: true
-            autoselect: true
-            fieldType: password
       marina:
         launch:
           type: inline

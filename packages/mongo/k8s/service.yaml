@@ -6,7 +6,6 @@ metadata:
     labels:
         name: mongo
         role: server
-        system.codezero.io/app: mongo
 spec:
     ports:
     - port: 27017

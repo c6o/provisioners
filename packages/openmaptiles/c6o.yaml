@@ -44,9 +44,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: klokantech/openmaptiles-server
-        port: 80
-        automated: true
-        volume:
+        ports: 80
+        volumes:
           - name: openmaptiles-data
             mountPath: /data
             size: 100Gi

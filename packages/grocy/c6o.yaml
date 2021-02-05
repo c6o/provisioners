@@ -8,6 +8,13 @@ summary:
 description:
   ERP beyond your fridge - grocy is a web-based self-hosted groceries & household management solution for your home.
 
+
+  Setup
+
+  ----
+
+  Grocy has a default username and password, both of which are 'admin'.  Use it to login for the first time.
+
 category: analytics
 keywords:
   - Query
@@ -28,7 +35,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -37,21 +43,25 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: linuxserver/grocy
-        port: 80
-        automated: true
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        ports: 80
 
-        volume:
+        configs:
+          PUID: 1000
+          PGID: 1000
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+
+        volumes:
           - name: grocy-config
             size: 1Gi
             mountPath: /config

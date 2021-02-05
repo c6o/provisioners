@@ -28,6 +28,13 @@ description:
   This is web-based software. This means there is no executable file (aka no .exe files), and it must be run on a web server and accessed through a web browser.
 
 
+  Setup
+
+  ----
+
+  The default username and password are 'admin' and 'admin'.
+
+
 category: dms
 keywords:
   - OCR
@@ -47,34 +54,37 @@ provisioner:
 
 editions:
   - name: latest
-    routes:
-      - type: http
-        targetService: papermerge
-    provisioner:
-      package: '@provisioner/appengine'
-      image: linuxserver/papermerge
-      port: 8000
-      config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: papermerge
+      provisioner:
+        package: '@provisioner/appengine'
+        image: linuxserver/papermerge
+        ports: 8000
 
-      volume:
-        - size: 5Gi
-          mountPath: /config
-          name: papermerge-config
-        - size: 10Gi
-          mountPath: /data
-          name: papermerge-data
-      automated: true
-    marina:
-      launch:
-        type: inline
-        popUp: true
+        configs:
+          PUID: 1000
+          PGID: 1000
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+        volumes:
+          - size: 5Gi
+            mountPath: /config
+            name: papermerge-config
+          - size: 10Gi
+            mountPath: /data
+            name: papermerge-data
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -34,7 +34,18 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - edition-stable.yaml
-  - edition-test-inputs.yaml
-  - edition-test-volumes.yaml
-  - edition-test-timezone.yaml
+  - edition-stable.yml
+  - edition-test-checkbox.yml
+  - edition-test-confirm.yml
+  - edition-test-editor.yml
+  - edition-test-expand.yml
+  - edition-test-input-validation.yml
+  - edition-test-input.yml
+  - edition-test-list.yml
+  - edition-test-number.yml
+  - edition-test-password.yml
+  - edition-test-rawlist.yml
+  - edition-test-sections.yml
+  - edition-test-timezone.yml
+  - edition-test-volumes.yml
+

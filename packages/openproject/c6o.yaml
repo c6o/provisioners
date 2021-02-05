@@ -23,7 +23,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: private
+    status: public
     spec:
       routes:
         - type: http
@@ -33,12 +33,12 @@ editions:
         tag-prefix: appengine
         tag: 11
         image: openproject/community
-        port: 80
-        automated: true
+        ports: 80
 
         secret:
-          - name: SECRET_KEY_BASE
-            value: $RANDOM
+          - SECRET_KEY_BASE:
+              generate:
+                length: 32
 
       marina:
         launch:

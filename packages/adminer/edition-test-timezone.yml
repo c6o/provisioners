@@ -4,6 +4,10 @@ spec:
   routes:
     - type: http
       targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
   provisioner:
     package: '@provisioner/appengine'
     image: adminer
@@ -21,7 +25,3 @@ spec:
             dataSource: timezone
 
 
-  marina:
-    launch:
-      type: inline
-      popUp: true

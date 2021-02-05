@@ -2,8 +2,7 @@
   "name": "provisioners-root",
   "private": true,
   "workspaces": [
-    "packages/*",
-    "../kubeclient/packages/*"
+    "packages/*"
   ],
   "scripts": {
     "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",

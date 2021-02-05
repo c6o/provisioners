@@ -32,7 +32,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -41,9 +40,8 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: chocobozzz/peertube
-        port: 9000
-        automated: true
-        volume:
+        ports: 9000
+        volumes:
           - size: 500Gi
             mountPath: /data
             name: peertube-data

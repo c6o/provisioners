@@ -44,7 +44,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -53,20 +52,24 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: plexinc/pms-docker
-        port: 32400
-        config:
-          - name: PUID
-            value: 0
-          - name: PGID
-            value: 0
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+        ports: 32400
 
-        volume:
+        configs:
+          PUID: 1000
+          PGID: 1000
+
+        flow:
+          prompts:
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
+
+        volumes:
           - size: 500Gi
             mountPath: /config
             name: plexserver-config
@@ -76,7 +79,6 @@ editions:
           - size: 50Gi
             mountPath: /transcode
             name: plexserver-transcode
-        automated: true
       marina:
         launch:
           type: inline

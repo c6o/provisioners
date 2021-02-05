@@ -73,8 +73,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
                     // Install mongodb
                     processor
+                        .mergeWith(super.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
-                        .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword })
+                        .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword, appLabels: this.documentHelper.componentLabels })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                         .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
                 }

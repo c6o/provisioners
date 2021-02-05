@@ -1,0 +1,131 @@
+name: test-number
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: adminer
+  marina:
+    launch:
+      type: inline
+      popUp: true
+  provisioner:
+    package: "@provisioner/appengine"
+    image: adminer
+    ports: 8080
+    tag-prefix: appengine
+    flow:
+      - name: section1
+        prompts:
+          - type: number
+            name: numbernone
+            message: number none
+            c6o:
+              label: number none
+
+          - type: number
+            name: numberdefault
+            message: number default
+            default: 666
+            c6o:
+              label: number default
+
+          - type: number
+            name: numberwithrequired
+            message: number with required
+            c6o:
+              label: number with required
+              required: true
+
+          - type: number
+            name: numberwitherrormessage
+            message: number with error message
+            c6o:
+              label: number with error message
+              errorMessage: number with error message
+
+          - type: number
+            name: numberdefaultrequired
+            message: number default+required
+            default: 666
+            c6o:
+              label: number default+required
+              required: true
+
+          - type: number
+            name: numberdefaultrequirederrormessage
+            message: number default+required+errormessage
+            default: 666
+            c6o:
+              label: numberdefaultrequirederrormessage
+              required: true
+              errorMessage: number default+required+errormessage
+
+          - type: number
+            name: numberrequirederror
+            message: number required+error
+            c6o:
+              label: number required+error
+              required: true
+              errorMessage: number required+error
+
+          - type: number
+            name: numbermin222
+            message: number min 222
+            c6o:
+              label: number min 222
+              min: 222
+
+          - type: number
+            name: numbermax333
+            message: number max 333
+            c6o:
+              label: number max 333
+              max: 333
+
+          - type: number
+            name: numbermin222max333
+            message: number min 222 max 333
+            c6o:
+              label: numbermin222max333
+              max: 333
+              min: 222
+
+          - type: number
+            name: numberstep100
+            message: number step 100
+            c6o:
+              label: number step 100
+              step: 100
+
+          - type: number
+            name: numbermin222required
+            message: number min 222 required
+            c6o:
+              label: number min 222 required
+              min: 222
+              required: true
+
+          - type: number
+            name: numbermax333required
+            message: number max 333 required
+            c6o:
+              label: number max 333 required
+              max: 333
+              required: true
+
+          - type: number
+            name: numbermin222max333required
+            message: number min 222 max 333 required
+            c6o:
+              label: number min 222 max 333 required
+              max: 333
+              min: 222
+              required: true
+
+          - type: number
+            name: numberstep100required
+            message: number step 100 required
+            c6o:
+              label: number step 100 required
+              step: 100
+              required: true

@@ -2,11 +2,9 @@ name: Node RED
 appId: nodered
 package: '@provisioner/appengine'
 icon: icon.svg
-summary:
-  Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things.
+summary: Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things.
 
 description:
-
   Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things.
 
 
@@ -14,7 +12,6 @@ description:
 
 
   In 2016, IBM contributed Node-RED as an open source JS Foundation project.
-
 
 category: dev-tools
 keywords:
@@ -41,24 +38,24 @@ editions:
         tag-prefix: appengine
         image: nodered/node-red
         ports: 1880
-        automated: true
-        config:
 
-          - name: NODE_RED_ENABLE_PROJECTS
-            label: Enable Projects
-            hint: Checked to enable projects
-            autoselect: true
-            fieldType: checkbox
-            value: true
-            required: false
+        flow:
+          prompts:
+            - type: confirm
+              name: NODE_RED_ENABLE_PROJECTS
+              message: Checked to enable projects
+              default: true
+              c6o:
+                label: Enable Projects
 
-            #https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-          - name: TZ
-            label: Timezone
-            hint: Specify a timezone to use.
-            required: true
-            fieldType: timezone
-            value: America/Vancouver
+            - type: list
+              name: TZ
+              message: Specify a timezone to use.
+              default: 1
+              c6o:
+                label: Specify a timezone to use.
+                dataSource: timezone
+                required: true
 
         volumes:
           - name: nodered-data

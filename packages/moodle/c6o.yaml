@@ -55,7 +55,6 @@ provisioner:
 editions:
   - name: preview
     status: public
-    default: true
     spec:
       routes:
         - type: http
@@ -64,75 +63,78 @@ editions:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         image: bitnami/moodle
-        automated: true
-        port:
-          - port: 8080
-            name: http
-            protocol: TCP
-            probe:
-              - type: startup
-                timeoutSeconds: 5
-                failureThreshold: 5
-                periodSeconds: 5
-                successThreshold: 1
-                initialDelaySeconds: 180   #180 seconds or 3 minutes
+        ports: 8080
+        flow:
+          prompts:
+            - type: input
+              name: MOODLE_DATABASE_HOST
+              message: Host for the database server (Service)
+              default: mariadb.database
+              c6o:
+                label: Database Host
+                required: true
 
-        secret:
-            - name: MOODLE_DATABASE_PASSWORD
-              label: Database Password
-              hint: Password for the admin user
-              required: true
-              autoselect: true
-              fieldType: password
+            - type: input
+              name: MOODLE_DATABASE_USER
+              message: Username for the database
+              default: moodle
+              c6o:
+                label: Database Username
+                required: true
 
-            - name: MOODLE_PASSWORD
-              label: Administrator password
-              hint: Password for the admin user
-              required: true
-              autoselect: true
-              fieldType: password
-        config:
-            - name: MOODLE_DATABASE_HOST
-              label: Database Host
-              hint: Host for the database server (Service)
-              required: true
-              autoselect: true
-              fieldType: text
+            - type: password
+              name: MOODLE_DATABASE_PASSWORD
+              message: Database Password
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
 
-            - name: MOODLE_DATABASE_USER
-              label: Database Username
-              hint: Username for the database
-              required: true
-              autoselect: true
-              fieldType: text
+            - type: input
+              name: MOODLE_USERNAME
+              message: Username for the admin user
+              default: admin
+              c6o:
+                label: Administrator username
+                required: true
+
+            - type: password
+              name: MOODLE_PASSWORD
+              message: Password for the admin user
+              c6o:
+                target: secrets
+                label: Administrator password
+                required: true
+
+            - type: input
+              name: MOODLE_EMAIL
+              message:  Email address for the admin user
+              default: admin@mysite.com
+              c6o:
+                label: Administrator email address
+                required: true
 
 
-            - name: MOODLE_USERNAME
-              label: Administrator username
-              hint: Username for the admin user
-              required: true
-              autoselect: true
-              fieldType: text
-              value: admin
+            - type: input
+              name: MOODLE_DATABASE_TYPE
+              message:  Database Type
+              default: mariadb
+              c6o:
+                label: Database Type
+                required: true
 
+            - type: input
+              name: MOODLE_DATABASE_NAME
+              message:  Database Name
+              default: moodle
+              c6o:
+                label: Database Name
+                required: true
 
-            - name: MOODLE_EMAIL
-              label: Administrator email address
-              hint: Email address for the admin user
-              required: true
-              autoselect: true
-              fieldType: text
-              value: admin@mysite.com
+        configs:
+          ALLOW_EMPTY_PASSWORD: no
 
-            - name: MOODLE_DATABASE_TYPE
-              value: mariadb
-
-            - name: MOODLE_DATABASE_NAME
-              value: moodle
-
-            - name: ALLOW_EMPTY_PASSWORD
-              value: no
-        volume:
+        volumes:
             - size: 5Gi
               mountPath: /bitnami
               name: moodle-data
