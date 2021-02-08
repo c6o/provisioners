@@ -1,8 +1,9 @@
 import { keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
-import { FlowProcessor, skippedSteps as testSteps } from '../flow'
+import { FlowProcessor } from '../flow'
 import createDebug from 'debug'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
