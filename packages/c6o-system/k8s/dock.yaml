@@ -10,6 +10,5 @@ apps:
     namespace: c6o-system
   - name: harbourmaster
     namespace: c6o-system
-# TODO: when lifeboat is ready to go, add it to the default dock.
-#  - name: lifeboat
-#    namespace: c6o-system
+  - name: lifeboat
+    namespace: c6o-system
