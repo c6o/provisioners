@@ -3,6 +3,7 @@ import { AppDocument, RoutesType } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('istio:api:virtualService:')
 
 export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
@@ -101,7 +102,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
                     {
                         headers: {
                             ':authority': {
-                                "regex": `^${this.getApplicationPrefix(this.app.metadata.name, this.app.metadata.namespace)}\\..*`
+                                'regex': `^${this.getApplicationPrefix(this.app.metadata.name, this.app.metadata.namespace)}\\..*`
                             }
                         }
                     }
@@ -208,7 +209,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         if (!alreadyExists)
             return await this.manager.cluster.patch(this.gateway, [{ 'op': 'add', 'path': '/spec/servers/-', 'value': item } ])
 
-        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route));
+        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route))
         return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': `/spec/servers/${index}`, 'value': item } ])
     }
 
@@ -216,7 +217,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const gateway = await this.getGateway()
         const gatewayServers: any[] = gateway.spec.servers
 
-        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route));
+        const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route))
         if (index !== -1) {
             return await this.manager.cluster.patch(this.gateway, [{ 'op': 'remove', 'path': `/spec/servers/${index}` } ])
         }
@@ -247,14 +248,14 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         if (!alreadyExists)
             return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'add', 'path': '/spec/ports/-', 'value': item } ])
 
-        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route));
+        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route))
         return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'replace', 'path': `/spec/ports/${index}`, 'value': item } ])
     }
 
     async removeTcpPortLoadBalancer(route: RoutesType) {
         const loadBalancerPorts: any[] = (await this.getLoadBalancer()).object.spec.ports
 
-        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route));
+        const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route))
         if (index !== -1) {
             return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'remove', 'path': `/spec/ports/${index}` } ])
         }
