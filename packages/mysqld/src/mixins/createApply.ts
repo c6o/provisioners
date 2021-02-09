@@ -1,7 +1,8 @@
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import * as mysql from 'mysql'
-
+import createDebug from 'debug'
+const debug = createDebug('mysqld:createApply')
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     // protected members
@@ -11,13 +12,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     configMap
     namespace
 
-    mysqlServiceName = 'mysql-svc'
+    mysqlServiceName = 'mysqld'
     get mysqlPods() { return {
             kind: 'Pod',
             metadata: {
                 namespace: this.serviceNamespace,
                 labels: {
-                    name: 'mysql'
+                    name: 'mysqld'
                 }
             }
         }
@@ -27,7 +28,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             kind: 'Secret',
             metadata: {
                 namespace: this.serviceNamespace,
-                name: 'mysql-root'
+                name: 'mysqld-root'
             }
         }
     }
@@ -53,7 +54,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Looks for mysql pods and if none are found, applies the appropriate yaml */
     async ensureMysqlIsInstalled() {
-
         await this.manager.cluster
             .begin('Install mysql services')
             .list(this.mysqlPods)
@@ -64,17 +64,17 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
                     // Generate and stash the rootPassword
                     this.rootPassword = super.processPassword(this.spec.rootPassword)
+                    const rootPasswordBase64 = Buffer.from(this.rootPassword).toString('base64')
                     const namespace = this.serviceNamespace
                     const storageClass = this.spec.storageClass
                     const rootPasswordKey = this.spec.rootPasswordKey || 'password'
-
                     // Install mysql
                     processor
                         .mergeWith(super.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
                         .upsertFile('../../k8s/service.yaml', { namespace })
-                        .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
-                        .upsertFile('../../k8s/deployment.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
+                        .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: rootPasswordBase64 })
+                        .upsertFile('../../k8s/deployment.yaml', { namespace, rootPasswordKey })
                 }
             })
             .end()
