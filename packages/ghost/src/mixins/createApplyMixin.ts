@@ -2,6 +2,7 @@ import { baseProvisionerType } from '../index'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
+    // @ts-ignore
     get ghostPods() {
         return {
             kind: 'Pod',
@@ -14,12 +15,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
+    // @ts-ignore
     async createApply() {
         await this.ensureServiceNamespacesExist()
         await this.installGhost()
         await this.ensureGhostIsRunning()
     }
 
+    // @ts-ignore
     async installGhost() {
         const namespace = this.serviceNamespace
         await this.manager.cluster
@@ -36,6 +39,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .end()
     }
 
+    // @ts-ignore
     async ensureGhostIsRunning() {
         await this.manager.cluster.begin('Ensure Ghost services are running')
             .beginWatch(this.ghostPods)
