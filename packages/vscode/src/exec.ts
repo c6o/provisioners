@@ -69,7 +69,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
         }
 
         await cluster.
-            begin(`Copy files`)
+            begin('Copy files')
                 .list(devPods)
                 .do((result, processor) => {
                     processor.copy(result.object.items[0], this.execArgs[0], this.execArgs[1])
@@ -117,9 +117,9 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
                 const patchOps = this.execArgs.reduce((ops, port) => {
                     const index = currentPorts.findIndex(item => item.containerPort == port)
                     if (index < 0 && open)
-                        ops.push({"op":"add","path":"/spec/template/spec/containers/0/ports/-","value":{"containerPort": port, protocol: 'TCP'}})
+                        ops.push({'op':'add','path':'/spec/template/spec/containers/0/ports/-','value':{'containerPort': port, protocol: 'TCP'}})
                     if (index > 0 && !open)
-                        ops.push({"op":"remove","path":`/spec/template/spec/containers/0/ports/${index}`})
+                        ops.push({'op':'remove','path':`/spec/template/spec/containers/0/ports/${index}`})
                     return ops
                 }, [])
 
@@ -137,9 +137,9 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
                 const patchOps = this.execArgs.reduce((ops, port) => {
                     const index = currentPorts.findIndex(item => item.port == port)
                     if (index < 0 && open)
-                        ops.push({"op":"add","path":"/spec/ports/-","value":{"name":`dev-${port}`,"port":port, "targetPort":port}})
+                        ops.push({'op':'add','path':'/spec/ports/-','value':{'name':`dev-${port}`,'port':port, 'targetPort':port}})
                     if (index > 0 && !open)
-                        ops.push({"op":"remove","path":`/spec/ports/${index}`})
+                        ops.push({'op':'remove','path':`/spec/ports/${index}`})
                     return ops
                 }, [])
 

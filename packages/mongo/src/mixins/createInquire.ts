@@ -12,13 +12,13 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     }
 
     providedSecretKeyRef(args) {
-        return this.spec.secretKeyRef || args['secret-key']
+        return this.spec.secretKeyRef || args['secret-key'] || args.answers['secret-key']
     }
 
     async inquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
-            secretKeyRef: args['secret-key-ref'] || this.spec.secretKeyRef
+            storageClass: args['storage-class'] || args.answers['storage-class'] || await this.getDefaultStorageClass(),
+            secretKeyRef: args['secret-key-ref'] || args.answers['secret-key-ref'] || this.spec.secretKeyRef
         }
 
         const responses = await this.manager.inquirer?.prompt([

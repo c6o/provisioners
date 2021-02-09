@@ -35,7 +35,7 @@ editions:
     spec:
       routes:
         - type: http
-          targetService: seq
+          targetService: seq-logging
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
@@ -43,13 +43,15 @@ editions:
         ports: 80
         flow:
           prompts:
-              - type: confirm
+              - type: input
                 name: ACCEPT_EULA
                 message: Accept EULA
-                default: true
+                default: Y
+                validate: return value === 'Y' || 'You must accept the EULA (please enter \'Y\')'
                 c6o:
                   label: Accept EULA
+                  required: true
+
       marina:
         launch:
           type: inline
-          popUp: true

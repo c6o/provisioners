@@ -1,6 +1,8 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 import { createInquireMixin } from './createInquire'
 import { baseProvisionerType, Provisioner } from '../index'
-import { inspect } from "util";
+import { inspect } from 'util'
 const testConfigSecrets = {
     config: {
         inquireKey: 1
@@ -42,14 +44,14 @@ describe('App Engine Create Inquire', () => {
         })
         test('App Engine: isNumeric string', async () => {
             const appEngine: Provisioner = new AppEngine()
-            expect(appEngine.isNumeric("1")).toBeTruthy()
-            expect(appEngine.isNumeric("-1")).toBeTruthy()
-            expect(appEngine.isNumeric("1a")).toBeFalsy()
-            expect(appEngine.isNumeric("a")).toBeFalsy()
-            expect(appEngine.isNumeric("a1")).toBeFalsy()
-            expect(appEngine.isNumeric("[1]")).toBeFalsy()
-            expect(appEngine.isNumeric("One")).toBeFalsy()
-            expect(appEngine.isNumeric("{1:1}")).toBeFalsy()
+            expect(appEngine.isNumeric('1')).toBeTruthy()
+            expect(appEngine.isNumeric('-1')).toBeTruthy()
+            expect(appEngine.isNumeric('1a')).toBeFalsy()
+            expect(appEngine.isNumeric('a')).toBeFalsy()
+            expect(appEngine.isNumeric('a1')).toBeFalsy()
+            expect(appEngine.isNumeric('[1]')).toBeFalsy()
+            expect(appEngine.isNumeric('One')).toBeFalsy()
+            expect(appEngine.isNumeric('{1:1}')).toBeFalsy()
         })
         test('App Engine: isNumeric number', async () => {
             const appEngine: Provisioner = new AppEngine()

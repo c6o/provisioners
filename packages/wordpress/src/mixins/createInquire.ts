@@ -5,8 +5,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         const answers = {
-            username: args['username'] || this.spec.username,
-            password: args['password'] || this.spec.password
+            username: args['username'] || args.answers['username'] || this.spec.username,
+            password: args['password'] || args.answers['password'] || this.spec.password
         }
 
         const responses = await this.manager.inquirer?.prompt([
