@@ -110,12 +110,34 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .end()
     }
 
+    log(msg) {
+        console.error(`console: ${JSON.stringify(msg)}`)
+        debug(`debug: ${JSON.stringify(msg)}`)
+    }
+
     /** Attempts to connect to mysql and sets the mysqlClient */
     async connectMysqlClient(processor, attempt) {
         this.ensureRootPassword()
-        //const connectionString = `mongodb://root:${this.rootPassword}@localhost:${processor.lastResult.other.localPort}`
+        //const connectionString = `mongodb://root:${}@localhost:${processor.lastResult.other.localPort}`
         this.manager.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
-        return this.connection = (await this.mysqlClient.createConnection(processor.lastResult.other)).connect()
+        try {
+            const connectionString = this.toConnectionString(
+                {
+                    host     : '127.0.0.1',
+                    port     : processor.lastResult.other.localPort,
+                    username : 'root',
+                    password : this.rootPassword,
+                    database : 'mysql'
+                })
+            this.log(connectionString)
+            const client = await mysql.createConnection(connectionString)
+            this.log('got the client')
+            this.connection = client.connect()
+            this.log('got the connection')
+            return this.connection
+        }catch(e) {
+            this.log(e)
+        }
     }
 
     /** Closes the mysqlClient connection */
@@ -150,7 +172,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
     toConnectionString = (options) =>
-        `Server=${options.host}:${options.port}; Uid=${options.user}; Pwd=${options.password}; Database=${options.db}`
+        `Server=${options.host}; Port=${options.port || 3306}; Uid=${options.username}; Pwd=${options.password}; Database=${options.database}`
 
     /**
      * Creates a the database based on the dbConfig and adds the connection string to configMap
@@ -164,23 +186,26 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             this.manager.status?.push(`Configuring database ${dbName}`)
 
-            const db = this.mysqlClient.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
-            const user = config.user || 'devUser'
+            this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
+            const username = config.user || 'devUser'
             const password = super.processPassword(config.password)
 
-            const createUser = `
-            CREATE USER IF NOT EXISTS  '${user}'@'%' IDENTIFIED BY '${password}';
-            ALTER USER '${user}'@'%' IDENTIFIED WITH mysql_native_password BY '${password}';
-            GRANT ALL PRIVILEGES ON ${user}.* TO '${user}'@'%';
-            FLUSH PRIVILEGES;
-           `
-
-            await db.query(createUser)
+            this.connection.query(
+                `
+                CREATE USER IF NOT EXISTS  '${username}'@'%' IDENTIFIED BY '${password}';
+                ALTER USER '${username}'@'%' IDENTIFIED WITH mysql_native_password BY '${password}';
+                GRANT ALL PRIVILEGES ON ${dbName}.* TO '${username}'@'%';
+                FLUSH PRIVILEGES;
+                `)
 
             const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
-            const port = 3306
+            const port =  3306
 
-            const connectionString = this.toConnectionString({ user, password, host, port, db: dbName })
+            const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
+
+            this.log('setupDb')
+            this.log(connectionString)
+
             if (process.env.TRAXITT_ENV == 'development')
                 this.manager.status?.info(`Connection string ${connectionString}`)
 
