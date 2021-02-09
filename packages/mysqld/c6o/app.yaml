@@ -1,4 +1,4 @@
-name: Mysql (App)
+name: Mysql
 appId: mysqld
 package: '@provisioner/mysqld'
 icon: icon.svg
@@ -20,9 +20,10 @@ description:
 
 category: databases
 keywords:
-  - Document
-  - NoSQL
-  - JSON
+  - relational
+  - dbms
+  - database management system
+  - open source
 
 repo: https://github.com/mysql/mysql-server
 license: https://github.com/mysql/mysql-server/blob/8.0/LICENSE

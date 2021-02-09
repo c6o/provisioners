@@ -1,13 +1,13 @@
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
-import { mysql } from 'mysql'
+import * as mysql from 'mysql'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     // protected members
     runningPod
     rootPassword
-    mysqlClient: mysql
+    connection
     configMap
     namespace
 
@@ -72,9 +72,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     processor
                         .mergeWith(super.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
-                        .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword, appLabels: this.documentHelper.componentLabels })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                         .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
+                        .upsertFile('../../k8s/deployment.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
                 }
             })
             .end()
@@ -150,7 +150,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
     toConnectionString = (options) =>
-        `server=${options.host}:${options.port};uid=${options.user};pwd=${options.password};database=${options.db}`
+        `Server=${options.host}:${options.port}; Uid=${options.user}; Pwd=${options.password}; Database=${options.db}`
 
     /**
      * Creates a the database based on the dbConfig and adds the connection string to configMap

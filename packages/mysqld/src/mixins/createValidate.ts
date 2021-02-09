@@ -4,6 +4,6 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
 
     async createValidate() {
         // TODO: check fields are all set
-        this.spec.secretKeyRef = this.spec.secretKeyRef || 'mongo-connections'
+        this.spec.secretKeyRef = this.spec.secretKeyRef || 'mysql-connections'
     }
 }
