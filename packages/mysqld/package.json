@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nsainaney/traxitt.git"
+    "url": "git+https://github.com/c6o/provisioners.git"
   },
   "files": [
     "lib",
@@ -27,9 +27,9 @@
   "author": "Rob Chartier",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/nsainaney/traxitt/issues"
+    "url": "https://github.com/c6o/provisioners/issues"
   },
-  "homepage": "https://github.com/nsainaney/traxitt#readme",
+  "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.27",
     "js-yaml": "^4.0.0",
