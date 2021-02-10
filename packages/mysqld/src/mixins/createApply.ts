@@ -102,11 +102,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .end()
     }
 
-    log(msg) {
-        console.error(`console: ${JSON.stringify(msg)}`)
-        debug(`debug: ${JSON.stringify(msg)}`)
-    }
-
     //read the root password from the cluster secret, result is a decoded value
     async ensureRootPassword() {
 
@@ -130,22 +125,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         this.ensureRootPassword()
 
         this.manager.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
-        try {
-            const connectionArgs =
-            {
-                host     : '127.0.0.1',
-                port     : processor.lastResult.other.localPort,
-                user     : 'root',
-                password : this.plainRootPasswordForInitialization,
-                database : 'mysql'
-            }
-            this.connection = mysql.createConnection(connectionArgs)
-            this.connection.connect()
-            return true
-
-        } catch (e) {
-            this.log(e)
+        const connectionArgs =
+        {
+            host     : '127.0.0.1',
+            port     : processor.lastResult.other.localPort,
+            user     : 'root',
+            password : this.plainRootPasswordForInitialization,
+            database : 'mysql'
         }
+        this.connection = mysql.createConnection(connectionArgs)
+        this.connection.connect()
+        return true
+
     }
 
     /** Closes the mysqlClient connection */
@@ -198,25 +189,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const password = super.processPassword(config.password)
 
             this.manager.status?.push(`Setting up database user ${username}`)
-            const sql = `
-                CREATE USER IF NOT EXISTS ${mysql.escape(username)}@'%' IDENTIFIED BY ${mysql.escape(password)};
-                ALTER USER ${mysql.escape(username)}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};
-                GRANT ALL PRIVILEGES ON ${mysql.escape(dbName)}.* TO ${mysql.escape(username)}@'%';
-                FLUSH PRIVILEGES;
-                `
 
-            this.log(sql)
-            this.connection.query(sql)
+            this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
+            this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
+            this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
+            this.connection.query('FLUSH PRIVILEGES;')
 
             const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
             const port = 3306
 
             const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
 
-            this.log(connectionString)
-
-
-            if (process.env.TRAXITT_ENV == 'development')
+            if (process.env.NODE_ENV == 'development')
                 this.manager.status?.info(`Connection string ${connectionString}`)
 
             this.manager.status?.push(`Writing connectionstring to the secret: ${config.secretKey}`)
@@ -225,7 +209,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         catch (ex) {
-            this.log(ex)
             if (!ex.code || ex.code != 51003) {
                 // User already exists
                 throw ex
