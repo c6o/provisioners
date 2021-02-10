@@ -66,7 +66,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                         .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: this.encodedRootPassword })
-                        .upsertFile('../../k8s/deployment.yaml', { namespace, rootPassword: this.plainRootPassword })
+                        .upsertFile('../../k8s/deployment.yaml', { namespace, rootPassword: this.plainRootPassword, rootPasswordKey })
                 }
             })
             .end()

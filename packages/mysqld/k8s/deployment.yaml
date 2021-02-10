@@ -21,15 +21,15 @@ spec:
       - env:
           # https://hub.docker.com/_/mysql?tab=description
           # https://dev.mysql.com/doc/refman/5.7/en/environment-variables.html
-          # - name: MYSQL_ROOT_PASSWORD
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: mysqld-root
-          #       key: {{rootPasswordKey}}
           - name: MYSQL_ROOT_PASSWORD
-            value: {{rootPassword}}
-          - name: LIBMYSQL_ENABLE_CLEARTEXT_PLUGIN
-            value: "1"
+            valueFrom:
+              secretKeyRef:
+                name: mysqld-root
+                key: {{rootPasswordKey}}
+          # - name: MYSQL_ROOT_PASSWORD
+          #   value: {{rootPassword}}
+          # - name: LIBMYSQL_ENABLE_CLEARTEXT_PLUGIN
+          #   value: "1"
         name: mysqld
         image: mysql
         tag: 5.6.51
