@@ -26,10 +26,6 @@ spec:
               secretKeyRef:
                 name: mysqld-root
                 key: {{rootPasswordKey}}
-          # - name: MYSQL_ROOT_PASSWORD
-          #   value: {{rootPassword}}
-          # - name: LIBMYSQL_ENABLE_CLEARTEXT_PLUGIN
-          #   value: "1"
         name: mysqld
         image: mysql
         tag: 5.6.51
