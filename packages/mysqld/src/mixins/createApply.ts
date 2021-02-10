@@ -192,23 +192,21 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const dbName = Object.keys(dbConfig)[0]
             const config = dbConfig[dbName]
 
-            this.log('--------------setupDb--------------')
-
-            this.manager.status?.push(`Configuring database ${dbName}`)
-
-            this.log(`attemping to create the database ${dbName}`)
-
+            this.manager.status?.push(`Creating database ${dbName}`)
             this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
             const username = config.user || 'devUser'
             const password = super.processPassword(config.password)
 
-            this.connection.query(
-                `
-                CREATE USER IF NOT EXISTS  '${username}'@'%' IDENTIFIED BY '${password}';
-                ALTER USER '${username}'@'%' IDENTIFIED WITH mysql_native_password BY '${password}';
-                GRANT ALL PRIVILEGES ON ${dbName}.* TO '${username}'@'%';
+            this.manager.status?.push(`Setting up database user ${username}`)
+            const sql = `
+                CREATE USER IF NOT EXISTS ${mysql.escape(username)}@'%' IDENTIFIED BY ${mysql.escape(password)};
+                ALTER USER ${mysql.escape(username)}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};
+                GRANT ALL PRIVILEGES ON ${mysql.escape(dbName)}.* TO ${mysql.escape(username)}@'%';
                 FLUSH PRIVILEGES;
-                `)
+                `
+
+            this.log(sql)
+            this.connection.query(sql)
 
             const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
             const port = 3306
@@ -217,8 +215,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             this.log(connectionString)
 
+
             if (process.env.TRAXITT_ENV == 'development')
                 this.manager.status?.info(`Connection string ${connectionString}`)
+
+            this.manager.status?.push(`Writing connectionstring to the secret: ${config.secretKey}`)
 
             this.configMap[config.secretKey] = Buffer.from(connectionString).toString('base64')
 
