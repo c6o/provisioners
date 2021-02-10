@@ -1,6 +1,6 @@
-name: MySql
-appId: mysql
-package: '@provisioner/appengine'
+name: Mysql
+appId: mysqld
+package: '@provisioner/mysqld'
 icon: icon.svg
 summary:
   MySQL Server, the world's most popular open source database, and MySQL Cluster, a real-time, open source transactional database.
@@ -17,15 +17,17 @@ description:
 
   [Source - Wikipedia](https://en.wikipedia.org/wiki/MySQL)
 
+
 category: databases
 keywords:
-  - Database
-  - Relational
-  - DBMS
+  - relational
+  - dbms
+  - database management system
+  - open source
 
 repo: https://github.com/mysql/mysql-server
 license: https://github.com/mysql/mysql-server/blob/8.0/LICENSE
-support: http://www.mysql.com/
+support: https://www.mysql.com/
 
 provisioner:
   repo: https://github.com/c6o/provisioners
@@ -33,4 +35,3 @@ provisioner:
 
 editions:
   - edition-stable.yaml
-  - edition-stable-internal.yaml
