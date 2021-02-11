@@ -3,6 +3,7 @@ import { Volume } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
+import { getPVC, getPV } from '../templates/'
 
 const debug = createDebug('@appengine:createApply')
 
@@ -47,6 +48,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.createDeployment()
             await this.ensureAppIsRunning()
+
+            await this.switchPeristentVolumes()
         }
         finally {
             this.manager.status?.pop()
@@ -287,5 +290,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 processor.endWatch()
             })
             .end()
+    }
+
+    async switchPeristentVolumes() {
+        for (const volume of this.documentHelper.volumes) {
+            const pvc = await this.manager.cluster.read(getPVC(volume.name.toLowerCase(), this.documentHelper.namespace))
+            const volumeName = pvc?.object.spec?.volumeName
+            if (!volumeName) {
+                debug(`No persistent volume claim found for ${volume.name.toLowerCase()} with a persistent volume name`)
+                continue
+            }
+            await this.manager.cluster
+                .begin('Patching persistent volume reclaim policies')
+                .patch(getPV(volumeName), { spec: { persistentVolumeReclaimPolicy: 'Retain' } } )
+                .end()
+        }
     }
 }
