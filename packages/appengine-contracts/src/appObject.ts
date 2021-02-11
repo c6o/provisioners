@@ -1,5 +1,5 @@
 import { AppObject, AppDocumentLabels } from '@provisioner/contracts'
-import { AppEngineAppDocument, FlowResult, isPortNumber, ServicePort, DeploymentPort, each } from './'
+import { AppEngineAppDocument, FlowResult, isPortNumber, ServicePort, DeploymentPort, DeploymentProbe, each } from './'
 
 export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDocument> extends AppObject<T> {
 
@@ -24,6 +24,9 @@ export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDoc
 
     get ports() { return this.document.spec.provisioner?.ports  }
     get hasPorts() { return !!this.ports }
+
+    get probes() { return this.document.spec.provisioner?.probes  }
+    get hasProbes() { return !!this.probes }
 
     get imagePullPolicy() { return this.document.spec.provisioner?.imagePullPolicy  }
     get command() { return this.document.spec.provisioner?.command  }
@@ -65,6 +68,9 @@ export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDoc
             return port
         })
     }
+
+
+    getDeploymentProbes = (): DeploymentProbe[] => this.probes
 
     getDeploymentPorts = (): DeploymentPort[] => this.getServicePorts().map(portItem => {
         const { port, ...rest } = portItem

@@ -265,6 +265,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .end()
 
             this.createDeploymentContainer.ports = this.documentHelper.getDeploymentPorts()
+
+            if(this.documentHelper.hasProbes)
+                this.createDeploymentDocument.spec.template.spec.containers[0] = {
+                    ...this.createDeploymentDocument.spec.template.spec.containers[0],
+                    ...this.documentHelper.getDeploymentProbes()
+                }
+
         }
         finally {
             this.manager.status?.pop(skipped)

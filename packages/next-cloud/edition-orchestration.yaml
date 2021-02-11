@@ -8,7 +8,19 @@ spec:
     package: '@provisioner/appengine'
     tag-prefix: appengine
     image: nextcloud
-    ports: 80
+    ports:
+      - port: 80
+        name: next-cloud
+        protocol: TCP
+    probes:
+      startupProbe:
+        #Intentionally using TCP instead of HTTP.
+        #NetCloud / Apache returns 400 for kube-probe even if the app is up and running
+        tcpSocket:
+          port: 80
+        failureThreshold: 30
+        initialDelaySeconds: 60
+        periodSeconds: 10
     services:
     - mysqld:
         secretKeyRef: nextcloud-mysql

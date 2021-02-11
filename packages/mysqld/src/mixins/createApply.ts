@@ -142,7 +142,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Closes the mysqlClient connection */
     async disconnectMysqlClient() {
         this.manager.status?.info('Closing connection to mysql')
-        await this.connection.end()
+        //https://github.com/mysqljs/mysql/blob/master/Readme.md#terminating-connections
+        //this.connection.destroy()
+
+        //intentionally ignoring the error
+        //without the func arg it will throw and break the install
+        await this.connection.end(e=> { return })
     }
 
     /**
@@ -184,16 +189,17 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const config = dbConfig[dbName]
 
             this.manager.status?.push(`Creating database ${dbName}`)
-            this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
+            await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
             const username = config.user || 'devUser'
             const password = super.processPassword(config.password)
+            this.manager.status?.pop(true)
 
             this.manager.status?.push(`Setting up database user ${username}`)
-
-            this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
-            this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
-            this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
-            this.connection.query('FLUSH PRIVILEGES;')
+            await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
+            await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
+            await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
+            await this.connection.query('FLUSH PRIVILEGES;')
+            this.manager.status?.pop(true)
 
             const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
             const port = 3306
@@ -203,8 +209,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (process.env.NODE_ENV == 'development')
                 this.manager.status?.info(`Connection string ${connectionString}`)
 
-            this.manager.status?.push(`Writing connectionstring to the secret: ${config.secretKey}`)
-
+            this.manager.status?.push(`Writing connectionstring to the secret: ${config.connectionStringSecretKey}`)
             if(config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if(config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
             if(config.passwordSecretKey) this.configMap[config.passwordSecretKey] = Buffer.from(password).toString('base64')
@@ -212,7 +217,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if(config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if(config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if(config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mysql').toString('base64')
-
+            this.manager.status?.pop(true)
         }
         catch (ex) {
             if (!ex.code || ex.code != 51003) {
