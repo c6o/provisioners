@@ -55,6 +55,6 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - edition-latest.yaml
   - edition-preview.yaml
-  - edition-orchestration.yaml
+  # - edition-latest.yaml
+  # - edition-orchestration.yaml

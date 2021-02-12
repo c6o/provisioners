@@ -1,5 +1,5 @@
-name: preview
-status: public
+name: orchestration
+status: preview
 spec:
   routes:
     - type: http
@@ -10,9 +10,60 @@ spec:
     image: nextcloud
     ports:
       - port: 80
-        name: http
+        name: next-cloud
         protocol: TCP
+    probes:
+      startupProbe:
+        #Intentionally using TCP instead of HTTP.
+        #NetCloud / Apache returns 400 for kube-probe even if the app is up and running
+        tcpSocket:
+          port: 80
+        failureThreshold: 30
+        initialDelaySeconds: 60
+        periodSeconds: 10
+    services:
+    - mysqld:
+        secretKeyRef: nextcloud-mysql
+        config:
+          - nextCloudDB:
+              user: nextcloud
+              connectionStringSecretKey: MYSQL_CONNECTION_STRING
+              usernameSecretKey: MYSQL_USER
+              passwordSecretKey: MYSQL_PASSWORD
+              hostSecretKey: MYSQL_HOST
+              portSecretKey: MYSQL_PORT
+              databaseSecretKey: MYSQL_DATABASE
+              databaseTypeSecretKey: MYSQL_TYPE
+    secretRefs:
+      - nextcloud-mysql
+
+    flow:
+      prompts:
+        - type: input
+          name: NEXTCLOUD_ADMIN_USER
+          message: NextCloud Admin User
+          default: admin
+          c6o:
+            label: Specify the admin user name
+            required: true
+
+        - type: password
+          name: NEXTCLOUD_ADMIN_PASSWORD
+          message: NextCloud Admin Password
+          c6o:
+            target: secrets
+            label: Specify the password for the admin user
+            required: true
+
+
+    configs:
+      NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_FQDN
+      PGID: 1000
+      PUID: 1000
+
   marina:
     launch:
       type: inline
       popUp: true
+
+

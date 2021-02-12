@@ -64,28 +64,17 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async runExecs() {
         const writeable = new stream.Writable({
             write: function (chunk, encoding, next) {
-                console.log('asdfasdfasdf')
                 const payload = chunk.toString ? chunk.toString() : chunk
                 debug(payload)
-                console.log(`----->${payload}`)
-                //next()
+                next()
             }
         })
-        writeable.write('Hello world!')
-
         if (this.documentHelper.hasExecs)
-            for (const exec of this.documentHelper.execs) {
-                try {
-                    await this.manager.cluster
+            for (const exec of this.documentHelper.execs)
+                    await this.manager.cluster.
+                        begin('Running command against the pod')
                         .exec(this.runningPod, exec, writeable, writeable)
-                    // await this.manager.cluster.
-                    //     begin('Running command against the pod')
-                    //     .exec(this.runningPod, exec, writeable, writeable)
-                    //     .end()
-                } catch (e) {
-                    console.error(e)
-                }
-            }
+                        .end()
     }
 
 
