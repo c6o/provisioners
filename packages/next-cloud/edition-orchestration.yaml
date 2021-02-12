@@ -7,7 +7,8 @@ spec:
   provisioner:
     package: '@provisioner/appengine'
     tag-prefix: appengine
-    image: nextcloud
+    image: linuxserver/nextcloud
+    tag: version-20.0.7
     ports:
       - port: 80
         name: next-cloud
@@ -16,11 +17,19 @@ spec:
       startupProbe:
         #Intentionally using TCP instead of HTTP.
         #NetCloud / Apache returns 400 for kube-probe even if the app is up and running
-        tcpSocket:
-          port: 80
-        failureThreshold: 30
-        initialDelaySeconds: 60
-        periodSeconds: 10
+        # tcpSocket:
+        #   port: 80
+        # failureThreshold: 30
+        # initialDelaySeconds: 60
+        # periodSeconds: 10
+    execs:
+      - ["whoami", ">", "/var/www/html/whoami.txt"]
+      - ["chown", "-R", ":www-data", "/var/www/html/"]
+      - ["chmod", "-R", "g+rwx", "/var/www/html/"]
+      - ["whoami", ">", "/var/www/html/whoami1.txt"]
+      - ["ls", "-laf", "/var/www/html"]
+      - ["df", "-h"]
+
     services:
     - mysqld:
         secretKeyRef: nextcloud-mysql
@@ -55,14 +64,28 @@ spec:
             label: Specify the password for the admin user
             required: true
 
+        - type: list
+          name: TZ
+          message: Specify a timezone to use.
+          default: 1
+          c6o:
+            required: true
+            label: Specify a timezone to use.
+            dataSource: timezone
+
     configs:
       NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_FQDN
-    #   NEXTCLOUD_DATA_DIR: /var/www/html/data
+      PGID: 1000
+      PUID: 1000
 
-    # volumes:
-    #   - name: nextcloud-file-data
-    #     mountPath: /var/www/html/data
-    #     size: 10Gi
+    volumes:
+      - name: nextcloud-data
+        mountPath: /data
+        size: 10Gi
+      - name: nextcloud-config
+        mountPath: /config
+        size: 1Gi
+
   marina:
     launch:
       type: inline

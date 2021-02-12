@@ -192,14 +192,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
             const username = config.user || 'devUser'
             const password = super.processPassword(config.password)
-            this.manager.status?.pop(true)
+            this.manager.status?.pop()
 
             this.manager.status?.push(`Setting up database user ${username}`)
             await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
             await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
             await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
             await this.connection.query('FLUSH PRIVILEGES;')
-            this.manager.status?.pop(true)
+            this.manager.status?.pop()
 
             const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
             const port = 3306
@@ -217,7 +217,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if(config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if(config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if(config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mysql').toString('base64')
-            this.manager.status?.pop(true)
+            this.manager.status?.pop()
         }
         catch (ex) {
             if (!ex.code || ex.code != 51003) {

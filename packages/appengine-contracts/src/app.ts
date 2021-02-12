@@ -62,6 +62,8 @@ export interface AppEngineAppSpecProvisioner extends AppDocumentSpec {
     ports?: portType
 
     probes?: any //flesh out the data model, if needed
+    execs?: string[][]
+    securityContext: any
 
     // Container image parameters
     imagePullPolicy?: string

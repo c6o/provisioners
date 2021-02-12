@@ -28,6 +28,12 @@ export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDoc
     get probes() { return this.document.spec.provisioner?.probes  }
     get hasProbes() { return !!this.probes }
 
+    get execs() { return this.document.spec.provisioner?.execs  }
+    get hasExecs() { return !!this.execs }
+
+    get securityContext() { return this.document.spec.provisioner?.securityContext  }
+    get hasSecurityContext() { return !!this.securityContext }
+
     get imagePullPolicy() { return this.document.spec.provisioner?.imagePullPolicy  }
     get command() { return this.document.spec.provisioner?.command  }
 
@@ -71,6 +77,7 @@ export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDoc
 
 
     getDeploymentProbes = (): DeploymentProbe[] => this.probes
+    getDeploymentExecs = (): string[][] => this.execs
 
     getDeploymentPorts = (): DeploymentPort[] => this.getServicePorts().map(portItem => {
         const { port, ...rest } = portItem
