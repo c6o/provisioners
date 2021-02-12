@@ -1,0 +1,74 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: moodle
+  provisioner:
+    package: "@provisioner/appengine"
+    tag-prefix: appengine
+    image: bitnami/moodle
+    ports: 8080
+
+    probes:
+      startupProbe:
+        httpGet:
+          path: /
+          port: 8080
+        failureThreshold: 30
+        initialDelaySeconds: 60
+        periodSeconds: 10
+
+    services:
+      - mysqld:
+          secretKeyRef: moodle-mysql
+          config:
+            - moodleDB:
+                user: moodle
+                usernameSecretKey: MOODLE_DATABASE_USER
+                passwordSecretKey: MOODLE_DATABASE_PASSWORD
+                hostSecretKey: MOODLE_DATABASE_HOST
+                portSecretKey: MOODLE_DATABASE_PORT
+                databaseSecretKey: MOODLE_DATABASE_NAME
+
+    secretRefs:
+      - moodle-mysql
+
+    configs:
+      ALLOW_EMPTY_PASSWORD: no
+      MOODLE_DATABASE_TYPE: mysqli
+
+    flow:
+      prompts:
+        - type: input
+          name: MOODLE_EMAIL
+          message: Email address for the admin user
+          default: admin@mysite.com
+          c6o:
+            label: Administrator email address
+            required: true
+
+        - type: input
+          name: MOODLE_USERNAME
+          message: Username for the admin user
+          default: admin
+          c6o:
+            label: Administrator username
+            required: true
+
+        - type: password
+          name: MOODLE_PASSWORD
+          message: Password for the admin user
+          c6o:
+            target: secrets
+            label: Administrator password
+            required: true
+
+    volumes:
+      - size: 5Gi
+        mountPath: /bitnami
+        name: moodle-data
+  marina:
+    launch:
+      type: inline
+      popUp: true
