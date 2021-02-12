@@ -1,0 +1,41 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: joomla
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: joomla
+    ports: 80
+
+    probes:
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        failureThreshold: 30
+        initialDelaySeconds: 30
+        periodSeconds: 10
+
+    services:
+    - mysqld:
+        secretKeyRef: joomla-mysql
+        config:
+          - joomlaDB:
+              user: joomla
+              usernameSecretKey: JOOMLA_DB_USER
+              passwordSecretKey: JOOMLA_DB_PASSWORD
+              hostSecretKey: JOOMLA_DB_HOST
+              portSecretKey: JOOMLA_DB_PORT
+              databaseSecretKey: JOOMLA_DB_NAME
+              databaseTypeSecretKey: JOOMLA_DB_TYPE
+
+    secretRefs:
+      - joomla-mysql
+
+  marina:
+    launch:
+      type: inline
+      popUp: true
