@@ -1,5 +1,7 @@
 export * from './createApply'
+export * from './removeApply'
 export * from './createInquire'
 export * from './createValidate'
-
+export * from './updateApply'
 export * from './template'
+export * from './api/volumes'
