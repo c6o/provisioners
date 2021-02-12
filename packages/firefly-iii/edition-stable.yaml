@@ -1,0 +1,56 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: firefly-iii
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: jc5x/firefly-iii
+    ports: 8080
+
+    probes:
+      startupProbe:
+        httpGet:
+          path: /
+          port: 8080
+        failureThreshold: 30
+        initialDelaySeconds: 30
+        periodSeconds: 10
+    services:
+      - mysqld:
+          secretKeyRef: firefly-mysql
+          config:
+            - fireflyDB:
+                user: firefly
+                usernameSecretKey: DB_USERNAME
+                passwordSecretKey: DB_PASSWORD
+                hostSecretKey: DB_HOST
+                portSecretKey: DB_PORT
+                databaseSecretKey: DB_DATABASE
+                databaseTypeSecretKey: DB_CONNECTION
+
+    secretRefs:
+      - firefly-mysql
+
+    volumes:
+      - name: firefly-iii-export
+        size: 20Gi
+        mountPath: /var/www/firefly-iii/storage/export
+      - name: firefly-iii-upload
+        size: 20Gi
+        mountPath: /var/www/firefly-iii/storage/upload
+
+    configs:
+      APP_ENV: local
+      TRUSTED_PROXIES: '**'
+
+    secrets:
+      APP_KEY:
+        generate:
+          length: 32
+  marina:
+    launch:
+      type: inline
+      popUp: true
