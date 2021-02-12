@@ -7,35 +7,6 @@ description:
 
   As fully on-premises solution, Nextcloud Hub provides the benefits of online collaboration without the compliance and security risks.
 
-
-  Setup
-
-  -----
-
-  The latest edition depends on MySql/MariaDB or PostgreSQL.
-
-
-  Here is a sample script to get you started
-
-
-  ~~~~
-
-  CREATE DATABASE nextcloud;
-
-  CREATE USER 'nextcloud'@'%' IDENTIFIED BY '88888888';
-
-  ALTER USER 'nextcloud'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
-
-  GRANT ALL PRIVILEGES ON nextcloud.* TO 'nextcloud'@'%';
-
-  FLUSH PRIVILEGES;
-
-  SELECT User, Plugin FROM mysql.user;
-
-  ~~~~
-
-  Be sure to change the value '88888888' with a secure password.
-
 summary: Powering collaboration - the most popular self-hosted collaboration solution for tens of millions of users at thousands of organizations across the globe
 
 category: dms
