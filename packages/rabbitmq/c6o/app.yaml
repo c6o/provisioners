@@ -35,10 +35,4 @@ editions:
   - name: stable
     status: public
     spec:
-      provisioner:
-        package: '@provisioner/prometheus'
-        simpleService: false
-        alertManagerEnabled: true
-        kubeMetricsEnabled: true
-        nodeExporterEnabled: true
-        pushGatewayEnabled: true
+      provisioner: {}
