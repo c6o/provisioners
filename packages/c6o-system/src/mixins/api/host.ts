@@ -14,7 +14,7 @@ export const hostApiMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async getApplicationFQDN(appName: string, namespace: string) {
-        const host = this.getSystemFQDN()
+        const host = await this.getSystemFQDN()
 
         const provisioner = await this.manager.getAppProvisioner('istio', 'istio-system')
         const prefix = await provisioner.getApplicationPrefix(appName, namespace)

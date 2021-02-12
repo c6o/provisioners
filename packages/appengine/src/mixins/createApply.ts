@@ -1,8 +1,8 @@
 import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
-import { Volume } from '@provisioner/appengine-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
+import stream from 'stream'
 
 const debug = createDebug('@appengine:createApply')
 
@@ -44,13 +44,37 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.createServices()
             await this.createVolumes()
+            this.createSecurityContext()
 
             await this.createDeployment()
             await this.ensureAppIsRunning()
+            await this.runExecs()
         }
         finally {
             this.manager.status?.pop()
         }
+    }
+
+    createSecurityContext() : void {
+        //override the default security context of 1000 if specified in the manifest
+        if (this.documentHelper.hasSecurityContext)
+            this.createDeploymentDocument.spec.template.spec.securityContext = this.documentHelper.securityContext
+    }
+
+    async runExecs() {
+        const writeable = new stream.Writable({
+            write: function (chunk, encoding, next) {
+                const payload = chunk.toString ? chunk.toString() : chunk
+                debug(payload)
+                next()
+            }
+        })
+        if (this.documentHelper.hasExecs)
+            for (const exec of this.documentHelper.execs)
+                    await this.manager.cluster.
+                        begin('Running command against the pod')
+                        .exec(this.runningPod, exec, writeable, writeable)
+                        .end()
     }
 
 
@@ -91,7 +115,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
 
             const configs = {}
-            for(const key of Object.keys(this.documentHelper.configs)) {
+            for (const key of Object.keys(this.documentHelper.configs)) {
                 // Must be string, even if originally a boolean or number.
                 configs[key] = String(this.documentHelper.configs[key])
             }
@@ -265,6 +289,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .end()
 
             this.createDeploymentContainer.ports = this.documentHelper.getDeploymentPorts()
+
+            if (this.documentHelper.hasProbes)
+                this.createDeploymentDocument.spec.template.spec.containers[0] = {
+                    ...this.createDeploymentDocument.spec.template.spec.containers[0],
+                    ...this.documentHelper.getDeploymentProbes()
+                }
+
         }
         finally {
             this.manager.status?.pop(skipped)

@@ -1,0 +1,94 @@
+name: orchestration
+status: private
+spec:
+  routes:
+    - type: http
+      targetService: next-cloud
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: linuxserver/nextcloud
+    tag: version-20.0.7
+    ports:
+      - port: 80
+        name: next-cloud
+        protocol: TCP
+    probes:
+      startupProbe:
+        #Intentionally using TCP instead of HTTP.
+        #NetCloud / Apache returns 400 for kube-probe even if the app is up and running
+        # tcpSocket:
+        #   port: 80
+        # failureThreshold: 30
+        # initialDelaySeconds: 60
+        # periodSeconds: 10
+    execs:
+      - ["whoami", ">", "/var/www/html/whoami.txt"]
+      - ["chown", "-R", ":www-data", "/var/www/html/"]
+      - ["chmod", "-R", "g+rwx", "/var/www/html/"]
+      - ["whoami", ">", "/var/www/html/whoami1.txt"]
+      - ["ls", "-laf", "/var/www/html"]
+      - ["df", "-h"]
+
+    services:
+    - mysqld:
+        secretKeyRef: nextcloud-mysql
+        config:
+          - nextCloudDB:
+              user: nextcloud
+              connectionStringSecretKey: MYSQL_CONNECTION_STRING
+              usernameSecretKey: MYSQL_USER
+              passwordSecretKey: MYSQL_PASSWORD
+              hostSecretKey: MYSQL_HOST
+              portSecretKey: MYSQL_PORT
+              databaseSecretKey: MYSQL_DATABASE
+              databaseTypeSecretKey: MYSQL_TYPE
+    secretRefs:
+      - nextcloud-mysql
+
+    flow:
+      prompts:
+        - type: input
+          name: NEXTCLOUD_ADMIN_USER
+          message: NextCloud Admin User
+          default: admin
+          c6o:
+            label: Specify the admin user name
+            required: true
+
+        - type: password
+          name: NEXTCLOUD_ADMIN_PASSWORD
+          message: NextCloud Admin Password
+          c6o:
+            target: secrets
+            label: Specify the password for the admin user
+            required: true
+
+        - type: list
+          name: TZ
+          message: Specify a timezone to use.
+          default: 1
+          c6o:
+            required: true
+            label: Specify a timezone to use.
+            dataSource: timezone
+
+    configs:
+      NEXTCLOUD_TRUSTED_DOMAINS: $PUBLIC_FQDN
+      PGID: 1000
+      PUID: 1000
+
+    volumes:
+      - name: nextcloud-data
+        mountPath: /data
+        size: 10Gi
+      - name: nextcloud-config
+        mountPath: /config
+        size: 1Gi
+
+  marina:
+    launch:
+      type: inline
+      popUp: true
+
+
