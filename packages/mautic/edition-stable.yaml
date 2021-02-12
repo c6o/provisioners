@@ -1,0 +1,47 @@
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: mautic
+  provisioner:
+    package: "@provisioner/appengine"
+    tag-prefix: appengine
+    image: mautic/mautic
+    ports: 80
+    probes:
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        failureThreshold: 30
+        initialDelaySeconds: 30
+        periodSeconds: 10
+    services:
+      - mysqld:
+          secretKeyRef: mautic-mysql
+          config:
+            - mauticDB:
+                user: mautic
+                usernameSecretKey: MAUTIC_DB_USER
+                passwordSecretKey: MAUTIC_DB_PASSWORD
+                hostSecretKey: MAUTIC_DB_HOST
+                portSecretKey: MAUTIC_DB_PORT
+                databaseSecretKey: MAUTIC_DB_NAME
+
+    secretRefs:
+      - mautic-mysql
+
+    volumes:
+      - name: mautic-data
+        size: 5Gi
+        mountPath: /var/www/html
+
+    configs:
+      MAUTIC_RUN_CRON_JOBS: true
+      MAUTIC_TRUSTED_PROXIES: 0.0.0.0/0
+
+  marina:
+    launch:
+      type: inline
+      popUp: true
