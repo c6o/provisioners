@@ -1,0 +1,53 @@
+
+name: stable
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: filerun
+  provisioner:
+    package: '@provisioner/appengine'
+    tag-prefix: appengine
+    image: afian/filerun
+    ports: 80
+    probes:
+      startupProbe:
+        httpGet:
+          path: /
+          port: 80
+        failureThreshold: 30
+        initialDelaySeconds: 10
+        periodSeconds: 10
+
+    services:
+    - mysqld:
+        secretKeyRef: filerun-mysql
+        config:
+          - filerunDB:
+              user: filerun
+              usernameSecretKey: FR_DB_USER
+              passwordSecretKey: FR_DB_PASS
+              hostSecretKey: FR_DB_HOST
+              portSecretKey: FR_DB_PORT
+              databaseSecretKey: FR_DB_NAME
+    secretRefs:
+      - filerun-mysql
+
+    volumes:
+      - name: filerun-html
+        mountPath: /var/www/html
+        size: 5Gi
+      - name: filerun-user-files
+        mountPath: /user-files
+        size: 10Gi
+
+    configs:
+      APACHE_RUN_USER: www-data
+      APACHE_RUN_USER_ID: 33
+      APACHE_RUN_GROUP: www-data
+      APACHE_RUN_GROUP_ID: 33
+
+  marina:
+    launch:
+      type: inline
+      popUp: true
