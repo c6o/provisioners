@@ -8,38 +8,6 @@ description:
 
   Mautic is software made by the people and for the people and as such the community is a top priority. Those people interested in becoming involved in a community with a vision to change the world should consider getting involved in Mautic. People are the priority. Equality is the goal.
 
-
-  Setup
-
-  ----
-
-  Mautic requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
-
-
-  Here is a sample script to get you started
-
-
-    ~~~~
-
-    CREATE DATABASE mautic;
-
-    CREATE USER 'mautic'@'%' IDENTIFIED BY '88888888';
-
-    ALTER USER 'mautic'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
-
-    GRANT ALL PRIVILEGES ON mautic.* TO 'mautic'@'%';
-
-    FLUSH PRIVILEGES;
-
-    SELECT User, Plugin FROM mysql.user;
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
-
-
-
-
 summary:
   Mautic - Open Source Marketing Automation Software.
 category: comm
@@ -55,62 +23,4 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
-    status: public
-    spec:
-      routes:
-        - type: http
-          targetService: mautic
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: mautic/mautic
-        ports: 80
-
-        volumes:
-            - name: mautic-data
-              size: 5Gi
-              mountPath: /var/www/html
-
-        flow:
-          prompts:
-            - type: input
-              name: MAUTIC_DB_HOST
-              message: Specify the host name of your database server service (mysql)
-              default: mysql.database
-              c6o:
-                label: Database Server
-                required: true
-
-            - type: input
-              name: MAUTIC_DB_NAME
-              message: The name of the database to use
-              default: mautic
-              c6o:
-                label: Database Name
-                required: true
-
-            - type: input
-              name: MAUTIC_DB_USER
-              message: The username of the database to use
-              default: mautic
-              c6o:
-                label: Database User
-                required: true
-
-            - type: password
-              name: MAUTIC_DB_PASSWORD
-              message: The password used to login to your database.
-              c6o:
-                target: secrets
-                label: Database Password
-                required: true
-
-        configs:
-          MAUTIC_RUN_CRON_JOBS: true
-          MAUTIC_TRUSTED_PROXIES: 0.0.0.0/0
-
-      marina:
-        launch:
-          type: inline
-          popUp: true
+  - edition-stable.yaml
