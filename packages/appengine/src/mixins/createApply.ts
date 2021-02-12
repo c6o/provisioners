@@ -57,7 +57,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     createSecurityContext() : void {
         //override the default security context of 1000 if specified in the manifest
-        if(this.documentHelper.hasSecurityContext)
+        if (this.documentHelper.hasSecurityContext)
             this.createDeploymentDocument.spec.template.spec.securityContext = this.documentHelper.securityContext
     }
 
