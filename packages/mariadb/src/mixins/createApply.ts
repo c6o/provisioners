@@ -95,7 +95,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.manager.cluster
             .begin('Setting up mariadb databases')
             .beginForward(3306, this.runningPod)
-            .attempt(10, 5000, async (processor, attempt) => this.connectMariadbClient(processor, attempt))
+            .attempt(10, 5000, async (processor, attempt) => await this.connectMariadbClient(processor, attempt))
             .do(async (_, processor) => await this.provisionMariadb(processor))
             .do(async _ => await this.disconnectMariadbClient())
             .endForward()
@@ -120,7 +120,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     /** Attempts to connect to mariadb and sets the mariadbClient */
-    connectMariadbClient(processor, attempt) {
+    async connectMariadbClient(processor, attempt) {
 
         this.ensureRootPassword()
 
@@ -130,11 +130,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             host: '127.0.0.1',
             port: processor.lastResult.other.localPort,
             user: 'root',
-            password: this.plainRootPasswordForInitialization,
-            database: 'mariadb'
+            password: this.plainRootPasswordForInitialization
         }
-        this.connection = mariadb.createConnection(connectionArgs)
-        this.connection.connect()
+        this.connection = await mariadb.createConnection(connectionArgs)
+        //await this.connection.connect()
         return true
 
     }
@@ -142,11 +141,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Closes the mariadbClient connection */
     async disconnectMariadbClient() {
         this.manager.status?.info('Closing connection to mariadb')
-        //https://github.com/mariadbjs/mariadb/blob/master/Readme.md#terminating-connections
-        //this.connection.destroy()
-
-        //intentionally ignoring the error
-        //without the func arg it will throw and break the install
         await this.connection.end(e => { return })
     }
 
@@ -191,6 +185,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const host = `${this.mariadbServiceName}.${this.serviceNamespace}.svc.cluster.local`
         const port = 3306
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
+
         if (process.env.NODE_ENV == 'development')
             this.manager.status?.info(`Connection string ${connectionString}`)
 
@@ -204,9 +199,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         try {
             this.manager.status?.push(`Setting up database user ${username}`)
-            await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mariadb.escape(password)};`)
-            await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mariadb_native_password BY ${mariadb.escape(password)};`)
-            await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
+            await this.connection.query(`CREATE USER IF NOT EXISTS '${username}'@'%' IDENTIFIED BY '${password}';`)
+            await this.connection.query(`GRANT ALL PRIVILEGES ON ${dbName}.* TO '${username}'@'%';`)
             await this.connection.query('FLUSH PRIVILEGES;')
         } finally {
             this.manager.status?.pop()

@@ -1,7 +1,7 @@
 {
-  "name": "@provisioner/mysqld",
+  "name": "@provisioner/mariadb",
   "version": "0.0.27",
-  "description": "CodeZero provisioner for mysql",
+  "description": "CodeZero provisioner for mariadb",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc -b",
@@ -22,7 +22,7 @@
   "keywords": [
     "codezero",
     "provisioner",
-    "mysql"
+    "mariadb"
   ],
   "author": "Rob Chartier",
   "license": "Apache-2.0",
@@ -33,7 +33,7 @@
   "dependencies": {
     "@provisioner/common": "^0.0.27",
     "js-yaml": "^4.0.0",
-    "mixwith": "^0.1.1",
-    "mysql": "^2.18.1"
+    "mariadb": "^2.5.3",
+    "mixwith": "^0.1.1"
   }
 }
