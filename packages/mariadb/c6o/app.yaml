@@ -23,7 +23,7 @@ keywords:
 
 repo: https://github.com/MariaDB/server
 license: https://github.com/MariaDB/server/blob/10.6/COPYING
-support: https://github.com/MariaDB/server
+support: https://mariadb.org/
 
 provisioner:
   repo: https://github.com/c6o/provisioners

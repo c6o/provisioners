@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{namespace}}
+  name: mariadb
+  labels:
+    role: server
+    name: mariadb
+spec:
+  selector:
+    matchLabels:
+      name: mariadb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: server
+        name: mariadb
+    spec:
+      containers:
+      - env:
+          # https://hub.docker.com/_/mariadb/?tab=description
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-root
+                key: {{rootPasswordKey}}
+        name: mariadb
+        image: mariadb
+        tag: 10.5.8
+        ports:
+          - name: mariadb
+            containerPort: 3306
+        readinessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        startupProbe:
+          tcpSocket:
+            port: 3306
+          failureThreshold: 30
+          periodSeconds: 10

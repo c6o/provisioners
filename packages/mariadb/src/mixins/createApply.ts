@@ -1,8 +1,8 @@
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
-import * as mysql from 'mysql'
+import * as mariadb from 'mariadb'
 import createDebug from 'debug'
-const debug = createDebug('mysqld:createApply')
+const debug = createDebug('mariadb:createApply')
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     // protected members
@@ -14,14 +14,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     configMap
     namespace
 
-    mysqlServiceName = 'mysqld'
-    get mysqlPods() {
+    mariadbServiceName = 'mariadb'
+    get mariadbPods() {
         return {
             kind: 'Pod',
             metadata: {
                 namespace: this.serviceNamespace,
                 labels: {
-                    name: 'mysqld'
+                    name: 'mariadb'
                 }
             }
         }
@@ -32,27 +32,27 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             kind: 'Secret',
             metadata: {
                 namespace: this.serviceNamespace,
-                name: 'mysqld-root'
+                name: 'mariadb-root'
             }
         }
     }
 
     async createApply() {
         await this.ensureServiceNamespacesExist()
-        await this.ensureMysqlIsInstalled()
-        await this.ensureMysqlIsRunning()
-        await this.ensureMysqlIsProvisioned()
+        await this.ensureMariadbIsInstalled()
+        await this.ensureMariadbIsRunning()
+        await this.ensureMariadbIsProvisioned()
     }
 
-    /** Looks for mysql pods and if none are found, applies the appropriate yaml */
-    async ensureMysqlIsInstalled() {
+    /** Looks for mariadb pods and if none are found, applies the appropriate yaml */
+    async ensureMariadbIsInstalled() {
 
         await this.manager.cluster
-            .begin('Install mysql services')
-            .list(this.mysqlPods)
+            .begin('Install mariadb services')
+            .list(this.mariadbPods)
             .do((result, processor) => {
                 if (result?.object?.items?.length == 0) {
-                    // There are no mysql-db pods
+                    // There are no mariadb-db pods
 
                     this.plainRootPassword = super.processPassword(this.spec.rootPassword)
                     this.plainRootPasswordForInitialization = this.plainRootPassword
@@ -60,7 +60,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     const namespace = this.serviceNamespace
                     const storageClass = this.spec.storageClass
                     const rootPasswordKey = this.spec.rootPasswordKey || 'password'
-                    // Install mysql
+                    // Install mariadb
                     processor
                         .mergeWith(super.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
@@ -73,10 +73,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     /** Watches pods and ensures that a pod is running and sets runningPod */
-    async ensureMysqlIsRunning() {
+    async ensureMariadbIsRunning() {
         await this.manager.cluster.
-            begin('Ensure mysql services are running')
-            .beginWatch(this.mysqlPods)
+            begin('Ensure mariadb services are running')
+            .beginWatch(this.mariadbPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
                 this.runningPod = pod
                 processor.endWatch()
@@ -84,20 +84,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .end()
     }
 
-    /** Port forwards and connects to the mysql and initiates a provision */
-    async ensureMysqlIsProvisioned() {
+    /** Port forwards and connects to the mariadb and initiates a provision */
+    async ensureMariadbIsProvisioned() {
         if (!this.hasDatabasesToConfigure) {
-            this.manager.status?.push('Setting up mysql databases')
+            this.manager.status?.push('Setting up mariadb databases')
             this.manager.status?.pop(true)
             return
         }
 
         await this.manager.cluster
-            .begin('Setting up mysql databases')
+            .begin('Setting up mariadb databases')
             .beginForward(3306, this.runningPod)
-            .attempt(10, 5000, async (processor, attempt) => this.connectMysqlClient(processor, attempt))
-            .do(async (_, processor) => await this.provisionMysql(processor))
-            .do(async _ => await this.disconnectMysqlClient())
+            .attempt(10, 5000, async (processor, attempt) => this.connectMariadbClient(processor, attempt))
+            .do(async (_, processor) => await this.provisionMariadb(processor))
+            .do(async _ => await this.disconnectMariadbClient())
             .endForward()
             .end()
     }
@@ -119,30 +119,30 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         this.plainRootPasswordForInitialization = Buffer.from(result.object.data[keys[0]], 'base64').toString()
     }
 
-    /** Attempts to connect to mysql and sets the mysqlClient */
-    connectMysqlClient(processor, attempt) {
+    /** Attempts to connect to mariadb and sets the mariadbClient */
+    connectMariadbClient(processor, attempt) {
 
         this.ensureRootPassword()
 
-        this.manager.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
+        this.manager.status?.info(`Attempt ${attempt + 1} to connect to mariadb on local port ${processor.lastResult.other.localPort}`)
         const connectionArgs =
         {
             host: '127.0.0.1',
             port: processor.lastResult.other.localPort,
             user: 'root',
             password: this.plainRootPasswordForInitialization,
-            database: 'mysql'
+            database: 'mariadb'
         }
-        this.connection = mysql.createConnection(connectionArgs)
+        this.connection = mariadb.createConnection(connectionArgs)
         this.connection.connect()
         return true
 
     }
 
-    /** Closes the mysqlClient connection */
-    async disconnectMysqlClient() {
-        this.manager.status?.info('Closing connection to mysql')
-        //https://github.com/mysqljs/mysql/blob/master/Readme.md#terminating-connections
+    /** Closes the mariadbClient connection */
+    async disconnectMariadbClient() {
+        this.manager.status?.info('Closing connection to mariadb')
+        //https://github.com/mariadbjs/mariadb/blob/master/Readme.md#terminating-connections
         //this.connection.destroy()
 
         //intentionally ignoring the error
@@ -154,7 +154,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      * Goes through all the configurations in the specs and calls setupDb
      * then upserts the configMap of connection strings in the secretKeyRef Secret
      */
-    async provisionMysql(processor) {
+    async provisionMariadb(processor) {
         this.configMap = {}
 
         for (const dbConfig of this.spec.config)
@@ -188,7 +188,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const config = dbConfig[dbName]
         const username = config.user || 'devUser'
         const password = super.processPassword(config.password)
-        const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
+        const host = `${this.mariadbServiceName}.${this.serviceNamespace}.svc.cluster.local`
         const port = 3306
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
         if (process.env.NODE_ENV == 'development')
@@ -204,8 +204,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         try {
             this.manager.status?.push(`Setting up database user ${username}`)
-            await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
-            await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
+            await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mariadb.escape(password)};`)
+            await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mariadb_native_password BY ${mariadb.escape(password)};`)
             await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
             await this.connection.query('FLUSH PRIVILEGES;')
         } finally {
@@ -220,7 +220,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.hostSecretKey) this.configMap[config.hostSecretKey] = Buffer.from(host).toString('base64')
             if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
-            if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mysql').toString('base64')
+            if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mariadb').toString('base64')
         } finally {
             this.manager.status?.pop()
         }
