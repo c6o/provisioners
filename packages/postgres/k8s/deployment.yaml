@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{namespace}}
+  name: postgres
+  labels:
+    role: server
+    name: postgres
+spec:
+  selector:
+    matchLabels:
+      name: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: server
+        name: postgres
+    spec:
+      containers:
+      - env:
+          # https://hub.docker.com/_/postgres
+          # https://dev.mysql.com/doc/refman/5.7/en/environment-variables.html
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-root
+                key: {{rootPasswordKey}}
+        name: postgres
+        image: postgres
+        tag: 9.6.21
+        args:
+        ports:
+          - name: postgres
+            containerPort: 5432
+        readinessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 5432
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        startupProbe:
+          tcpSocket:
+            port: 5432
+          failureThreshold: 30
+          periodSeconds: 10

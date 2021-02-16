@@ -1,5 +1,5 @@
-name: PostgreSQL Database
-appId: postgresql
+name: PostgreSQL Database (Full)
+appId: postgres
 package: '@provisioner/appengine'
 icon: icon.svg
 summary:
@@ -19,7 +19,8 @@ category: databases
 keywords:
   - Relational
   - SQL
-  - POSTGRES
+  - postgres
+  - postgresql
 
 repo: https://www.postgresql.org/developer/
 license: https://github.com/postgres/postgres/blob/master/COPYRIGHT
@@ -31,4 +32,3 @@ provisioner:
 
 editions:
   - edition-stable.yaml
-  - edition-stable-internal.yaml

@@ -16,7 +16,7 @@ spec:
           path: /
           port: 8080
         failureThreshold: 30
-        initialDelaySeconds: 60
+        initialDelaySeconds: 180
         periodSeconds: 10
 
     services:
