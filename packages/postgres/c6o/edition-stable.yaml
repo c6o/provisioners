@@ -1,0 +1,6 @@
+name: stable
+status: public
+spec:
+  provisioner:
+    name: postgres
+    tag: 9.6.21
