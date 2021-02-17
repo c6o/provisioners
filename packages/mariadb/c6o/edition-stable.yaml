@@ -1,0 +1,6 @@
+name: stable
+status: public
+spec:
+  provisioner:
+    name: mariadb
+    tag: 10.5.8
