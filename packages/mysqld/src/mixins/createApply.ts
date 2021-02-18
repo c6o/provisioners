@@ -191,7 +191,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
         const port = 3306
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
-        if (process.env.NODE_ENV == 'development')
+
+        if (process.env.NODE_ENV === 'development')
             this.manager.status?.info(`Connection string ${connectionString}`)
 
 

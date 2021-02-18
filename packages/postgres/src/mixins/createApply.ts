@@ -205,7 +205,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.manager.status?.pop()
         }
 
-        if (process.env.NODE_ENV == 'development') this.manager.status?.info(`Connection string ${connectionString}`)
+        if (process.env.NODE_ENV === 'development')
+            this.manager.status?.info(`Connection string ${connectionString}`)
 
         try {
             this.manager.status?.push('Writing database connection information to Secrets')
