@@ -11,38 +11,6 @@ description:
 
   [Read more on the Overview Page](https://snipe-it.readme.io/docs/overview)
 
-
-
-  Setup
-
-  ----
-
-  Snipe-It requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
-
-
-  Here is a sample script to get you started with MySql
-
-
-    ~~~~
-
-    CREATE DATABASE snipeit;
-
-    CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
-
-    ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
-
-    GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
-
-    FLUSH PRIVILEGES;
-
-    SELECT User, Plugin FROM mysql.user;
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
-
-
-
 category: cms
 keywords:
   - wiki

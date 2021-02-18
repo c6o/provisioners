@@ -6,35 +6,6 @@ icon: icon.svg
 description:
   Bonita is an open-source business process management and Low-code development platform created in 2001. Bonita technology was developed originally in 2001 by Miguel Valdés Faura, at the French Institute for Research in Computer Science and Automation, and subsequently transferred to Groupe Bull. In 2009, the Director of the BPM division, Miguel Valdes Faura founded Bonitasoft a French open-source software vendor.
 
-
-  Setup
-
-  ----
-
-  Strapi requires access to a Postgresql database with a few users created in the database.  This has been created prior to the installation.
-
-
-  Here is a sample script, for postgresql to get you started
-
-
-    ~~~~
-
-    CREATE DATABASE bonitadb;
-
-    CREATE DATABASE bonitabusinessdb;
-
-    CREATE USER bonita WITH PASSWORD '88888888';
-
-    CREATE USER bonitabusiness WITH PASSWORD '88888888';
-
-    GRANT ALL ON DATABASE bonitadb TO bonita;
-
-    GRANT ALL ON DATABASE bonitabusinessdb TO bonitabusiness;
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
-
 summary:
   Bonita is an open-source business process management and Low-code development platform created in 2001.
 category: comm
@@ -69,48 +40,42 @@ editions:
           - size: 5Gi
             mountPath: /opt/bonita
             name: bonita-data
+        probes:
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            failureThreshold: 30
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+
+        services:
+        - mariadb:
+            secretKeyRef: bonita-mariadb
+            config:
+              - bonita:
+                  user: bonita
+                  usernameSecretKey: DB_USER
+                  passwordSecretKey: DB_PASS
+                  hostSecretKey: DB_HOST
+                  databaseSecretKey: DB_NAME
+              - bonitaBiz:
+                  user: bonitaBiz
+                  usernameSecretKey: BIZ_DB_USER
+                  passwordSecretKey: BIZ_DB_PASS
+                  hostSecretKey: DB_HOST
+                  databaseSecretKey: BIZ_DB_NAME
+
+        secretRefs:
+          - bonita-mariadb
+
+        secrets:
+          DB_VENDOR: mysql
+          BIZ_DB_VENDOR: mysql
+
         flow:
           prompts:
-            - type: input
-              name: DB_HOST
-              message: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
-              default: postgresql.database
-              c6o:
-                label: Postgres Server Host
-                required: true
-
-            - type: input
-              name: DB_VENDOR
-              message: Database Vendor
-              default: postgres
-              c6o:
-                label: The type of database to use (postgres or mysql)
-                required: true
-
-            - type: input
-              name: DB_NAME
-              message: The name of the database to use
-              default: bonitadb
-              c6o:
-                label: Database name
-                required: true
-
-            - type: input
-              name: DB_USER
-              message: The username of the database to use
-              default: bonita
-              c6o:
-                label: Database user
-                required: true
-
-            - type: password
-              name: DB_PASS
-              message: The password used to login to your database.
-              c6o:
-                target: secrets
-                label: Database Password
-                required: true
-
             - type: input
               name: TENANT_LOGIN
               message: The username for the tenant user
@@ -142,30 +107,6 @@ editions:
                 target: secrets
                 label: Platform admin password
                 required: true
-
-            - type: input
-              name: BIZ_DB_NAME
-              message: The name of the database for the Business
-              default: bonitabusinessdb
-              c6o:
-                label: Business Database Name
-                required: true
-
-            - type: input
-              name: BIZ_DB_USER
-              message: The name of the user for the database for the Business
-              default: bonitabusiness
-              c6o:
-                label: Business Database Username
-                required: true
-
-            - type: password
-              name: BIZ_DB_PASS
-              message: The password of the user for the database for the Business
-              c6o:
-                label: Business Database Password
-                required: true
-                target: secrets
 
       marina:
         launch:
