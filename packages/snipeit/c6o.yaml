@@ -58,7 +58,6 @@ provisioner:
 editions:
   - name: latest
     status: public
-
     spec:
       routes:
         - type: http
@@ -68,225 +67,38 @@ editions:
         image: snipe/snipe-it
         tag-prefix: appengine
         ports: 80
-        flow:
-          - name: section1
-            prompts:
-            - type: list
-              name: DB_HOST_list
-              message: list Title
-              default: false
-              choices:
-                - Order a pizza
-                - Make a reservation
-                - Ask for opening hours
-                - Talk to the receptionist
-              c6o:
-                label: LIST
-            - type: rawlist
-              name: DB_HOST_rawlist
-              message: rawlist Title
-              default: 0
-              choices:
-                - Order a pizza
-                - Make a reservation
-                - Ask for opening hours
-                - Talk to the receptionist
-              c6o:
-                label: rawlist
-            - type: expand
-              name: DB_HOST_expand
-              message: expand Title
-              default: false
-              choices:
-                - key: y
-                  name: Overwrite
-                  value: overwrite
-                - key: a
-                  name: Overwrite this one and all next
-                  value: overwrite_all
-                - key: d
-                  name: Show Diff
-                  value: diff
-                - <<separator>>
-                - key: x
-                  name: Abort
-                  value: abort
 
-              c6o:
-                label: expand
-            - type: checkbox
-              name: DB_HOST_CHECKBOX
-              message: CHECKBOX Title
-              default: false
-              choices:
-                - Order a pizza
-                - Make a reservation
-                - Ask for opening hours
-                - Talk to the receptionist
-              c6o:
-                label: CHECKBOX
-            - type: confirm
-              name: DB_HOST_CONFIRM
-              message: CONFIRM Title
-              default: true
-              c6o:
-                label: CONFIRM
-            - type: editor
-              name: DB_HOST_EDITOR
-              message: EDITOR The name of the database server (Service)
-              default: |
-                  editor data goes here
-                  hello world
-                  this is long content
-              c6o:
-                label: EDITOR
-                maxlength: 255
-            - type: input
-              name: DB_HOST
-              message: The name of the database server (Service)
-              default: mysql.database
-              c6o:
-                label: INPUT
-            - type: number
-              name: DB_PORT
-              message: The port of the database
-              default: 3306
-              max: 32767
-              min: 1
-              step: 1
-              c6o:
-                label: NUMBER
-          - name: section2
-            prompts:
-            - type: input
-              name: DB_USERNAME
-              message: The database user name
-              default: snipeit
-              c6o:
-                label: Database user name
-            - type: password
-              name: DB_PASSWORD
-              message: The database user password
-              validate: return !!value
-              c6o:
-                label: Database user password
-                target: secrets
-            - type: input
-              name: APP_KEY
-              message: App encryption key
-              c6o:
-                target: secrets
-                generate:
-                  length: 16
+        probes:
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 30
+            initialDelaySeconds: 10
+            periodSeconds: 10
 
-          # sections:
-          #   - title: Configs
-          #     prompts:
-          #     - type: input
-          #       name: DB_HOST
-          #       message: The name of the database server (Service)
-          #       default: mysql.database
-          #       c6o:
-          #         label: Database Host
-          #     - type: number
-          #       name: DB_PORT
-          #       message: The port of the database
-          #       default: 3306
-          #       c6o:
-          #         label: Database Port
-          #     - type: input
-          #       name: DB_DATABASE
-          #       message: The name of the database to use
-          #       default: snipeit
-          #       c6o:
-          #         label: Database name
-          #   - title: Secrets
-          #     prompts:
-          #     - type: input
-          #       name: DB_USERNAME
-          #       message: The database user name
-          #       default: snipeit
-          #       c6o:
-          #         label: Database user name
-          #     - type: password
-          #       name: DB_PASSWORD
-          #       message: The database user password
-          #       validate: return !!value
-          #       c6o:
-          #         label: Database user password
-          #         target: secrets
-          #     - type: input
-          #       name: APP_KEY
-          #       message: App encryption key
-          #       c6o:
-          #         target: secrets
-          #         generate:
-          #           length: 16
+        services:
+        - mariadb:
+            secretKeyRef: snipeit-mariadb
+            config:
+              - snipeit:
+                  user: snipeit
+                  usernameSecretKey: DB_USERNAME
+                  passwordSecretKey: DB_PASSWORD
+                  hostSecretKey: DB_HOST
+                  portSecretKey: DB_PORT
+                  databaseSecretKey: DB_DATABASE
 
+        secretRefs:
+          - snipeit-mariadb
 
-            # prompts:
-            #   - type: input
-            #     name: DB_HOST
-            #     message: The name of the database server (Service)
-            #     default: mysql.database
-            #     c6o:
-            #       label: Database Host
-            #   - type: number
-            #     name: DB_PORT
-            #     message: The port of the database
-            #     default: 3306
-            #     c6o:
-            #       label: Database Port
-            #   - type: input
-            #     name: DB_DATABASE
-            #     message: The name of the database to use
-            #     default: snipeit
-            #     c6o:
-            #       label: Database name
-            #   - type: input
-            #     name: DB_USERNAME
-            #     message: The database user name
-            #     default: snipeit
-            #     c6o:
-            #       label: Database user name
-            #   - type: password
-            #     name: DB_PASSWORD
-            #     message: The database user password
-            #     validate: return !!value
-            #     c6o:
-            #       label: Database user password
-            #       target: secrets
-            #   - type: input
-            #     name: APP_KEY
-            #     message: App encryption key
-            #     c6o:
-            #       target: secrets
-            #       generate:
-            #         length: 16
         configs:
-          FOO_URL: '$PUBLIC_URL/index.html' # http://app-namespace.foo.codezero.cloud
-          BAR_URL: '$PUBLIC_FQDN/index.html' # app-namespace.foo.codezero.cloud
+          APP_URL: $PUBLIC_URL
 
         secrets:
-          TEST_APP_KEY:
+          APP_KEY:
             generate:
-              length: 16
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-  - name: preview
-    status: public
-    spec:
-      routes:
-        - type: http
-          targetService: snipeit
-      provisioner:
-        package: '@provisioner/appengine'
-        image: snipe/snipe-it
-        tag-prefix: appengine
-        ports: 80
+              length: 32
 
       marina:
         launch:

@@ -15,33 +15,6 @@ description:
 
   * Customisable and extensible
 
-
-  Setup
-
-  ----
-
-  Matomo requires access to a MariaDB database which has to be created prior to the installation.
-
-
-  Here is a sample script to get you started
-
-
-    ~~~~
-
-    CREATE DATABASE matomo;
-
-    CREATE USER 'matomo'@'%' IDENTIFIED BY '88888888';
-
-    GRANT ALL PRIVILEGES ON matomo.* TO 'matomo'@'%';
-
-    FLUSH PRIVILEGES;
-
-    SELECT User, Plugin FROM mysql.user;
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
-
 summary:
   Matomo (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics
 category: analytics
