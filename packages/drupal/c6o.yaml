@@ -26,33 +26,6 @@ description:
   [Source](https://en.wikipedia.org/wiki/Drupal)
 
 
-  Setup
-
-  ----
-
-  Drupal requires access to a MariaDB (or mysql) database with a few users created in the database.  This has been created prior to the installation.
-
-
-  Here is a sample script, for mariadb to get you started
-
-
-    ~~~~
-
-    CREATE DATABASE drupal;
-
-    CREATE USER 'drupal'@'%' IDENTIFIED BY '88888888';
-
-    GRANT ALL PRIVILEGES ON drupal.* TO 'moodle'@'%';
-
-    FLUSH PRIVILEGES;
-
-    SELECT User, Plugin FROM mysql.user;
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
-
-
 category: cms
 keywords:
   - Content Management System
@@ -75,11 +48,38 @@ editions:
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
+        # https://hub.docker.com/_/drupal/
         image: drupal
         ports: 80
-        # config:
-        #   - name: DRUPAL_TRUSTED_HOST
-        #     value: $PUBLIC_DNS
+
+        probes:
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 30
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+        services:
+        - mysqld:
+            secretKeyRef: drupal-mysql
+            config:
+              - drupal:
+                  user: drupal
+                  usernameSecretKey: MYSQL_USER
+                  passwordSecretKey: MYSQL_ROOT_PASSWORD
+                  hostSecretKey: MYSQL_HOST
+                  databaseSecretKey: MYSQL_DATABASE
+                  portSecretKey: MYSQL_PORT
+
+        secretRefs:
+          - drupal-mysql
+
+        configs:
+          APP_KEY: base64:04o0jBc+4hSNrJNS39i8J6185ubrC/YtOMwHGhw8v6o=
+          DB_DRIVER: mysql
+          DRUPAL_TRUSTED_HOST: $PUBLIC_FQDN
 
       marina:
         launch:

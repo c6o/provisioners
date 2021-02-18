@@ -7,31 +7,6 @@ summary:
 description:
   Strapi is a flexible, open-source Headless CMS that gives developers the freedom to choose their favorite tools and frameworks while also allowing editors to easily manage and distribute their content. By making the admin panel and API extensible through a plugin system, Strapi enables the world's largest companies to accelerate content delivery while building beautiful digital experiences.
 
-
-
-  Setup
-
-  ----
-
-  Strapi requires access to a Postgresql or MongoDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
-
-
-  Here is a sample script, for postgresql to get you started
-
-
-    ~~~~
-
-    CREATE DATABASE strapi;
-
-    CREATE USER strapi WITH PASSWORD '88888888';
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
-
-
-  The installation process takes a few minutes, so please be patient.
-
 category: cms
 keywords:
   - Content Management System
@@ -52,7 +27,7 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview-sqlite
+  - name: preview
     status: public
     spec:
       routes:
@@ -76,7 +51,7 @@ editions:
           popUp: true
 
 
-  - name: latest-postgresql
+  - name: latest-mariadb
     status: private
     spec:
       routes:
@@ -87,107 +62,42 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        ports:
-          - port: 1337
-            name: http
-            protocol: TCP
-            probe:
-              - type: startup
-                periodSeconds: 10
-                initialDelaySeconds: 60
-        volumes:
-          - name: yarn-cache
-            mountPath: /usr/local/share/.cache/
-            size: 1Gi
-          - name: strapi-data
-            mountPath: /srv/app
-            size: 50Gi
-        flow:
-          prompts:
-            - type: input
-              name: DATABASE_HOST
-              message: Specify the host name of your database server service (postgres)
-              default: postgres
-              c6o:
-                label: Database Host
-                required: true
-
-            - type: input
-              name: DATABASE_NAME
-              message: The name of the database to use
-              default: strapi
-              c6o:
-                label: Database Name
-                required: true
-
-            - type: input
-              name: DATABASE_USERNAME
-              message: The username for the database user
-              default: strapi
-              c6o:
-                label: Database User
-                required: true
-
-            - type: password
-              name: DATABASE_PASSWORD
-              message: The password for the database user
-              c6o:
-                target: secrets
-                label: Database Password
-                required: true
-
-        configs:
-          DATABASE_PORT: 5432
-          DATABASE_CLIENT: postgres
-
-      marina:
-        launch:
-          type: inline
-          popUp: true
-
-
-  - name: latest-mongo
-    status: private
-    spec:
-      routes:
-        - type: http
-          targetService: strapi
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        name: strapi
-        image: strapi/strapi
-        ports:
-          - port: 1337
-            name: http
-            protocol: TCP
-            probe:
-              - type: startup
-                periodSeconds: 10
-                initialDelaySeconds: 60
-        volumes:
-          - name: yarn-cache
-            mountPath: /usr/local/share/.cache/
-            size: 1Gi
-          - name: strapi-data
-            mountPath: /srv/app
-            size: 50Gi
-
-        configs:
-          DATABASE_CLIENT: mongo
-          DATABASE_PORT: 27017
-          DATABASE_HOST: mongo-svc
-          DATABASE_NAME: strapi
-          DATABASE_USERNAME: root
-          DATABASE_SSL: false
-          DATABASE_AUTHENTICATION_DATABASE: admin
+        ports: 1337
+        probes:
+          startupProbe:
+            httpGet:
+              path: /
+              port: 1337
+            failureThreshold: 30
+            initialDelaySeconds: 120
+            periodSeconds: 10
 
         services:
-          - mongo:
-              rootPasswordKey: DATABASE_PASSWORD
+        - mariadb:
+            secretKeyRef: strapi-mariadb
+            config:
+              - strapi:
+                  user: strapi
+                  usernameSecretKey: DATABASE_USERNAME
+                  passwordSecretKey: DATABASE_PASSWORD
+                  hostSecretKey: DATABASE_HOST
+                  databaseSecretKey: DATABASE_NAME
 
         secretRefs:
-          - mongo-root
+          - strapi-mariadb
+
+        configs:
+          DATABASE_PORT: 3306
+          DATABASE_CLIENT: mysql
+
+        volumes:
+          - name: yarn-cache
+            mountPath: /usr/local/share/.cache/
+            size: 1Gi
+          - name: strapi-data
+            mountPath: /srv/app
+            size: 50Gi
+
 
       marina:
         launch:

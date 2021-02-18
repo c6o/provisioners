@@ -57,9 +57,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     this.plainRootPassword = super.processPassword(this.spec.rootPassword)
                     this.plainRootPasswordForInitialization = this.plainRootPassword
                     this.encodedRootPassword = Buffer.from(this.plainRootPassword).toString('base64')
+
                     const namespace = this.serviceNamespace
                     const storageClass = this.spec.storageClass
                     const rootPasswordKey = this.spec.rootPasswordKey || 'password'
+
                     // Install mariadb
                     processor
                         .mergeWith(super.documentHelper.appComponentMergeDocument)
@@ -186,7 +188,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const port = 3306
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
 
-        if (process.env.NODE_ENV == 'development')
+        if (process.env.NODE_ENV === 'development')
             this.manager.status?.info(`Connection string ${connectionString}`)
 
 
@@ -211,6 +213,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
             if (config.passwordSecretKey) this.configMap[config.passwordSecretKey] = Buffer.from(password).toString('base64')
+            if (config.rootUsernameSecretKey) this.configMap[config.rootUsernameSecretKey] = Buffer.from('root').toString('base64')
+            if (config.rootPasswordSecretKey) this.configMap[config.rootPasswordSecretKey] = this.encodedRootPassword
             if (config.hostSecretKey) this.configMap[config.hostSecretKey] = Buffer.from(host).toString('base64')
             if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')

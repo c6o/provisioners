@@ -13,6 +13,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     connection
     configMap
     namespace
+    rootUserName = 'postgres'
 
     postgresServiceName = 'postgres'
     get postgresPods() {
@@ -131,7 +132,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         {
             host: '127.0.0.1',
             port: processor.lastResult.other.localPort,
-            user: 'postgres',  //not 'root'
+            user: this.rootUserName,
             password: this.plainRootPasswordForInitialization
         }
 
@@ -189,33 +190,37 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const port = 5432
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
 
+        const createDB = (config?.createDatabase === true)
 
         try {
             this.manager.status?.push(`Creating database ${dbName}`)
-            await this.connection.query(`CREATE DATABASE ${dbName};`)
+            if(createDB)
+                await this.connection.query(`CREATE DATABASE ${dbName};`)
         } finally {
-            this.manager.status?.pop()
+            this.manager.status?.pop(!createDB)
         }
 
         try {
             this.manager.status?.push(`Setting up database user ${username}`)
-            await this.connection.query(`CREATE USER ${username} WITH PASSWORD '${password}';`)
-            await this.connection.query(`GRANT ALL PRIVILEGES ON DATABASE ${dbName} TO ${username};`)
+            await this.connection.query(`CREATE ROLE ${username} LOGIN SUPERUSER PASSWORD '${password}';`)
         } finally {
             this.manager.status?.pop()
         }
 
-        if (process.env.NODE_ENV == 'development') this.manager.status?.info(`Connection string ${connectionString}`)
+        if (process.env.NODE_ENV === 'development')
+            this.manager.status?.info(`Connection string ${connectionString}`)
 
         try {
             this.manager.status?.push('Writing database connection information to Secrets')
             if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
             if (config.passwordSecretKey) this.configMap[config.passwordSecretKey] = Buffer.from(password).toString('base64')
+            if (config.rootUsernameSecretKey) this.configMap[config.rootUsernameSecretKey] = Buffer.from(this.rootUserName).toString('base64')
+            if (config.rootPasswordSecretKey) this.configMap[config.rootPasswordSecretKey] = this.encodedRootPassword
             if (config.hostSecretKey) this.configMap[config.hostSecretKey] = Buffer.from(host).toString('base64')
             if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
-            if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('postgres').toString('base64')
+            if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('pgsql').toString('base64')
         } finally {
             this.manager.status?.pop()
         }
