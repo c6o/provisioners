@@ -81,10 +81,6 @@ editions:
           DB_DRIVER: mysql
           DRUPAL_TRUSTED_HOST: $PUBLIC_FQDN
 
-        # config:
-        #   - name: DRUPAL_TRUSTED_HOST
-        #     value: $PUBLIC_DNS
-
       marina:
         launch:
           type: inline
