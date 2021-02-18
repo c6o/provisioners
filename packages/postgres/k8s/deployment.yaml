@@ -20,7 +20,6 @@ spec:
       containers:
       - env:
           # https://hub.docker.com/_/postgres
-          # https://dev.mysql.com/doc/refman/5.7/en/environment-variables.html
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:

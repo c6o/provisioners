@@ -217,6 +217,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.manager.status?.push('Writing database connection data to the Secrets')
             if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
+            if (config.rootUsernameSecretKey) this.configMap[config.rootUsernameSecretKey] = Buffer.from('root').toString('base64')
+            if (config.rootPasswordSecretKey) this.configMap[config.rootPasswordSecretKey] = this.encodedRootPassword
             if (config.passwordSecretKey) this.configMap[config.passwordSecretKey] = Buffer.from(password).toString('base64')
             if (config.hostSecretKey) this.configMap[config.hostSecretKey] = Buffer.from(host).toString('base64')
             if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
