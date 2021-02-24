@@ -1,4 +1,4 @@
-import { Provisioner } from "./index"
+import { Provisioner } from './index'
 
 describe('Ghost index file', () => {
     test('isLastest return "latest"', async () => {

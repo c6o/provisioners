@@ -1,10 +1,10 @@
 import { createApplyMixin } from './createApplyMixin'
 import { baseProvisionerType, Provisioner } from '../index'
-import { ProvisionerManager } from "../../../common/lib"
+import { ProvisionerManager } from '../../../common/lib'
 
 describe('Ghost Mixins', () => {
     const GhostProvisioner = createApplyMixin(Provisioner as baseProvisionerType)
-    const someName = "A Name"
+    const someName = 'A Name'
     let res, resBegin, resBeginWatch, resWhenWatch, resEndWatch, resAddOwner, resUpsertFile, resEnd
     const setUpCluster = () => {
         resBegin = jest.fn()
