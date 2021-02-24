@@ -9,6 +9,33 @@ description:
 
   Moodle is built by the Moodle project which is led and coordinated by Moodle HQ, which is financially supported by a network of over 80 Moodle Partner service companies worldwide.
 
+
+  Setup
+
+  ----
+
+  Moodle requires access to a MariaDB database which has to be created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE moodle;
+
+    CREATE USER 'moodle'@'%' IDENTIFIED BY '88888888';
+
+    GRANT ALL PRIVILEGES ON moodle.* TO 'moodle'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
 category: e-learning
 keywords:
   - Learning Management System
@@ -26,4 +53,92 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - edition-stable.yaml
+  - name: preview
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: moodle
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        image: bitnami/moodle
+        ports: 8080
+        flow:
+          prompts:
+            - type: input
+              name: MOODLE_DATABASE_HOST
+              message: Host for the database server (Service)
+              default: mariadb.database
+              c6o:
+                label: Database Host
+                required: true
+
+            - type: input
+              name: MOODLE_DATABASE_USER
+              message: Username for the database
+              default: moodle
+              c6o:
+                label: Database Username
+                required: true
+
+            - type: password
+              name: MOODLE_DATABASE_PASSWORD
+              message: Database Password
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
+
+            - type: input
+              name: MOODLE_USERNAME
+              message: Username for the admin user
+              default: admin
+              c6o:
+                label: Administrator username
+                required: true
+
+            - type: password
+              name: MOODLE_PASSWORD
+              message: Password for the admin user
+              c6o:
+                target: secrets
+                label: Administrator password
+                required: true
+
+            - type: input
+              name: MOODLE_EMAIL
+              message:  Email address for the admin user
+              default: admin@mysite.com
+              c6o:
+                label: Administrator email address
+                required: true
+
+
+            - type: input
+              name: MOODLE_DATABASE_TYPE
+              message:  Database Type
+              default: mariadb
+              c6o:
+                label: Database Type
+                required: true
+
+            - type: input
+              name: MOODLE_DATABASE_NAME
+              message:  Database Name
+              default: moodle
+              c6o:
+                label: Database Name
+                required: true
+
+        configs:
+          ALLOW_EMPTY_PASSWORD: no
+
+        volumes:
+            - size: 5Gi
+              mountPath: /bitnami
+              name: moodle-data
+      marina:
+        launch:
+          type: inline
+          popUp: true

@@ -11,6 +11,38 @@ description:
 
   [Read more on the Overview Page](https://snipe-it.readme.io/docs/overview)
 
+
+
+  Setup
+
+  ----
+
+  Snipe-It requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started with MySql
+
+
+    ~~~~
+
+    CREATE DATABASE snipeit;
+
+    CREATE USER 'snipeit'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'snipeit'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON snipeit.* TO 'snipeit'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+
 category: cms
 keywords:
   - wiki
@@ -26,6 +58,7 @@ provisioner:
 editions:
   - name: latest
     status: public
+
     spec:
       routes:
         - type: http
@@ -35,38 +68,225 @@ editions:
         image: snipe/snipe-it
         tag-prefix: appengine
         ports: 80
+        flow:
+          - name: section1
+            prompts:
+            - type: list
+              name: DB_HOST_list
+              message: list Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: LIST
+            - type: rawlist
+              name: DB_HOST_rawlist
+              message: rawlist Title
+              default: 0
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: rawlist
+            - type: expand
+              name: DB_HOST_expand
+              message: expand Title
+              default: false
+              choices:
+                - key: y
+                  name: Overwrite
+                  value: overwrite
+                - key: a
+                  name: Overwrite this one and all next
+                  value: overwrite_all
+                - key: d
+                  name: Show Diff
+                  value: diff
+                - <<separator>>
+                - key: x
+                  name: Abort
+                  value: abort
 
-        probes:
-          startupProbe:
-            httpGet:
-              path: /
-              port: 80
-            failureThreshold: 30
-            initialDelaySeconds: 10
-            periodSeconds: 10
+              c6o:
+                label: expand
+            - type: checkbox
+              name: DB_HOST_CHECKBOX
+              message: CHECKBOX Title
+              default: false
+              choices:
+                - Order a pizza
+                - Make a reservation
+                - Ask for opening hours
+                - Talk to the receptionist
+              c6o:
+                label: CHECKBOX
+            - type: confirm
+              name: DB_HOST_CONFIRM
+              message: CONFIRM Title
+              default: true
+              c6o:
+                label: CONFIRM
+            - type: editor
+              name: DB_HOST_EDITOR
+              message: EDITOR The name of the database server (Service)
+              default: |
+                  editor data goes here
+                  hello world
+                  this is long content
+              c6o:
+                label: EDITOR
+                maxlength: 255
+            - type: input
+              name: DB_HOST
+              message: The name of the database server (Service)
+              default: mysql.database
+              c6o:
+                label: INPUT
+            - type: number
+              name: DB_PORT
+              message: The port of the database
+              default: 3306
+              max: 32767
+              min: 1
+              step: 1
+              c6o:
+                label: NUMBER
+          - name: section2
+            prompts:
+            - type: input
+              name: DB_USERNAME
+              message: The database user name
+              default: snipeit
+              c6o:
+                label: Database user name
+            - type: password
+              name: DB_PASSWORD
+              message: The database user password
+              validate: return !!value
+              c6o:
+                label: Database user password
+                target: secrets
+            - type: input
+              name: APP_KEY
+              message: App encryption key
+              c6o:
+                target: secrets
+                generate:
+                  length: 16
 
-        services:
-        - mariadb:
-            secretKeyRef: snipeit-mariadb
-            config:
-              - snipeit:
-                  user: snipeit
-                  usernameSecretKey: DB_USERNAME
-                  passwordSecretKey: DB_PASSWORD
-                  hostSecretKey: DB_HOST
-                  portSecretKey: DB_PORT
-                  databaseSecretKey: DB_DATABASE
+          # sections:
+          #   - title: Configs
+          #     prompts:
+          #     - type: input
+          #       name: DB_HOST
+          #       message: The name of the database server (Service)
+          #       default: mysql.database
+          #       c6o:
+          #         label: Database Host
+          #     - type: number
+          #       name: DB_PORT
+          #       message: The port of the database
+          #       default: 3306
+          #       c6o:
+          #         label: Database Port
+          #     - type: input
+          #       name: DB_DATABASE
+          #       message: The name of the database to use
+          #       default: snipeit
+          #       c6o:
+          #         label: Database name
+          #   - title: Secrets
+          #     prompts:
+          #     - type: input
+          #       name: DB_USERNAME
+          #       message: The database user name
+          #       default: snipeit
+          #       c6o:
+          #         label: Database user name
+          #     - type: password
+          #       name: DB_PASSWORD
+          #       message: The database user password
+          #       validate: return !!value
+          #       c6o:
+          #         label: Database user password
+          #         target: secrets
+          #     - type: input
+          #       name: APP_KEY
+          #       message: App encryption key
+          #       c6o:
+          #         target: secrets
+          #         generate:
+          #           length: 16
 
-        secretRefs:
-          - snipeit-mariadb
 
+            # prompts:
+            #   - type: input
+            #     name: DB_HOST
+            #     message: The name of the database server (Service)
+            #     default: mysql.database
+            #     c6o:
+            #       label: Database Host
+            #   - type: number
+            #     name: DB_PORT
+            #     message: The port of the database
+            #     default: 3306
+            #     c6o:
+            #       label: Database Port
+            #   - type: input
+            #     name: DB_DATABASE
+            #     message: The name of the database to use
+            #     default: snipeit
+            #     c6o:
+            #       label: Database name
+            #   - type: input
+            #     name: DB_USERNAME
+            #     message: The database user name
+            #     default: snipeit
+            #     c6o:
+            #       label: Database user name
+            #   - type: password
+            #     name: DB_PASSWORD
+            #     message: The database user password
+            #     validate: return !!value
+            #     c6o:
+            #       label: Database user password
+            #       target: secrets
+            #   - type: input
+            #     name: APP_KEY
+            #     message: App encryption key
+            #     c6o:
+            #       target: secrets
+            #       generate:
+            #         length: 16
         configs:
-          APP_URL: $PUBLIC_URL
+          FOO_URL: '$PUBLIC_URL/index.html' # http://app-namespace.foo.codezero.cloud
+          BAR_URL: '$PUBLIC_FQDN/index.html' # app-namespace.foo.codezero.cloud
 
         secrets:
-          APP_KEY:
+          TEST_APP_KEY:
             generate:
-              length: 32
+              length: 16
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+  - name: preview
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: snipeit
+      provisioner:
+        package: '@provisioner/appengine'
+        image: snipe/snipe-it
+        tag-prefix: appengine
+        ports: 80
 
       marina:
         launch:

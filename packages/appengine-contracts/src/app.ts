@@ -10,9 +10,6 @@ export interface ServicePort {
     [key: string]: any
 }
 
-export interface DeploymentProbe {
-    [key: string]: any
-}
 export interface DeploymentPort {
     name?: string
     protocol: string
@@ -60,10 +57,6 @@ export interface AppEngineAppSpecProvisioner extends AppDocumentSpec {
 
     volumes?: Volume[]
     ports?: portType
-
-    probes?: any //flesh out the data model, if needed
-    execs?: string[][]
-    securityContext: any
 
     // Container image parameters
     imagePullPolicy?: string

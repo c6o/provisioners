@@ -21,9 +21,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || args.answers['storage-class'] || await this.getDefaultStorageClass(),
-            storage: args['storage'] || args.answers['storage'],
-            env: args['env'] || args.answers['env']
+            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
+            storage: args['storage'],
+            env: args['env']
         }
 
         const responses = await this.manager.inquirer?.prompt([

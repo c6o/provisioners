@@ -17,11 +17,10 @@ description:
 
   [Source - Wikipedia](https://en.wikipedia.org/wiki/MySQL)
 
-category: databases
+category: media
 keywords:
-  - Database
-  - Relational
-  - DBMS
+  - Bookmark
+  - Dashboard
 
 repo: https://github.com/mysql/mysql-server
 license: https://github.com/mysql/mysql-server/blob/8.0/LICENSE

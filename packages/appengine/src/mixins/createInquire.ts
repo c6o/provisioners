@@ -1,9 +1,8 @@
 import { keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
-import { FlowProcessor } from '../flow'
+import { FlowProcessor, skippedSteps as testSteps } from '../flow'
 import createDebug from 'debug'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('@appengine:createInquire')
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -16,7 +15,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
             const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-            const result = await flowProcessor.process(this.documentHelper.flow, args)
+            const result = await flowProcessor.process(this.documentHelper.flow)
             this.documentHelper.processResult(result)
         }
 
@@ -25,9 +24,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquireApplicationImage(args) {
         const answers = {
-            tag: this.documentHelper.tag || args.answers.tag || 'latest',
-            image: this.documentHelper.image || args.answers.image,
-            ...args.answers
+            tag: this.documentHelper.tag || 'latest',
+            image: this.documentHelper.image
         }
 
         const responses = await this.manager.inquirer?.prompt([
@@ -79,7 +77,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasConfig,
                     validate: r => r !== '' //non empty string
                 }
-            ], args.answers)
+            ])
 
             if (responses.hasVal)
                 configs[responses.key] = responses.value
@@ -145,7 +143,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasPorts,
                     validate: r => this.isNumeric(r)  //validate that it is a Number()
                 }
-            ], args.answers)
+            ])
 
             if (responses.hasPorts)
                 ports.push({ name: responses.name, protocol: responses.protocol, port: Number(responses.port), targetPort: Number(responses.targetPort) })
@@ -207,7 +205,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                     when: r => r.hasVolumes,
                     validate: r => r !== '' //non empty string
                 }
-            ], args.answers)
+            ])
 
             if (responses.hasVolumes) {
                 volumes.push({ size: responses.storageSize, mountPath: responses.mountPath, name: responses.volumeName, subPath: responses.subPath })

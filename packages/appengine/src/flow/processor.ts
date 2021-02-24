@@ -18,7 +18,7 @@ export class FlowProcessor {
      */
     constructor(private inquirer, private fnContext) { }
 
-    async process(steps: contracts.Flow, args: any): Promise<contracts.FlowResult> {
+    async process(steps: contracts.Flow): Promise<contracts.FlowResult> {
         const result: contracts.FlowResult = {
             transient: {},
             configs: {},
@@ -29,7 +29,7 @@ export class FlowProcessor {
         if (steps !== '$unset') {
 
             for (const step of contracts.each(steps))
-                await this.processStep(step, args)
+                await this.processStep(step)
 
             this.postProcessGenerates()
 
@@ -46,7 +46,7 @@ export class FlowProcessor {
         return result
     }
 
-    async processStep(step: contracts.Step, args: any) {
+    async processStep(step: contracts.Step) {
         step.name = step.name || 'main'
         debug('Processing step %s', step.name)
 
@@ -66,23 +66,23 @@ export class FlowProcessor {
 
         if (step.sections)
             for (const section of step.sections)
-                await this.processSection(section, args)
+                await this.processSection(section)
         else if (step.prompts)
-            await this.processInquire(step.prompts, args)
+            await this.processInquire(step.prompts)
         else
             throw new Error(`Step ${step.name} lacks any sections or inquire`)
     }
 
-    async processSection(section: contracts.Section, args: any) {
+    async processSection(section: contracts.Section) {
         debug('Processing section %s', section.title)
 
         // We can't use console.log because vorpal does something
         // to console.log so we write directly to stdout
         process.stdout.write(chalk.yellowBright.bold('\n❯ Section: ') + chalk.yellowBright(section.title) + '\n\n')
-        await this.processInquire(section.prompts, args)
+        await this.processInquire(section.prompts)
     }
 
-    async processInquire(inquireField: contracts.PromptType, args: any) {
+    async processInquire(inquireField: contracts.PromptType) {
         const inquireFields = Array.isArray(inquireField) ?
             inquireField :
             [inquireField]
@@ -96,7 +96,7 @@ export class FlowProcessor {
         }
         const asks = inquireFields.reduce(this.convertPrompts.bind(this), new Array<contracts.InquirePrompt>())
 
-        const responses = await this.inquirer.prompt(asks, args.answers)
+        const responses = await this.inquirer.prompt(asks)
 
         // Add to the responses bag - new responses overwrite old responses
         this.responses = {

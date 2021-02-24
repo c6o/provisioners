@@ -5,10 +5,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async inquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || args.answers['storage-class'] || await this.getDefaultStorageClass(),
-            storage: args['storage'] || args.answers['storage'] || this.spec.storage,
-            adminUsername: args['username'] || args.answers['username'] || this.spec.username,
-            adminPassword: args['password'] || args.answers['password'] || this.spec.password,
+            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
+            storage: args['storage'] || this.spec.storage,
+            adminUsername: args['username'] || this.spec.username,
+            adminPassword: args['password'] || this.spec.password,
         }
 
         const responses = await this.manager.inquirer?.prompt([

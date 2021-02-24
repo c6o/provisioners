@@ -26,8 +26,6 @@ description:
 
   Find the property "replicas", and increase it.  The free tier only allows a maximum of 3 agents.
 
-  Agents take a while to startup, so be patient when looking for them in the server application. Also, do not install agents into the same namespace as the TeamCity server.
-
 category: devops
 keywords:
   - CI

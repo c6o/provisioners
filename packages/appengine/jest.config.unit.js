@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-undef
+//export default {
 module.exports = {
     'roots': [
         '<rootDir>/src'

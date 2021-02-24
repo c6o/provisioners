@@ -33,9 +33,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // Install rabbitMQ
                     processor
                         .upsertFile('../k8s/rabbitmq_rbac.yaml', { namespace })
-                        // {version} seems to be broken and needs to be deprecated anyway
-                        //.upsertFile('../k8s/{version}/rabbitmq.yaml', { namespace })
-                        .upsertFile('../k8s/1.16/rabbitmq.yaml', { namespace })
+                        .upsertFile('../k8s/{version}/rabbitmq.yaml', { namespace })
 
                 }
             })

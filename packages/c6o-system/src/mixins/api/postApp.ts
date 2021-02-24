@@ -1,7 +1,6 @@
 import { AppDocument } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('c6o-system:api:postAppMixin:')
 
 export const postAppMixin = (base: baseProvisionerType) => class extends base {

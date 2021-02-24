@@ -56,15 +56,45 @@ description:
 
   Access via WebDAV. FileRun comes with its own embedded WebDAV server. No server configuration needed.
 
-  Login
+
+  Setup
 
   ----
 
-  The default FileRun credentials are as follows
+  FileRun requires access to a MySql database along with a user with 'mysql_native_password' authentication.  Ensure that both the database and users have been created prior to the installation.
 
-    * Username is 'superuser'
 
-    * Password is 'superuser'
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE filerun;
+
+    CREATE USER 'filerun'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'filerun'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON filerun.* TO 'filerun'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+    Login
+
+    ----
+
+    The default FileRun credentials are as follows
+
+      * Username is 'superuser'
+
+      * Password is 'superuser'
 
 summary:
    Self-Hosted File Sync and Sharing
@@ -87,6 +117,61 @@ provisioner:
   repo: https://github.com/c6o/provisioners
   support: https://github.com/c6o/provisioners/issues
 
-
 editions:
-  - edition-stable.yaml
+  - name: preview
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: filerun
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        image: afian/filerun
+        ports: 80
+        volumes:
+          - name: filerun-html
+            mountPath: /var/www/html
+            size: 5Gi
+          - name: filerun-user-files
+            mountPath: /user-files
+            size: 10Gi
+
+        flow:
+          prompts:
+            - type: input
+              name: FR_DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
+
+            - type: input
+              name: FR_DB_USER
+              message: Specify the username of your database server service
+              default: filerun
+              c6o:
+                label: Database User name
+                required: true
+
+            - type: password
+              name: FR_DB_PASS
+              message: Specify the password of your database server service
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
+
+        configs:
+          FR_DB_PORT: 3306
+          FR_DB_NAME: filerun
+          APACHE_RUN_USER: www-data
+          APACHE_RUN_USER_ID: 33
+          APACHE_RUN_GROUP: www-data
+          APACHE_RUN_GROUP_ID: 33
+
+      marina:
+        launch:
+          type: inline
+          popUp: true

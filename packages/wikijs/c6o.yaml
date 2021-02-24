@@ -9,6 +9,37 @@ description:
 
   Wiki.js is a wiki engine running on Node.js and written in JavaScript. It is free software released under the Affero GNU General Public License. It is available as a self-hosted solution or using "single-click" install on the DigitalOcean and AWS marketplace.
 
+
+  Setup
+
+  ----
+
+  Wikijs requires access to a MySql or MariaDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started with MySql
+
+
+    ~~~~
+
+    CREATE DATABASE wikijs;
+
+    CREATE USER 'wikijs'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'wikijs'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON wikijs.* TO 'wikijs'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+
 category: cms
 keywords:
   - wiki
@@ -34,33 +65,61 @@ editions:
         tag-prefix: appengine
         ports: 3000
 
+        flow:
+          prompts:
+            - type: input
+              name: DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
 
-        probes:
-          startupProbe:
-            httpGet:
-              path: /
-              port: 3000
-            failureThreshold: 30
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            - type: list
+              name: DB_TYPE
+              message: The type of the database to use
+              default: 2
+              choices:
+                - value: mysql
+                - value: postgres
+                - value: mariadb
+                - value: mssql
+                - value: sqlite
+              c6o:
+                label: Database type
+                required: true
 
-        services:
-        - mariadb:
-            secretKeyRef: wikijs-mariadb
-            config:
-              - wikijs:
-                  user: wikijs
-                  usernameSecretKey: DB_USER
-                  passwordSecretKey: DB_PASS
-                  hostSecretKey: DB_HOST
-                  portSecretKey: DB_PORT
-                  databaseSecretKey: DB_NAME
+            - type: input
+              name: DB_PORT
+              message: The port of the database
+              default: 3306
+              c6o:
+                label: Database Port
+                required: true
 
-        secretRefs:
-          - wikijs-mariadb
+            - type: input
+              name: DB_NAME
+              message: The name of the database to use
+              default: wikijs
+              c6o:
+                label: Database name
+                required: true
 
-        configs:
-          DB_TYPE: mariadb
+            - type: input
+              name: DB_USER
+              message: The username for the database user
+              default: wikijs
+              c6o:
+                label: Database Username
+                required: true
+
+            - type: password
+              name: DB_PASS
+              message: The password for the database user
+              c6o:
+                label: Database password
+                required: true
+                target: secrets
 
       marina:
         launch:

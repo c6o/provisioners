@@ -10,6 +10,36 @@ description:
 
   But you get the idea, this is your money. These are your expenses. Stop them from controlling you. I built this tool because I started to dislike money. Having money, not having money, paying bills with money, you get the idea. But no more. I want to feel "safe", whatever my balance is. And I hope this tool can help you. I know it helps me.
 
+
+  Setup
+
+  ----
+
+  Firefly requires access to a MySql database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE firefly;
+
+    CREATE USER 'firefly'@'%' IDENTIFIED BY '88888888';
+
+    ALTER USER 'firefly'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
+
+    GRANT ALL PRIVILEGES ON firefly.* TO 'firefly'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
 summary:
     A free and open source personal finance manager
 
@@ -31,4 +61,69 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - edition-stable.yaml
+  - name: preview
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: firefly-iii
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        image: jc5x/firefly-iii
+        ports: 8080
+        volumes:
+          - name: firefly-iii-export
+            size: 20Gi
+            mountPath: /var/www/firefly-iii/storage/export
+          - name: firefly-iii-upload
+            size: 20Gi
+            mountPath: /var/www/firefly-iii/storage/upload
+
+        flow:
+          prompts:
+            - type: input
+              name: DB_HOST
+              message: Specify the host name of your database server service (mysql)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
+
+            - type: input
+              name: DB_DATABASE
+              message: Specify the database name to use
+              default: firefly
+              c6o:
+                label: Database Name
+                required: true
+
+            - type: input
+              name: DB_USERNAME
+              message: Specify the username of your database server service
+              default: firefly
+              c6o:
+                label: Database Username
+                required: true
+
+            - type: password
+              name: DB_PASSWORD
+              message: Specify the password of your database server service
+              c6o:
+                target: secrets
+                label: Database Password
+                required: true
+
+        configs:
+          APP_ENV: local
+          DB_CONNECTION: mysql
+          TRUSTED_PROXIES: '**'
+
+        secrets:
+          APP_KEY:
+            generate:
+              length: 32
+      marina:
+        launch:
+          type: inline
+          popUp: true

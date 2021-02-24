@@ -5,9 +5,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(args) {
 
         const answers = {
-            username: args['username'] || args.answers['username'] || this.spec.username,
-            passkey: args['passkey'] || args.answers['passkey'] || this.spec.passkey,
-            teamNumber: args['team-number'] || args.answers['team-number'] || this.spec.teamNumber
+            username: args['username'] || this.spec.username,
+            passkey: args['passkey'] || this.spec.passkey,
+            teamNumber: args['team-number'] || this.spec.teamNumber
         }
 
         //https://apps.foldingathome.org/team

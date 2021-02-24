@@ -7,6 +7,31 @@ summary:
 description:
   Strapi is a flexible, open-source Headless CMS that gives developers the freedom to choose their favorite tools and frameworks while also allowing editors to easily manage and distribute their content. By making the admin panel and API extensible through a plugin system, Strapi enables the world's largest companies to accelerate content delivery while building beautiful digital experiences.
 
+
+
+  Setup
+
+  ----
+
+  Strapi requires access to a Postgresql or MongoDB database along with a user with 'mysql_native_password' authentication.  This has been created prior to the installation.
+
+
+  Here is a sample script, for postgresql to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE strapi;
+
+    CREATE USER strapi WITH PASSWORD '88888888';
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
+
+  The installation process takes a few minutes, so please be patient.
+
 category: cms
 keywords:
   - Content Management System
@@ -27,7 +52,7 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
+  - name: preview-sqlite
     status: public
     spec:
       routes:
@@ -45,14 +70,13 @@ editions:
               - type: startup
                 periodSeconds: 10
                 initialDelaySeconds: 60
-      marina:
         launch:
           type: inline
           popUp: true
 
 
-  - name: latest-mariadb
-    status: private
+  - name: latest-postgresql
+    status: public
     spec:
       routes:
         - type: http
@@ -62,42 +86,145 @@ editions:
         tag-prefix: appengine
         name: strapi
         image: strapi/strapi
-        ports: 1337
-        probes:
-          startupProbe:
-            httpGet:
-              path: /
-              port: 1337
-            failureThreshold: 30
-            initialDelaySeconds: 120
-            periodSeconds: 10
-
-        services:
-        - mariadb:
-            secretKeyRef: strapi-mariadb
-            config:
-              - strapi:
-                  user: strapi
-                  usernameSecretKey: DATABASE_USERNAME
-                  passwordSecretKey: DATABASE_PASSWORD
-                  hostSecretKey: DATABASE_HOST
-                  databaseSecretKey: DATABASE_NAME
-
-        secretRefs:
-          - strapi-mariadb
-
-        configs:
-          DATABASE_PORT: 3306
-          DATABASE_CLIENT: mysql
-
+        ports:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
         volumes:
           - name: yarn-cache
             mountPath: /usr/local/share/.cache/
-            size: 1Gi
+            size: 50Gi
+          - name: strapi-data
+            mountPath: /srv/app
+            size: 50Gi
+        config:
+
+          - name: DATABASE_HOST
+            label: Database Host
+            hint: The name of the database server (Service)
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+          - name: DATABASE_PORT
+            value: 5432
+
+          - name: DATABASE_CLIENT
+            value: postgres
+
+          - name: DATABASE_NAME
+            label: Database Name
+            hint: The name of the database to use
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+          - name: DATABASE_USERNAME
+            label: Database user name
+            hint: The username for the database user
+            required: true
+            autoselect: true
+            fieldType: text
+            value: strapi
+
+
+        secret:
+
+          - name: DATABASE_PASSWORD
+            label: Database password
+            hint: The password for the database user
+            required: true
+            autoselect: true
+            fieldType: password
+
+      marina:
+        launch:
+          type: inline
+          popUp: true
+
+
+  - name: latest-mongo
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: strapi
+      provisioner:
+        package: '@provisioner/appengine'
+        tag-prefix: appengine
+        name: strapi
+        image: strapi/strapi
+        ports:
+          - port: 1337
+            name: http
+            protocol: TCP
+            probe:
+              - type: startup
+                periodSeconds: 10
+                initialDelaySeconds: 60
+        volumes:
+          - name: yarn-cache
+            mountPath: /usr/local/share/.cache/
+            size: 50Gi
           - name: strapi-data
             mountPath: /srv/app
             size: 50Gi
 
+        flow:
+          prompts:
+            - type: input
+              name: DATABASE_HOST
+              message: The name of the database server (Service)
+              default: mariadb.database
+              required: true
+              c6o:
+                label: Database Host
+
+            - type: number
+              name: DATABASE_PORT
+              message: The port of the database server (Service)
+              default: 27017
+              required: true
+              c6o:
+                label: Database Host Port
+
+            - type: input
+              name: DATABASE_CLIENT
+              message: Database Client Driver
+              default: mongo
+              required: true
+              c6o:
+                label: Database Client Driver
+
+            - type: input
+              name: DATABASE_NAME
+              message: The name of the database to use
+              default: strapi
+              required: true
+              c6o:
+                label: Database Name
+
+            - type: input
+              name: DATABASE_USERNAME
+              message: The username for the database user
+              default: strapi
+              required: true
+              c6o:
+                label: Database user name
+
+            - type: password
+              name: DATABASE_PASSWORD
+              message: The password for the database user
+              default: strapi
+              required: true
+              c6o:
+                label: Database password
 
       marina:
         launch:

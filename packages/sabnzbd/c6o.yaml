@@ -12,8 +12,6 @@ description:
 
   If you want to know more you can head over to our website at https://sabnzbd.org.
 
-  You will need to setup a port forward to access this application: -> kubectl port-forward -n [namespace here] service/sabnzbd 8080
-
 category: media
 keywords:
   - usenet
@@ -42,8 +40,8 @@ editions:
         image: linuxserver/sabnzbd
         ports: 8080
         configs:
-          PUID: 1000
-          PGID: 1000
+          PUID: 0
+          PGID: 0
         flow:
           prompts:
             - type: list

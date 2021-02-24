@@ -15,6 +15,33 @@ description:
 
   * Customisable and extensible
 
+
+  Setup
+
+  ----
+
+  Matomo requires access to a MariaDB database which has to be created prior to the installation.
+
+
+  Here is a sample script to get you started
+
+
+    ~~~~
+
+    CREATE DATABASE matomo;
+
+    CREATE USER 'matomo'@'%' IDENTIFIED BY '88888888';
+
+    GRANT ALL PRIVILEGES ON matomo.* TO 'matomo'@'%';
+
+    FLUSH PRIVILEGES;
+
+    SELECT User, Plugin FROM mysql.user;
+
+    ~~~~
+
+    Be sure to change the value '88888888' with a secure password.
+
 summary:
   Matomo (formerly Piwik) is the leading open-source analytics platform that gives you more than just powerful analytics
 category: analytics
@@ -66,34 +93,47 @@ editions:
         image: matomo
         ports: 80
 
+        flow:
+          prompts:
+            - type: input
+              name: MATOMO_DATABASE_HOST
+              message: Specify the host name of your database server service (mariadb Service)
+              default: mysql.database
+              c6o:
+                label: Database Server
+                required: true
 
-        probes:
-          startupProbe:
-            httpGet:
-              path: /
-              port: 80
-            failureThreshold: 30
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            - type: input
+              name: MATOMO_DATABASE_ADAPTER
+              message: Specify the database adapter of your database server service (mariadb Service)
+              default: mariadb
+              c6o:
+                label: Database Adapter
+                required: true
 
-        services:
-        - mariadb:
-            secretKeyRef: matomo-mariadb
-            config:
-              - matomo:
-                  user: matomo
-                  usernameSecretKey: MATOMO_DATABASE_USERNAME
-                  passwordSecretKey: MATOMO_DATABASE_PASSWORD
-                  hostSecretKey: MATOMO_DATABASE_HOST
-                  portSecretKey: MATOMO_DATABASE_PORT
-                  databaseSecretKey: MATOMO_DATABASE_DBNAME
-                  databaseTypeSecretKey: JOOMLA_DB_TYPE
+            - type: input
+              name: MATOMO_DATABASE_DBNAME
+              message: Specify the database name
+              default: maotomo
+              c6o:
+                label: Database Name
+                required: true
 
-        secretRefs:
-          - matomo-mariadb
+            - type: input
+              name: MATOMO_DATABASE_USERNAME
+              message: Username for the database
+              default: matomo
+              c6o:
+                label: Database Username
+                required: true
 
-        configs:
-          MATOMO_DATABASE_ADAPTER: mariadb
+            - type: password
+              name: MATOMO_DATABASE_PASSWORD
+              message: Password for the database
+              c6o:
+                target: secrets
+                label: Database password
+                required: true
 
         volumes:
           - name: matomo-data

@@ -34,6 +34,7 @@ export class DroneSettingsMain extends LitElement implements StoreFlowStep {
                     value=${this.serviceSpec.scmChoice}
                     @selected-item-changed=${inputChanged(this.serviceSpec, 'scmChoice')}
                 ></c6o-combo-box>
+                </c6o-select>
             </c6o-form-layout>
         `
     }

@@ -10,5 +10,3 @@ apps:
     namespace: c6o-system
   - name: harbourmaster
     namespace: c6o-system
-  - name: lifeboat
-    namespace: c6o-system

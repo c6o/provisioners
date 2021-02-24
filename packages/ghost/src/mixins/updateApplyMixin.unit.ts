@@ -1,6 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { updateApplyMixin } from './updateApplyMixin'
-
+import {updateApplyMixin} from './updateApplyMixin'
 describe('Ghost Mixins: updateApplyMixin', () => {
-    test.todo('updateApplyMixin')
+    test.skip('updateApplyMixin', async () => {
+
+    })
 })

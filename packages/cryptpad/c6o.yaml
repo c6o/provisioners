@@ -33,35 +33,43 @@ editions:
       routes:
         - type: http
           targetService: cryptpad
+        # - type: http
+        #   name: http
+        #   targetService: cryptpad
+        #   targetPort: 3000
+        # - type: http
+        #   name: http2
+        #   targetService: cryptpad
+        #   targetPort: 3001
       provisioner:
         package: '@provisioner/appengine'
         tag-prefix: appengine
         name: cryptpad
-        tag: v4.1.0-alpine
+        tag: v3.9.0-alpine
         image: promasu/cryptpad
-        ports:
-          - port: 3000
-            name: http
-            protocol: TCP
-          - port: 3001
-            name: sandbox
-            protocol: TCP
+        ports: 3000
+        # ports:
+          # - port: 3000
+          #   protocol: TCP
+          #   name: http
+          # - port: 3001
+          #   protocol: TCP
+          #   name: http2
         #https://github.com/xwiki-labs/cryptpad-docker
-        securityContext:
-          runAsUser: 4001
         configs:
-          CPAD_MAIN_DOMAIN: $PUBLIC_FQDN
-          CPAD_SANDBOX_DOMAIN: localhost
-          CPAD_TRUSTED_PROXY: $PUBLIC_URL
-          CPAD_HTTP2_DISABLE: true
-          CPAD_REALIP_HEADER: X-Forwarded-For
-        volumes:
-          - size: 5Gi
-            name: cryptpad-blob-datastore
-            mountPath: /cryptpad/datastore
-          - size: 1Gi
-            name: cryptpad-blob-data
-            mountPath: /cryptpad/blob
+          # PUID: 1000
+          # PGID: 1000
+          PUID: 0
+          PGID: 0
+          # CPAD_MAIN_DOMAIN: $PUBLIC_FQDN
+          # CPAD_SANDBOX_DOMAIN: $PUBLIC_FQDN
+        # volumes:
+        #   - size: 5Gi
+        #     name: cryptpad-blob-datastore
+        #     mountPath: /cryptpad/datastore
+        #   - size: 1Gi
+        #     name: cryptpad-blob-data
+        #     mountPath: /cryptpad/blob
       marina:
         launch:
           type: inline

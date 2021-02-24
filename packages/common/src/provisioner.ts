@@ -152,7 +152,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         let hostname = null
 
         await this.manager.cluster.
-            begin('Fetch external address')
+            begin(`Fetch external address`)
             .beginWatch(service)
             .whenWatch(
                 ({ obj }) => obj.status?.loadBalancer?.ingress?.length && (obj.status?.loadBalancer?.ingress[0].ip || obj.status?.loadBalancer?.ingress[0].hostname),

@@ -79,25 +79,3 @@ spec:
         action: uninstall
   provisioner: ignore
 status: Running
----
-apiVersion: system.codezero.io/v1
-kind: App
-metadata:
-  name: lifeboat
-  namespace: c6o-system
-  annotations:
-    system.codezero.io/display: Persistence
-    system.codezero.io/iconUrl: '{{hubServerURL}}/api/assets/apps/lifeboat/icon'
-spec:
-  marina:
-    launch:
-      type: inline
-      tag: c6o-lifeboat-app
-      api: true
-      path: /lifeboat/
-    menus:
-      - type: apps
-        display: Uninstall...
-        action: uninstall
-  provisioner: ignore
-status: Running
