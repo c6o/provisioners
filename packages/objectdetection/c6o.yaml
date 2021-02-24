@@ -45,9 +45,6 @@ editions:
           port: 5000
           host: 0.0.0.0
           debug: true
+# TODO: determine if this manifest loads.
 
-      marina:
-        launch:
-          type: none
-          popUp: true
 
