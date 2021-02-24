@@ -50,8 +50,8 @@ editions:
           type: inline
           popUp: true
       services:
-        npm-registry:
-          protocol: http
-          service: verdaccio-service
-          auth: [basic]
-          port: 80
+        - npm-registry:
+            protocol: http
+            service: verdaccio-service
+            auth: [basic]
+            port: 80

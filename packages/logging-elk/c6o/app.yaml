@@ -49,7 +49,7 @@ editions:
           type: inline
           popUp: true
       services:
-        logstash:
-          protocol: http
-          service: elasticsearch
-          port: 9200
+        - logstash:
+            protocol: http
+            service: elasticsearch
+            port: 9200
