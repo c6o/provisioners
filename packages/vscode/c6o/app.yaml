@@ -61,6 +61,5 @@ editions:
   - name: stable
     status: public
     spec:
-      marina: {}
       provisioner:
         storage: 4Gi

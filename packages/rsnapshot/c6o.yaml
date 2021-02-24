@@ -59,7 +59,4 @@ editions:
           - size: 50Gi
             mountPath: /.snapshots
             name: rsnapshot-snapshots
-      marina:
-        launch:
-          type: none
-          popUp: false
+# TODO: determine if this manifest loads.

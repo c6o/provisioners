@@ -29,10 +29,8 @@ editions:
   - name: cpu
     status: public
     spec:
-      marina:
-        launch:
-          popUp: false
-          type: none
+      # TODO: determine if this manifest loads.
+
       provisioner:
         package: '@provisioner/foldingathome'
         teamNumber: 267252
@@ -40,10 +38,8 @@ editions:
   - name: gpu-cpu
     status: public
     spec:
-      marina:
-        launch:
-          popUp: false
-          type: none
+      # TODO: determine if this manifest loads.
+
       provisioner:
         package: '@provisioner/foldingathome'
         teamNumber: 267252
@@ -51,10 +47,8 @@ editions:
   - name: gpu
     status: public
     spec:
-      marina:
-        launch:
-          popUp: false
-          type: none
+      # TODO: determine if this manifest loads.
+
       provisioner:
         package: '@provisioner/foldingathome'
         teamNumber: 267252
