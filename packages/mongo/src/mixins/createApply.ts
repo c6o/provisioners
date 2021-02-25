@@ -6,9 +6,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     // protected members
     runningPod
-    plainRootPassword
-    plainRootPasswordForInitialization
-    encodedRootPassword
+    rootPassword
     mongoDbClient: MongoClient
     configMap
     namespace
@@ -45,19 +43,15 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureRootPassword() {
-
-        if (this.plainRootPasswordForInitialization) return
-
+        if (this.rootPassword) return
         const result = await this.manager.cluster.read(this.rootSecret)
-
-        if (!result.object) throw new Error('Failed to load rootSecret')
-
+        if (!result.object)
+            throw new Error('Failed to load rootSecret')
         const keys = Object.keys(result.object.data)
-
         if (keys?.length !== 1)
             throw new Error('Failed to load rootSecret')
 
-        this.plainRootPasswordForInitialization = Buffer.from(result.object.data[keys[0]], 'base64').toString()
+        this.rootPassword = Buffer.from(result.object.data[keys[0]], 'base64').toString()
     }
 
     /** Looks for mongo pods and if none are found, applies the appropriate yaml */
@@ -72,10 +66,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // There are no mongo-db pods
 
                     // Generate and stash the rootPassword
-                    this.plainRootPassword = super.processPassword(this.spec.rootPassword)
-                    this.plainRootPasswordForInitialization = this.plainRootPassword
-                    this.encodedRootPassword = Buffer.from(this.plainRootPassword).toString('base64')
-
+                    this.rootPassword = super.processPassword(this.spec.rootPassword)
                     const namespace = this.serviceNamespace
                     const storageClass = this.spec.storageClass
                     const rootPasswordKey = this.spec.rootPasswordKey || 'password'
@@ -84,14 +75,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     processor
                         .mergeWith(super.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
-                        .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.plainRootPasswordForInitialization, appLabels: this.documentHelper.componentLabels })
+                        .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword, appLabels: this.documentHelper.componentLabels })
                         .upsertFile('../../k8s/service.yaml', { namespace })
-                        .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: this.encodedRootPassword })
+                        .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: Buffer.from(this.rootPassword).toString('base64') })
                 }
             })
             .end()
     }
-
+    
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureMongoDbIsRunning() {
         await this.manager.cluster.
@@ -103,7 +94,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 })
             .end()
     }
-
+    
     /** Port forwards and connects to the mongoDb and initiates a provision */
     async ensureMongoDbIsProvisioned() {
         if (!this.hasDatabasesToConfigure) {
@@ -121,11 +112,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 .endForward()
             .end()
     }
-
+    
     /** Attempts to connect to MongoDb and sets the mongoDbClient */
     async connectMongoDbClient(processor, attempt) {
         this.ensureRootPassword()
-        const connectionString = `mongodb://root:${this.plainRootPasswordForInitialization}@127.0.0.1:${processor.lastResult.other.localPort}`
+        const connectionString = `mongodb://root:${this.rootPassword}@localhost:${processor.lastResult.other.localPort}`
         this.manager.status?.info(`Attempt ${attempt + 1} to connect to mongo on local port ${processor.lastResult.other.localPort}`)
         return this.mongoDbClient = await MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
     }
@@ -165,41 +156,31 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /**
      * Creates a the database based on the dbConfig and adds the connection string to configMap
      * @param cluster
-     * @param dbConfig
+     * @param dbConfig 
      */
     async setupDb(dbConfig) {
         try {
             const dbName = Object.keys(dbConfig)[0]
             const config = dbConfig[dbName]
-            const user = config?.user || 'devUser'
-            const password = super.processPassword(config?.password)
-            const roles = config?.roles || ['readWrite']
-
+    
             this.manager.status?.push(`Configuring database ${dbName}`)
 
             const db = this.mongoDbClient.db(dbName)
+            const user = config.user || 'devUser'
+            const password = super.processPassword(config.password)
+    
+            const roles = config.roles || ['readWrite']
+    
             await db.addUser(user, password, { roles })
 
             const host = `${this.mongoServiceName}.${this.serviceNamespace}.svc.cluster.local`
             const port = 27017
 
             const connectionString = this.toConnectionString({ user, password, host, port, db: dbName })
-
-            if (process.env.NODE_ENV === 'development')
+            if (process.env.TRAXITT_ENV == 'development')
                 this.manager.status?.info(`Connection string ${connectionString}`)
 
-            if(config) {
-                if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
-                if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(user).toString('base64')
-                if (config.rootUsernameSecretKey) this.configMap[config.rootUsernameSecretKey] = Buffer.from('root').toString('base64')
-                if (config.rootPasswordSecretKey) this.configMap[config.rootPasswordSecretKey] = this.encodedRootPassword
-                if (config.passwordSecretKey) this.configMap[config.passwordSecretKey] = Buffer.from(password).toString('base64')
-                if (config.hostSecretKey) this.configMap[config.hostSecretKey] = Buffer.from(host).toString('base64')
-                if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
-                if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
-                if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mongo').toString('base64')
-            }
-
+            this.configMap[config.secretKey] = Buffer.from(connectionString).toString('base64')
         }
         catch (ex) {
             if (!ex.code || ex.code != 51003) {

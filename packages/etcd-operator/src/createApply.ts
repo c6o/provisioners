@@ -35,7 +35,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const namespace = this.serviceNamespace
 
         await this.manager.cluster
-            .begin('Install etcd operator services')
+            .begin(`Install etcd operator services`)
             .list(this.etcdOperatorPods)
             .do((result, processor) => {
 
@@ -63,7 +63,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const namespace = this.serviceNamespace
 
         await this.manager.cluster
-            .begin('Install etcd services')
+            .begin(`Install etcd services`)
             .list(this.etcdPods)
             .do((result, processor) => {
 

@@ -16,12 +16,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async inquire(args) {
 
         const answers = {
-            storageClass: args['storageClass'] || args.answers['storageClass'] || await this.getDefaultStorageClass(),
-            storage: args['storage'] || args.answers['storage'] || this.spec.storage,
-            edition: args['edition'] || args.answers['edition'] || this.spec.edition,
-            username: args['username'] || args.answers['username'] || this.spec.username,
-            password: args['password'] || args.answers['password'] || this.spec.password,
-            email: 'ignore@ignored.com' || args.answers['email'] || this.spec.email, // docker no longer needs this but it needs to be in creds
+            storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
+            storage: args['storage'] || this.spec.storage,
+            edition: args['edition'] || this.spec.edition,
+            username: args['username'] || this.spec.username,
+            password: args['password'] || this.spec.password,
+            email: 'ignore@ignored.com' || this.spec.email, // docker no longer needs this but it needs to be in creds
         }
 
         const responses = await this.manager.inquirer.prompt([

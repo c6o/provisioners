@@ -1,3 +1,4 @@
+import { keyValue } from '@c6o/kubeclient-contracts'
 import { Volume } from '@provisioner/appengine-contracts'
 
 export function getPVCTemplate(volume: Volume, namespace: string) {

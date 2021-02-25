@@ -103,7 +103,7 @@ export class AppObject<T extends AppDocument = AppDocument> extends CodeZeroObje
     get appId() { return this.document.metadata.name }
 
     /** This can be used to fetch the resource from system server */
-    get instanceId() { return this.namespace && this.name ? `${this.namespace}-${this.name}` : undefined }
+    get instanceId() { return `${this.namespace}-${this.name}` }
 
     get tag() { return this.document.spec.provisioner?.tag  }
     get description() { return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId }

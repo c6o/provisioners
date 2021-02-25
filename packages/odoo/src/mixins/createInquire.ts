@@ -9,8 +9,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (this.edition === 'latest') {
 
             const answers = {
-                databaseSize: args['datbase-storage-size'] || args.answers['datbase-storage-size'] || this.spec.databaseSize,
-                shopAddonsDatabaseSize: args['addons-storage-size'] || args.answers['addons-storage-size'] || this.spec.shopAddonsDatabaseSize,
+                databaseSize: args['datbase-storage-size'] || this.spec.databaseSize,
+                shopAddonsDatabaseSize: args['addons-storage-size'] || this.spec.shopAddonsDatabaseSize,
             }
 
             const responses = await this.manager.inquirer?.prompt([
