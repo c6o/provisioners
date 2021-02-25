@@ -14,33 +14,6 @@ description:
   Joomla! is free and Open Source software distributed under the GNU General Public License version 2 or later.
 
 
-  Setup
-
-  ----
-
-  Joomla! requires access to a MySql/MariaDB database along with a user with 'mysql_native_password' (MySql Only) authentication.  This has been created prior to the installation.
-
-
-  Here is a sample script to get you started
-
-
-    ~~~~
-
-    CREATE DATABASE joomla;
-
-    CREATE USER 'joomla'@'%' IDENTIFIED BY '88888888';
-
-    ALTER USER 'joomla'@'%' IDENTIFIED WITH mysql_native_password BY '88888888';
-
-    GRANT ALL PRIVILEGES ON joomla.* TO 'joomla'@'%';
-
-    FLUSH PRIVILEGES;
-
-    SELECT User, Plugin FROM mysql.user;
-
-    ~~~~
-
-    Be sure to change the value '88888888' with a secure password.
 category: cms
 keywords:
   - Content Management System
@@ -54,50 +27,4 @@ provisioner:
   support: https://github.com/c6o/provisioners/issues
 
 editions:
-  - name: preview
-    status: public
-    spec:
-      routes:
-        - type: http
-          targetService: joomla
-      provisioner:
-        package: '@provisioner/appengine'
-        tag-prefix: appengine
-        image: joomla
-        ports: 80
-        flow:
-          prompts:
-            - type: input
-              name: JOOMLA_DB_HOST
-              message: Specify the host name of your database server service (mysql)
-              default: mysql.database
-              c6o:
-                label: Database Server
-                required: true
-            - type: input
-              name: JOOMLA_DB_NAME
-              message: Specify the host name of your Joomla database
-              default: joomla
-              c6o:
-                label: Database Name
-                required: true
-            - type: input
-              name: JOOMLA_DB_USER
-              message: Specify the database username
-              default: joomla
-              c6o:
-                label: Database User
-                required: true
-            - type: password
-              name: JOOMLA_DB_PASSWORD
-              message: Specify the database password
-              c6o:
-                target: secrets
-                label: Database password
-                required: true
-
-
-      marina:
-        launch:
-          type: inline
-          popUp: true
+  - edition-stable.yaml

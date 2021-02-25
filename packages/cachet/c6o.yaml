@@ -10,27 +10,6 @@ description:
 
   Great companies all over the world are using Cachet to better communicate downtime and system outages to their customers, teams and shareholders.
 
-
-  Setup
-
-  ----
-
-  Cachet requires access to a Postgresql database, with a user account which has sufficient permissions to an existing database.
-
-
-  Here is a sample script to get you started.
-
-
-    ~~~~
-
-  CREATE USER cachet WITH PASSWORD '88888888';
-
-  CREATE DATABASE cachet;
-
-  GRANT ALL PRIVILEGES ON DATABASE cachet to cachet;
-
-
-
 category: monitoring
 keywords:
   - downtime
@@ -57,39 +36,29 @@ editions:
         tag-prefix: appengine
         ports: 8000
 
-        flow:
-          prompts:
-            - type: input
-              name: DB_HOST
-              message: Typically the name of the Service for the Postgres instance (postresql.[NAMESPACE])
-              default: postgresql.database
-              c6o:
-                label: Postgres Server Host
-                required: true
 
-            - type: input
-              name: DB_DATABASE
-              message: The name of the database to use
-              default: cachet
-              c6o:
-                label: Database name
-                required: true
+        probes:
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8000
+            failureThreshold: 30
+            initialDelaySeconds: 10
+            periodSeconds: 10
 
-            - type: input
-              name: DB_USERNAME
-              message: The username for the database user
-              default: cachet
-              c6o:
-                label: Database user name
-                required: true
+        services:
+        - postgres:
+            secretKeyRef: cachet-postgres
+            config:
+              - cachetdb:
+                  user: cachet
+                  usernameSecretKey: DB_USERNAME
+                  passwordSecretKey: DB_PASSWORD
+                  hostSecretKey: DB_HOST
+                  databaseSecretKey: DB_DATABASE
 
-            - type: password
-              name: DB_PASSWORD
-              message: The password for the database user
-              c6o:
-                label: Database password
-                required: true
-                target: secrets
+        secretRefs:
+          - cachet-postgres
 
         configs:
           POSTGRES_PORT: 5432
