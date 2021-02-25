@@ -1,7 +1,8 @@
+/* eslint-disable camelcase */
+/* eslint-disable @typescript-eslint/camelcase */
 import { createInquireMixin } from './createInquire'
 import { baseProvisionerType, Provisioner } from '../index'
 import { inspect } from 'util'
-
 const testConfigSecrets = {
     config: {
         inquireKey: 1
@@ -12,7 +13,7 @@ const testConfigSecrets = {
 }
 jest.mock('../flow', () => {
     return {
-        FlowProcessor: function () {
+        FlowProcessor: function() {
             return {
                 process: jest.fn().mockResolvedValue({
                     config: {
@@ -43,14 +44,14 @@ describe('App Engine Create Inquire', () => {
         })
         test('App Engine: isNumeric string', async () => {
             const appEngine: Provisioner = new AppEngine()
-            expect(appEngine.isNumeric("1")).toBeTruthy()
-            expect(appEngine.isNumeric("-1")).toBeTruthy()
-            expect(appEngine.isNumeric("1a")).toBeFalsy()
-            expect(appEngine.isNumeric("a")).toBeFalsy()
-            expect(appEngine.isNumeric("a1")).toBeFalsy()
-            expect(appEngine.isNumeric("[1]")).toBeFalsy()
-            expect(appEngine.isNumeric("One")).toBeFalsy()
-            expect(appEngine.isNumeric("{1:1}")).toBeFalsy()
+            expect(appEngine.isNumeric('1')).toBeTruthy()
+            expect(appEngine.isNumeric('-1')).toBeTruthy()
+            expect(appEngine.isNumeric('1a')).toBeFalsy()
+            expect(appEngine.isNumeric('a')).toBeFalsy()
+            expect(appEngine.isNumeric('a1')).toBeFalsy()
+            expect(appEngine.isNumeric('[1]')).toBeFalsy()
+            expect(appEngine.isNumeric('One')).toBeFalsy()
+            expect(appEngine.isNumeric('{1:1}')).toBeFalsy()
         })
         test('App Engine: isNumeric number', async () => {
             const appEngine: Provisioner = new AppEngine()
@@ -59,10 +60,10 @@ describe('App Engine Create Inquire', () => {
         })
         test('App Engine: isNumeric object or array', async () => {
             const appEngine: Provisioner = new AppEngine()
-            expect(appEngine.isNumeric({ q: 1 })).toBeFalsy()
+            expect(appEngine.isNumeric({q:1})).toBeFalsy()
             expect(appEngine.isNumeric({})).toBeFalsy()
-            expect(appEngine.isNumeric({ 1: 1 })).toBeFalsy()
-            expect(appEngine.isNumeric([1, 2])).toBeFalsy()
+            expect(appEngine.isNumeric({1:1})).toBeFalsy()
+            expect(appEngine.isNumeric([1,2])).toBeFalsy()
             expect(appEngine.isNumeric([])).toBeFalsy()
         })
     })
@@ -97,13 +98,9 @@ describe('App Engine Create Inquire', () => {
                 },
                 steps: { something: 1 },
             }
-            const no_steps_doc = {
-                document: {
-                    spec: {
-                        provisioner: provisionerMock,
-                    }
-                }
-            }
+            const no_steps_doc = { document: { spec: {
+                provisioner: provisionerMock,
+            } } }
             appEngine.manager = no_steps_doc as any
             await expect(async () => await appEngine.createInquire(some_args)).rejects.toThrow(
                 `NOT IMPLEMENTED ${inspect({

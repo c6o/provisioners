@@ -2,6 +2,7 @@ import { baseProvisionerType } from '../../'
 import { unlinkToken } from '../../constants'
 import createDebug from 'debug'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('provisioner:c6o-system:updateSystem:')
 
 export const updateSystemMixin = (base: baseProvisionerType) => class extends base {

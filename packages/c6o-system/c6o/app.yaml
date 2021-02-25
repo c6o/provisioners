@@ -54,6 +54,34 @@ editions:
             display: Settings...
             action: settings
 ---
+_id: lifeboat
+appId: lifeboat
+name: Persistence
+icon: lifeboatIcon.svg
+system: true
+summary: The Lifeboat is where you manage persistent volumes.
+editions:
+  - name: latest
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: system-lifeboat
+          http:
+            prefix: /lifeboat/
+            rewrite: /
+      provisioner: ignore
+      marina:
+        launch:
+          type: inline
+          port: 1240
+          tag: c6o-lifeboat-app
+          path: /index.html
+        menus:
+          - type: apps
+            display: Settings...
+            action: settings
+---
 _id: store
 name: Store
 appId: store

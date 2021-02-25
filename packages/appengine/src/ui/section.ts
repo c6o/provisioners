@@ -14,7 +14,6 @@ export class AppEngineSection extends LitElement {
     manifestHelper: AppEngineAppObject
 
     updateRequested = () => {
-        console.log('APPX updateREquested in section.ts')
         this.requestUpdate()
     }
 
@@ -23,7 +22,6 @@ export class AppEngineSection extends LitElement {
     }
 
     render() {
-        console.log('APPX rendering section.ts', this.manifestHelper.answers)
         if (this.renderPrompts)
             return html`
                 ${this.renderTitle()}

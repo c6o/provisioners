@@ -93,7 +93,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return tcp
     }
 
-    getApplicationPrefix(appName: string, namespace: string) { return `${appName}-${namespace}` }
+    getApplicationPrefix(appName: string, namespace: string) { return `${appName}--${namespace}` }
 
     simpleHttpSection = (route: RoutesType) => {
         const http: any = {

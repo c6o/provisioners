@@ -40,9 +40,6 @@ describe('Ghost Mixins', () => {
             })
     }
 
-    beforeEach(() => {
-    })
-
     test('Create Ghost Provisioner', async () => {
         expect(GhostProvisioner).toBeDefined()
         expect(typeof GhostProvisioner).toEqual('function')
@@ -52,12 +49,12 @@ describe('Ghost Mixins', () => {
         const ghostProvisioner = new GhostProvisioner()
         setServiceNameSpace(ghostProvisioner)
         expect(ghostProvisioner.ghostPods).toEqual({
-            "kind": "Pod",
-            "metadata": {
-                "labels": {
-                    "app": "ghost"
+            'kind': 'Pod',
+            'metadata': {
+                'labels': {
+                    'app': 'ghost'
                 },
-                "namespace": "A Name",
+                'namespace': 'A Name',
             }
         })
     })
