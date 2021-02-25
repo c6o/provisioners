@@ -10,25 +10,6 @@ description:
 
   Open source Trello-like kanban board. Based on Restya platform.
 
-
-
-  Setup
-
-  ----
-
-  Resty requires access to a Postgresql database, with a user account which has sufficient permissions.  Do NOT create a new database manually, let the application handle that.
-
-
-  Here is a sample script to get you started.
-
-
-    ~~~~
-
-  CREATE DATABASE restyaboard;
-
-  CREATE USER restyaboard WITH PASSWORD '88888888';
-
-
 category: comm
 keywords:
   - kanban
@@ -44,7 +25,7 @@ provisioner:
 
 editions:
   - name: preview
-    status: public
+    status: private
     spec:
       routes:
         - type: http
@@ -56,65 +37,52 @@ editions:
         tag-prefix: appengine
         ports: 80
 
-        volumes:
-          - name: restyaboard-data
-            mountPath: /usr/share/nginx/html/media
-            size: 50Gi
+
+
+        probes:
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 30
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+        services:
+        - postgres:
+            secretKeyRef: restyaboard-postgres
+            config:
+              - restyaboard:
+                  user: restya
+                  createDatabase: false
+                  hostSecretKey: POSTGRES_HOST
+                  portSecretKey: POSTGRES_PORT
+                  rootUsernameSecretKey: POSTGRES_ADMIN_USER
+                  rootPasswordSecretKey: POSTGRES_ADMIN_PASS
+                  databaseTypeSecretKey: DB_DRIVER
+
+        secrets:
+          RESTYA_DB_USERNAME: restya
+          RESTYA_DB_USERPASS: restya
+
+        secretRefs:
+          - restyaboard-postgres
 
         flow:
           prompts:
             - type: list
               name: TZ
               message: Specify a timezone to use.
-              default: 1
+              default: 5
               c6o:
                 label: Specify a timezone to use.
                 dataSource: timezone
                 required: true
 
-            - type: input
-              name: POSTGRES_HOST
-              message: The name of the database server (Postgresql)
-              default: postgresql.database
-              c6o:
-                label: Database Host
-                required: true
-
-            - type: input
-              name: POSTGRES_ADMIN_USER
-              message: The username for the database user
-              default: root
-              c6o:
-                label: Database Admin user name
-                required: true
-
-
-            - type: password
-              name: POSTGRES_ADMIN_PASS
-              message: The password for the database user
-              c6o:
-                label: Database Admin password
-                required: true
-                target: secrets
-
-            - type: input
-              name: RESTYA_DB_USERNAME
-              message: Restya Database User Name
-              default: restyaboard
-              c6o:
-                label: Restya Database User Name
-                required: true
-
-            - type: password
-              name: RESTYA_DB_USERPASS
-              message: Restya Database Password
-              c6o:
-                label: Restya Database Password
-                required: true
-                target: secrets
-
-        configs:
-          POSTGRES_PORT : 5432
+        volumes:
+          - name: restyaboard-data
+            mountPath: /usr/share/nginx/html/media
+            size: 50Gi
 
       marina:
         launch:
