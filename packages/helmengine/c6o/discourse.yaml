@@ -1,0 +1,45 @@
+name: Discourse
+appId: discourse
+
+editions:
+  - name: stable
+    status: public
+    spec:
+      routes:
+        - type: http
+          targetService: discourse
+      provisioner:
+        package: '@provisioner/helmengine'
+        tag-prefix: helmengine
+
+        image: dummyvalue
+        chart: discourse
+        repo: https://charts.bitnami.com/bitnami
+
+        flow:
+          prompts:
+          - type: input
+            name: discourse:username
+            message: Admin Username
+            c6o:
+              label: Admin Username
+              required: true
+          - type: password
+            name: discourse:password
+            message: Admin password
+            
+            c6o:
+              label: Admin password
+              required: true
+              target: secrets
+
+        configs:
+          service:
+            type: NodePort
+            port: 80
+          discourse:host: discourse--demo.cn-dev.codezero.dev  # Replace with $PUBLIC_FQDN when fixed
+
+      marina:
+        launch:
+          type: inline
+          popUp: true

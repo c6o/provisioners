@@ -1,0 +1,56 @@
+{
+  "name": "@provisioner/helmengine",
+  "version": "0.0.4",
+  "description": "CodeZero provisioner for HelmEngine",
+  "main": "lib/index.js",
+  "scripts": {
+    "bundle-develop": "parcel serve ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
+    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
+    "build": "tsc -b && yarn run bundle",
+    "develop": "tsc -b -w --preserveWatchOutput",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "browserslist": [
+    "last 1 chrome version"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c6o/provisioners.git"
+  },
+  "files": [
+    "lib",
+    "c6o"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "codezero",
+    "provisioner",
+    "appengine"
+  ],
+  "author": "Rob Chartier",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/c6o/provisioners/issues"
+  },
+  "homepage": "https://github.com/c6o/provisioners#readme",
+  "dependencies": {
+    "@c6o/kubeclient": "^0.0.8",
+    "@c6o/kubeclient-contracts": "^0.0.8",
+    "@provisioner/appengine": "^0.0.27",
+    "@provisioner/appengine-contracts": "^0.0.27",
+    "@provisioner/common": "^0.0.27",
+    "@provisioner/contracts": "^0.0.27",
+    "chalk": "^4.1.0",
+    "debug": "^4.2.0",
+    "generate-password": "^1.5.1",
+    "js-yaml": "^4.0.0",
+    "lit-element": "^2.3.1",
+    "lodash": "^4.17.20",
+    "mixwith": "^0.1.1",
+    "parcel-bundler": "^1.12.4",
+    "tslib": "^1.11.1"
+  },
+  "gitHead": "d24a33960e0efd45fd795d1c34112fe8174fa19c"
+}
