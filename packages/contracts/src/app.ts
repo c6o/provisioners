@@ -58,6 +58,20 @@ export interface AppDocumentSpec {
     routes?: Array<RoutesType>
 }
 
+export interface ServicePort {
+    name?: string
+    protocol: string
+    port: number
+    [key: string]: any
+}
+
+export interface Volume {
+    name: string
+    size: string
+    mountPath: string
+    subPath?: string
+}
+
 export type AppDocument = KubeDocument<AppDocumentLabels, keyValue, AppDocumentSpec>
 
 export const AppStatuses = {
