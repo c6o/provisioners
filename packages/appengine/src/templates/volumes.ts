@@ -26,8 +26,7 @@ export function getPVC(name, namespace) {
     return {
         kind: 'PersistentVolumeClaim',
         apiVersion: 'v1',
-        metadata:
-        {
+        metadata: {
             name,
             namespace
         }
