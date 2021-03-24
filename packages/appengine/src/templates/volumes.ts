@@ -37,8 +37,7 @@ export function getPV(name) {
     return {
         kind: 'PersistentVolume',
         apiVersion: 'v1',
-        metadata:
-        {
+        metadata: {
             name
         }
     }
