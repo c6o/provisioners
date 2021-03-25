@@ -1,7 +1,6 @@
-import { keyValue } from '@c6o/kubeclient-contracts'
 import yaml from 'js-yaml'
 
-export function getSecretValuesTemplate(name: string, namespace: string, data: keyValue) {
+export function getSecretValuesTemplate(name: string, namespace: string, data: any) {
     const values = yaml.dump(data)
 
     return {

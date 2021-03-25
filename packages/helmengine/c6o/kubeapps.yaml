@@ -3,7 +3,7 @@ appId: kubeapps
 
 editions:
   - name: stable
-    status: public
+    status: private
     spec:
       routes:
         - type: http

@@ -1,6 +1,6 @@
 import { keyValue, KubeDocument } from '@c6o/kubeclient-contracts'
 import yaml from 'js-yaml'
-import { AppDocumentLabels } from '@provisioner/contracts';
+import { AppDocumentLabels } from '@provisioner/contracts'
 
 /**
  * Create JSON Patch commands to add system.codezero.io labels
@@ -19,7 +19,7 @@ const generateLabelsPatch = (path, labels) => {
         .map(k => ({
             op: "add",
             path: `${path}/${k.replace('/', '~1')}`,
-            value: labels[k]
+            value: labels[k],
         }))
 }
 
@@ -57,8 +57,8 @@ export async function getKustomizationConfigs(name: string, namespace: string, l
                 kind: owner.kind,
                 name: owner.metadata.name,
                 uid: owner.metadata.uid,
-                blockOwnerDeletion: true
-            }]
+                blockOwnerDeletion: true,
+            }],
         },
     ]
 
@@ -69,11 +69,11 @@ export async function getKustomizationConfigs(name: string, namespace: string, l
             { patch: yaml.dump(patchOwner), target: { namespace } },
             { 
                 patch: yaml.dump(generateLabelsPatch('/spec/template/metadata/labels', labels)), 
-                target: { namespace, kind: "Deployment" } 
+                target: { namespace, kind: "Deployment" },
             },
             { 
                 patch: yaml.dump(generateLabelsPatch('/metadata/labels', labels)), 
-                target: { namespace, labelSelector: `app.kubernetes.io/instance=${name}` }
+                target: { namespace, labelSelector: `app.kubernetes.io/instance=${name}` },
             },
         ],
     }
@@ -89,6 +89,6 @@ export async function getKustomizationConfigs(name: string, namespace: string, l
         data: {
             'postrender.sh': postRender,
             'kustomization.yaml': yaml.dump(kustomization),
-        }
+        },
     }
 }

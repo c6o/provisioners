@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/helmengine",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "description": "CodeZero provisioner for HelmEngine",
   "main": "lib/index.js",
   "scripts": {
@@ -19,7 +19,7 @@
   },
   "files": [
     "lib",
-    "c6o"
+    "k8s"
   ],
   "publishConfig": {
     "access": "public"
@@ -27,9 +27,11 @@
   "keywords": [
     "codezero",
     "provisioner",
-    "appengine"
+    "appengine",
+    "helm",
+    "helmengine"
   ],
-  "author": "Rob Chartier",
+  "author": "Connery Noble",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/c6o/provisioners/issues"

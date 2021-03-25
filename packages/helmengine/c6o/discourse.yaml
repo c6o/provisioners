@@ -3,7 +3,7 @@ appId: discourse
 
 editions:
   - name: stable
-    status: public
+    status: private
     spec:
       routes:
         - type: http
@@ -37,7 +37,7 @@ editions:
           service:
             type: NodePort
             port: 80
-          discourse:host: discourse--demo.cn-dev.codezero.dev  # Replace with $PUBLIC_FQDN when fixed
+          discourse:host: $PUBLIC_FQDN
 
       marina:
         launch:

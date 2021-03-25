@@ -19,11 +19,11 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async setupUninstallJobCommand() {
-        const { name, namespace } = this.documentHelper;
+        const { name, namespace } = this.documentHelper
 
         this.job.spec.template.spec.containers[0].command = [
             "helm", "uninstall", name,
-            "--namespace", namespace
+            "--namespace", namespace,
         ]
     }
 

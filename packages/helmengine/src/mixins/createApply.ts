@@ -8,7 +8,7 @@ const debug = createDebug('@helmengine:createApply')
 
 declare module '../' {
     export interface Provisioner {
-        createDeploymentDocument: KubeDocument
+        createDeploymentDocument: KubeDocument,
     }
 }
 
@@ -17,20 +17,19 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.manager.status?.push(`Applying Helm Engine to ${this.documentHelper.name}`)
 
-            this.job = templates.getJobTemplate(this.documentHelper.name, this.documentHelper.namespace);
+            this.job = templates.getJobTemplate(this.documentHelper.name, this.documentHelper.namespace)
             
             // From parent AppEngine
-            await this.processTemplates();
+            await this.processTemplates()
 
-            await this.setupJobCommand();
-            await this.applyServiceAccount();
-            await this.applyValuesConfig();
-            await this.applySecretValuesConfig();
-
-            await this.applyPostRenderConfig();
-            await this.applyJob();
+            await this.setupJobCommand()
+            await this.applyServiceAccount()
+            await this.applyValuesConfig()
+            await this.applySecretValuesConfig()
+            await this.applyPostRenderConfig()
+            await this.applyJob()
             
-            await this.ensureJobFinished();
+            await this.ensureJobFinished()
         }
         finally {
             this.manager.status?.pop()
@@ -41,13 +40,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      * Create Job resource with base Helm install command.
      */
     async setupJobCommand() {
-        const { name, namespace } = this.documentHelper;
-        const { chart, repo } = this.documentHelper.spec.provisioner;
+        const { name, namespace } = this.documentHelper
+        const { chart, repo } = this.documentHelper.spec.provisioner
 
         this.job.spec.template.spec.containers[0].command = [
             "helm", "install", name, chart,
             "--namespace", namespace,
-            "--repo", repo
+            "--repo", repo,
         ]
     }
 
@@ -56,10 +55,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      * and apply to helm CLI.
      */
     async applyValuesConfig() {
-        const { namespace, name, configs } = this.documentHelper;
+        const { namespace, name, configs } = this.documentHelper
 
         if(!configs)
-            return;
+            return
 
         try {
             this.manager.status?.push('Installing configuration values')
@@ -67,7 +66,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const createValuesConfig = await templates.getValuesTemplate(
                 name,
                 namespace,
-                this.expandConfigs(configs) as keyValue
+                this.expandConfigs(configs)
             )
 
             // Create values config file
@@ -82,7 +81,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             // Add volume mount based on config values
             const volumeName = `${name}-values`
             const volumePath = "/opt/config"
-            const template = this.job.spec.template.spec;
+            const template = this.job.spec.template.spec
             template.volumes.push({
                 name: volumeName,
                 configMap: {
@@ -91,7 +90,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
 
             // Load mounted values
-            const container = template.containers[0];
+            const container = template.containers[0]
             container.volumeMounts.push({
                 name: volumeName,
                 mountPath: volumePath,
@@ -112,10 +111,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      * and apply to helm CLI.
      */
     async applySecretValuesConfig() {
-        const { namespace, name, secrets } = this.documentHelper;
+        const { namespace, name, secrets } = this.documentHelper
 
         if (!secrets)
-            return;
+            return
 
         try {
             this.manager.status?.push('Installing secret configuration values')
@@ -123,7 +122,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const createSecretValues = templates.getSecretValuesTemplate(
                 name,
                 namespace,
-                this.expandConfigs(secrets) as keyValue
+                this.expandConfigs(secrets)
             )
 
             // Create values config file
@@ -137,7 +136,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             // Add volume mount based on config values
             const volumeName = `${name}-secret-values`
             const volumePath = "/opt/configs/secrets"
-            const template = this.job.spec.template.spec;
+            const template = this.job.spec.template.spec
             template.volumes.push({
                 name: volumeName,
                 secret: {
@@ -146,7 +145,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
 
             // Load mounted values
-            const container = template.containers[0];
+            const container = template.containers[0]
             container.volumeMounts.push({
                 name: volumeName,
                 mountPath: volumePath,
@@ -188,7 +187,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      * TODO: we should add startupProbs to handle this properly.
      */
     async ensureJobFinished() {
-        let jobStatus = null;
+        let jobStatus = null
 
         await this.manager.cluster.
             begin(`Ensure ${this.documentHelper.name} installation finishes`)
@@ -197,8 +196,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 metadata: {
                     namespace: this.job.metadata.namespace,
                     labels: {
-                        ['job-name']: this.job.metadata.name
-                    }
+                        ['job-name']: this.job.metadata.name,
+                    },
                 },
             })
             .whenWatch(() => true, (processor, {status: { phase }}) => {
@@ -229,7 +228,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      * This function create the kustomize script and configuration.
      */
      async applyPostRenderConfig() {
-        const { namespace, name, componentLabels } = this.documentHelper;
+        const { namespace, name, componentLabels } = this.documentHelper
 
         try {
             this.manager.status?.push('Installing Post Render Processor')
@@ -253,7 +252,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             // Add volume mount based on config values
             const volumeName = `${name}-kustomize`
             const volumePath = "/opt/kustomize"
-            const template = this.job.spec.template.spec;
+            const template = this.job.spec.template.spec
             template.volumes.push({
                 name: volumeName,
                 configMap: {
@@ -262,18 +261,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         { 
                             key: 'postrender.sh',
                             path: 'postrender.sh',
-                            mode: 365 // This is chmod 555, makes it executable
+                            mode: 365, // This is chmod 555, makes file executable
                         },
                         { 
                             key: 'kustomization.yaml', 
-                            path: 'kustomization.yaml'
+                            path: 'kustomization.yaml',
                         },
-                    ]
+                    ],
                 },
             })
 
             // mount post-render configurations
-            const container = template.containers[0];
+            const container = template.containers[0]
             container.volumeMounts.push({
                 name: volumeName,
                 mountPath: volumePath,
@@ -288,9 +287,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
-    
+    /**
+     * Helm Job must have specific access to the cluster.  This creates a service account
+     * the job will run under.  By default, a cluster account with access to just the namespace
+     * is created.  If the application requests 'clusterAdmin: true', a clusterServiceAccount
+     * will be created instead.
+     */
     async applyServiceAccount() {
-        const { namespace, name } = this.documentHelper;
+        const { namespace, name } = this.documentHelper
         const serviceAccountName = `${name}-helm-installer`
 
         try {
@@ -307,8 +311,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             // Setup service account for job
             this.job.spec.template.spec.serviceAccountName = serviceAccountName
-
-        }
+        } 
         finally {
             this.manager.status?.pop()
         }
