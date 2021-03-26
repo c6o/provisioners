@@ -261,7 +261,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         { 
                             key: 'postrender.sh',
                             path: 'postrender.sh',
-                            mode: 365, // This is chmod 555, makes file executable
+                            mode: 365, // This chmod makes the file executable
                         },
                         { 
                             key: 'kustomization.yaml', 
