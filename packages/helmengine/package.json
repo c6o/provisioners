@@ -49,7 +49,7 @@
     "generate-password": "^1.5.1",
     "js-yaml": "^4.0.0",
     "lit-element": "^2.3.1",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.19",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",
     "tslib": "^1.11.1"
