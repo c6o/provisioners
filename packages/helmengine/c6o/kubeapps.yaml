@@ -1,0 +1,30 @@
+name: KubeApps
+appId: kubeapps
+
+editions:
+  - name: stable
+    status: private
+    spec:
+      routes:
+        - type: http
+          targetService: kubeapps
+      provisioner:
+        package: '@provisioner/helmengine'
+        tag-prefix: helmengine
+
+        image: dummyvalue
+        chart: kubeapps
+        repo: https://charts.bitnami.com/bitnami
+
+        clusterAdmin: true
+
+        configs:
+          allowNamespaceDiscovery: false
+          frontend:
+            service:
+              type: NodePort
+              port: 80
+      marina:
+        launch:
+          type: inline
+          popUp: true

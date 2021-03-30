@@ -1,0 +1,42 @@
+name: Wordpress
+appId: helm-wp
+
+editions:
+- name: stable
+  status: private
+  spec:
+    routes:
+    - type: http
+      targetService: helm-wp-wordpress
+    provisioner:
+      package: '@provisioner/helmengine'
+      tag-prefix: helmengine
+
+      image: dummyvalue
+      chart: wordpress
+      repo: https://charts.bitnami.com/bitnami
+
+      flow:
+        prompts:
+        - type: input
+          name: wordpressUsername
+          message: Wordpress Username
+          c6o:
+            label: Wordpress Username
+            required: true
+        - type: password
+          name: wordpressPassword
+          message: Wordpress password
+          c6o:
+            label: Wordpress password
+            required: true
+            target: secrets
+
+      configs:
+        service:
+          type: NodePort
+          port: 8080
+    marina:
+      launch:
+        type: inline
+        popUp: true
