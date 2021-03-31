@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@c6o/kubeclient-contracts": "^0.0.8",
+    "@c6o/kubeclient-contracts": "^0.0.9",
     "debug": "^4.1.1",
     "ulid": "^2.3.0"
   }
