@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/c6o/provisioners/compare/v0.0.27...v0.0.28) (2021-03-31)
+
+
+### ♻️ Chores
+
+* Some more linter disables to suppress certain warnings ([668fd68](https://github.com/c6o/provisioners/commit/668fd6846260fab97afc272159c0ad671a04feba))
+
+
+
+
+
 ## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
 
 

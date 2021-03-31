@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/c6o/provisioners/compare/v0.0.27...v0.0.28) (2021-03-31)
+
+
+### ✨ Features
+
+* **answers file:** Ability to specific an answers file during install of an app ([#223](https://github.com/c6o/provisioners/issues/223)) ([3d332fe](https://github.com/c6o/provisioners/commit/3d332fe887c87e38ba550351c8a0e706e7f8271e))
+* **lifeboat:** Add lifeboat to the dock by default ([#203](https://github.com/c6o/provisioners/issues/203)) ([d56c031](https://github.com/c6o/provisioners/commit/d56c031f87e420cf134739ce1e19b9284ed300fa))
+* **lifeboat:** Hook into c60-system [#179](https://github.com/c6o/provisioners/issues/179) ([e11e0e8](https://github.com/c6o/provisioners/commit/e11e0e81ed0d00426e7762c6b58dd6ba08a49e0e))
+
+
+
+
+
 ## [0.0.27](https://github.com/c6o/provisioners/compare/v0.0.26...v0.0.27) (2021-02-03)
 
 

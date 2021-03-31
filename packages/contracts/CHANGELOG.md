@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/nsainaney/traxitt/compare/v0.0.27...v0.0.28) (2021-03-31)
+
+
+### ✨ Features
+
+* **answers file:** Ability to specific an answers file during install of an app ([#223](https://github.com/nsainaney/traxitt/issues/223)) ([3d332fe](https://github.com/nsainaney/traxitt/commit/3d332fe887c87e38ba550351c8a0e706e7f8271e))
+
+
+### 🐛 Bug Fixes
+
+* Corrected app instanceId if name/namespace is undefined ([4f2e0a9](https://github.com/nsainaney/traxitt/commit/4f2e0a9d4e38d655ceb70ed97d61b7fa9609f658))
+
+
+### ♻️ Chores
+
+* **kits:** reorganize kits-contracts into provisioners. ([#231](https://github.com/nsainaney/traxitt/issues/231)) ([6b89e3f](https://github.com/nsainaney/traxitt/commit/6b89e3fa08e90e4303357053e404f90ac6006e9e))
+
+
+
+
+
 ## [0.0.27](https://github.com/nsainaney/traxitt/compare/v0.0.26...v0.0.27) (2021-02-03)
 
 

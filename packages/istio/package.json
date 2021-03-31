@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/istio",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "CodeZero provisioner for Istio",
   "main": "lib/index.js",
   "scripts": {
@@ -39,8 +39,8 @@
   "dependencies": {
     "@c6o/kubeclient": "^0.0.9",
     "@c6o/kubeclient-contracts": "^0.0.9",
-    "@provisioner/common": "^0.0.27",
-    "@provisioner/contracts": "^0.0.27",
+    "@provisioner/common": "^0.0.28",
+    "@provisioner/contracts": "^0.0.28",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",

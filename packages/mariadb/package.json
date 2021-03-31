@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/mariadb",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "CodeZero provisioner for mariadb",
   "main": "lib/index.js",
   "scripts": {
@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.27",
+    "@provisioner/common": "^0.0.28",
     "js-yaml": "^4.0.0",
     "mariadb": "^2.5.3",
     "mixwith": "^0.1.1"

@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/jitsi",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "description": "CodeZero provisioner for Jitsi",
   "main": "lib/index.js",
   "scripts": {
@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.27",
+    "@provisioner/common": "^0.0.28",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "mosquitto-passwd": "^1.0.3",

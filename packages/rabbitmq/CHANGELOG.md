@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/nsainaney/traxitt/compare/v0.0.27...v0.0.28) (2021-03-31)
+
+
+### ♻️ Chores
+
+* **rabbitmq:** Fixed manifest. Tested provisioner ([#218](https://github.com/nsainaney/traxitt/issues/218)) ([d0faccf](https://github.com/nsainaney/traxitt/commit/d0faccf6552bc8f1491917180e32144be1c59452))
+
+
+
+
+
 ## [0.0.27](https://github.com/nsainaney/traxitt/compare/v0.0.26...v0.0.27) (2021-02-03)
 
 **Note:** Version bump only for package @provisioner/rabbitmq

@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/c6o/node-monorepo/compare/v0.0.27...v0.0.28) (2021-03-31)
+
+
+### ✨ Features
+
+* **answers file:** Ability to specific an answers file during install of an app ([#223](https://github.com/c6o/node-monorepo/issues/223)) ([3d332fe](https://github.com/c6o/node-monorepo/commit/3d332fe887c87e38ba550351c8a0e706e7f8271e))
+* **HelmEngine:** Initial commit of HelmEngine provisioner ([#228](https://github.com/c6o/node-monorepo/issues/228)) ([77c8557](https://github.com/c6o/node-monorepo/commit/77c85572f0031639ee3aefe7f6ee544a7edd2056))
+* **lifeboat:** Add lifeboat to the dock by default ([#203](https://github.com/c6o/node-monorepo/issues/203)) ([d56c031](https://github.com/c6o/node-monorepo/commit/d56c031f87e420cf134739ce1e19b9284ed300fa))
+* **lifeboat:** Hook into c60-system [#179](https://github.com/c6o/node-monorepo/issues/179) ([e11e0e8](https://github.com/c6o/node-monorepo/commit/e11e0e81ed0d00426e7762c6b58dd6ba08a49e0e))
+* **mariadb orchestration:** mariadb orchestration provisioner working, upgraded wikijs to use it ([#220](https://github.com/c6o/node-monorepo/issues/220)) ([e20cc25](https://github.com/c6o/node-monorepo/commit/e20cc25c7c94ad0ff38559a6df016654b1d40f1a))
+
+
+### 🐛 Bug Fixes
+
+* Corrected app instanceId if name/namespace is undefined ([4f2e0a9](https://github.com/c6o/node-monorepo/commit/4f2e0a9d4e38d655ceb70ed97d61b7fa9609f658))
+
+
+### ♻️ Chores
+
+* **kits:** reorganize kits-contracts into provisioners. ([#231](https://github.com/c6o/node-monorepo/issues/231)) ([6b89e3f](https://github.com/c6o/node-monorepo/commit/6b89e3fa08e90e4303357053e404f90ac6006e9e))
+* **orchestration:** Enabled DB orchestration for many provisioners ([#221](https://github.com/c6o/node-monorepo/issues/221)) ([c7d3e4d](https://github.com/c6o/node-monorepo/commit/c7d3e4d7d659a634c33b32136152387353b29b35))
+* **rabbitmq:** Fixed manifest. Tested provisioner ([#218](https://github.com/c6o/node-monorepo/issues/218)) ([d0faccf](https://github.com/c6o/node-monorepo/commit/d0faccf6552bc8f1491917180e32144be1c59452))
+* Give AppEngine form inputs the 'compact' theme for better screen layout ([#198](https://github.com/c6o/node-monorepo/issues/198)) ([4c7d2c6](https://github.com/c6o/node-monorepo/commit/4c7d2c6e3278ec875ce298f77a0bfe044913ec20))
+* Some more linter disables to suppress certain warnings ([668fd68](https://github.com/c6o/node-monorepo/commit/668fd6846260fab97afc272159c0ad671a04feba))
+
+
+
+
+
 ## [0.0.27](https://github.com/c6o/node-monorepo/compare/v0.0.26...v0.0.27) (2021-02-03)
 
 

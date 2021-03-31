@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/nsainaney/traxitt/compare/v0.0.27...v0.0.28) (2021-03-31)
+
+
+### ✨ Features
+
+* **answers file:** Ability to specific an answers file during install of an app ([#223](https://github.com/nsainaney/traxitt/issues/223)) ([3d332fe](https://github.com/nsainaney/traxitt/commit/3d332fe887c87e38ba550351c8a0e706e7f8271e))
+
+
+
+
+
 ## [0.0.27](https://github.com/nsainaney/traxitt/compare/v0.0.26...v0.0.27) (2021-02-03)
 
 **Note:** Version bump only for package @provisioner/etcd-operator
