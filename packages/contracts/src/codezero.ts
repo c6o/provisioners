@@ -22,4 +22,24 @@ export class CodeZeroObject<T extends CodeZeroResource> extends KubeObject<T> {
             'app.kubernetes.io/managed-by': 'codezero'
         }
     }
+
+    get spec() {
+        return this.document.spec
+    }
+
+    get metadata() {
+        return this.document.metadata
+    }
+
+    get isNew() {
+        return !!this.metadata.uid
+    }
+
+    get ownerReferences() {
+        return this.metadata.ownerReferences
+    }
+
+    get owner() {
+        return this.metadata.ownerReferences[0].name
+    }
 }
