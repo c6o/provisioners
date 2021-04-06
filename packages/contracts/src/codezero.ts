@@ -40,6 +40,6 @@ export class CodeZeroObject<T extends CodeZeroResource> extends KubeObject<T> {
     }
 
     get owner() {
-        return this.metadata.ownerReferences[0].name
+        return this.metadata.ownerReferences[0]?.name
     }
 }
