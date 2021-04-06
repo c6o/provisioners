@@ -86,7 +86,6 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
                     .upsertFile('../../k8s/crds/oauth.v1.yaml')
                     .upsertFile('../../k8s/crds/tasks.v1.yaml')
                     .upsertFile('../../k8s/crds/users.v1.yaml')
-                    .upsertFile('../../k8s/crds/volumes.v1.yaml')
                 .end()
         else
             await this.manager.cluster
@@ -96,7 +95,6 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
                     .upsertFile('../../k8s/crds/oauth.v1beta1.yaml')
                     .upsertFile('../../k8s/crds/tasks.v1beta1.yaml')
                     .upsertFile('../../k8s/crds/users.v1beta1.yaml')
-                    .upsertFile('../../k8s/crds/volumes.v1.yaml')
                 .end()
     }
 }
