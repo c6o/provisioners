@@ -7,6 +7,7 @@ const debug = createDebug('@appengine:FlowProcessor')
 
 export class FlowProcessor {
 
+    answers: any
     responses: any = {}
     extensionsMap = new Map<string, contracts.c6oExtensions>()
     generates = new Map<string, contracts.generatorOptions>()
@@ -18,7 +19,8 @@ export class FlowProcessor {
      */
     constructor(private inquirer, private fnContext) { }
 
-    async process(steps: contracts.Flow): Promise<contracts.FlowResult> {
+    async process(steps: contracts.Flow, answers?: any): Promise<contracts.FlowResult> {
+        this.answers = answers || {}
         const result: contracts.FlowResult = {
             transient: {},
             configs: {},
@@ -96,7 +98,7 @@ export class FlowProcessor {
         }
         const asks = inquireFields.reduce(this.convertPrompts.bind(this), new Array<contracts.InquirePrompt>())
 
-        const responses = await this.inquirer.prompt(asks)
+        const responses = await this.inquirer.prompt(asks, this.answers)
 
         // Add to the responses bag - new responses overwrite old responses
         this.responses = {
