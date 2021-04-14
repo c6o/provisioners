@@ -160,6 +160,14 @@ export class AppObject<T extends AppDocument = AppDocument> extends CodeZeroObje
         }
     }
 
+    get volumes(): Array<Volume> {
+        return this.spec?.provisioner?.volumes
+    }
+
+    static volumesPath(): string {
+        return '/spec/provisioner/volumes'
+    }
+
     // spec is the contents of the service object
     getServiceSpec(serviceName: string) {
         return this.getServiceObject(serviceName)[serviceName]
