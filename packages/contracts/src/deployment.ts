@@ -122,8 +122,16 @@ export class DeploymentObject<T extends DeploymentDocument = DeploymentDocument>
         return this.templateSpec?.volumes
     }
 
+    static volumesPath() {
+        return '/spec/template/spec/volumes'
+    }
+
     get volumeMounts() {
         return this.templateSpec?.containers[0]?.volumeMounts
+    }
+
+    static volumeMountsPath() {
+        return '/spec/template/spec/containers/volumeMounts'
     }
 
     get volumesNotMounted() {

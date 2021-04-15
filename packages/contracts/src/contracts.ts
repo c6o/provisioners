@@ -18,14 +18,17 @@ export interface PersistenceRequest {
 }
 
 export interface AttachRequest extends PersistenceRequest {
-    volumeType?: string
-    volumeName?: string
-    volumeClaimName?: string
-    volumeSnapshotName?: string
-    volumeSize?: string
     namespace: string
     appName: string
     mountPoint?: string
+    volumeClaimName?: string
+
+    // these aren't used if the pvc/pv already exist. Will add the case
+    // where the pvc needs to be created.
+    volumeType?: string
+    volumeName?: string
+    volumeSnapshotName?: string
+    volumeSize?: string
 }
 
 export interface DeleteRequest extends PersistenceRequest {
