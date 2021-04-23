@@ -147,7 +147,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
     }
 
-    async getServiceAddress(service: Partial<KubeDocument>) {
+    async getServiceAddress(service: KubeDocument) {
         let ip = null
         let hostname = null
 

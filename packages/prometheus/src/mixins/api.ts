@@ -240,20 +240,19 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
                     'prometheus.yml': yaml.dump(this.prometheusConfig)
                 }
             })
-            if (result.error)
-                throw result.error
+            result.throwIfError()
             restart = true
         }
 
         for (const secret of this.addedSecrets) {
             const result = await this.manager.cluster.upsert(secret)
-            if (result.error) throw result.error
+            result.throwIfError()
             restart = true
         }
 
         for (const secret of this.removedSecrets) {
             const result = await this.manager.cluster.delete(secret)
-            if (result.error) throw result.error
+            result.throwIfError()
             restart = true
         }
 

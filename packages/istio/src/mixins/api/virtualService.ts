@@ -164,15 +164,13 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
     async getGateway(): Promise<KubeDocument> {
         const result = await this.manager.cluster.read(this.gateway)
-        if (result.error)
-            throw new Error(result.errorMessage)
+        result.throwIfError()
         return result.object
     }
 
     async getLoadBalancer(): Promise<KubeDocument> {
         const result = await this.manager.cluster.read(this.loadBalancer)
-        if (result.error)
-            throw new Error(result.errorMessage)
+        result.throwIfError()
         return result.object
     }
 

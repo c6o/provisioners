@@ -50,8 +50,7 @@ export interface ExpandRequest extends PersistenceRequest {
     persistentVolumeClaimName: string
     namespace: string
     newSize: number
-    capacityUnit?: 'Gi',
-    targetDoc?: object
+    capacityUnit?: 'Gi'
 }
 
 export interface ListRequest extends PersistenceRequest {

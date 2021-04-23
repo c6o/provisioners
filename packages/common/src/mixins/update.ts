@@ -1,3 +1,4 @@
+import { PatchOps } from '@c6o/kubeclient-contracts'
 import { baseProvisionerMixinType } from '../'
 import * as pointer from 'jsonpointer'
 import createDebug from 'debug'
@@ -6,7 +7,7 @@ const debug = createDebug('provisioner:c6o-system:updateSystem:')
 
 export const updateMixin = (base: baseProvisionerMixinType) => class extends base {
 
-    updateImageTag = async (document, tag, path) => {
+    updateImageTag = async (document, tag, path: string) => {
         const result = await this.manager.cluster.list(document)
 
         if (result.error) {
@@ -24,7 +25,7 @@ export const updateMixin = (base: baseProvisionerMixinType) => class extends bas
 
                 debug(`Going from ${currentImage} to ${newImage}`)
 
-                const op = [{ op: 'replace', path, value: newImage }]
+                const op: PatchOps = [{ op: 'replace', path, value: newImage }]
 
                 const patchResult = await this.manager.cluster.patch({
                         apiVersion: document.apiVersion,

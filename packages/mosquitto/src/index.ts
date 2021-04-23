@@ -31,10 +31,7 @@ export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, cre
         }
 
         const result = await this.manager.cluster.read(manifest)
-
-        if (result.error) {
-            throw new Error(`Failed to load the ConfigMap '${name}' from '${namespace}'`)
-        }
+        result.throwIfError(`Failed to load the ConfigMap '${name}' from '${namespace}'`)
 
         return { configmap: result.object, manifest }
     }

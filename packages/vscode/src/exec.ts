@@ -72,7 +72,10 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
             begin('Copy files')
                 .list(devPods)
                 .do((result, processor) => {
-                    processor.copy(result.object.items[0], this.execArgs[0], this.execArgs[1])
+                    // Grab the first pod
+                    const item = result.each('Pod').next().value
+                    if (item)
+                        processor.copy(item, this.execArgs[0], this.execArgs[1])
                 })
             .end()
     }
