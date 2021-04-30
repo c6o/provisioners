@@ -1,4 +1,5 @@
-import { Result, KubeDocument } from '@c6o/kubeclient-contracts'
+import { Result, PatchOp } from '@c6o/kubeclient-contracts'
+import { PersistentVolumeClaimDocument } from './resources/persistentVolumeClaim'
 
 export interface PersistenceKit {
     attach(request: AttachRequest): Promise<Result>
@@ -14,7 +15,7 @@ export interface PersistenceKit {
 }
 
 export interface PersistenceRequest {
-    targetDoc?: KubeDocument
+    targetDoc?: PersistentVolumeClaimDocument
 }
 
 export interface AttachRequest extends PersistenceRequest {
@@ -43,7 +44,7 @@ export interface DetachRequest extends PersistenceRequest {
 }
 
 export interface ExpansionAllowedRequest extends PersistenceRequest {
-    storageClassName: string
+    storageClassName?: string
 }
 
 export interface ExpandRequest extends PersistenceRequest {
@@ -58,14 +59,11 @@ export interface ListRequest extends PersistenceRequest {
     appName: string
 }
 
-export interface PatchRequest extends PersistenceRequest {
+export interface PatchRequest extends PersistenceRequest, PatchOp {
     apiVersion: string
     kind: string
     name: string
     namespace?: string
-    op: string
-    path: string
-    value: string
 }
 
 export interface SnapshotRequest extends PersistenceRequest {

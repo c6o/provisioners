@@ -1,3 +1,4 @@
+import { ConfigMap, Secret } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
@@ -48,7 +49,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
             this.logger?.error(result.error)
             throw result.error
         }
-        const systemServerConfigMap = result.object
+        const systemServerConfigMap = result.as<ConfigMap>()
 
         systemServerConfigMap.data = { NPM_REGISTRY_URL: registryUrl }
         await this.manager.cluster.upsert(systemServerConfigMap)
@@ -60,7 +61,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
                 this.logger?.error(result.error)
                 throw result.error
             }
-            const systemServerSecrets = result.object
+            const systemServerSecrets = result.as<Secret>()
 
             // username and password already encoded
             systemServerSecrets.data = {
@@ -81,7 +82,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
             this.logger?.error(result.error)
             throw result.error
         }
-        const systemServerConfigMap = result.object
+        const systemServerConfigMap = result.as<ConfigMap>()
 
         systemServerConfigMap.data.NPM_REGISTRY_URL = null
 
@@ -93,7 +94,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
             this.logger?.error(result.error)
             throw result.error
         }
-        const systemServerSecrets = result.object
+        const systemServerSecrets = result.as<Secret>()
 
         if (systemServerSecrets.data) {
             systemServerSecrets.data.NPM_REGISTRY_USERNAME = null

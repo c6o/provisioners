@@ -1,5 +1,5 @@
-import { CodeZeroObject } from "./codezero"
-import { AppDocumentLabels } from "./app"
+import { CodeZeroObject } from "../codezero"
+import { AppDocumentLabels } from "../app"
 import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
 
 export interface DeploymentMetadata {

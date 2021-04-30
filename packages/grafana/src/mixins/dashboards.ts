@@ -100,19 +100,18 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
         let result = await this.manager.cluster.read(this.mainConfigMap(namespace))
         result.throwIfError()
-
-        const mainConfigMap = result.object
+        const configMap = result.as<ConfigMap>()
 
         const ownerPrefix = `${appNamespace}-${appName}`
-        const dbProviders: any = yaml.load(result.object.data['dashboardproviders.yaml'])
+        const dbProviders: any = yaml.load(configMap.data['dashboardproviders.yaml'])
         dbProviders.providers = dbProviders.providers || []
         dbProviders.providers = dbProviders.providers.filter(entry => entry.folder !== ownerPrefix)
 
-        const dbSources: any = yaml.load(result.object.data['datasources.yaml'])
+        const dbSources: any = yaml.load(configMap.data['datasources.yaml'])
         dbSources.datasources = dbSources.datasources || []
         dbSources.datasources = dbSources.datasources.filter(entry => !entry.name.startsWith(ownerPrefix))
 
-        result = await this.manager.cluster.patch(mainConfigMap, {
+        result = await this.manager.cluster.patch(configMap, {
             data: {
                 'dashboardproviders.yaml': yaml.dump(dbProviders),
                 'datasources.yaml': yaml.dump(dbSources)
@@ -187,13 +186,14 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     async updateConfig(): Promise<boolean> {
         let result = await this.manager.cluster.read(this.mainConfigMap(this.runningDeployment.metadata.namespace))
         result.throwIfError()
+        const configMap = result.as<ConfigMap>()
 
         const folder = `${this.appNamespace}-${this.appName}`
 
         let modified = false
 
         // add dashboard provider folders if needed
-        const dbProviders: any = yaml.load(result.object.data['dashboardproviders.yaml'])
+        const dbProviders: any = yaml.load(configMap.data['dashboardproviders.yaml'])
         dbProviders.providers = dbProviders.providers || []
         const index = dbProviders.providers.findIndex(entry => entry.folder == folder)
         if (index === -1) {
@@ -211,7 +211,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         }
 
         // add and remove datasource
-        const dbSources: any = yaml.load(result.object.data['datasources.yaml'])
+        const dbSources: any = yaml.load(configMap.data['datasources.yaml'])
         dbSources.datasources = dbSources.datasources || []
 
         for (const source of this.datasources) {
@@ -231,7 +231,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         }
 
         if (modified) {
-            result = await this.manager.cluster.patch(result.object, {
+            result = await this.manager.cluster.patch(result.as<ConfigMap>(), {
                 data: {
                     'dashboardproviders.yaml': yaml.dump(dbProviders),
                     'datasources.yaml': yaml.dump(dbSources)

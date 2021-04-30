@@ -1,5 +1,5 @@
-import { CodeZeroObject } from "./codezero"
-import { AppDocumentLabels } from "./app"
+import { CodeZeroObject } from "../codezero"
+import { AppDocumentLabels } from "../app"
 import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
 
 export interface PersistentVolumeSpec {
@@ -22,5 +22,4 @@ export type PersistentVolumeDocument = KubeDocument<AppDocumentLabels, keyValue,
 
 export class PersistentVolumeObject<T extends PersistentVolumeDocument = PersistentVolumeDocument>
     extends CodeZeroObject<T> {
-
 }

@@ -1,7 +1,9 @@
+import { Secret } from '@provisioner/contracts'
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import { Client } from 'pg'
 import createDebug from 'debug'
+
 const debug = createDebug('postgres:createApply')
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -109,15 +111,15 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         if (this.plainRootPasswordForInitialization) return
 
         const result = await this.manager.cluster.read(this.rootSecret)
+        result.throwIfError('Failed to load rootSecret')
+        const secret = result.as<Secret>()
 
-        if (!result.object) throw new Error('Failed to load rootSecret')
-
-        const keys = Object.keys(result.object.data)
+        const keys = Object.keys(secret.data)
 
         if (keys?.length !== 1)
             throw new Error('Failed to load rootSecret')
 
-        this.plainRootPasswordForInitialization = Buffer.from(result.object.data[keys[0]], 'base64').toString()
+        this.plainRootPasswordForInitialization = Buffer.from(secret.data[keys[0]], 'base64').toString()
     }
 
     /** Attempts to connect to postgres and sets the postgresClient */
