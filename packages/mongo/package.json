@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
+    "@c6o/kubeclient-resources": "^0.0.9",
     "@provisioner/common": "^0.0.28",
     "js-yaml": "^4.0.0",
     "mixwith": "^0.1.1",

@@ -1,7 +1,3 @@
-export * from './configMap'
-export * from './certificateSigningRequest'
 export * from './deployment'
 export * from './persistentVolume'
 export * from './persistentVolumeClaim'
-export * from './secret'
-export * from './selfSubjectAccessReview'

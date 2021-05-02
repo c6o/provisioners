@@ -8,7 +8,9 @@ export interface CodeZeroLabels extends keyValue {
 }
 
 
-export type CodeZeroResource = KubeDocument<CodeZeroLabels>
+export interface CodeZeroResource extends KubeDocument {
+    labels?: CodeZeroLabels
+}
 
 export class CodeZeroObject<T extends CodeZeroResource> extends KubeObject<T> {
     get name() { return this.document.metadata.name }

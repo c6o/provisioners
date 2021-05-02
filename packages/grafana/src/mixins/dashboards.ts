@@ -1,4 +1,4 @@
-import { ConfigMap } from '@provisioner/contracts'
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../index'
 import * as yaml from 'js-yaml'
 

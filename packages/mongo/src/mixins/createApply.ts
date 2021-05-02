@@ -1,4 +1,4 @@
-import { Secret } from '@provisioner/contracts'
+import { Secret } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import { MongoClient } from 'mongodb'

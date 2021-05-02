@@ -73,8 +73,10 @@ export interface Volume {
 }
 
 export type AppStatus = 'Installing' | 'Running' | 'Error' | 'Configuring' | 'Degraded' | 'Terminating' | 'Terminated'
-export interface AppDocument extends KubeDocument<AppDocumentLabels, keyValue, AppDocumentSpec> {
+export interface AppDocument extends KubeDocument {
+    labels?: AppDocumentLabels
     status?: AppStatus
+    spec?: AppDocumentSpec
 }
 
 export const AppStatuses = {

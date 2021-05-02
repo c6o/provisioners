@@ -69,6 +69,7 @@ export interface AppEngineAppSpec extends AppDocumentSpec {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppEngineAppDocument extends KubeDocument<AppDocumentLabels, keyValue, AppEngineAppSpec> {
-
+export interface AppEngineAppDocument extends KubeDocument {
+    labels?: AppDocumentLabels
+    spec?: AppEngineAppSpec
 }

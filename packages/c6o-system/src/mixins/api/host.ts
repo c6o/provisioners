@@ -1,5 +1,5 @@
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../../'
-import { ConfigMap } from '@provisioner/contracts'
 
 export const hostApiMixin = (base: baseProvisionerType) => class extends base {
 

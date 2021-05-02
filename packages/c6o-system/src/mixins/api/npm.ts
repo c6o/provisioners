@@ -1,4 +1,4 @@
-import { ConfigMap, Secret } from '@provisioner/contracts'
+import { ConfigMap, Secret } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 

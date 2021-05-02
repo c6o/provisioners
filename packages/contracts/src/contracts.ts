@@ -1,5 +1,5 @@
 import { Result, PatchOp } from '@c6o/kubeclient-contracts'
-import { PersistentVolumeClaimDocument } from './resources/persistentVolumeClaim'
+import { PersistentVolumeClaim } from '@c6o/kubeclient-resources/core/v1'
 
 export interface PersistenceKit {
     attach(request: AttachRequest): Promise<Result>
@@ -15,7 +15,7 @@ export interface PersistenceKit {
 }
 
 export interface PersistenceRequest {
-    targetDoc?: PersistentVolumeClaimDocument
+    targetDoc?: PersistentVolumeClaim
 }
 
 export interface AttachRequest extends PersistenceRequest {
