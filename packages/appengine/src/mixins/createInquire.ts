@@ -15,13 +15,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
             const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
-            const result = await flowProcessor.process(this.documentHelper.flow)
+            const result = await flowProcessor.process(this.documentHelper.flow, args.answers)
             this.documentHelper.processResult(result)
         }
 
         this.documentHelper.postInquire()
     }
 
+    // TODO: Remove the following code. This
     async inquireApplicationImage(args) {
         const answers = {
             tag: this.documentHelper.tag || 'latest',
