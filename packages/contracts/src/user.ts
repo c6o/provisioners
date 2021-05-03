@@ -1,8 +1,8 @@
-import { KubeDocument } from '@c6o/kubeclient-contracts'
+import { Resource } from '@c6o/kubeclient-contracts'
 
 export type UserStatus = 'Approved' | 'Denied' | 'Error'
 
-export interface User extends KubeDocument {
+export interface User extends Resource {
     apiVersion: 'system.codezero.io/v1'
     kind: 'User'
 

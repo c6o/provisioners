@@ -1,5 +1,4 @@
-import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
-import { Volume } from '@provisioner/appengine-contracts'
+import { Resource, keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
@@ -8,12 +7,12 @@ const debug = createDebug('@appengine:createApply')
 
 declare module '../' {
     export interface Provisioner {
-        createDeploymentDocument: KubeDocument
+        createDeploymentDocument: Resource
     }
 }
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    createDeploymentDocument: KubeDocument
+    createDeploymentDocument: Resource
 
     get createDeploymentVolumes() {
         return this.createDeploymentDocument.spec.template.spec.volumes = this.createDeploymentDocument.spec.template.spec.volumes || []

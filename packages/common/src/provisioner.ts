@@ -2,7 +2,7 @@ import { ulid } from 'ulid'
 import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
-import { KubeDocument } from '@c6o/kubeclient-contracts'
+import { Resource } from '@c6o/kubeclient-contracts'
 import { AppObject } from '@provisioner/contracts'
 
 import {
@@ -147,7 +147,7 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
         await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
     }
 
-    async getServiceAddress(service: KubeDocument) {
+    async getServiceAddress(service: Resource) {
         let ip = null
         let hostname = null
 

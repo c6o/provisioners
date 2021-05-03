@@ -1,27 +1,19 @@
-import { CodeZeroObject } from "../codezero"
+import { CodeZeroHelper } from "../codezero"
 import { Deployment } from '@c6o/kubeclient-resources/apps/v1'
 
 export class DeploymentObject<T extends Deployment = Deployment>
-    extends CodeZeroObject<T> {
+    extends CodeZeroHelper<T> {
 
-    get spec() {
-        return this.document.spec
+    static volumesPath() {
+        return '/spec/template/spec/volumes'
+    }
+
+    static volumeMountsPath() {
+        return '/spec/template/spec/containers/volumeMounts'
     }
 
     get templateSpec() {
         return this.spec?.template?.spec
-    }
-
-    get metadata() {
-        return this.document.metadata
-    }
-
-    get isNew() {
-        return !!this.metadata?.uid
-    }
-
-    get ownerReferences() {
-        return this.metadata?.ownerReferences
     }
 
     get appName() {
@@ -32,16 +24,8 @@ export class DeploymentObject<T extends Deployment = Deployment>
         return this.templateSpec?.volumes
     }
 
-    static volumesPath() {
-        return '/spec/template/spec/volumes'
-    }
-
     get volumeMounts() {
         return this.templateSpec?.containers[0]?.volumeMounts
-    }
-
-    static volumeMountsPath() {
-        return '/spec/template/spec/containers/volumeMounts'
     }
 
     get volumesNotMounted() {

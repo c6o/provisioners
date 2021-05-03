@@ -1,4 +1,4 @@
-import { Result, KubeDocument } from '@c6o/kubeclient-contracts'
+import { Result, Resource } from '@c6o/kubeclient-contracts'
 import { AppDocument, RoutesType } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
@@ -162,13 +162,13 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         }
     })
 
-    async getGateway(): Promise<KubeDocument> {
+    async getGateway(): Promise<Resource> {
         const result = await this.manager.cluster.read(this.gateway)
         result.throwIfError()
         return result.object
     }
 
-    async getLoadBalancer(): Promise<KubeDocument> {
+    async getLoadBalancer(): Promise<Resource> {
         const result = await this.manager.cluster.read(this.loadBalancer)
         result.throwIfError()
         return result.object

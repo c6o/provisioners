@@ -1,5 +1,5 @@
 
-import { Cluster, KubeObject, Status } from '@c6o/kubeclient-contracts'
+import { Cluster, ResourceHelper, Status } from '@c6o/kubeclient-contracts'
 import { AppDocument } from '@provisioner/contracts'
 import { ProvisionerBase } from './provisioner'
 
@@ -15,7 +15,7 @@ export interface ProvisionerManager {
     status: Status
 
     // namespace mixin
-    toNamespaceObject(namespace) : KubeObject
+    toNamespaceObject(namespace) : ResourceHelper
     getProvisioner(appDoc: AppDocument, service?: string): Promise<ProvisionerBase>
     getInstalledServices(interfaceName): Promise<Array<AppDocument>>
     getAppProvisioner(appName: string, appNamespace: string): Promise<ProvisionerBase>

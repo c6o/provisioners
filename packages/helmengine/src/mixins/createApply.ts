@@ -1,4 +1,4 @@
-import { keyValue, KubeDocument } from '@c6o/kubeclient-contracts'
+import { keyValue, Resource } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
@@ -8,7 +8,7 @@ const debug = createDebug('@helmengine:createApply')
 
 declare module '../' {
     export interface Provisioner {
-        createDeploymentDocument: KubeDocument,
+        createDeploymentDocument: Resource,
     }
 }
 

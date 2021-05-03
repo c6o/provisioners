@@ -1,4 +1,4 @@
-import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
+import { Resource, keyValue } from '@c6o/kubeclient-contracts'
 import { AppDocumentLabels, AppDocumentSpec } from '@provisioner/contracts'
 import { Options as generatorOptions } from 'generate-password'
 import { Flow } from './flow'
@@ -69,7 +69,7 @@ export interface AppEngineAppSpec extends AppDocumentSpec {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppEngineAppDocument extends KubeDocument {
+export interface AppEngineAppDocument extends Resource {
     labels?: AppDocumentLabels
     spec?: AppEngineAppSpec
 }

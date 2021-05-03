@@ -1,4 +1,4 @@
-import { keyValue, KubeDocument } from '@c6o/kubeclient-contracts'
+import { keyValue, Resource } from '@c6o/kubeclient-contracts'
 import yaml from 'js-yaml'
 import { AppDocumentLabels } from '@provisioner/contracts'
 
@@ -39,7 +39,7 @@ const generateLabelsPatch = (path, labels) => {
  * @param owner 
  * @returns 
  */
-export async function getKustomizationConfigs(name: string, namespace: string, labels: AppDocumentLabels, owner: KubeDocument) {
+export async function getKustomizationConfigs(name: string, namespace: string, labels: AppDocumentLabels, owner: Resource) {
     // Shell script to run kustomize script.
     const postRender = [
         "#!/bin/sh",

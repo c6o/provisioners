@@ -1,5 +1,5 @@
-import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
-import { CodeZeroObject, CodeZeroLabels } from './codezero'
+import { Resource, keyValue } from '@c6o/kubeclient-contracts'
+import { CodeZeroHelper, CodeZeroLabels } from './codezero'
 
 export interface MenuItems {
     type: string,
@@ -73,7 +73,7 @@ export interface Volume {
 }
 
 export type AppStatus = 'Installing' | 'Running' | 'Error' | 'Configuring' | 'Degraded' | 'Terminating' | 'Terminated'
-export interface AppDocument extends KubeDocument {
+export interface AppDocument extends Resource {
     labels?: AppDocumentLabels
     status?: AppStatus
     spec?: AppDocumentSpec
@@ -97,7 +97,7 @@ export const AppStatuses = {
     }
 }
 
-export class AppObject<T extends AppDocument = AppDocument> extends CodeZeroObject<T> {
+export class AppObject<T extends AppDocument = AppDocument> extends CodeZeroHelper<T> {
     _services
 
     get services() {
