@@ -1,3 +1,4 @@
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
@@ -48,7 +49,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
             throw result.error
         }
 
-        const systemServerConfigMap = result.object
+        const systemServerConfigMap = result.as<ConfigMap>()
         systemServerConfigMap.data = {
             LOG_ELASTIC_CONNECTION: `${logstash.protocol}://${logstash.service}.${appNamespace}:${logstash.port}`,
             LOG_LEVEL: 'info',
@@ -66,7 +67,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
             this.logger?.error(result.error)
             throw result.error
         }
-        const systemServerConfigMap = result.object
+        const systemServerConfigMap = result.as<ConfigMap>()
         systemServerConfigMap.data.LOG_ELASTIC_CONNECTION = null
         await this.manager.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
 

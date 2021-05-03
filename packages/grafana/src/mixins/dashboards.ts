@@ -1,3 +1,4 @@
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../index'
 import * as yaml from 'js-yaml'
 
@@ -69,17 +70,16 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
                 }
             }
         })
-        if (result.error) throw result.error
+        result.throwIfError()
 
-        for(const cm of result.object.items) {
-            cm.apiVersion = 'v1'
-            cm.kind = 'ConfigMap'
+
+        for(const cm of result.each<ConfigMap>('ConfigMap')) {
             result = await this.manager.cluster.delete(cm)
-            if (result.error) throw result.error
+            result.throwIfError()
         }
 
         result = await this.getGrafanaDeployment(namespace)
-        if (result.error) throw result.error
+        result.throwIfError()
         this.runningDeployment = result.object
 
         await this.removeFoldersDataSources(namespace, appNamespace, appName)
@@ -99,28 +99,25 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     async removeFoldersDataSources(namespace: string, appNamespace, appName) {
 
         let result = await this.manager.cluster.read(this.mainConfigMap(namespace))
-
-        if (result.error)
-            throw result.error
-        const mainConfigMap = result.object
+        result.throwIfError()
+        const configMap = result.as<ConfigMap>()
 
         const ownerPrefix = `${appNamespace}-${appName}`
-        const dbProviders: any = yaml.load(result.object.data['dashboardproviders.yaml'])
+        const dbProviders: any = yaml.load(configMap.data['dashboardproviders.yaml'])
         dbProviders.providers = dbProviders.providers || []
         dbProviders.providers = dbProviders.providers.filter(entry => entry.folder !== ownerPrefix)
 
-        const dbSources: any = yaml.load(result.object.data['datasources.yaml'])
+        const dbSources: any = yaml.load(configMap.data['datasources.yaml'])
         dbSources.datasources = dbSources.datasources || []
         dbSources.datasources = dbSources.datasources.filter(entry => !entry.name.startsWith(ownerPrefix))
 
-        result = await this.manager.cluster.patch(mainConfigMap, {
+        result = await this.manager.cluster.patch(configMap, {
             data: {
                 'dashboardproviders.yaml': yaml.dump(dbProviders),
                 'datasources.yaml': yaml.dump(dbSources)
             }
         })
-        if (result.error)
-            throw result.error
+        result.throwIfError()
     }
 
     /**
@@ -145,7 +142,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         this.runningDeployment.kind = 'Deployment'
 
         const result = await this.manager.cluster.patch(this.runningDeployment, this.runningDeployment)
-        if (result.error) throw result.error
+        result.throwIfError()
     }
 
     getGrafanaDeployment = async (namespace) => {
@@ -175,7 +172,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
             throw Error('There is already a running dashboard transaction')
 
         const result = await this.getGrafanaDeployment(namespace)
-        if (result.error) throw result.error
+        result.throwIfError()
         this.runningDeployment = result.object
 
         // in case version changes
@@ -188,16 +185,15 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
     async updateConfig(): Promise<boolean> {
         let result = await this.manager.cluster.read(this.mainConfigMap(this.runningDeployment.metadata.namespace))
-
-        if (result.error)
-            throw result.error
+        result.throwIfError()
+        const configMap = result.as<ConfigMap>()
 
         const folder = `${this.appNamespace}-${this.appName}`
 
         let modified = false
 
         // add dashboard provider folders if needed
-        const dbProviders: any = yaml.load(result.object.data['dashboardproviders.yaml'])
+        const dbProviders: any = yaml.load(configMap.data['dashboardproviders.yaml'])
         dbProviders.providers = dbProviders.providers || []
         const index = dbProviders.providers.findIndex(entry => entry.folder == folder)
         if (index === -1) {
@@ -215,7 +211,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         }
 
         // add and remove datasource
-        const dbSources: any = yaml.load(result.object.data['datasources.yaml'])
+        const dbSources: any = yaml.load(configMap.data['datasources.yaml'])
         dbSources.datasources = dbSources.datasources || []
 
         for (const source of this.datasources) {
@@ -235,14 +231,13 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         }
 
         if (modified) {
-            result = await this.manager.cluster.patch(result.object, {
+            result = await this.manager.cluster.patch(result.as<ConfigMap>(), {
                 data: {
                     'dashboardproviders.yaml': yaml.dump(dbProviders),
                     'datasources.yaml': yaml.dump(dbSources)
                 }
             })
-            if (result.error)
-                throw result.error
+            result.throwIfError()
         }
 
         return modified
@@ -336,7 +331,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         // Add and remove volumes and mounts for maps
         if (restart) {
             const result = await this.manager.cluster.patch(this.runningDeployment, this.runningDeployment)
-            if (result.error) throw result.error
+            result.throwIfError()
             await this.restartGrafana()
         }
         this.runningDeployment = null

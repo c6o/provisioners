@@ -1,7 +1,7 @@
+import { Secret } from '@c6o/kubeclient-resources/core/v1'
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import { MongoClient } from 'mongodb'
-
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     // protected members
@@ -45,13 +45,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureRootPassword() {
         if (this.rootPassword) return
         const result = await this.manager.cluster.read(this.rootSecret)
-        if (!result.object)
-            throw new Error('Failed to load rootSecret')
-        const keys = Object.keys(result.object.data)
+        result.throwIfError('Failed to load rootSecret')
+        const secret = result.as<Secret>()
+
+        const keys = Object.keys(secret.data)
         if (keys?.length !== 1)
             throw new Error('Failed to load rootSecret')
 
-        this.rootPassword = Buffer.from(result.object.data[keys[0]], 'base64').toString()
+        this.rootPassword = Buffer.from(secret.data[keys[0]], 'base64').toString()
     }
 
     /** Looks for mongo pods and if none are found, applies the appropriate yaml */

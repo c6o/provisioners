@@ -72,23 +72,28 @@ export interface Volume {
     subPath?: string
 }
 
-export type AppDocument = KubeDocument<AppDocumentLabels, keyValue, AppDocumentSpec>
+export type AppStatus = 'Installing' | 'Running' | 'Error' | 'Configuring' | 'Degraded' | 'Terminating' | 'Terminated'
+export interface AppDocument extends KubeDocument {
+    labels?: AppDocumentLabels
+    status?: AppStatus
+    spec?: AppDocumentSpec
+}
 
 export const AppStatuses = {
     create: {
-        Pending: 'Installing',
-        Completed: 'Running',
-        Error: 'Error'
+        Pending: 'Installing' as AppStatus,
+        Completed: 'Running' as AppStatus,
+        Error: 'Error' as AppStatus
     },
     update: {
-        Pending: 'Configuring',
-        Completed: 'Running',
-        Error: 'Degraded'
+        Pending: 'Configuring' as AppStatus,
+        Completed: 'Running' as AppStatus,
+        Error: 'Degraded' as AppStatus
     },
     remove: {
-        Pending: 'Terminating',
-        Completed: 'Terminated',
-        Error: 'Degraded'
+        Pending: 'Terminating' as AppStatus,
+        Completed: 'Terminated' as AppStatus,
+        Error: 'Degraded' as AppStatus
     }
 }
 
