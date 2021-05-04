@@ -1,6 +1,10 @@
 import { mix } from 'mixwith'
 import { ProvisionerBase } from '@provisioner/common'
 import { IstioProvisioner } from '@provisioner/istio'
+import { SystemProvisioner } from './contracts'
+
+export * from './contracts'
+
 import {
     createInquireMixin,
     createApplyMixin,
@@ -18,9 +22,9 @@ import {
 // TODO: import { helpMixin} from "./help"
 export * from './constants'
 
-export type baseProvisionerType = new (...a) => Provisioner
+export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
-export interface Provisioner extends ProvisionerBase {
+export interface Provisioner extends SystemProvisioner {
 
 }
 export class Provisioner extends mix(ProvisionerBase).with(
