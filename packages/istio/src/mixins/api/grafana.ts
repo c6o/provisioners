@@ -1,6 +1,7 @@
 import { baseProvisionerType } from '../../'
 import * as Handlebars from 'handlebars'
 import { unlinkToken } from '../../constants'
+import { GrafanaProvisioner } from '@provisioner/grafana'
 
 const dashboards = [
     'citadel-dashboard',
@@ -18,7 +19,7 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     async linkGrafana(grafanaNamespace, serviceNamespace) {
         await this.unlinkGrafana(serviceNamespace, false)
 
-        const grafanaProvisioner = await this.manager.getAppProvisioner('grafana', grafanaNamespace)
+        const grafanaProvisioner = await this.manager.getAppProvisioner<GrafanaProvisioner>('grafana', grafanaNamespace)
 
         await grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'istio')
 
@@ -54,7 +55,7 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
         const grafanaApps = await this.manager.getInstalledApps('grafana')
         for (const grafanaApp of grafanaApps) {
-            const grafanaProvisioner = await this.manager.getProvisioner(grafanaApp)
+            const grafanaProvisioner = await this.manager.getProvisioner<GrafanaProvisioner>(grafanaApp)
             await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')
         }
         if (clearLinkField)

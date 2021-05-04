@@ -37,6 +37,8 @@
   "dependencies": {
     "@c6o/kubeclient-resources": "^0.0.10",
     "@provisioner/common": "^0.0.28",
+    "@provisioner/istio": "^0.0.28",
+    "@provisioner/grafana": "^0.0.28",
     "@vaadin/vaadin": "^14.4.5",
     "debug": "^4.1.1",
     "jsonpointer": "^4.1.0",

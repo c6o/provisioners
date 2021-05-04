@@ -6,7 +6,9 @@
     },
     "references": [
         { "path":  "../common" },
-        { "path":  "../contracts" }
+        { "path":  "../contracts" },
+        { "path":  "../grafana" },
+        { "path":  "../prometheus" }
     ],
     "include": [
         "src"

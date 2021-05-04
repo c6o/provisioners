@@ -3,7 +3,7 @@ import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
 import { Resource } from '@c6o/kubeclient-contracts'
-import { AppObject } from '@provisioner/contracts'
+import { ProvisionerManager, optionFunctionType, AppObject, ProvisionerBase as ProvisionerBaseContract } from '@provisioner/contracts'
 
 import {
     namespaceMixin,
@@ -12,10 +12,9 @@ import {
     optionsMixin,
     updateMixin
 } from './mixins'
-import { ProvisionerManager, optionFunctionType } from './manager'
 
 export interface ProvisionerBase { }
-export type baseProvisionerMixinType = new (...a) => ProvisionerBase
+export type baseProvisionerMixinType = new (...a) => ProvisionerBase & ProvisionerBaseContract
 
 export class provisionerBasePrivate {
 }

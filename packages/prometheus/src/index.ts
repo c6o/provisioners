@@ -1,5 +1,8 @@
 import { mix } from 'mixwith'
 import { ProvisionerBase } from '@provisioner/common'
+import { PrometheusProvisioner } from './contracts'
+
+export * from './contracts'
 
 import {
     removeInquireMixin,
@@ -12,7 +15,7 @@ import {
     preAskMixin,
 } from './mixins'
 
-export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
+export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase & PrometheusProvisioner
 
 export class Provisioner extends mix(ProvisionerBase).with(preAskMixin,
     askMixin, apiMixin, helpMixin, removeInquireMixin, removeApplyMixin, createInquireMixin, createApplyMixin,) {

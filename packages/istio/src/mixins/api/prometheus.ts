@@ -2,6 +2,7 @@ import * as yaml from 'js-yaml'
 import * as Handlebars from 'handlebars'
 import * as path from 'path'
 import { promises as fs } from 'fs'
+import { PrometheusProvisioner } from '@provisioner/prometheus'
 
 import { baseProvisionerType } from '../../'
 
@@ -12,7 +13,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         await this.manager.cluster.begin('Adding access for Prometheus')
             .upsertFile('../../../k8s/prometheus/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
         .end()
-        const prometheusProvisioner = await this.manager.getAppProvisioner('prometheus', prometheusNamespace)
+        const prometheusProvisioner = await this.manager.getAppProvisioner<PrometheusProvisioner>('prometheus', prometheusNamespace)
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
@@ -45,7 +46,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
 
         const prometheusApps = await this.manager.getInstalledApps('prometheus')
         for (const prometheusApp of prometheusApps) {
-            const prometheusProvisioner = await this.manager.getProvisioner(prometheusApp)
+            const prometheusProvisioner = await this.manager.getProvisioner<PrometheusProvisioner>(prometheusApp)
             const prometheusNamespace = prometheusApp.metadata.namespace
             await prometheusProvisioner.clearAll(prometheusNamespace, istioNamespace, 'istio')
         }

@@ -251,7 +251,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         return spec.name
     }
 
-    async removeDataSource(name) {
+    async removeDataSource(name: string) {
         this.removeDatasources = this.removeDatasources || []
         this.removeDatasources.push(`${this.appNamespace}-${this.appName}-${name}`)
     }

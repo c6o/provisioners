@@ -1,3 +1,4 @@
+import { GrafanaProvisioner } from '@provisioner/grafana'
 import { baseProvisionerType } from '../../'
 import * as Handlebars from 'handlebars'
 import { unlinkToken } from '../../constants'
@@ -51,7 +52,7 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
         const grafanaApps = await this.manager.getInstalledApps('grafana')
         for (const grafanaApp of grafanaApps) {
-            const grafanaProvisioner = await this.manager.getProvisioner(grafanaApp)
+            const grafanaProvisioner = await this.manager.getProvisioner<GrafanaProvisioner>(grafanaApp)
             await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')
         }
         if (clearLinkField)
