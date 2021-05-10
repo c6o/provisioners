@@ -1,5 +1,5 @@
 import createDebug from 'debug'
-import { generate, Options } from 'generate-password'
+import { generate, GenerateOptions } from 'generate-password'
 import { ProvisionerBase } from '@provisioner/common'
 import { baseProvisionerType } from '../'
 import { keyValueOrGenerator, isGenerateOptions } from '@provisioner/appengine-contracts'
@@ -60,7 +60,7 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
         map[key] = currentValue.replace(template, value)
     }
 
-    _setPassword(map: keyValueOrGenerator, key, options: Options) {
+    _setPassword(map: keyValueOrGenerator, key, options: GenerateOptions) {
         map[key] = generate(options)
     }
 }

@@ -1,6 +1,6 @@
 import { Resource, keyValue } from '@c6o/kubeclient-contracts'
 import { AppDocumentLabels, AppDocumentSpec } from '@provisioner/contracts'
-import { Options as generatorOptions } from 'generate-password'
+import { GenerateOptions } from 'generate-password'
 import { Flow } from './flow'
 
 export interface ServicePort {
@@ -35,7 +35,7 @@ export interface LabelsMetadata {
     edition?: string
 }
 
-type generateObject = { generate: generatorOptions }
+type generateObject = { generate: GenerateOptions }
 type generatorValue =  string | generateObject
 export type keyValueOrGenerator = keyValue | {[key:string] : generatorValue }
 

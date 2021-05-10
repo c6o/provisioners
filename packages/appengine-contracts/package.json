@@ -33,6 +33,6 @@
   "dependencies": {
     "@c6o/kubeclient-contracts": "^0.0.10",
     "@provisioner/contracts": "^0.0.28",
-    "generate-password": "^1.5.1"
+    "generate-password": "^1.6.0"
   }
 }
