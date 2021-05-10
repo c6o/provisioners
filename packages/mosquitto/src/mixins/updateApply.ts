@@ -5,10 +5,10 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
     async updateAddUser(appNamespace) {
         const newUser = this.spec['add-user']
         if (newUser) {
-            super.status?.push('Adding user to Mosquitto')
+            this.status?.push('Adding user to Mosquitto')
             await this.addUser(newUser.user, newUser.password, appNamespace, true)
-            super.document.spec.provisioner['add-user'] = '$unset'
-            super.status?.pop()
+            this.document.spec.provisioner['add-user'] = '$unset'
+            this.status?.pop()
         }
     }
 
@@ -16,10 +16,10 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const removeUser = this.spec['remove-user']
 
         if (removeUser) {
-            super.status?.push('Removing user from Mosquitto')
+            this.status?.push('Removing user from Mosquitto')
             await this.removeUser(removeUser.user, appNamespace, true)
-            super.document.spec.provisioner['remove-user'] = '$unset'
-            super.status?.pop()
+            this.document.spec.provisioner['remove-user'] = '$unset'
+            this.status?.pop()
         }
     }
 
@@ -27,16 +27,16 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const updateUser = this.spec['update-user']
 
         if (updateUser) {
-            super.status?.push('Updating user in Mosquitto')
+            this.status?.push('Updating user in Mosquitto')
             await this.updateUser(updateUser.originalUsername, updateUser.newUsername, updateUser.password, appNamespace)
-            super.document.spec.provisioner['update-user'] = '$unset'
-            super.status?.pop()
+            this.document.spec.provisioner['update-user'] = '$unset'
+            this.status?.pop()
         }
     }
 
     async updateApply() {
 
-        const appNamespace = super.document.metadata.namespace
+        const appNamespace = this.document.metadata.namespace
 
         await this.updateAddUser(appNamespace)
         await this.updateRemoveUser(appNamespace)

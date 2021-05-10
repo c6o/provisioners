@@ -20,15 +20,15 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
         if (this.spec.updateToTag) {
             await this.performUpdate(this.spec.updateToTag)
             // Write back the new updated tag and clear updateToTag
-            super.document.spec.provisioner.tag = this.spec.updateToTag
-            super.document.spec.provisioner.updateToTag = unlinkToken
+            this.document.spec.provisioner.tag = this.spec.updateToTag
+            this.document.spec.provisioner.updateToTag = unlinkToken
         }
     }
 
     performUpdate = async (tag) => {
 
         // Update deployments
-        await updateImageTag(super.cluster, {
+        await updateImageTag(this.cluster, {
             apiVersion: 'apps/v1',
             kind: 'Deployment',
             metadata: {
@@ -41,7 +41,7 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
         )
 
         // Update the cron jobs
-        await updateImageTag(super.cluster, {
+        await updateImageTag(this.cluster, {
             apiVersion: 'batch/v1beta1',
             kind: 'CronJob',
             metadata: {

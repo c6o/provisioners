@@ -33,10 +33,10 @@ export const httpsRedirectApiMixin = (base: baseProvisionerType) => class extend
     }
 
     async findGateway() {
-        return await super.cluster.read(this.gateway)
+        return await this.cluster.read(this.gateway)
     }
 
     async setHttpsRedirect(enable) {
-        return await super.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': '/spec/servers/0/tls/httpsRedirect', 'value': enable}])
+        return await this.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': '/spec/servers/0/tls/httpsRedirect', 'value': enable}])
     }
 }

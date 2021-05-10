@@ -22,6 +22,6 @@ export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, cre
     get documentHelper(): AppEngineAppObject {
         if (this._documentHelper || !this.document)
             return this._documentHelper
-        return this._documentHelper = new AppEngineAppObject(super.document)
+        return this._documentHelper = new AppEngineAppObject(this.document)
     }
 }

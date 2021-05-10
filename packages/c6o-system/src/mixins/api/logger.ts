@@ -35,7 +35,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
         const logstash = app.spec.services.logstash
 
-        const result = await super.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await this.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
@@ -48,13 +48,13 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
             LOG_LEVEL: 'info',
             ...systemServerConfigMap.data
         }
-        await super.cluster.upsert(systemServerConfigMap)
+        await this.cluster.upsert(systemServerConfigMap)
 
         await this.restartSystemServer(serviceNamespace)
     }
 
     async unlinkLogger(serviceNamespace) {
-        const result = await super.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await this.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
@@ -62,7 +62,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
         const systemServerConfigMap = result.as<ConfigMap>()
         systemServerConfigMap.data.LOG_ELASTIC_CONNECTION = null
-        await super.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
+        await this.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
 
         await this.restartSystemServer(serviceNamespace)
     }

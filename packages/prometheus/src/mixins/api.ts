@@ -40,7 +40,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
             }
         }
 
-        return await super.cluster.read(deployment)
+        return await this.cluster.read(deployment)
     }
 
     async clearAll(namespace: string, clientNamespace: string, clientApp: string) {
@@ -68,7 +68,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         this.clientNamespace = clientNamespace
         this.clientApp = clientApp
 
-        result = await super.cluster.read({
+        result = await this.cluster.read({
             kind: 'ConfigMap',
             metadata: {
                 namespace,
@@ -243,7 +243,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
 
         // not sure we really need to restart if config changes - seems to have a container to do this
         if (this.hasConfigChanged) {
-            const result = await super.cluster.patch<ConfigMap>(this.configMap, {
+            const result = await this.cluster.patch<ConfigMap>(this.configMap, {
                 data: {
                     'prometheus.yml': yaml.dump(this.prometheusConfig)
                 }
@@ -253,22 +253,22 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         }
 
         for (const secret of this.addedSecrets) {
-            const result = await super.cluster.upsert(secret)
+            const result = await this.cluster.upsert(secret)
             result.throwIfError()
             restart = true
         }
 
         for (const secret of this.removedSecrets) {
-            const result = await super.cluster.delete(secret)
+            const result = await this.cluster.delete(secret)
             result.throwIfError()
             restart = true
         }
 
         if (restart) {
-            await super.cluster.upsert(this.runningDeployment)
+            await this.cluster.upsert(this.runningDeployment)
             const previousCount = this.runningDeployment.spec?.replicas || 0
-            await super.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
-            await super.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
+            await this.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
+            await this.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
         }
         this.runningDeployment = null
     }

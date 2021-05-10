@@ -25,7 +25,7 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
 
     async linkGrafana(grafanaNamespace, serviceNamespace) {
         await this.unlinkGrafana(serviceNamespace, false)
-        this.grafanaProvisioner = await super.resolver.getAppProvisioner('grafana', grafanaNamespace)
+        this.grafanaProvisioner = await this.resolver.getAppProvisioner('grafana', grafanaNamespace)
 
         await this.grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'c6o-system')
 
@@ -58,13 +58,13 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
-        const grafanaApps = await super.resolver.getInstalledApps('grafana')
+        const grafanaApps = await this.resolver.getInstalledApps('grafana')
         for (const grafanaApp of grafanaApps) {
-            const grafanaProvisioner = await super.resolver.getProvisioner<GrafanaProvisioner>(grafanaApp)
+            const grafanaProvisioner = await this.resolver.getProvisioner<GrafanaProvisioner>(grafanaApp)
             await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')
         }
         if (clearLinkField)
-            delete super.document.spec.provisioner['grafana-link']
+            delete this.document.spec.provisioner['grafana-link']
     }
 
     async addDashboard(name, params) {

@@ -7,14 +7,14 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newPrometheusLink = this.spec['prometheus-link']
 
         if (newPrometheusLink === unlinkToken) {
-            super.status?.push('Unlinking istio from Prometheus')
+            this.status?.push('Unlinking istio from Prometheus')
             await this.unlinkPrometheus(serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
         }
         else if (newPrometheusLink) {
-            super.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
+            this.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
             await this.linkPrometheus(newPrometheusLink, serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
         }
     }
 
@@ -22,20 +22,20 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newGrafanaLink = this.spec['grafana-link']
 
         if (newGrafanaLink === unlinkToken) {
-            super.status?.push('Unlinking istio from Grafana')
+            this.status?.push('Unlinking istio from Grafana')
             await this.unlinkGrafana(serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
         }
         else if (newGrafanaLink) {
-            super.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
+            this.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
             await this.linkGrafana(newGrafanaLink, serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
         }
     }
 
     async updateApply() {
 
-        const serviceNamespace = super.document.metadata.namespace
+        const serviceNamespace = this.document.metadata.namespace
 
         await this.updatePrometheus(serviceNamespace)
         await this.updateGrafana(serviceNamespace)

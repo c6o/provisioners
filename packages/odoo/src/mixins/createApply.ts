@@ -34,22 +34,22 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
 
         if (this.edition == 'latest') {
-            await super.cluster
+            await this.cluster
             .begin('Installing Odoo Volume Claims')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile(`../../k8s/${this.edition}/3-pvc.yaml`, args)
             .end()
         }
 
-        await super.cluster
+        await this.cluster
             .begin('Installing Odoo Deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile(`../../k8s/${this.edition}/1-deployment.yaml`, args)
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Installing Odoo Networking Services')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile(`../../k8s/${this.edition}/2-service.yaml`, args)
             .end()
 
@@ -58,7 +58,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureOdooIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin('Ensure Odoo services are running')
             .beginWatch(this.pods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

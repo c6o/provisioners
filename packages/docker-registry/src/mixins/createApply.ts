@@ -22,36 +22,36 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async installDockerRegistry() {
         const namespace = this.serviceNamespace
 
-        await super.cluster
+        await this.cluster
             .begin('Install docker-registry secrets')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/1-secret.yaml', { namespace })
             .end()
 
 
-        await super.cluster
+        await this.cluster
             .begin('Install docker-registry configuration')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/2-configmap.yaml', { namespace })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install docker-registry networking services')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/3-service.yaml', { namespace })
             .end()
 
 
-        await super.cluster
+        await this.cluster
             .begin('Install docker-registry deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/4-deployment.yaml', { namespace })
             .end()
 
     }
 
     async ensureDockerRegistryIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin('Ensure docker-registry services are running')
             .beginWatch(this.pods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

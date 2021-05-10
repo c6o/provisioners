@@ -45,7 +45,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureDevPodIsInstalled() {
 
-        await super.cluster
+        await this.cluster
             .begin('Install dev services')
             .list(this.devPods)
             .do((result, processor) => {
@@ -71,7 +71,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensurePodIsRunning() {
-        await super.cluster
+        await this.cluster
             .begin('Ensure pod is running')
             .beginWatch(this.devPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
@@ -83,7 +83,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Watches pods and ensures that the loadbalancer has an IP address */
     async  ensureLoadBalancerIP() {
-        await super.cluster.
+        await this.cluster.
             begin('Fetch external IP')
             .beginWatch(this.devService)
             .whenWatch(({ obj }) => obj.status?.loadBalancer?.ingress?.length && obj.status?.loadBalancer?.ingress[0].ip, (processor, service) => {
@@ -94,7 +94,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async copyAuthorizationKeys() {
-        await super.cluster.
+        await this.cluster.
             begin('Copy authorization_keys')
             .exec(this.runningPod, ['mkdir', '-p', '/data/.ssh'])
             .exec(this.runningPod, ['cp', '/data/keys/authorized_keys', '/data/.ssh'])

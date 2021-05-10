@@ -30,35 +30,35 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const clusterIP = await super.getIngressGatewayServiceClusterIp()
         const tag = this.spec.tag || 'stable-5142'
 
-        await super.cluster
+        await this.cluster
             .begin('Install jitsi deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/1-secret.yaml', { namespace, secret, authPassword, jvbPassword })
             .end()
 
 
-        await super.cluster
+        await this.cluster
             .begin('Install NodePort')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/2-deployment.yaml', { namespace, clusterIP, tag })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install Virtual Service')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/3-webservice.yaml', { namespace })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install Virtual Service')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/4-service.yaml', { namespace })
             .end()
 
     }
 
     async ensureJitsiIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin('Ensure jitsi services are running')
             .beginWatch(this.jitsiPods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

@@ -50,7 +50,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Looks for mysql pods and if none are found, applies the appropriate yaml */
     async ensureMysqlIsInstalled() {
 
-        await super.cluster
+        await this.cluster
             .begin('Install mysql services')
             .list(this.mysqlPods)
             .do((result, processor) => {
@@ -65,7 +65,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     const rootPasswordKey = this.spec.rootPasswordKey || 'password'
                     // Install mysql
                     processor
-                        .mergeWith(super.documentHelper.appComponentMergeDocument)
+                        .mergeWith(this.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                         .upsertFile('../../k8s/root-secret.yaml', { namespace, rootPasswordKey, rootPassword: this.encodedRootPassword })
@@ -77,7 +77,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureMysqlIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin('Ensure mysql services are running')
             .beginWatch(this.mysqlPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
@@ -90,12 +90,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Port forwards and connects to the mysql and initiates a provision */
     async ensureMysqlIsProvisioned() {
         if (!this.hasDatabasesToConfigure) {
-            super.status?.push('Setting up mysql databases')
-            super.status?.pop(true)
+            this.status?.push('Setting up mysql databases')
+            this.status?.pop(true)
             return
         }
 
-        await super.cluster
+        await this.cluster
             .begin('Setting up mysql databases')
             .beginForward(3306, this.runningPod)
             .attempt(10, 5000, async (processor, attempt) => this.connectMysqlClient(processor, attempt))
@@ -110,7 +110,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         if (this.plainRootPasswordForInitialization) return
 
-        const result = await super.cluster.read(this.rootSecret)
+        const result = await this.cluster.read(this.rootSecret)
         result.throwIfError('Failed to load rootSecret')
         const secret = result.as<Secret>()
 
@@ -127,7 +127,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         this.ensureRootPassword()
 
-        super.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
+        this.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
         const connectionArgs =
         {
             host: '127.0.0.1',
@@ -144,7 +144,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Closes the mysqlClient connection */
     async disconnectMysqlClient() {
-        super.status?.info('Closing connection to mysql')
+        this.status?.info('Closing connection to mysql')
         //https://github.com/mysqljs/mysql/blob/master/Readme.md#terminating-connections
         //this.connection.destroy()
 
@@ -196,28 +196,28 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
 
         if (process.env.NODE_ENV === 'development')
-            super.status?.info(`Connection string ${connectionString}`)
+            this.status?.info(`Connection string ${connectionString}`)
 
 
         try {
-            super.status?.push(`Creating database ${dbName}`)
+            this.status?.push(`Creating database ${dbName}`)
             await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
         } finally {
-            super.status?.pop()
+            this.status?.pop()
         }
 
         try {
-            super.status?.push(`Setting up database user ${username}`)
+            this.status?.push(`Setting up database user ${username}`)
             await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
             await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
             await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
             await this.connection.query('FLUSH PRIVILEGES;')
         } finally {
-            super.status?.pop()
+            this.status?.pop()
         }
 
         try {
-            super.status?.push('Writing database connection data to the Secrets')
+            this.status?.push('Writing database connection data to the Secrets')
             if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
             if (config.rootUsernameSecretKey) this.configMap[config.rootUsernameSecretKey] = Buffer.from('root').toString('base64')
@@ -228,7 +228,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mysql').toString('base64')
         } finally {
-            super.status?.pop()
+            this.status?.pop()
         }
 
     }

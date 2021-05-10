@@ -29,7 +29,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             adminUsername,
             adminPassword } = this.spec      
 
-        await super.cluster
+        await this.cluster
             .begin('Install Grafana services')
             .list(this.nodeGrafanaPods)
             .do((result, processor) => {
@@ -39,7 +39,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // Install Grafana
                     processor
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
-                        .addOwner(super.document)
+                        .addOwner(this.document)
                         .upsertFile('../../k8s/deployment.yaml', { namespace, adminUsername, adminPassword })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                 }
@@ -49,7 +49,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureGrafanaIsRunning() {
-        await super.cluster
+        await this.cluster
             .begin('Ensure a Grafana replica is running')
                 .beginWatch(this.nodeGrafanaPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {

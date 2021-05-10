@@ -25,23 +25,23 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     // @ts-ignore
     async installGhost() {
         const namespace = this.serviceNamespace
-        await super.cluster
+        await this.cluster
             .begin('Install Ghost deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/1-deployment.yaml', {namespace})
             .end()
 
 
-        await super.cluster
+        await this.cluster
             .begin('Install NodePort')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/2-service.yaml', {namespace})
             .end()
     }
 
     // @ts-ignore
     async ensureGhostIsRunning() {
-        await super.cluster.begin('Ensure Ghost services are running')
+        await this.cluster.begin('Ensure Ghost services are running')
             .beginWatch(this.ghostPods)
             .whenWatch(({condition}) => condition.Ready === 'True', (processor) => {
                 processor.endWatch()

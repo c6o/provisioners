@@ -35,40 +35,40 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
         })
 
-        await super.cluster
+        await this.cluster
             .begin('Installing Secrets')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/1-secrets.yaml', data)
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Installing Persistent Volume Claims')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/2-pvc.yaml', { namespace: data.namespace, storageSize: this.spec.storageSize })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Installing Server Deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/3-server-deployment.yaml', { namespace: data.namespace })
             .end()
 
-            await super.cluster
+            await this.cluster
             .begin('Installing Runner Deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/4-runner-deployment.yaml', { namespace: data.namespace })
             .end()
 
-            await super.cluster
+            await this.cluster
             .begin('Installing Networking Services')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/5-service.yaml', { namespace: data.namespace })
             .end()
 
     }
 
     async ensureProvisionerIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin('Ensure Drone services are running')
             .beginWatch(this.pods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

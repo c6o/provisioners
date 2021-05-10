@@ -17,7 +17,7 @@ export const namespaceMixin = (base: baseProvisionerMixinType) => class namespac
     get serviceNamespace() { return this.spec?.namespaceObject?.metadata?.name }
 
     // for deprovisioning we don't have/want a namespaceObject
-    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || super.document?.metadata?.namespace }
+    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || this.document?.metadata?.namespace }
 
     async ensureServiceNamespacesExist() {
         if (this.spec.namespaceObject)
@@ -34,7 +34,7 @@ export const namespaceMixin = (base: baseProvisionerMixinType) => class namespac
 
             this.spec.namespaceObject = toManagedNamespace(namespace)
 
-            const result = await super.cluster.upsert(this.spec.namespaceObject)
+            const result = await this.cluster.upsert(this.spec.namespaceObject)
             result.throwIfError(`Failed to create namespace ${this.spec.namespaceObject.metadata?.name}`)
         }
         else

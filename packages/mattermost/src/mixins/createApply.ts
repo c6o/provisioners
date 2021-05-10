@@ -57,9 +57,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async installMattermostPreview() {
         const namespace = this.serviceNamespace
 
-        await super.cluster
+        await this.cluster
             .begin('Installing mattermost preview edition')
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .upsertFile('../../k8s/preview/preview.yaml', { namespace })
             .end()
     }
@@ -78,39 +78,39 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const topologyUser = Buffer.from(processPassword(this.spec.topologyUser)).toString('base64')
         const topologyPassword = Buffer.from(processPassword(this.spec.topologyUser)).toString('base64')
 
-        await super.cluster
+        await this.cluster
             .begin('Install mysql operator')
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .upsert(this.mySqlConfig)
                 .upsertFile('../../k8s/full/1-mysql-crds.yaml')
                 .upsertFile('../../k8s/full/1-mysql-operator.yaml', { namespace, topologyUser, topologyPassword })
             .end()
 
 
-        await super.cluster
+        await this.cluster
             .begin('Install minio operator')
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .upsertFile('../../k8s/full/2-minio-crds.yaml')
                 .upsertFile('../../k8s/full/2-minio-operator.yaml', { namespace })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install mattermost operator')
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .upsertFile('../../k8s/full/3-mattermost-crds.yaml')
                 .upsertFile('../../k8s/full/3-mattermost-operator.yaml', { namespace })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install mattermost cluster')
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
             .end()
     }
 
     async ensureMattermostIsRunning() {
         const watchPods = this.isPreview ? this.mattermostPreviewPods : this.mattermostClusterPods
-        await super.cluster.
+        await this.cluster.
             begin('Ensure Mattermost services are running')
                 .beginWatch(watchPods)
                 .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

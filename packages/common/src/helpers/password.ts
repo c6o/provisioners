@@ -1,4 +1,4 @@
-import { generate, GenerateOptions } from 'generate-password'
+import { generate, Options } from 'generate-password'
 
 const defaultOptions = {
     strict: true,
@@ -8,10 +8,10 @@ const defaultOptions = {
     excludeSimilarCharacters: true
 }
 
-export const generatePassword = (options: GenerateOptions = defaultOptions) =>
+export const generatePassword = (options: Options = defaultOptions) =>
     generate(options)
 
-export const processPassword = (option?: GenerateOptions | string) =>
+export const processPassword = (option?: Options | string) =>
     option ?
     (typeof option == 'string' ?  option : generatePassword(option)) :
     generatePassword() // Generate using default options

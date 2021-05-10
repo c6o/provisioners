@@ -62,7 +62,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
      */
     async clearConfig(namespace: string, appNamespace: string, appName: string) {
 
-        let result = await super.cluster.list({
+        let result = await this.cluster.list({
             kind: 'ConfigMap',
             metadata: {
                 namespace,
@@ -75,7 +75,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
 
         for(const cm of result.each<ConfigMap>('ConfigMap')) {
-            result = await super.cluster.delete(cm)
+            result = await this.cluster.delete(cm)
             result.throwIfError()
         }
 
@@ -99,7 +99,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
      */
     async removeFoldersDataSources(namespace: string, appNamespace, appName) {
 
-        let result = await super.cluster.read(this.mainConfigMap(namespace))
+        let result = await this.cluster.read(this.mainConfigMap(namespace))
         result.throwIfError()
         const configMap = result.as<ConfigMap>()
 
@@ -112,7 +112,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         dbSources.datasources = dbSources.datasources || []
         dbSources.datasources = dbSources.datasources.filter(entry => !entry.name.startsWith(ownerPrefix))
 
-        result = await super.cluster.patch(configMap, {
+        result = await this.cluster.patch(configMap, {
             data: {
                 'dashboardproviders.yaml': yaml.dump(dbProviders),
                 'datasources.yaml': yaml.dump(dbSources)
@@ -142,7 +142,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         this.runningDeployment.apiVersion = 'apps/v1'
         this.runningDeployment.kind = 'Deployment'
 
-        const result = await super.cluster.patch(this.runningDeployment, this.runningDeployment)
+        const result = await this.cluster.patch(this.runningDeployment, this.runningDeployment)
         result.throwIfError()
     }
 
@@ -158,7 +158,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
                 }
             }
         }
-        return await super.cluster.read(deployment)
+        return await this.cluster.read(deployment)
     }
 
     /**
@@ -185,7 +185,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
     }
 
     async updateConfig(): Promise<boolean> {
-        let result = await super.cluster.read(this.mainConfigMap(this.runningDeployment.metadata.namespace))
+        let result = await this.cluster.read(this.mainConfigMap(this.runningDeployment.metadata.namespace))
         result.throwIfError()
         const configMap = result.as<ConfigMap>()
 
@@ -232,7 +232,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
         }
 
         if (modified) {
-            result = await super.cluster.patch(result.as<ConfigMap>(), {
+            result = await this.cluster.patch(result.as<ConfigMap>(), {
                 data: {
                     'dashboardproviders.yaml': yaml.dump(dbProviders),
                     'datasources.yaml': yaml.dump(dbSources)
@@ -311,7 +311,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
         // Add all the config maps
         for (const configMap of this.addConfigMaps) {
-            const result = await super.cluster.upsert(configMap)
+            const result = await this.cluster.upsert(configMap)
             if (result.error)
                 throw result.error
             restart = true
@@ -319,7 +319,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
         // remove configmaps
         for (const configMap of this.removeConfigMaps) {
-            const result = await super.cluster.delete(configMap)
+            const result = await this.cluster.delete(configMap)
             if (result.error)   // don't throw if already gone
                 if (result.error.code !== 404) throw result.error
             restart = true
@@ -331,7 +331,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
         // Add and remove volumes and mounts for maps
         if (restart) {
-            const result = await super.cluster.patch(this.runningDeployment, this.runningDeployment)
+            const result = await this.cluster.patch(this.runningDeployment, this.runningDeployment)
             result.throwIfError()
             await this.restartGrafana()
         }
@@ -340,7 +340,7 @@ export const dashboardApiMixin = (base: baseProvisionerType) => class extends ba
 
     async restartGrafana() {
         const previousCount = this.runningDeployment.spec?.replicas || 0
-        await super.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
-        await super.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
+        await this.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
+        await this.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
     }
 }

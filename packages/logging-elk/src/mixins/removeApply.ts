@@ -4,12 +4,12 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async removeApply() {
 
-        const namespace = super.document.metadata.namespace
+        const namespace = this.document.metadata.namespace
         const storage = this.spec.storage || '1Gi'
         const storageClass = this.spec.storageClass
         const k8sLogIndexPrefix = this.spec.k8sLogIndexPrefix || 'cloud'
     
-        await super.cluster
+        await this.cluster
             .begin('Uninstall logging services')
                 .deleteFile('../../k8s/kibana.yaml', { namespace })
                 .deleteFile('../../k8s/fluentd.yaml', { namespace, k8sLogIndexPrefix })

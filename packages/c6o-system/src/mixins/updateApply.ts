@@ -14,23 +14,23 @@ declare module '../' {
 export const updateApplyMixin = (base: baseProvisionerType) => class extends base {
 
     restartSystemServer = async (serviceNamespace) =>
-        await DeploymentHelper.from(serviceNamespace, 'system-server').restartDeployment(super.cluster)
+        await DeploymentHelper.from(serviceNamespace, 'system-server').restartDeployment(this.cluster)
 
 
     async updateNpm(serviceNamespace) {
         const newLink = this.spec['npm-link']
 
         if (newLink === unlinkToken) {
-            super.status?.push('Unlinking system from npm registry')
+            this.status?.push('Unlinking system from npm registry')
             await this.unlinkNpm(serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
 
             return true
         }
         else if (newLink) {
-            super.status?.push(`Linking system to npm at ${newLink.name}`)
+            this.status?.push(`Linking system to npm at ${newLink.name}`)
             await this.linkNpm(serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
 
             return true
         }
@@ -40,18 +40,18 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newLink = this.spec['logging-link']
 
         if (newLink === unlinkToken) {
-            super.status?.push('Unlinking system from logger')
+            this.status?.push('Unlinking system from logger')
             await this.unlinkLogger(serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
 
             return true
         }
         else if (newLink) {
             const appNamespace = this.spec['logging-link'].split('/')[0]
             const appId = this.spec['logging-link'].split('/')[1]
-            super.status?.push(`Linking system to logger in namespace ${appNamespace} for app ${appId}`)
+            this.status?.push(`Linking system to logger in namespace ${appNamespace} for app ${appId}`)
             await this.linkLogger(serviceNamespace, appNamespace, appId)
-            super.status?.pop()
+            this.status?.pop()
 
             return true
         }
@@ -61,24 +61,24 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newLink = this.spec['grafana-link']
 
         if (newLink === unlinkToken) {
-            super.status?.push('Unlinking system from grafana')
+            this.status?.push('Unlinking system from grafana')
             await this.unlinkGrafana(serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
 
             return true
         }
         else if (newLink) {
             const appNamespace = this.spec['grafana-link']
-            super.status?.push(`Linking system to grafana in namespace ${appNamespace}`)
+            this.status?.push(`Linking system to grafana in namespace ${appNamespace}`)
             await this.linkGrafana(appNamespace, serviceNamespace)
-            super.status?.pop()
+            this.status?.pop()
 
             return true
         }
     }
 
     async updateApply() {
-        const serviceNamespace = super.document.metadata.namespace
+        const serviceNamespace = this.document.metadata.namespace
 
         let restartRequired = await this.updateNpm(serviceNamespace)
         restartRequired = await this.updateLogger(serviceNamespace) || restartRequired

@@ -39,7 +39,7 @@ export class ProvisionerBase extends provisionerBaseMixin {
     get documentHelper(): AppObject {
         if (this._documentHelper || !this.document)
             return this._documentHelper
-        return this._documentHelper = new AppObject(super.document)
+        return this._documentHelper = new AppObject(this.document)
     }
 
     serve(req, res, serverRoot = 'lib/ui') {
@@ -94,7 +94,7 @@ export class ProvisionerBase extends provisionerBaseMixin {
                 }
             }
         }
-        const result = await super.cluster.read(service)
+        const result = await this.cluster.read(service)
 
         if (result.error) {
             this.logger?.error(result.error)

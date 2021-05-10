@@ -3,9 +3,9 @@ import { baseProvisionerType } from '../index'
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
     
     async removeApply() {
-        const namespace = super.document.metadata.namespace
+        const namespace = this.document.metadata.namespace
     
-        const result = await super.cluster.list(this.dashboardConfigMap(namespace))
+        const result = await this.cluster.list(this.dashboardConfigMap(namespace))
 
         let hasDashboards = false
         let configMaps = []
@@ -20,11 +20,11 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
         // remove added dashboards if any
         for (const configMap of configMaps) {
             configMap.kind = 'ConfigMap'
-            await super.cluster.delete(configMap)
+            await this.cluster.delete(configMap)
         }
 
         // delete the other resources
-        await super.cluster
+        await this.cluster
             .begin('Uninstall Grafana services')
                 .deleteFile('../../k8s/pvc.yaml', { namespace })
                 .deleteFile('../../k8s/deployment.yaml', { namespace, adminUsername:'dummy', adminPassword:'dummy' })

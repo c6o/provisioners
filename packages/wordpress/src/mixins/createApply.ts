@@ -31,35 +31,35 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const user = Buffer.from(username).toString('base64')
         const pass = Buffer.from(password).toString('base64')
 
-        await super.cluster
+        await this.cluster
             .begin('Install MySql secrets')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/1-secret.yaml', { namespace, username : user, password : pass })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install MySql deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/2-mysql-deployment.yaml', { namespace })
             .end()
 
-        await super.cluster
+        await this.cluster
             .begin('Install Wordpress deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/3-wordpress-deployment.yaml', { namespace })
             .end()
 
 
-        await super.cluster
+        await this.cluster
             .begin('Install NodePort')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsertFile('../../k8s/latest/4-service.yaml', { namespace })
             .end()
 
     }
 
     async ensureWordpressIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin('Ensure Wordpress services are running')
             .beginWatch(this.wordpressPods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

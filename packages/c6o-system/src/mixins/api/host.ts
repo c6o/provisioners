@@ -4,7 +4,7 @@ import { baseProvisionerType } from '../../'
 export const hostApiMixin = (base: baseProvisionerType) => class extends base {
 
     async getSystemFQDN() {
-        const result = await super.cluster.read(this.systemServerConfigMap('c6o-system'))
+        const result = await this.cluster.read(this.systemServerConfigMap('c6o-system'))
         result.throwIfError()
 
         const host = result.as<ConfigMap>()?.data?.HOST

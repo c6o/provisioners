@@ -20,7 +20,7 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
     })
 
     async findGateway(namespace, name) {
-        return await super.cluster.read({
+        return await this.cluster.read({
             apiVersion: 'networking.istio.io/v1alpha3',
             kind: 'Gateway',
             metadata: {
@@ -39,25 +39,25 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
         if (servers)
             template.spec.servers = servers
 
-        result = await super.cluster.upsert(template)
+        result = await this.cluster.upsert(template)
         if (result.object) {
             // The following hack causes istio to refresh all gateways
             const refresher = this.gatewayTemplate('istio-system', 'bogus-gateway')
-            await super.cluster.create(refresher)
-            await super.cluster.delete(refresher)
+            await this.cluster.create(refresher)
+            await this.cluster.delete(refresher)
         }
         return result
     }
 
     async removeGateway(namespace: string, name: string) {
         const template = this.gatewayTemplate(namespace, name)
-        return await super.cluster.delete(template)
+        return await this.cluster.delete(template)
     }
 
     async getExternalAddress() {
         return await ServiceHelper
             .from('istio-system')
-            .setLabel('istio', 'istio-ingressgateway')
-            .awaitServiceAddress(super.cluster, 'Fetching external address')
+            .setLabel('istio', 'ingressgateway') // This is the label - not the service name
+            .awaitServiceAddress(this.cluster, 'Fetching external address')
     }
 }

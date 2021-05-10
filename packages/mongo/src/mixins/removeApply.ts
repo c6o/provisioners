@@ -8,9 +8,9 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
         // This should not be needed for deleteFile!
         const rootPassword = processPassword(this.spec.rootPassword)
-        const namespace = super.document.metadata.namespace
+        const namespace = this.document.metadata.namespace
 
-        await super.cluster.begin('Removing mongodb resources')
+        await this.cluster.begin('Removing mongodb resources')
             .deleteFile('../../k8s/pvc.yaml', { namespace })
             .deleteFile('../../k8s/statefulset.yaml', { namespace, rootPassword })
             .deleteFile('../../k8s/service.yaml', { namespace })
@@ -27,7 +27,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                 }
             }
 
-            await super.cluster.begin('Removing mongodb connection secret')
+            await this.cluster.begin('Removing mongodb connection secret')
                 .delete(configMapSecret)
                 .end()
         }

@@ -3,14 +3,14 @@ import { baseProvisionerType } from './index'
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
     async removeApply() {
 
-        const namespace = super.document.metadata.namespace
+        const namespace = this.document.metadata.namespace
         const storageClass = this.spec.storageClass
         const storage = this.spec.storage
             
         const keepIp = this.getDeprovisionOption('keep-ip', false)
         const keepVol = this.getDeprovisionOption('keep-vol', true)
 
-        await super.cluster
+        await this.cluster
             .begin('Uninstall dev services')
                 .deleteFile('../k8s/configMap.yaml', { namespace })
                 .deleteFile('../k8s/deployment.yaml', { namespace })

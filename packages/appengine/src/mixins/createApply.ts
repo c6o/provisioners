@@ -29,7 +29,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async createApply() {
         try {
-            super.status?.push(`Applying App Engine to ${this.documentHelper.name}`)
+            this.status?.push(`Applying App Engine to ${this.documentHelper.name}`)
 
             await this.ensureCreateDeployment()
 
@@ -48,20 +48,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.ensureAppIsRunning()
         }
         finally {
-            super.status?.pop()
+            this.status?.pop()
         }
     }
 
 
     async processTemplates() {
         try {
-            super.status?.push('Processing templates')
+            this.status?.push('Processing templates')
 
             await this.processTemplate(this.documentHelper.configs, 'Processing configs templates')
             await this.processTemplate(this.documentHelper.secrets, 'Processing secrets templates')
         }
         finally {
-            super.status?.pop()
+            this.status?.pop()
         }
     }
 
@@ -82,7 +82,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createConfigs() {
         let skipped = false
         try {
-            super.status?.push('Installing configuration settings')
+            this.status?.push('Installing configuration settings')
 
             if (!this.documentHelper.hasConfigs) {
                 skipped = true
@@ -101,9 +101,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 configs
             )
 
-            await super.cluster
+            await this.cluster
                 .begin()
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createConfigMap)
                 .end()
@@ -116,14 +116,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            super.status?.pop(skipped)
+            this.status?.pop(skipped)
         }
     }
 
     async createSecrets() {
         let skipped = false
         try {
-            super.status?.push('Installing secret settings')
+            this.status?.push('Installing secret settings')
 
             if (!this.documentHelper.hasSecrets) {
                 skipped = true
@@ -140,9 +140,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 base64Secrets
             )
 
-            await super.cluster
+            await this.cluster
                 .begin()
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createSecrets)
                 .end()
@@ -155,14 +155,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            super.status?.pop(skipped)
+            this.status?.pop(skipped)
         }
     }
 
     async createConfigMapRefs() {
         let skipped = false
         try {
-            super.status?.push('Installing configMap refs')
+            this.status?.push('Installing configMap refs')
 
             if (!this.documentHelper.hasConfigMapRefs) {
                 skipped = true
@@ -174,14 +174,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            super.status?.pop(skipped)
+            this.status?.pop(skipped)
         }
     }
 
     async createSecretRefs() {
         let skipped = false
         try {
-            super.status?.push('Installing secret refs')
+            this.status?.push('Installing secret refs')
 
             if (!this.documentHelper.hasSecretRefs) {
                 skipped = true
@@ -192,7 +192,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.createDeploymentContainerEnvFrom.push(...secretRefs)
         }
         finally {
-            super.status?.pop(skipped)
+            this.status?.pop(skipped)
         }
     }
 
@@ -201,7 +201,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         let skipped = false
 
         try {
-            super.status?.push('Installing volumes')
+            this.status?.push('Installing volumes')
 
             if (!this.documentHelper.hasVolumes) {
                 skipped = true
@@ -219,9 +219,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     this.documentHelper.namespace
                 )
 
-                await super.cluster
+                await this.cluster
                     .begin()
-                    .addOwner(super.document)
+                    .addOwner(this.document)
                     .mergeWith(this.documentHelper.appComponentMergeDocument)
                     .upsert(createVolume)
                     .end()
@@ -236,14 +236,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
         }
         finally {
-            super.status?.pop(skipped)
+            this.status?.pop(skipped)
         }
     }
 
     async createServices() {
         let skipped = false
         try {
-            super.status?.push('Installing networking services')
+            this.status?.push('Installing networking services')
 
             if (!this.documentHelper.hasPorts) {
                 skipped = true
@@ -256,9 +256,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 this.documentHelper.getServicePorts()
             )
 
-            await super.cluster
+            await this.cluster
                 .begin()
-                .addOwner(super.document)
+                .addOwner(this.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createService)
                 .end()
@@ -266,20 +266,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.createDeploymentContainer.ports = this.documentHelper.getDeploymentPorts()
         }
         finally {
-            super.status?.pop(skipped)
+            this.status?.pop(skipped)
         }
     }
 
     async createDeployment() {
-        await super.cluster
+        await this.cluster
             .begin('Creating the deployment')
-            .addOwner(super.document)
+            .addOwner(this.document)
             .upsert(this.createDeploymentDocument)
             .end()
     }
 
     async ensureAppIsRunning() {
-        await super.cluster.
+        await this.cluster.
             begin(`Ensure ${this.documentHelper.name} services are running`)
             .beginWatch(templates.getPodTemplate(this.documentHelper.name, this.documentHelper.namespace))
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
