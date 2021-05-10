@@ -7,8 +7,6 @@
         "noImplicitAny": false,
         "removeComments": true,
         "noLib": false,
-        "outDir": "./lib",
-        "rootDir": "./src",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "esModuleInterop": true,

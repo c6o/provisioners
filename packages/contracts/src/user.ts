@@ -1,6 +1,6 @@
 import { Resource } from '@c6o/kubeclient-contracts'
 
-export type UserStatus = 'Approved' | 'Denied' | 'Error'
+export type UserStatus = 'Approved' | 'Denied' | 'Error' | 'Generating' | 'Pending'
 
 export interface User extends Resource {
     apiVersion: 'system.codezero.io/v1'

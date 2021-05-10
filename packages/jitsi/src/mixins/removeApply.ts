@@ -5,11 +5,11 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
 
     async removeApply() {
-        const namespace = this.manager.document.metadata.namespace
+        const namespace = super.document.metadata.namespace
 
         // It is then safe to remove the following
         // You may not have to remove the following because owners takes care of most of it
-        await this.manager.cluster
+        await super.cluster
             .begin('De-provisioning the app')
             .end()
     }

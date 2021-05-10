@@ -1,6 +1,7 @@
 import { keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import { FlowProcessor, skippedSteps as testSteps } from '../flow'
+import inquirer from 'inquirer'
 import createDebug from 'debug'
 
 const debug = createDebug('@appengine:createInquire')
@@ -14,7 +15,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         // Steps will come from the applicationSpec but for now, we use test data
         if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
-            const flowProcessor = new FlowProcessor(this.manager.inquirer, this.manager.document)
+            const flowProcessor = new FlowProcessor(inquirer, super.document)
             const result = await flowProcessor.process(this.documentHelper.flow)
             this.documentHelper.processResult(result)
         }
@@ -28,7 +29,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             image: this.documentHelper.image
         }
 
-        const responses = await this.manager.inquirer?.prompt([
+        const responses = await inquirer?.prompt([
             {
                 type: 'input',
                 name: 'image',
@@ -56,7 +57,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         const configs: keyValue = {}
         const typeDisplay = type === 'configs' ? 'configuration' : 'secret'
         do {
-            const responses = await this.manager.inquirer?.prompt([
+            const responses = await inquirer?.prompt([
                 {
                     type: 'confirm',
                     name: 'hasVal',
@@ -103,7 +104,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
             //https://kubernetes.io/docs/concepts/services-networking/service/#multi-port-services
 
-            responses = await this.manager.inquirer?.prompt([
+            responses = await inquirer?.prompt([
                 {
                     type: 'confirm',
                     name: 'hasPorts',
@@ -166,7 +167,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         let responses = { hasVolumes: false, storageSize: '', mountPath: '', volumeName: '', subPath: '' }
 
         do {
-            responses = await this.manager.inquirer?.prompt([
+            responses = await inquirer?.prompt([
                 {
                     type: 'confirm',
                     name: 'hasVolumes',

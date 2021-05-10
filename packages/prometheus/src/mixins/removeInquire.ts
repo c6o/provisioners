@@ -1,4 +1,5 @@
 
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '..'
 
 export const removeInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -6,7 +7,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
 
         // method defined in createInquire since first used there
         if (!this.simpleServiceProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'simpleService',
                 default: false,

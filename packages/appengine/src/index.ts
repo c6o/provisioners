@@ -10,16 +10,18 @@ import {
     templateHelperMixin
 } from './mixins'
 
-export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
+export type baseProvisionerType = new (...a) => Provisioner
 
-export interface Provisioner extends ProvisionerBase { }
+export interface Provisioner extends ProvisionerBase {
+
+}
 
 export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin, templateHelperMixin) {
 
     // Override the documentHelper in ProvisionerBase
     get documentHelper(): AppEngineAppObject {
-        if (this._documentHelper || !this.manager?.document)
+        if (this._documentHelper || !this.document)
             return this._documentHelper
-        return this._documentHelper = new AppEngineAppObject(this.manager.document)
+        return this._documentHelper = new AppEngineAppObject(super.document)
     }
 }

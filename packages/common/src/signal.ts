@@ -14,4 +14,3 @@ export const signalDocument = (document: Partial<Resource>) => {
         document.metadata.annotations[DOCUMENT_SIGNAL] = 'true'
 }
 export const clearDocumentSignal = (document: Partial<Resource>) => delete document.metadata?.annotations?.[DOCUMENT_SIGNAL]
-

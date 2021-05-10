@@ -1,3 +1,4 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '../index'
 
 export const removeInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -11,7 +12,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
             keepMino: this.spec.keepMinio || args['keep-minio']
         }
 
-        const response = await this.manager.inquirer?.prompt([
+        const response = await inquirer.prompt([
             {
             type: 'confirm',
             name: 'keepDatabase',

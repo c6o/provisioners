@@ -2,10 +2,10 @@ import { baseProvisionerType } from '..'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
     async removeApply() {
-        const namespace = this.manager.document.metadata.namespace
+        const namespace = super.document.metadata.namespace
 
         if (this.spec.simpleService) {
-            await this.manager.cluster
+            await super.cluster
                 .begin('Remove simple prometheus services')
                     .deleteFile('../../k8s/prometheus-simple-cm.yaml', { namespace })
                     .deleteFile('../../k8s/prometheus-simple.yaml', { namespace })
@@ -13,7 +13,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
             return
         }
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Remove prometheus server')
                 .deleteFile('../../k8s/prometheus-server.yaml', { namespace })
                 .deleteFile('../../k8s/prometheus-alertmanager.yaml', { namespace })

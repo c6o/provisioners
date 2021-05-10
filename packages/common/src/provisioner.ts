@@ -1,43 +1,45 @@
-import { ulid } from 'ulid'
 import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
-import { Resource } from '@c6o/kubeclient-contracts'
-import { ProvisionerManager, optionFunctionType, AppObject, ProvisionerBase as ProvisionerBaseContract } from '@provisioner/contracts'
+import { Cluster, Status } from '@c6o/kubeclient-contracts'
+import { optionFunctionType, AppObject, ProvisionerBase as ProvisionerBaseContract, Resolver, AppDocument } from '@provisioner/contracts'
 
 import {
     namespaceMixin,
-    storageClassMixin,
-    passwordMixin,
-    optionsMixin,
-    updateMixin
+    optionsMixin
 } from './mixins'
 
-export interface ProvisionerBase { }
-export type baseProvisionerMixinType = new (...a) => ProvisionerBase & ProvisionerBaseContract
+//export interface ProvisionerBase { }
+export type baseProvisionerMixinType = new (...a) => ProvisionerBaseContract
 
-export class provisionerBasePrivate {
-}
+export class ProvisionerBasePrivate { }
 
-export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, storageClassMixin, passwordMixin, optionsMixin, updateMixin) {
-    manager: ProvisionerManager
+const provisionerBaseMixin: baseProvisionerMixinType = mix(ProvisionerBasePrivate).with(namespaceMixin, optionsMixin)
+export class ProvisionerBase extends provisionerBaseMixin {
+    cluster: Cluster
+    status: Status
+    resolver: Resolver
+
     serviceName: string
     moduleLocation: string
-    taskSpec: any
+
+    document: AppDocument
     spec: any
 
     // Has other API functions
-    [key: string]: any
+    //[key: string]: any
+    routes?: any
+    logger?: any
 
-    help (command: string, options: optionFunctionType, messages: string[]) { }
+    help(command: string, options: optionFunctionType, messages: string[]) { }
 
-    get edition(): string { return this.manager?.document?.metadata?.labels['system.codezero.io/edition'] }
+    get edition(): string { return this.document?.metadata?.labels['system.codezero.io/edition'] }
 
     _documentHelper
     get documentHelper(): AppObject {
-        if (this._documentHelper || !this.manager?.document)
+        if (this._documentHelper || !this.document)
             return this._documentHelper
-        return this._documentHelper = new AppObject(this.manager.document)
+        return this._documentHelper = new AppObject(super.document)
     }
 
     serve(req, res, serverRoot = 'lib/ui') {
@@ -80,26 +82,6 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     }
 
     /** @deprecated */
-    toTask = (namespace, ask: string, spec: any) => ({
-        apiVersion: 'system.codezero.io/v1',
-        kind: 'Task',
-        metadata: {
-            namespace,
-            name: `${this.serviceName}-${ulid().toLowerCase()}`,
-            labels: {
-                app: `${this.serviceName}`,
-                ask
-            }
-        },
-        spec
-    })
-
-    /** @deprecated */
-    async createTask(namespace, ask: string, spec: any) {
-        const taskDocument = this.toTask(namespace, ask, spec)
-        return await this.manager.cluster.create(taskDocument)
-    }
-
     async getIngressGatewayServiceClusterIp() {
         const service = {
             apiVersion: 'v1',
@@ -112,57 +94,12 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
                 }
             }
         }
-        const result = await this.manager.cluster.read(service)
+        const result = await super.cluster.read(service)
 
         if (result.error) {
             this.logger?.error(result.error)
             throw result.error
         }
         return result.object?.spec?.clusterIP
-    }
-
-    async restartDeployment(namespace: string, name: string) {
-
-        const service = {
-            apiVersion: 'apps/v1',
-            kind: 'Deployment',
-            metadata: {
-                namespace,
-                name,
-            }
-        }
-
-        const result = await this.manager.cluster.read(service)
-
-        if (result.error) {
-            this.logger?.error(result.error)
-            throw result.error
-        }
-
-        const deployment = result.object
-
-        const previousCount = deployment.spec?.replicas
-        await this.manager.cluster.patch(deployment, { spec: { replicas: 0 } })
-        await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
-    }
-
-    async getServiceAddress(service: Resource) {
-        let ip = null
-        let hostname = null
-
-        await this.manager.cluster.
-            begin(`Fetch external address`)
-            .beginWatch(service)
-            .whenWatch(
-                ({ obj }) => obj.status?.loadBalancer?.ingress?.length && (obj.status?.loadBalancer?.ingress[0].ip || obj.status?.loadBalancer?.ingress[0].hostname),
-                (processor, service) => {
-                    ip = service.status.loadBalancer.ingress[0].ip
-                    hostname = service.status.loadBalancer.ingress[0].hostname
-                    processor.endWatch()
-                }
-            )
-            .end()
-
-        return { ip, hostname }
     }
 }

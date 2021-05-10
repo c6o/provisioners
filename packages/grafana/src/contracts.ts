@@ -1,3 +1,4 @@
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1';
 import { ProvisionerBase } from '@provisioner/contracts'
 
 export interface GrafanaProvisioner extends ProvisionerBase {
@@ -7,4 +8,6 @@ export interface GrafanaProvisioner extends ProvisionerBase {
 
     addDataSource(name: string, spec): Promise<string>
     removeDataSource(name: string): Promise<void>
+
+    dashboardConfigMap(namespace: string): ConfigMap
 }

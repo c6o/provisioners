@@ -1,12 +1,21 @@
 import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
+import { Result } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
 const debug = createDebug('c6o-system:logger:')
 
+declare module '../..' {
+    export interface Provisioner {
+        systemServerConfigMap(serviceNamespace: string): ConfigMap
+        linkLogger(serviceNamespace, appNamespace, appId): Promise<void>
+        unlinkLogger(serviceNamespace): Promise<void>
+    }
+}
+
 export const loggerApiMixin = (base: baseProvisionerType) => class extends base {
 
-    systemServerConfigMap(serviceNamespace) {
+    systemServerConfigMap(serviceNamespace): ConfigMap {
         return {
             kind: 'ConfigMap',
             metadata: {
@@ -16,24 +25,8 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
     }
 
-    getSystemServerDeployment = async (serviceNamespace) => {
-        const deployment = {
-            apiVersion: 'apps/v1',
-            kind: 'Deployment',
-            metadata: {
-                namespace: serviceNamespace,
-                name: 'system-server', // constants?
-                labels: {
-                    app: 'server',
-                    role: 'system'
-                }
-            }
-        }
-        return await this.manager.cluster.read(deployment)
-    }
-
     async linkLogger(serviceNamespace, appNamespace, appId) {
-        const app = await this.manager.getInstalledApp(appId, appNamespace)
+        const app = await this.resolver.getInstalledApp(appId, appNamespace)
 
         if (!app.spec.services?.logstash) {
             debug(`Unable to find logstash services for App ${appNamespace}.${appId}`)
@@ -42,7 +35,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
         const logstash = app.spec.services.logstash
 
-        const result = await this.manager.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await super.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
@@ -55,13 +48,13 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
             LOG_LEVEL: 'info',
             ...systemServerConfigMap.data
         }
-        await this.manager.cluster.upsert(systemServerConfigMap)
+        await super.cluster.upsert(systemServerConfigMap)
 
         await this.restartSystemServer(serviceNamespace)
     }
 
     async unlinkLogger(serviceNamespace) {
-        const result = await this.manager.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await super.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
@@ -69,7 +62,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
         const systemServerConfigMap = result.as<ConfigMap>()
         systemServerConfigMap.data.LOG_ELASTIC_CONNECTION = null
-        await this.manager.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
+        await super.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
 
         await this.restartSystemServer(serviceNamespace)
     }

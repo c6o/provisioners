@@ -1,5 +1,4 @@
 import { baseProvisionerType } from '../index'
-import { metadata } from 'core-js/fn/reflect'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
 
@@ -18,10 +17,10 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
     })
 
     async removeApply() {
-        const namespace = this.manager.document.metadata.namespace
+        const namespace = super.document.metadata.namespace
         const mysqlClusterDoc = this.toMySqlClusterDoc(namespace)
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Remove MySQL data')
                 .list(mysqlClusterDoc)
                 .do(async (result, processor) => {
@@ -31,7 +30,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                             //instance.apiVersion = mysqlClusterDoc.apiVersion
                             //instance.kind = mysqlClusterDoc.kind
                             // Remove the finalizer so it doesn't block uninstall
-                            await this.manager.cluster.patch(instance, [{ 'op': 'remove', 'path': '/metadata/finalizers'}])
+                            await super.cluster.patch(instance, [{ 'op': 'remove', 'path': '/metadata/finalizers'}])
                             processor.delete(instance)
                         }
                 })
@@ -39,7 +38,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
         // It is then safe to remove the following
         // You may not have to remove the following because owners takes care of most of it
-        await this.manager.cluster
+        await super.cluster
             .begin('De-provisioning the app')
                 .deleteFile('../../k8s/preview/preview.yaml', { namespace })
                 .deleteFile('../../k8s/full/1-mysql-operator.yaml', { namespace })

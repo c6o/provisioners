@@ -15,7 +15,7 @@ declare module '../' {
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
     async createApply() {
         try {
-            this.manager.status?.push(`Applying Helm Engine to ${this.documentHelper.name}`)
+            super.status?.push(`Applying Helm Engine to ${this.documentHelper.name}`)
 
             this.job = templates.getJobTemplate(this.documentHelper.name, this.documentHelper.namespace)
             
@@ -32,7 +32,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.ensureJobFinished()
         }
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
@@ -61,7 +61,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             return
 
         try {
-            this.manager.status?.push('Installing configuration values')
+            super.status?.push('Installing configuration values')
 
             const createValuesConfig = await templates.getValuesTemplate(
                 name,
@@ -70,9 +70,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             )
 
             // Create values config file
-            await this.manager.cluster
+            await super.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(super.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createValuesConfig)
                 .end()
@@ -102,7 +102,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             container.command.push(`${volumePath}/values.yaml`)
         }
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
@@ -117,7 +117,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             return
 
         try {
-            this.manager.status?.push('Installing secret configuration values')
+            super.status?.push('Installing secret configuration values')
 
             const createSecretValues = templates.getSecretValuesTemplate(
                 name,
@@ -126,9 +126,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             )
 
             // Create values config file
-            await this.manager.cluster
+            await super.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(super.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createSecretValues)
                 .end()
@@ -157,7 +157,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             container.command.push(`${volumePath}/values.yaml`)
         }
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
@@ -166,17 +166,17 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
      */
     async applyJob() {
         try {
-            this.manager.status?.push('Creating Helm Installation Job')
+            super.status?.push('Creating Helm Installation Job')
 
-            await this.manager.cluster
+            await super.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(super.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(this.job)
                 .end()
         }
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
@@ -189,7 +189,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureJobFinished() {
         let jobStatus = null
 
-        await this.manager.cluster.
+        await super.cluster.
             begin(`Ensure ${this.documentHelper.name} installation finishes`)
             .beginWatch({
                 kind: 'Pod',
@@ -208,11 +208,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         processor.endWatch()
                         return
                     case 'Failed':
-                        this.manager.status.error(new Error("Install Job Failed"))
+                        this.supervisor.status.error(new Error("Install Job Failed"))
                         processor.endWatch()
                         return
                     default:
-                        this.manager.status.info(phase)
+                        this.supervisor.status.info(phase)
                         return
                 }
             })
@@ -231,19 +231,19 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const { namespace, name, componentLabels } = this.documentHelper
 
         try {
-            this.manager.status?.push('Installing Post Render Processor')
+            super.status?.push('Installing Post Render Processor')
 
             const createKustomizationConfigs = await templates.getKustomizationConfigs(
                 name,
                 namespace,
                 componentLabels,
-                this.manager.document
+                super.document
             )
 
             // Create values config file
-            await this.manager.cluster
+            await super.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(super.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createKustomizationConfigs)
                 .end()
@@ -283,7 +283,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             container.command.push(`${volumePath}/postrender.sh`)
         }
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
@@ -298,13 +298,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const serviceAccountName = `${name}-helm-installer`
 
         try {
-            this.manager.status?.push('Setting up installer service account')
+            super.status?.push('Setting up installer service account')
 
             const clusterAdmin = this.documentHelper.spec.provisioner.clusterAdmin
             const accountFile = clusterAdmin ? 'clusterServiceAccount.yaml' : 'serviceAccount.yaml'
-            await this.manager.cluster
+            await super.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(super.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsertFile(`../../k8s/${accountFile}`, { namespace, name, serviceAccountName })
                 .end()
@@ -313,21 +313,21 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.job.spec.template.spec.serviceAccountName = serviceAccountName
         } 
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
     // Same as AppEngine process templates
     async processTemplates() {
         try {
-            this.manager.status?.push('Processing templates')
+            super.status?.push('Processing templates')
 
             // Handles several special case config options, like "$PUBLIC_FQDN"
             await this.processTemplate(this.documentHelper.configs, 'Processing configs templates')
             await this.processTemplate(this.documentHelper.secrets, 'Processing secrets templates')
         }
         finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 

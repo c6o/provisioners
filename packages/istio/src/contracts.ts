@@ -10,4 +10,5 @@ export interface IstioProvisioner extends ProvisionerBase {
     createGateway(namespace: string, name: string, servers?): Promise<Result>
     removeGateway(namespace: string, name: string): Promise<Result>
     getExternalAddress(): Promise<IngressParameters>
+    setHttpsRedirect(enable: boolean): Promise<Result>
 }

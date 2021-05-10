@@ -1,4 +1,5 @@
 import { baseProvisionerMixinType } from '../provisioner'
+import { toManagedNamespace } from '@provisioner/contracts'
 
 declare module '../provisioner' {
     export interface ProvisionerBase {
@@ -10,10 +11,13 @@ declare module '../provisioner' {
 
 export const namespaceMixin = (base: baseProvisionerMixinType) => class namespaceImp extends base {
 
-    get applicationNamespace() { return this.manager.state.namespaceObject?.metadata?.name }
+    // TODO: Come up with a better way storing these
+    // @ts-ignore
+    get applicationNamespace() { return this.supervisor.namespace.metadata?.name }
     get serviceNamespace() { return this.spec?.namespaceObject?.metadata?.name }
+
     // for deprovisioning we don't have/want a namespaceObject
-    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || this.document?.metadata?.namespace }
+    get deprovisionNamespace() { return this.spec.namespace?.spec || this.spec.namespace || super.document?.metadata?.namespace }
 
     async ensureServiceNamespacesExist() {
         if (this.spec.namespaceObject)
@@ -28,14 +32,14 @@ export const namespaceMixin = (base: baseProvisionerMixinType) => class namespac
                 this.spec.namespace.spec ||
                 this.spec.namespace
 
-            this.spec.namespaceObject = this.manager.toNamespaceObject(namespace)
+            this.spec.namespaceObject = toManagedNamespace(namespace)
 
-            const result = await this.manager.cluster.upsert(this.spec.namespaceObject)
-            if (result.error)
-                throw result.error
+            const result = await super.cluster.upsert(this.spec.namespaceObject)
+            result.throwIfError(`Failed to create namespace ${this.spec.namespaceObject.metadata?.name}`)
         }
         else
-            this.spec.namespaceObject = this.manager.state.namespaceObject
+            //@ts-ignore
+            this.spec.namespaceObject = this.supervisor.namespace
 
         if (!this.spec.namespaceObject)
             throw new Error(`Unable to determine namespace for service ${this.serviceName}`)

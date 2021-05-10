@@ -1,8 +1,11 @@
+import inquirer from 'inquirer'
+import { getDefaultStorageClass, inquireStorageClass } from '@provisioner/common'
 import { baseProvisionerType } from '../'
 
 declare module '../' {
     export interface Provisioner {
         hasDatabasesToConfigure: boolean
+        providedSecretKeyRef(args)
     }
 }
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -18,12 +21,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async inquire(args) {
         args.answers = args.answers || {}
         const answers = {
-            storageClass: args['storage-class'] || args.answers['storage-class'] || await this.getDefaultStorageClass(),
+            storageClass: args['storage-class'] || args.answers['storage-class'] || await getDefaultStorageClass(super.cluster),
             secretKeyRef: args['secret-key-ref'] || args.answers['secret-key-ref'] || this.spec.secretKeyRef
         }
 
-        const responses = await this.manager.inquirer?.prompt([
-            this.inquireStorageClass({
+        const responses = await inquirer.prompt([
+            inquireStorageClass(super.cluster, {
                 name: 'storageClass'
             }),
             {

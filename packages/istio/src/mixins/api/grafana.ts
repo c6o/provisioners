@@ -3,6 +3,14 @@ import * as Handlebars from 'handlebars'
 import { unlinkToken } from '../../constants'
 import { GrafanaProvisioner } from '@provisioner/grafana'
 
+declare module '../../' {
+    export interface Provisioner {
+        linkGrafana(grafanaNamespace: string, serviceNamespace: string): Promise<void>
+        unlinkGrafana(serviceNamespace: string, clearLinkField?: boolean): Promise<void>
+    }
+}
+
+
 const dashboards = [
     'citadel-dashboard',
     'galley-dashboard',     // this and following use prometheus plugin
@@ -19,7 +27,7 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     async linkGrafana(grafanaNamespace, serviceNamespace) {
         await this.unlinkGrafana(serviceNamespace, false)
 
-        const grafanaProvisioner = await this.manager.getAppProvisioner<GrafanaProvisioner>('grafana', grafanaNamespace)
+        const grafanaProvisioner = await super.resolver.getAppProvisioner<GrafanaProvisioner>('grafana', grafanaNamespace)
 
         await grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'istio')
 
@@ -53,13 +61,13 @@ export const grafanaMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
-        const grafanaApps = await this.manager.getInstalledApps('grafana')
+        const grafanaApps = await super.resolver.getInstalledApps('grafana')
         for (const grafanaApp of grafanaApps) {
-            const grafanaProvisioner = await this.manager.getProvisioner<GrafanaProvisioner>(grafanaApp)
+            const grafanaProvisioner = await super.resolver.getProvisioner<GrafanaProvisioner>(grafanaApp)
             await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')
         }
         if (clearLinkField)
-            delete this.manager.document.spec.provisioner['grafana-link']
+            delete super.document.spec.provisioner['grafana-link']
     }
 
     async addDashboard(grafanaProvisioner, name, params) {

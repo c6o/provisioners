@@ -3,6 +3,7 @@ import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import * as mysql from 'mysql'
 import createDebug from 'debug'
+import { processPassword } from '@provisioner/common'
 
 const debug = createDebug('mysqld:createApply')
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
@@ -49,14 +50,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Looks for mysql pods and if none are found, applies the appropriate yaml */
     async ensureMysqlIsInstalled() {
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Install mysql services')
             .list(this.mysqlPods)
             .do((result, processor) => {
                 if (result?.object?.items?.length == 0) {
                     // There are no mysql-db pods
 
-                    this.plainRootPassword = super.processPassword(this.spec.rootPassword)
+                    this.plainRootPassword = processPassword(this.spec.rootPassword)
                     this.plainRootPasswordForInitialization = this.plainRootPassword
                     this.encodedRootPassword = Buffer.from(this.plainRootPassword).toString('base64')
                     const namespace = this.serviceNamespace
@@ -76,7 +77,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureMysqlIsRunning() {
-        await this.manager.cluster.
+        await super.cluster.
             begin('Ensure mysql services are running')
             .beginWatch(this.mysqlPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
@@ -89,12 +90,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Port forwards and connects to the mysql and initiates a provision */
     async ensureMysqlIsProvisioned() {
         if (!this.hasDatabasesToConfigure) {
-            this.manager.status?.push('Setting up mysql databases')
-            this.manager.status?.pop(true)
+            super.status?.push('Setting up mysql databases')
+            super.status?.pop(true)
             return
         }
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Setting up mysql databases')
             .beginForward(3306, this.runningPod)
             .attempt(10, 5000, async (processor, attempt) => this.connectMysqlClient(processor, attempt))
@@ -109,7 +110,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         if (this.plainRootPasswordForInitialization) return
 
-        const result = await this.manager.cluster.read(this.rootSecret)
+        const result = await super.cluster.read(this.rootSecret)
         result.throwIfError('Failed to load rootSecret')
         const secret = result.as<Secret>()
 
@@ -126,7 +127,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         this.ensureRootPassword()
 
-        this.manager.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
+        super.status?.info(`Attempt ${attempt + 1} to connect to mysql on local port ${processor.lastResult.other.localPort}`)
         const connectionArgs =
         {
             host: '127.0.0.1',
@@ -143,7 +144,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Closes the mysqlClient connection */
     async disconnectMysqlClient() {
-        this.manager.status?.info('Closing connection to mysql')
+        super.status?.info('Closing connection to mysql')
         //https://github.com/mysqljs/mysql/blob/master/Readme.md#terminating-connections
         //this.connection.destroy()
 
@@ -189,34 +190,34 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const dbName = Object.keys(dbConfig)[0]
         const config = dbConfig[dbName]
         const username = config.user || 'devUser'
-        const password = super.processPassword(config.password)
+        const password = processPassword(config.password)
         const host = `${this.mysqlServiceName}.${this.serviceNamespace}.svc.cluster.local`
         const port = 3306
         const connectionString = this.toConnectionString({ username, password, host, port, database: dbName })
 
         if (process.env.NODE_ENV === 'development')
-            this.manager.status?.info(`Connection string ${connectionString}`)
+            super.status?.info(`Connection string ${connectionString}`)
 
 
         try {
-            this.manager.status?.push(`Creating database ${dbName}`)
+            super.status?.push(`Creating database ${dbName}`)
             await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
         } finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
 
         try {
-            this.manager.status?.push(`Setting up database user ${username}`)
+            super.status?.push(`Setting up database user ${username}`)
             await this.connection.query(`CREATE USER IF NOT EXISTS ${username}@'%' IDENTIFIED BY ${mysql.escape(password)};`)
             await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
             await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
             await this.connection.query('FLUSH PRIVILEGES;')
         } finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
 
         try {
-            this.manager.status?.push('Writing database connection data to the Secrets')
+            super.status?.push('Writing database connection data to the Secrets')
             if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
             if (config.rootUsernameSecretKey) this.configMap[config.rootUsernameSecretKey] = Buffer.from('root').toString('base64')
@@ -227,7 +228,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mysql').toString('base64')
         } finally {
-            this.manager.status?.pop()
+            super.status?.pop()
         }
 
     }

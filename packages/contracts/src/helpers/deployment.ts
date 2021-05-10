@@ -1,7 +1,7 @@
 import { CodeZeroHelper } from "../codezero"
 import { Deployment } from '@c6o/kubeclient-resources/apps/v1'
 
-export class DeploymentObject<T extends Deployment = Deployment>
+export class DeploymentHelper<T extends Deployment = Deployment>
     extends CodeZeroHelper<T> {
 
     static volumesPath() {

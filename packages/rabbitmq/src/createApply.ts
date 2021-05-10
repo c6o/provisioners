@@ -23,7 +23,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureRabbitMQIsInstalled() {
         const namespace = this.serviceNamespace
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Install rabbitMQ services')
             .list(this.rabbitMQPods)
             .do((result, processor) => {
@@ -44,7 +44,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureRabbitMQIsRunning() {
-        await this.manager.cluster.
+        await super.cluster.
             begin('Ensure a rabbitMQ replica is running')
             .beginWatch(this.rabbitMQPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {

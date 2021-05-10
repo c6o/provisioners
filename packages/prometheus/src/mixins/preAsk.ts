@@ -3,6 +3,7 @@ import * as path from 'path'
 import { baseProvisionerType } from '../index'
 import { homedir } from 'os'
 import { promises as fs } from 'fs'
+import inquirer from 'inquirer'
 
 // TODO: put in base class
 function resolvePath(filePath: string) {
@@ -17,13 +18,6 @@ function resolvePath(filePath: string) {
 }
 
 export const preAskMixin = (base: baseProvisionerType) => class extends base {
-
-
-    jobConfig
-    removeJobName
-
-    certName
-    certFiles
 
     async preask(options) {
         if (options['addJob'])
@@ -40,12 +34,12 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async setPrometheusNamespace() {
-        const apps = await this.manager.getInstalledApps('prometheus')
+        const apps = await this.resolver.getInstalledApps('prometheus')
         const choices = apps.map(app => app.metadata.namespace)
         if (choices.length == 1) {
             this.prometheusNamespace = choices[0]
         } else if (choices.length > 1) {
-            const selection = await this.manager.inquirer?.prompt({
+            const selection = await inquirer.prompt({
                 type: 'list',
                 name: 'namespace',
                 message: `Which prometheus would you like to ask?`,

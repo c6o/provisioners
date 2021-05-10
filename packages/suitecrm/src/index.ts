@@ -13,6 +13,6 @@ export interface Provisioner extends ProvisionerBase {
 
 export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, createInquireMixin) {
 
-    get isLatest() { return this.edition === 'latest' }
+    get isPreview() { return this.edition === 'preview' }
 
 }

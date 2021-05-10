@@ -6,14 +6,21 @@ import { PrometheusProvisioner } from '@provisioner/prometheus'
 
 import { baseProvisionerType } from '../../'
 
+declare module '../../' {
+    export interface Provisioner {
+        linkPrometheus(prometheusNamespace: string, istioNamespace: string): Promise<void>
+        unlinkPrometheus(istioNamespace: string, clearLinkField?: boolean): Promise<void>
+    }
+}
+
 export const prometheusApiMixin = (base: baseProvisionerType) => class extends base {
 
     async linkPrometheus(prometheusNamespace, istioNamespace) {
         await this.unlinkPrometheus(istioNamespace, false)
-        await this.manager.cluster.begin('Adding access for Prometheus')
+        await super.cluster.begin('Adding access for Prometheus')
             .upsertFile('../../../k8s/prometheus/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
         .end()
-        const prometheusProvisioner = await this.manager.getAppProvisioner<PrometheusProvisioner>('prometheus', prometheusNamespace)
+        const prometheusProvisioner = await super.resolver.getAppProvisioner<PrometheusProvisioner>('prometheus', prometheusNamespace)
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
@@ -39,19 +46,19 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
             }
         }
 
-        this.manager.status?.push('Removing access for Prometheus')
-        await this.manager.cluster.delete(clusterRole)
-        await this.manager.cluster.delete(clusterRoleBinding)
-        this.manager.status?.pop()
+        super.status?.push('Removing access for Prometheus')
+        await super.cluster.delete(clusterRole)
+        await super.cluster.delete(clusterRoleBinding)
+        super.status?.pop()
 
-        const prometheusApps = await this.manager.getInstalledApps('prometheus')
+        const prometheusApps = await super.resolver.getInstalledApps('prometheus')
         for (const prometheusApp of prometheusApps) {
-            const prometheusProvisioner = await this.manager.getProvisioner<PrometheusProvisioner>(prometheusApp)
+            const prometheusProvisioner = await super.resolver.getProvisioner<PrometheusProvisioner>(prometheusApp)
             const prometheusNamespace = prometheusApp.metadata.namespace
             await prometheusProvisioner.clearAll(prometheusNamespace, istioNamespace, 'istio')
         }
         if (clearLinkField)
-            delete this.manager.document.spec.provisioner['prometheus-link']
+            delete super.document.spec.provisioner['prometheus-link']
     }
 
     // TODO: move to base?

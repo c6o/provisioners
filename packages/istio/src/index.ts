@@ -18,7 +18,7 @@ export * from './contracts'
 
 // TODO: import { helpMixin} from "./help"
 
-export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase & IstioProvisioner
+export type baseProvisionerType = new (...a) => Provisioner & IstioProvisioner
 
 export class Provisioner extends mix(ProvisionerBase).with(
     removeApplyMixin,

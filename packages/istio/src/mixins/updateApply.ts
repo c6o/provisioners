@@ -7,14 +7,14 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newPrometheusLink = this.spec['prometheus-link']
 
         if (newPrometheusLink === unlinkToken) {
-            this.manager.status?.push('Unlinking istio from Prometheus')
+            super.status?.push('Unlinking istio from Prometheus')
             await this.unlinkPrometheus(serviceNamespace)
-            this.manager.status?.pop()
+            super.status?.pop()
         }
         else if (newPrometheusLink) {
-            this.manager.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
+            super.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
             await this.linkPrometheus(newPrometheusLink, serviceNamespace)
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
@@ -22,20 +22,20 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newGrafanaLink = this.spec['grafana-link']
 
         if (newGrafanaLink === unlinkToken) {
-            this.manager.status?.push('Unlinking istio from Grafana')
+            super.status?.push('Unlinking istio from Grafana')
             await this.unlinkGrafana(serviceNamespace)
-            this.manager.status?.pop()
+            super.status?.pop()
         }
         else if (newGrafanaLink) {
-            this.manager.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
+            super.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
             await this.linkGrafana(newGrafanaLink, serviceNamespace)
-            this.manager.status?.pop()
+            super.status?.pop()
         }
     }
 
     async updateApply() {
 
-        const serviceNamespace = this.manager.document.metadata.namespace
+        const serviceNamespace = super.document.metadata.namespace
 
         await this.updatePrometheus(serviceNamespace)
         await this.updateGrafana(serviceNamespace)

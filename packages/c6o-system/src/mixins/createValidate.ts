@@ -78,8 +78,8 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
         // TODO: This is a hack - we actually add the CRDs here
         // because it is required before apply is called!
         // Can't move this to the provisioner because apply expects a CRD
-        if ((await this.manager.cluster.version()).gte('1.16.0'))
-            await this.manager.cluster
+        if ((await super.cluster.version()).gte('1.16.0'))
+            await super.cluster
                 .begin(`Provision c6o CRDs for apiextensions.k8s.io/v1`)
                     .upsertFile('../../k8s/crds/apps.v1.yaml')
                     .upsertFile('../../k8s/crds/dock.v1.yaml')
@@ -88,7 +88,7 @@ export const createValidateMixin = (base: baseProvisionerType) => class extends 
                     .upsertFile('../../k8s/crds/users.v1.yaml')
                 .end()
         else
-            await this.manager.cluster
+            await super.cluster
                 .begin(`Provision c6o CRDs for apiextensions.k8s.io/v1beta1`)
                     .upsertFile('../../k8s/crds/apps.v1beta1.yaml')
                     .upsertFile('../../k8s/crds/dock.v1beta1.yaml')

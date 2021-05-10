@@ -31,7 +31,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             storage,
             k8sLogIndexPrefix } = this.spec
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Install logging (ELK) services')
                 .list(this.elasticsearchPods)
                 .do((result, processor) => {
@@ -48,7 +48,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureElasticsearchIsRunning() {
         debug('Ensuring Elasticsearch is running')
-        await this.manager.cluster
+        await super.cluster
             .begin('Ensure an Elasticsearch statefulset instance is running')
                 .beginWatch(this.elasticsearchPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {

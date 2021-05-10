@@ -24,7 +24,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureVerdaccioInstalled() {
 
-        await this.manager.cluster
+        await super.cluster
             .begin('Install verdaccio services')
             .list(this.verdaccioPods)
             .do((result, processor) => {
@@ -35,7 +35,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         storageClass } = this.spec
 
                     processor
-                        .addOwner(this.manager.document)
+                        .addOwner(super.document)
                         .upsertFile('../../k8s/helm.yaml', { namespace, storageClass })
                         .clearOwners()
                         .upsertFile('../../k8s/pvc.yaml', { namespace })
@@ -45,7 +45,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureVerdaccioIsRunning() {
-        await this.manager.cluster.
+        await super.cluster.
             begin('Ensure verdaccio services are running')
                 .beginWatch(this.verdaccioPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {

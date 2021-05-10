@@ -1,4 +1,4 @@
-import { Resource, keyValue } from '@c6o/kubeclient-contracts'
+import { Resource } from '@c6o/kubeclient-contracts'
 import { CodeZeroHelper, CodeZeroLabels } from './codezero'
 
 export interface MenuItems {

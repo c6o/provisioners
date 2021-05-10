@@ -6,19 +6,19 @@ export const optionsMixin = (base: baseProvisionerMixinType) => class extends ba
 
     providedDeprovisionOption(option, answers?) {
         answers = answers || {}
-        return (this.spec.deprovision?.[option] !== undefined) || (answers[option] !== undefined)
+        return (super.spec.deprovision?.[option] !== undefined) || (answers[option] !== undefined)
     }
 
     getDeprovisionOption(option, defaultValue, answers?) {
         answers = answers || {}
-        if (this.spec.deprovision?.[option] !== undefined)
-            return this.spec.deprovision[option]
+        if (super.spec.deprovision?.[option] !== undefined)
+            return super.spec.deprovision[option]
 
         return answers[option] !== undefined ? answers[option] : defaultValue
     }
 
     setDeprovisionOption(option, value) {
-        this.spec.deprovision = this.spec.deprovision || {}
-        this.spec.deprovision[option] = value
+        super.spec.deprovision = super.spec.deprovision || {}
+        super.spec.deprovision[option] = value
     }
 }

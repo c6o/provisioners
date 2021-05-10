@@ -1,3 +1,4 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -11,7 +12,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
 
         //https://apps.foldingathome.org/team
-        const responses = await this.manager.inquirer?.prompt([
+        const responses = await inquirer.prompt([
             {
                 type: 'input',
                 name: 'username',
