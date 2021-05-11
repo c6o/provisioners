@@ -3,7 +3,6 @@ import { baseProvisionerType } from './index'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureRabbitMQIsInstalled()
         await this.ensureRabbitMQIsRunning()
     }

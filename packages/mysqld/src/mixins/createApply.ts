@@ -41,7 +41,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureMysqlIsInstalled()
         await this.ensureMysqlIsRunning()
         await this.ensureMysqlIsProvisioned()

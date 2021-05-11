@@ -5,7 +5,6 @@ import { Cluster, Status } from '@c6o/kubeclient-contracts'
 import { optionFunctionType, AppObject, ProvisionerBase as ProvisionerBaseContract, Resolver, AppDocument } from '@provisioner/contracts'
 
 import {
-    namespaceMixin,
     optionsMixin
 } from './mixins'
 
@@ -14,7 +13,7 @@ export type baseProvisionerMixinType = new (...a) => ProvisionerBaseContract
 
 export class ProvisionerBasePrivate { }
 
-const provisionerBaseMixin: baseProvisionerMixinType = mix(ProvisionerBasePrivate).with(namespaceMixin, optionsMixin)
+const provisionerBaseMixin: baseProvisionerMixinType = mix(ProvisionerBasePrivate).with(optionsMixin)
 export class ProvisionerBase extends provisionerBaseMixin {
     cluster: Cluster
     status: Status
@@ -25,6 +24,7 @@ export class ProvisionerBase extends provisionerBaseMixin {
 
     document: AppDocument
     spec: any
+    serviceNamespace: string
 
     // Has other API functions
     //[key: string]: any

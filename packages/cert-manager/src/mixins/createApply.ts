@@ -3,7 +3,6 @@ import { baseProvisionerType } from '..'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureInstalled()
         await this.ensureReady()
     }

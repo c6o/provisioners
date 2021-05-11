@@ -38,7 +38,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         `mongodb://${options.user}:${options.password}@${options.host}:${options.port}${options.db ? '/' + options.db : ''}`
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureMongoDbIsInstalled()
         await this.ensureMongoDbIsRunning()
         await this.ensureMongoDbIsProvisioned()
@@ -85,7 +84,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
             .end()
     }
-    
+
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureMongoDbIsRunning() {
         await this.cluster.

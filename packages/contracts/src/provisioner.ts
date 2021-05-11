@@ -16,6 +16,7 @@ export interface ProvisionerBase {
 
     document: AppDocument
     spec?: any
+    serviceNamespace: string
     serviceName: string
 
     /** @deprecated */
@@ -23,10 +24,6 @@ export interface ProvisionerBase {
 
     /** @deprecated */
     readFile(...args: string[]): Promise<string>
-
-    serviceNamespace: string
-
-    ensureServiceNamespacesExist() : Promise<void>
 
     providedDeprovisionOption(option, answers?)
     getDeprovisionOption(option, defaultValue, answers?)

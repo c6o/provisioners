@@ -23,7 +23,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provision() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureEtcdOperatorIsInstalled()
         await this.ensurePodIsRunning(this.etcdOperatorPods, 'ensure etcd operator is running')
         await this.ensureEtcdIsInstalled()

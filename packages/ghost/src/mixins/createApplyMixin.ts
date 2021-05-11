@@ -17,7 +17,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     // @ts-ignore
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.installGhost()
         await this.ensureGhostIsRunning()
     }

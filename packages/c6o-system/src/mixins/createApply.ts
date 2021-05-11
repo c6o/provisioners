@@ -13,7 +13,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createApply() {
         this.spec.tag = this.spec.tag || 'canary'
 
-        await this.ensureServiceNamespacesExist()
         await this.provisionSystem()
         await this.provisionApps()
         await this.provisionOAuth()

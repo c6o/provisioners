@@ -61,12 +61,9 @@ describe('Ghost Mixins', () => {
 
     test('createApply', async () => {
         const ghostProvisioner = new GhostProvisioner()
-        ghostProvisioner.ensureServiceNamespacesExist = jest.fn()
         ghostProvisioner.installGhost = jest.fn()
         ghostProvisioner.ensureGhostIsRunning = jest.fn()
-        ghostProvisioner.namespaceObject = {}
         await ghostProvisioner.createApply()
-        expect(ghostProvisioner.ensureServiceNamespacesExist).toHaveBeenCalled()
         expect(ghostProvisioner.installGhost).toHaveBeenCalled()
         expect(ghostProvisioner.ensureGhostIsRunning).toHaveBeenCalled()
     })

@@ -17,7 +17,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.installOdoo()
         await this.ensureOdooIsRunning()
     }
