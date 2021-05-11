@@ -73,7 +73,7 @@ export interface Volume {
 }
 
 export type AppStatus = 'Installing' | 'Running' | 'Error' | 'Configuring' | 'Degraded' | 'Terminating' | 'Terminated'
-export interface AppDocument extends Resource {
+export interface AppResource extends Resource {
     labels?: AppDocumentLabels
     status?: AppStatus
     spec?: AppDocumentSpec
@@ -97,7 +97,7 @@ export const AppStatuses = {
     }
 }
 
-export class AppObject<T extends AppDocument = AppDocument> extends CodeZeroHelper<T> {
+export class AppHelper<T extends AppResource = AppResource> extends CodeZeroHelper<T> {
     _services
 
     get services() {

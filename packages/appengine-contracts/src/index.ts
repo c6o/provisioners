@@ -1,4 +1,4 @@
 export * from './app'
-export * from './appObject'
+export * from './appHelper'
 export * from './create'
 export * from './flow'

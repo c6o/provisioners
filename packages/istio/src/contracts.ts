@@ -1,9 +1,9 @@
 import { Result } from '@c6o/kubeclient-contracts'
-import { ProvisionerBase, IngressParameters, AppDocument } from '@provisioner/contracts'
+import { ProvisionerBase, IngressParameters, AppResource } from '@provisioner/contracts'
 
 export interface IstioProvisioner extends ProvisionerBase {
-    upsertVirtualService(app: AppDocument, gateway: string): Promise<Result>
-    removeVirtualService(app: AppDocument): Promise<void>
+    upsertVirtualService(app: AppResource, gateway: string): Promise<Result>
+    removeVirtualService(app: AppResource): Promise<void>
     getApplicationPrefix(appName: string, namespace: string): string
     // clearConfig
 

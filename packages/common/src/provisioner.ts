@@ -2,7 +2,7 @@ import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
 import { Cluster, Status } from '@c6o/kubeclient-contracts'
-import { optionFunctionType, AppObject, ProvisionerBase as ProvisionerBaseContract, Resolver, AppDocument } from '@provisioner/contracts'
+import { optionFunctionType, AppHelper, ProvisionerBase as ProvisionerBaseContract, Resolver, AppResource } from '@provisioner/contracts'
 
 import {
     optionsMixin
@@ -32,20 +32,20 @@ export class ProvisionerBase extends provisionerBaseMixin {
 
     get edition(): string { return this.document?.metadata?.labels['system.codezero.io/edition'] }
 
-    _document: AppDocument
+    _document: AppResource
     get document() { return this._document }
-    set document(value: AppDocument) {
+    set document(value: AppResource) {
         this._document = value
         delete this._documentHelper
     }
 
     _documentHelper
-    get documentHelper(): AppObject {
+    get documentHelper(): AppHelper {
         if (this._documentHelper)
             return this._documentHelper
         if (!this.document)
             return
-        return this._documentHelper = new AppObject(this.document)
+        return this._documentHelper = new AppHelper(this.document)
     }
 
     help(command: string, options: optionFunctionType, messages: string[]) {

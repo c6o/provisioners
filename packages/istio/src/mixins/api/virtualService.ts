@@ -1,5 +1,5 @@
 import { Result, Resource } from '@c6o/kubeclient-contracts'
-import { AppDocument, RoutesType } from '@provisioner/contracts'
+import { AppResource, RoutesType } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
@@ -8,9 +8,9 @@ const debug = createDebug('istio:api:virtualService:')
 
 export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
 
-    app: AppDocument
+    app: AppResource
 
-    async upsertVirtualService(app: AppDocument, gateway: string): Promise<Result> {
+    async upsertVirtualService(app: AppResource, gateway: string): Promise<Result> {
         this.app = app
 
         if (!app.spec.routes)
@@ -45,7 +45,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return result
     }
 
-    async removeVirtualService(app: AppDocument) {
+    async removeVirtualService(app: AppResource) {
         this.app = app
 
         if (!app.spec.routes)
@@ -125,7 +125,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return http
     }
 
-    virtualService = (app: AppDocument, gateway: string) => ({
+    virtualService = (app: AppResource, gateway: string) => ({
         apiVersion: 'networking.istio.io/v1alpha3',
         kind: 'VirtualService',
         metadata: {

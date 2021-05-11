@@ -1,4 +1,4 @@
-import { AppDocument } from '@provisioner/contracts'
+import { AppResource } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -6,7 +6,7 @@ const debug = createDebug('c6o-system:api:postAppMixin:')
 
 export const postAppMixin = (base: baseProvisionerType) => class extends base {
 
-    async postCreateApp(app: AppDocument) {
+    async postCreateApp(app: AppResource) {
         if (app.spec.routes?.length) {
             this.status?.push(`Creating App ${app.metadata.namespace} routes`)
             const istioProvisioner = await this.getIstioProvisioner()
@@ -15,7 +15,7 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
         }
     }
 
-    async postRemoveApp(app: AppDocument) {
+    async postRemoveApp(app: AppResource) {
         if (app.spec.routes?.length) {
             this.status?.push(`Removing App ${app.metadata.namespace} routes`)
             const istioProvisioner = await this.getIstioProvisioner()
@@ -24,7 +24,7 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
         }
     }
 
-    async postUpdateApp(app: AppDocument) {
+    async postUpdateApp(app: AppResource) {
         if (app.spec.routes?.length) {
             this.status?.push(`Updating App ${app.metadata.namespace} routes`)
             const istioProvisioner = await this.getIstioProvisioner()

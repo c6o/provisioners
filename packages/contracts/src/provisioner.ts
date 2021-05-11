@@ -1,5 +1,5 @@
 import { Cluster, Status } from '@c6o/kubeclient-contracts'
-import { AppDocument } from './app'
+import { AppResource } from './app'
 import { Resolver,  } from './resolver'
 
 export interface IngressParameters {
@@ -14,7 +14,7 @@ export interface ProvisionerBase {
     /* @deprecated */
     hubClient
 
-    document: AppDocument
+    document: AppResource
     spec?: any
     serviceNamespace: string
     serviceName: string

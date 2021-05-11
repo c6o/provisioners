@@ -1,7 +1,7 @@
-import { AppObject, AppDocumentLabels } from '@provisioner/contracts'
-import { AppEngineAppDocument, FlowResult, isPortNumber, ServicePort, DeploymentPort, each } from './'
+import { AppHelper, AppDocumentLabels } from '@provisioner/contracts'
+import { AppEngineAppResource, FlowResult, isPortNumber, ServicePort, DeploymentPort, each } from './'
 
-export class AppEngineAppObject<T extends AppEngineAppDocument = AppEngineAppDocument> extends AppObject<T> {
+export class AppEngineAppHelper<T extends AppEngineAppResource = AppEngineAppResource> extends AppHelper<T> {
 
     version = '1.0'
 

@@ -68,8 +68,7 @@ export interface AppEngineAppSpec extends AppDocumentSpec {
     provisioner?: AppEngineAppSpecProvisioner
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppEngineAppDocument extends Resource {
+export interface AppEngineAppResource extends Resource {
     labels?: AppDocumentLabels
     spec?: AppEngineAppSpec
 }

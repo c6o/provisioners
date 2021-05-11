@@ -1,9 +1,9 @@
-import { ProvisionerBase, AppDocument } from '@provisioner/contracts'
+import { ProvisionerBase, AppResource } from '@provisioner/contracts'
 
 export interface SystemProvisioner extends ProvisionerBase {
 
-    postCreateApp(appSpec: AppDocument): Promise<void>
-    postUpdateApp(appSpec: AppDocument): Promise<void>
-    postRemoveApp(appSpec: AppDocument): Promise<void>
+    postCreateApp(appSpec: AppResource): Promise<void>
+    postUpdateApp(appSpec: AppResource): Promise<void>
+    postRemoveApp(appSpec: AppResource): Promise<void>
     getSystemFQDN(): Promise<string>
 }
