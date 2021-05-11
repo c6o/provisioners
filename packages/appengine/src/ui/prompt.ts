@@ -1,6 +1,6 @@
 import { LitElement, customElement, html, property } from 'lit-element'
 import { keyValue } from '@c6o/kubeclient-contracts'
-import { Prompt, isFunctionString, AppEngineAppDocument } from '@provisioner/appengine-contracts'
+import { Prompt, isFunctionString, AppEngineAppResource } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
 import createDebug from 'debug'
 
@@ -17,7 +17,7 @@ export class AppEnginePrompt extends LitElement {
     answers: keyValue
 
     @property({ type: Object })
-    document: AppEngineAppDocument
+    document: AppEngineAppResource
 
     @property({ type: Object })
     prompt: Prompt

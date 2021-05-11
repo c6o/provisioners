@@ -1,5 +1,5 @@
 import { keyValue } from '@c6o/kubeclient-contracts'
-import { PromptType, Prompt, Section, isFunctionString, AppEngineAppObject, AppEngineAppDocument } from '@provisioner/appengine-contracts'
+import { PromptType, Prompt, Section, isFunctionString, AppEngineAppHelper, AppEngineAppResource } from '@provisioner/appengine-contracts'
 import createDebug from 'debug'
 const debug = createDebug('@appengine:Validation')
 
@@ -49,13 +49,13 @@ export class PromptValidation {
         }
     }
 
-    public validatePrompt(document: AppEngineAppDocument, answers: keyValue, prompt: Prompt) : boolean {
+    public validatePrompt(document: AppEngineAppResource, answers: keyValue, prompt: Prompt) : boolean {
         const invalidPrompts = new Array<Prompt>()
         this.validatePromptInternal(document, answers, prompt, invalidPrompts)
         return invalidPrompts.length == 0
     }
 
-    private validatePromptInternal(document: AppEngineAppDocument, answers: keyValue, prompt: Prompt, invalidPrompts: Array<Prompt>) {
+    private validatePromptInternal(document: AppEngineAppResource, answers: keyValue, prompt: Prompt, invalidPrompts: Array<Prompt>) {
 
         if (prompt.validate && isFunctionString(prompt.validate)) {
             try {
@@ -85,7 +85,7 @@ export class PromptValidation {
         }
     }
 
-    private validatePromptType(manifestHelper: AppEngineAppObject, prompt: PromptType, invalidPrompts: Prompt[]) {
+    private validatePromptType(manifestHelper: AppEngineAppHelper, prompt: PromptType, invalidPrompts: Prompt[]) {
         if (typeof prompt == 'undefined') return //if we have no prompts, it is valid
         if (Array.isArray(prompt))
             for (const p of prompt)
@@ -93,13 +93,13 @@ export class PromptValidation {
         else
             this.validatePromptInternal(manifestHelper.document, manifestHelper.answers, prompt, invalidPrompts)
     }
-    private validateSectionPrompts(manifestHelper: AppEngineAppObject, sections: Section[], invalidPrompts: Array<Prompt>) {
+    private validateSectionPrompts(manifestHelper: AppEngineAppHelper, sections: Section[], invalidPrompts: Array<Prompt>) {
         if (typeof sections == 'undefined') return //if we have no sections, it is valid
         for (const section of sections)
             this.validatePromptType(manifestHelper, section.prompts, invalidPrompts)
     }
 
-    public validateSectionAndPrompts(manifestHelper: AppEngineAppObject, sections: Section[], prompts: PromptType): Array<Prompt> {
+    public validateSectionAndPrompts(manifestHelper: AppEngineAppHelper, sections: Section[], prompts: PromptType): Array<Prompt> {
         const invalidPrompts: Prompt[] = new Array<Prompt>()
         if (sections)
             this.validateSectionPrompts(manifestHelper, sections, invalidPrompts)

@@ -1,5 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { AppEngineAppObject, PromptType, Section } from '@provisioner/appengine-contracts'
+import { AppEngineAppHelper, PromptType, Section } from '@provisioner/appengine-contracts'
 
 @customElement('appengine-section')
 export class AppEngineSection extends LitElement {
@@ -11,7 +11,7 @@ export class AppEngineSection extends LitElement {
     prompts: PromptType
 
     @property({ type: Object })
-    manifestHelper: AppEngineAppObject
+    manifestHelper: AppEngineAppHelper
 
     get renderPrompts() {
         return this.section?.prompts || this.prompts

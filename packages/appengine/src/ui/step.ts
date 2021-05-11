@@ -1,6 +1,6 @@
 import { LitElement, customElement, html, property } from 'lit-element'
 import { StoreFlowScreen, StoreFlowMediator } from '@provisioner/common'
-import { Step, AppEngineAppObject, PromptType, Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
+import { Step, AppEngineAppHelper, PromptType, Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
 // @ts-ignore
 import { getTimeZonesFlatten } from '../templates/timeZones'
@@ -11,7 +11,7 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
     mediator: StoreFlowMediator
 
     @property({ type: Object })
-    manifestHelper: AppEngineAppObject
+    manifestHelper: AppEngineAppHelper
 
     @property({ type: Object })
     step: Step
