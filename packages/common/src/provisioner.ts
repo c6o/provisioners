@@ -22,7 +22,6 @@ export class ProvisionerBase extends provisionerBaseMixin {
     serviceName: string
     moduleLocation: string
 
-    document: AppDocument
     spec: any
     serviceNamespace: string
 
@@ -31,15 +30,26 @@ export class ProvisionerBase extends provisionerBaseMixin {
     routes?: any
     logger?: any
 
-    help(command: string, options: optionFunctionType, messages: string[]) { }
-
     get edition(): string { return this.document?.metadata?.labels['system.codezero.io/edition'] }
+
+    _document: AppDocument
+    get document() { return this._document }
+    set document(value: AppDocument) {
+        this._document = value
+        delete this._documentHelper
+    }
 
     _documentHelper
     get documentHelper(): AppObject {
-        if (this._documentHelper || !this.document)
+        if (this._documentHelper)
             return this._documentHelper
+        if (!this.document)
+            return
         return this._documentHelper = new AppObject(this.document)
+    }
+
+    help(command: string, options: optionFunctionType, messages: string[]) {
+        // No Op
     }
 
     serve(req, res, serverRoot = 'lib/ui') {

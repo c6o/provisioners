@@ -20,8 +20,10 @@ export class Provisioner extends mix(ProvisionerBase).with(createApplyMixin, cre
 
     // Override the documentHelper in ProvisionerBase
     get documentHelper(): AppEngineAppObject {
-        if (this._documentHelper || !this.document)
+        if (this._documentHelper)
             return this._documentHelper
+        if (!this.document)
+            return
         return this._documentHelper = new AppEngineAppObject(this.document)
     }
 }
