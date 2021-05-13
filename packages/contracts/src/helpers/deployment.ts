@@ -4,6 +4,19 @@ import { Deployment } from '@c6o/kubeclient-resources/apps/v1'
 export class DeploymentHelper<T extends Deployment = Deployment>
     extends CodeZeroHelper<T> {
 
+    static template = (namespace?: string, name?: string): Deployment => ({
+        apiVersion: 'apps/v1',
+        kind: 'Deployment',
+        metadata: {
+            name,
+            namespace
+        }
+    })
+
+    static from = (namespace?: string, name?: string) =>
+        new DeploymentHelper(DeploymentHelper.template(namespace, name))
+
+
     static volumesPath() {
         return '/spec/template/spec/volumes'
     }

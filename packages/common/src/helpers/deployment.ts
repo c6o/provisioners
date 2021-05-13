@@ -4,17 +4,8 @@ import { DeploymentHelper as DeploymentHelperContract } from '@provisioner/contr
 
 export class DeploymentHelper<T extends Deployment = Deployment> extends DeploymentHelperContract<T> {
 
-    static template = (namespace?: string, name?: string): Deployment => ({
-            apiVersion: 'apps/v1',
-            kind: 'Deployment',
-            metadata: {
-                name,
-                namespace
-            }
-        })
-
     static from = (namespace?: string, name?: string) =>
-        new DeploymentHelper(DeploymentHelper.template(namespace, name))
+        new DeploymentHelper(DeploymentHelperContract.template(namespace, name))
 
     /** Restarts the deployment - does not wait until it's restarted */
     async restart(cluster: Cluster): Promise<Deployment> {

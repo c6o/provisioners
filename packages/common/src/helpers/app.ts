@@ -47,31 +47,3 @@ export class AppHelper<T extends AppResource = AppResource> extends AppHelperCon
         return Array.from(result.each<AppResource>('App'))
     }
 }
-/*
-1. Get a field from the document
-document.spec.volmes[0].container.image
-
-2. field mutator
-document.spec.volmes[0].container.image = foo
-
-3. Cluster interaction
-name, namespace => document
-
-4. Label/Annotation mutations/getters
-document - setType = environment => metadata.label['codezero.io/system/type']  = environment
-
-5. Cluster Finder based on label/annotation
-
-const doc = await Deployment
-    .from(name, namespace) <- helper
-    .isManagedBy('codezero)
-    .read(cluster)
-
-const doc = Deployment.from(name, namespace)
-    Deployment.isManagedBy(doc, 'codezero)
-    Deployment.read(cluster, doc)
-
-
-await Deployment
-    .update(cluster, doc)
-*/
