@@ -21,7 +21,7 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
     async ensureSystemProvisioner() {
         if (this.systemProvisioner)
             return
-        this.systemProvisioner = await this.resolver.getAppProvisioner('c6o-system', 'c6o-system')
+        this.systemProvisioner = await this.resolver.getProvisioner('c6o-system', 'c6o-system')
     }
 
     async processTemplate(map: keyValueOrGenerator, stageName: string) {

@@ -1,4 +1,5 @@
 import { ConfigMap, Secret } from '@c6o/kubeclient-resources/core/v1'
+import { AppHelper } from '@provisioner/common'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
@@ -36,7 +37,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
             const appNamespace = appIdParts[0]
             const appId = appIdParts[1]
 
-            const app = await this.resolver.getInstalledApp(appId, appNamespace)
+            const app = await AppHelper.from(appNamespace, appId).read(this.cluster, `Failed to find ${appId} in ${appNamespace}`)
             const npmRegistry = app.spec.services['npm-registry']
 
             if (!app.spec.services?.['npm-registry']) {

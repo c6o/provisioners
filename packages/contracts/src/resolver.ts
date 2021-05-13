@@ -6,10 +6,16 @@ export type optionFunctionType = (string, description: string, autocomplete?: Re
 export type actionType = 'create' | 'update' | 'remove'
 export type stageType = 'load' | 'inquire' | 'validate' | 'apply' | 'done'
 export type transactionStateType = 'pending' | 'completed' | 'error'
+
+export interface ResolverParams {
+    appName: string
+    namespace?: string
+    serviceName?: string
+    edition?: string
+    hubToken?: string
+}
 export interface Resolver {
+    getProvisioner<T extends ProvisionerBase>(params: ResolverParams): Promise<T>
+    getProvisioner<T extends ProvisionerBase>(namespace: string, name: string): Promise<T>
     getProvisioner<T extends ProvisionerBase>(appResource: AppResource, serviceName?: string): Promise<T>
-    getAppProvisioner<T extends ProvisionerBase>(name: string, namespace: string): Promise<T>
-    getInstalledServices(interfaceName): Promise<Array<AppResource>>
-    getInstalledApp(name: string, namespace: string ): Promise<AppResource>
-    getInstalledApps(name: string): Promise<Array<AppResource>>
 }

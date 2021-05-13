@@ -106,7 +106,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.cluster
             .begin(`Ensure ingress gateway is running`)
                 .beginWatch(this.ingressPod)
-                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()
                 })
             .end()
@@ -116,7 +116,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.cluster
             .begin(`Ensure istiod is running`)
                 .beginWatch(this.istiodPod)
-                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()
                 })
             .end()

@@ -78,7 +78,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await DeploymentHelper.from(namespace, this.deploymentName).restartDeployment(this.cluster)
+                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.cluster)
             }
         }
 
@@ -104,7 +104,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await DeploymentHelper.from(namespace, this.deploymentName).restartDeployment(this.cluster)
+                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.cluster)
             }
 
         }

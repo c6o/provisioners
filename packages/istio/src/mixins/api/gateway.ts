@@ -58,6 +58,6 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
         return await ServiceHelper
             .from('istio-system')
             .setLabel('istio', 'ingressgateway') // This is the label - not the service name
-            .awaitServiceAddress(this.cluster, 'Fetching external address')
+            .awaitAddress(this.cluster, 'Fetching external address')
     }
 }

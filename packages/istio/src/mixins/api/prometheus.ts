@@ -2,6 +2,7 @@ import * as yaml from 'js-yaml'
 import * as Handlebars from 'handlebars'
 import * as path from 'path'
 import { promises as fs } from 'fs'
+import { AppHelper } from '@provisioner/common'
 import { PrometheusProvisioner } from '@provisioner/prometheus'
 
 import { baseProvisionerType } from '../../'
@@ -20,7 +21,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         await this.cluster.begin('Adding access for Prometheus')
             .upsertFile('../../../k8s/prometheus/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
         .end()
-        const prometheusProvisioner = await this.resolver.getAppProvisioner<PrometheusProvisioner>('prometheus', prometheusNamespace)
+        const prometheusProvisioner = await this.resolver.getProvisioner<PrometheusProvisioner>(prometheusNamespace, 'prometheus')
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
@@ -51,7 +52,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         await this.cluster.delete(clusterRoleBinding)
         this.status?.pop()
 
-        const prometheusApps = await this.resolver.getInstalledApps('prometheus')
+        const prometheusApps = await AppHelper.from(null, 'prometheus').list(this.cluster, 'Failed to find Prometheus')
         for (const prometheusApp of prometheusApps) {
             const prometheusProvisioner = await this.resolver.getProvisioner<PrometheusProvisioner>(prometheusApp)
             const prometheusNamespace = prometheusApp.metadata.namespace

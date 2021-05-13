@@ -74,6 +74,8 @@ export interface Volume {
 
 export type AppStatus = 'Installing' | 'Running' | 'Error' | 'Configuring' | 'Degraded' | 'Terminating' | 'Terminated'
 export interface AppResource extends Resource {
+    apiVersion: 'system.codezero.io/v1',
+    kind: 'App',
     labels?: AppDocumentLabels
     status?: AppStatus
     spec?: AppDocumentSpec

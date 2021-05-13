@@ -5,8 +5,7 @@ import { IngressParameters } from '@provisioner/contracts'
 
 export class ServiceHelper<T extends Service = Service> extends ResourceHelper<T> { //extends ServiceHelperContract<T> {
 
-    static from(namespace?: string, name?: string) {
-        return new ServiceHelper({
+    static template = (namespace?: string, name?: string): Service => ({
             apiVersion: 'v1',
             kind: 'Service',
             metadata: {
@@ -14,7 +13,9 @@ export class ServiceHelper<T extends Service = Service> extends ResourceHelper<T
                 namespace
             }
         })
-    }
+
+    static from = (namespace?: string, name?: string) =>
+        new ServiceHelper(ServiceHelper.template(namespace, name))
 
     /**
      * Awaits until the LoadBalancer service has an ip address or hostname
@@ -22,7 +23,7 @@ export class ServiceHelper<T extends Service = Service> extends ResourceHelper<T
      * @param waitingMessage
      * @returns the resulting ip and/or hostname
      */
-    async awaitServiceAddress(cluster: Cluster, waitingMessage?: string): Promise<IngressParameters> {
+    async awaitAddress(cluster: Cluster, waitingMessage?: string): Promise<IngressParameters> {
         let ip = null
         let hostname = null
 

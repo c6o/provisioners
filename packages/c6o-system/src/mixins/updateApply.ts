@@ -14,7 +14,7 @@ declare module '../' {
 export const updateApplyMixin = (base: baseProvisionerType) => class extends base {
 
     restartSystemServer = async (serviceNamespace) =>
-        await DeploymentHelper.from(serviceNamespace, 'system-server').restartDeployment(this.cluster)
+        await DeploymentHelper.from(serviceNamespace, 'system-server').restart(this.cluster)
 
 
     async updateNpm(serviceNamespace) {

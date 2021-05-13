@@ -1,3 +1,4 @@
+export * from './app'
 export * from './deployment'
 export * from './password'
 export * from './service'

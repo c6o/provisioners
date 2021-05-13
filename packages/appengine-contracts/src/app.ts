@@ -1,5 +1,5 @@
-import { Resource, keyValue } from '@c6o/kubeclient-contracts'
-import { AppDocumentLabels, AppDocumentSpec } from '@provisioner/contracts'
+import { keyValue } from '@c6o/kubeclient-contracts'
+import { AppDocumentLabels, AppDocumentSpec, AppResource } from '@provisioner/contracts'
 import { GenerateOptions } from 'generate-password'
 import { Flow } from './flow'
 
@@ -68,7 +68,7 @@ export interface AppEngineAppSpec extends AppDocumentSpec {
     provisioner?: AppEngineAppSpecProvisioner
 }
 
-export interface AppEngineAppResource extends Resource {
+export interface AppEngineAppResource extends AppResource {
     labels?: AppDocumentLabels
     spec?: AppEngineAppSpec
 }

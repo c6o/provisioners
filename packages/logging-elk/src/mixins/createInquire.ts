@@ -1,5 +1,5 @@
 import inquirer from 'inquirer'
-import { getDefaultStorageClass, inquireStorageClass } from '@provisioner/common'
+import { StorageClassHelper } from '@provisioner/common'
 import { baseProvisionerType } from '..'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -8,13 +8,13 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || await getDefaultStorageClass(this.cluster),
+            storageClass: args['storage-class'] || await StorageClassHelper.getDefault(this.cluster),
             storage: args['storage-size']|| this.spec.storage,
             k8sLogIndexPrefix: args['log-index-prefix']|| this.spec.k8sLogIndexPrefix
         }
 
         const responses = await inquirer.prompt([
-            inquireStorageClass(this.cluster, {
+            StorageClassHelper.inquire(this.cluster, {
                 name: 'storageClass'
             })
         ,{

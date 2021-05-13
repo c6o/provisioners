@@ -4,8 +4,7 @@ import { DeploymentHelper as DeploymentHelperContract } from '@provisioner/contr
 
 export class DeploymentHelper<T extends Deployment = Deployment> extends DeploymentHelperContract<T> {
 
-    static from(namespace?: string, name?: string) {
-        return new DeploymentHelper({
+    static template = (namespace?: string, name?: string): Deployment => ({
             apiVersion: 'apps/v1',
             kind: 'Deployment',
             metadata: {
@@ -13,10 +12,12 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
                 namespace
             }
         })
-    }
+
+    static from = (namespace?: string, name?: string) =>
+        new DeploymentHelper(DeploymentHelper.template(namespace, name))
 
     /** Restarts the deployment - does not wait until it's restarted */
-    async restartDeployment(cluster: Cluster): Promise<Deployment> {
+    async restart(cluster: Cluster): Promise<Deployment> {
         const result = await cluster.read(this.document)
         result.throwIfError(`Failed to restart deployment ${this.name} in ${this.namespace}`)
 

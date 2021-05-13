@@ -1,3 +1,4 @@
+import { AppHelper } from '@provisioner/common'
 import { GrafanaProvisioner } from '@provisioner/grafana'
 import { baseProvisionerType } from '../../'
 import * as Handlebars from 'handlebars'
@@ -25,7 +26,7 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
 
     async linkGrafana(grafanaNamespace, serviceNamespace) {
         await this.unlinkGrafana(serviceNamespace, false)
-        this.grafanaProvisioner = await this.resolver.getAppProvisioner('grafana', grafanaNamespace)
+        this.grafanaProvisioner = await this.resolver.getProvisioner(grafanaNamespace, 'grafana')
 
         await this.grafanaProvisioner.beginConfig(grafanaNamespace, serviceNamespace, 'c6o-system')
 
@@ -58,7 +59,7 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async unlinkGrafana(serviceNamespace, clearLinkField = true) {
-        const grafanaApps = await this.resolver.getInstalledApps('grafana')
+        const grafanaApps = await AppHelper.from(null, 'grafana').list(this.cluster, 'Failed to find Grafana')
         for (const grafanaApp of grafanaApps) {
             const grafanaProvisioner = await this.resolver.getProvisioner<GrafanaProvisioner>(grafanaApp)
             await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')

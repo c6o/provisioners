@@ -1,9 +1,11 @@
 import * as yaml from 'js-yaml'
 import * as path from 'path'
-import { baseProvisionerType } from '../index'
 import { homedir } from 'os'
 import { promises as fs } from 'fs'
 import inquirer from 'inquirer'
+import { AppHelper } from '@provisioner/common'
+
+import { baseProvisionerType } from '../index'
 
 // TODO: put in base class
 function resolvePath(filePath: string) {
@@ -34,7 +36,7 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async setPrometheusNamespace() {
-        const apps = await this.resolver.getInstalledApps('prometheus')
+        const apps = await AppHelper.from(null, 'prometheus').list(this.cluster, 'Failed to find Prometheus')
         const choices = apps.map(app => app.metadata.namespace)
         if (choices.length == 1) {
             this.prometheusNamespace = choices[0]
