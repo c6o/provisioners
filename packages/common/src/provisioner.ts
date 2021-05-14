@@ -1,8 +1,7 @@
 import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
-import { Cluster, Status } from '@c6o/kubeclient-contracts'
-import { optionFunctionType, AppHelper, ProvisionerBase as ProvisionerBaseContract, Resolver, AppResource } from '@provisioner/contracts'
+import { optionFunctionType, AppHelper, ProvisionerBase as ProvisionerBaseContract, Controller} from '@provisioner/contracts'
 
 import {
     optionsMixin
@@ -15,9 +14,12 @@ export class ProvisionerBasePrivate { }
 
 const provisionerBaseMixin: baseProvisionerMixinType = mix(ProvisionerBasePrivate).with(optionsMixin)
 export class ProvisionerBase extends provisionerBaseMixin {
-    cluster: Cluster
-    status: Status
-    resolver: Resolver
+    controller: Controller
+    get cluster() { return this.controller.cluster }
+    get status() { return this.controller.status }
+    get hubClient() { return this.controller.hubClient }
+    get resolver() { return this.controller.resolver }
+    get document() { return this.controller.document }
 
     serviceName: string
     moduleLocation: string
@@ -32,22 +34,14 @@ export class ProvisionerBase extends provisionerBaseMixin {
 
     get edition(): string { return this.document?.metadata?.labels['system.codezero.io/edition'] }
 
-    _document: AppResource
-    get document() { return this._document }
-    set document(value: AppResource) {
-        this._document = value
-        delete this._documentHelper
-    }
-
     _documentHelper
     get documentHelper(): AppHelper {
-        if (this._documentHelper)
-            return this._documentHelper
-        if (!this.document)
-            return
+        if (this._documentHelper) return this._documentHelper
+        if (!this.document) return
         return this._documentHelper = new AppHelper(this.document)
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     help(command: string, options: optionFunctionType, messages: string[]) {
         // No Op
     }

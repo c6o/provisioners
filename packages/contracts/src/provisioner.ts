@@ -6,15 +6,21 @@ export interface IngressParameters {
     ip?: string
     hostname?: string
 }
-export interface ProvisionerBase {
-    cluster: Cluster
-    status: Status
-    resolver: Resolver
+
+export interface Controller {
+    readonly status?: Status
+    readonly cluster: Cluster
+    readonly resolver: Resolver
+    readonly document?: AppResource
 
     /* @deprecated */
-    hubClient
+    readonly hubClient?
+}
 
-    document: AppResource
+// ProvisionerBase extends Controller because it has helper methods to access
+// a all controller properties above
+export interface ProvisionerBase extends Controller {
+    controller: Controller
     spec?: any
     serviceNamespace: string
     serviceName: string
