@@ -29,7 +29,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
     // From: https://www.digitalocean.com/docs/kubernetes/how-to/snapshot-volumes/
     async snapshot() {
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Requesting volume snapshot')
                 .create({
                     apiVersion: 'snapshot.storage.k8s.io/v1alpha1',
@@ -49,7 +49,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async copy() {
-        const cluster = this.cluster
+        const cluster = this.controller.cluster
 
         // TODO: can we get CLI namespace setting this way
         // need a pre-exec function where you can ask questions for exec functions
@@ -82,7 +82,7 @@ export const execMixin = (base: baseProvisionerType) => class extends base {
 
     // TODO works?
     async ports(open = true) {
-        const cluster = this.cluster
+        const cluster = this.controller.cluster
 
         // TODO: get options from args?
         // @ts-ignore TODO: Update kubeclient-contracts to have options

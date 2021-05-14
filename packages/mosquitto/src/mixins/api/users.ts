@@ -70,7 +70,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
             settings.configmap.data['users.conf'] = settings.userConf
 
             //update our cluster/config map to reflect the change
-            const updatedResult = await this.cluster.put(settings.manifest, settings.configmap)
+            const updatedResult = await this.controller.cluster.put(settings.manifest, settings.configmap)
 
             if (updatedResult.error) {
                 throw new Error('Failed to save Mosquitto password configMap')
@@ -78,7 +78,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.cluster)
+                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.controller.cluster)
             }
         }
 
@@ -96,7 +96,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
             settings.configmap.data['users.conf'] = users.map(item => `${item.username}:${item.password}`).join('\n').trim()
 
             //update our cluster/config map to reflect the change
-            const updatedResult = await this.cluster.put(settings.manifest, settings.configmap)
+            const updatedResult = await this.controller.cluster.put(settings.manifest, settings.configmap)
 
             if (updatedResult.error) {
                 throw new Error('Failed to save Mosquitto password configMap')
@@ -104,7 +104,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.cluster)
+                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.controller.cluster)
             }
 
         }

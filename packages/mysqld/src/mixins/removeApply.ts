@@ -7,9 +7,9 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
     async removeApply() {
 
         const rootPassword = processPassword(this.spec.rootPassword)
-        const namespace = this.document.metadata.namespace
+        const namespace = this.controller.document.metadata.namespace
 
-        await this.cluster.begin('Removing mysql resources')
+        await this.controller.cluster.begin('Removing mysql resources')
             .deleteFile('../../k8s/pvc.yaml', { namespace })
             .deleteFile('../../k8s/statefulset.yaml', { namespace, rootPassword })
             .deleteFile('../../k8s/service.yaml', { namespace })
@@ -26,7 +26,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                 }
             }
 
-            await this.cluster.begin('Removing mysql connection secret')
+            await this.controller.cluster.begin('Removing mysql connection secret')
                 .delete(configMapSecret)
                 .end()
         }

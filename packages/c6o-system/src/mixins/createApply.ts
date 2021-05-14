@@ -86,10 +86,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             jwtKey: this.spec.clusterKey
         }
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision system server')
                 .upsertFile('../../k8s/clusterrole.yaml')
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .upsertFile('../../k8s/server.yaml', options)
                 .patch(this.traxittNamespace, c6oNamespacePatch)
                 .upsertFile('../../k8s/ns-default.yaml')
@@ -97,17 +97,17 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provisionOAuth() {
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision CodeZero OAuth')
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .upsertFile('../../k8s/oauth.yaml', { hubServerURL: this.spec.hubServerURL })
             .end()
     }
 
     async provisionDock() {
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision default Dock')
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .upsertFile('../../k8s/dock.yaml')
             .end()
     }
@@ -124,9 +124,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             stripePublishableKey: this.spec.stripePublishableKey,
         }
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision Apps')
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .upsertFile('../../k8s/marina.yaml', options)
                 .upsertFile('../../k8s/store.yaml', options)
                 .upsertFile('../../k8s/harbourmaster.yaml', options)
@@ -146,29 +146,29 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
 
     async provisionGateway() {
-        this.status?.push('Provision system gateway')
+        this.controller.status?.push('Provision system gateway')
 
         const istioProvisioner = await this.getIstioProvisioner()
         const result = await istioProvisioner.createGateway('c6o-system', this.SYSTEM_GATEWAY_NAME, this.gatewayServers)
         result.throwIfError()
 
-        this.status?.pop()
+        this.controller.status?.pop()
     }
 
     async provisionRoutes() {
         const host = this.host.split(".").join("\\.")
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision messaging sub-system')
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .upsertFile('../../k8s/virtualServices.yaml', { host } )
             .end()
     }
 
     async provisionMessaging() {
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision messaging sub-system')
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .upsertFile('../../k8s/publisher.yaml', { tag: this.spec.tag })
                 .upsertFile('../../k8s/subscriber.yaml', { tag: this.spec.tag })
             .end()
@@ -190,13 +190,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             schedule
         }
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Remove possible existing certificate cron jobs to avoid mutations')
                 .deleteFile('../../k8s/ssl-recurring-job.yaml', options)
                 .deleteFile('../../k8s/ssl-setup-job.yaml', options)
             .end()
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision certificate cron jobs')
                 .upsertFile('../../k8s/ssl-recurring-job.yaml', options)
                 .upsertFile('../../k8s/ssl-setup-job.yaml', options)
@@ -216,7 +216,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             schedule
         }
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Provision update cron job')
                 .upsertFile('../../k8s/update-recurring-job.yaml', options)
             .end()
@@ -225,6 +225,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async patchCluster() {
         if (!this.newClusterId)
             return
-        await this.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'completed' } })
+        await this.controller.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'completed' } })
     }
 }

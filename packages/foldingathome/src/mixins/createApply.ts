@@ -31,23 +31,23 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
 
         if(this.edition === 'cpu') {
-            await this.cluster
+            await this.controller.cluster
             .begin('Install Folding@Home CPU deployment')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/cpu/folding-cpu.yaml', { namespace, username, passkey, teamNumber })
             .end()
 
         } else if(this.edition === 'gpu') {
-            await this.cluster
+            await this.controller.cluster
             .begin('Install Folding@Home GPU/CPU deployment')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/cpu-gpu/folding-gpu-cpu.yaml', { namespace, username, passkey, teamNumber })
             .end()
 
         } else {
-            await this.cluster
+            await this.controller.cluster
             .begin('Install Folding@Home GPU deployment')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/gpu/folding-gpu.yaml', { namespace, username, passkey, teamNumber })
             .end()
 
@@ -56,7 +56,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureFoldingIsRunning() {
-        await this.cluster.
+        await this.controller.cluster.
             begin('Ensure the Folding@Home services are running')
             .beginWatch(this.pod)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

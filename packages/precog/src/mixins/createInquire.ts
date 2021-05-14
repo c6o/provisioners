@@ -18,7 +18,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async inquire(args) {
 
         const answers = {
-            storageClass: args['storageClass'] || await StorageClassHelper.getDefault(this.cluster),
+            storageClass: args['storageClass'] || await StorageClassHelper.getDefault(this.controller.cluster),
             storage: args['storage'] || this.spec.storage,
             edition: args['edition'] || this.spec.edition,
             username: args['username'] || this.spec.username,
@@ -27,7 +27,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
 
         const responses = await inquirer.prompt([
-            StorageClassHelper.inquire(this.cluster, {
+            StorageClassHelper.inquire(this.controller.cluster, {
                 name: 'storageClass'
             }),
             {

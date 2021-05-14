@@ -1,4 +1,5 @@
 import { mix } from 'mixwith'
+import { Resource } from '@c6o/kubeclient-contracts'
 import { ProvisionerBase } from '@provisioner/common'
 
 import {
@@ -10,16 +11,12 @@ import {
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
 export interface Provisioner extends ProvisionerBase {
-    // @ts-ignore
-    isLatest: () => string
-    ghostPods: () => string
-    createApply: () => Promise<void>
-    installGhost: () => Promise<void>
-    ensureGhostIsRunning: () => Promise<void>
+    ghostPods: Resource
+    installGhost(): Promise<void>
+    ensureGhostIsRunning(): Promise<void>
 }
 
 export class Provisioner extends mix(ProvisionerBase)
     .with(createApplyMixin, removeInquireMixin, updateApplyMixin) {
-    // @ts-ignore
     get isLatest() { return this.edition === 'latest' }
 }

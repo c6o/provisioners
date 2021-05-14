@@ -7,14 +7,14 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newPrometheusLink = this.spec['prometheus-link']
 
         if (newPrometheusLink === unlinkToken) {
-            this.status?.push('Unlinking istio from Prometheus')
+            this.controller.status?.push('Unlinking istio from Prometheus')
             await this.unlinkPrometheus(serviceNamespace)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
         else if (newPrometheusLink) {
-            this.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
+            this.controller.status?.push(`Linking istio to Prometheus in namespace ${newPrometheusLink}`)
             await this.linkPrometheus(newPrometheusLink, serviceNamespace)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
@@ -22,20 +22,20 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const newGrafanaLink = this.spec['grafana-link']
 
         if (newGrafanaLink === unlinkToken) {
-            this.status?.push('Unlinking istio from Grafana')
+            this.controller.status?.push('Unlinking istio from Grafana')
             await this.unlinkGrafana(serviceNamespace)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
         else if (newGrafanaLink) {
-            this.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
+            this.controller.status?.push(`Linking istio to Grafana in namespace ${newGrafanaLink}`)
             await this.linkGrafana(newGrafanaLink, serviceNamespace)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
     async updateApply() {
 
-        const serviceNamespace = this.document.metadata.namespace
+        const serviceNamespace = this.controller.document.metadata.namespace
 
         await this.updatePrometheus(serviceNamespace)
         await this.updateGrafana(serviceNamespace)

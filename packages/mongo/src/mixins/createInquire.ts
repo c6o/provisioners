@@ -19,12 +19,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || await StorageClassHelper.getDefault(this.cluster),
+            storageClass: args['storage-class'] || await StorageClassHelper.getDefault(this.controller.cluster),
             secretKeyRef: args['secret-key-ref'] || this.spec.secretKeyRef
         }
 
         const responses = await inquirer.prompt([
-            StorageClassHelper.inquire(this.cluster, {
+            StorageClassHelper.inquire(this.controller.cluster, {
                 name: 'storageClass'
             }),
             {

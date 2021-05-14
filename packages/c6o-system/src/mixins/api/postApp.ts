@@ -8,28 +8,28 @@ export const postAppMixin = (base: baseProvisionerType) => class extends base {
 
     async postCreateApp(app: AppResource) {
         if (app.spec.routes?.length) {
-            this.status?.push(`Creating App ${app.metadata.namespace} routes`)
+            this.controller.status?.push(`Creating App ${app.metadata.namespace} routes`)
             const istioProvisioner = await this.getIstioProvisioner()
             await istioProvisioner.upsertVirtualService(app, 'c6o-system/' + this.SYSTEM_GATEWAY_NAME)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
     async postRemoveApp(app: AppResource) {
         if (app.spec.routes?.length) {
-            this.status?.push(`Removing App ${app.metadata.namespace} routes`)
+            this.controller.status?.push(`Removing App ${app.metadata.namespace} routes`)
             const istioProvisioner = await this.getIstioProvisioner()
             await istioProvisioner.removeVirtualService(app)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
     async postUpdateApp(app: AppResource) {
         if (app.spec.routes?.length) {
-            this.status?.push(`Updating App ${app.metadata.namespace} routes`)
+            this.controller.status?.push(`Updating App ${app.metadata.namespace} routes`)
             const istioProvisioner = await this.getIstioProvisioner()
             await istioProvisioner.upsertVirtualService(app, 'c6o-system/' + this.SYSTEM_GATEWAY_NAME)
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 }

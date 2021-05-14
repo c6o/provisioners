@@ -16,10 +16,7 @@ export interface Controller {
     /* @deprecated */
     readonly hubClient?
 }
-
-// ProvisionerBase extends Controller because it has helper methods to access
-// a all controller properties above
-export interface ProvisionerBase extends Controller {
+export interface ProvisionerBase {
     controller: Controller
     spec?: any
     serviceNamespace: string

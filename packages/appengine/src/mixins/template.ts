@@ -21,16 +21,16 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
     async ensureSystemProvisioner() {
         if (this.systemProvisioner)
             return
-        this.systemProvisioner = await this.resolver.getProvisioner('c6o-system', 'c6o-system')
+        this.systemProvisioner = await this.controller.resolver.getProvisioner('c6o-system', 'c6o-system')
     }
 
     async processTemplate(map: keyValueOrGenerator, stageName: string) {
 
         try {
-            this.status?.push(stageName)
+            this.controller.status?.push(stageName)
 
             for (const key in map) {
-                this.status?.info(`Evaluating key ${key}`)
+                this.controller.status?.info(`Evaluating key ${key}`)
 
                 const value = map[key]
 
@@ -48,14 +48,14 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
             }
         }
         finally {
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
     async _interpolateValue(map: keyValueOrGenerator, key, template, value) {
         const currentValue = map[key] as string
 
-        this.status?.info(`Interpolating value ${currentValue}`)
+        this.controller.status?.info(`Interpolating value ${currentValue}`)
 
         map[key] = currentValue.replace(template, value)
     }

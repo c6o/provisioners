@@ -30,14 +30,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             credentials,
             edition } = this.spec
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Install PreCog services')
             .list(this.precogPods)
             .do((result, processor) => {
                 if (!result?.object?.items?.length) {
                     
                     processor
-                        .addOwner(this.document)
+                        .addOwner(this.controller.document)
                         .upsertFile('../../k8s/secret.yaml', { namespace, credentials })
                         .upsertFile('../../k8s/basic.yaml', { namespace, image: `precog/${edition}` })
                         .clearOwners()
@@ -48,7 +48,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensurePreCogIsRunning() {
-        await this.cluster.
+        await this.controller.cluster.
             begin('Ensure PreCog services are running')
                 .beginWatch(this.precogPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {

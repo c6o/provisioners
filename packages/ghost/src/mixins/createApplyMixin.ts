@@ -2,7 +2,7 @@ import { baseProvisionerType } from '../index'
 
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    // @ts-ignore
+
     get ghostPods() {
         return {
             kind: 'Pod',
@@ -15,32 +15,29 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         }
     }
 
-    // @ts-ignore
     async createApply() {
         await this.installGhost()
         await this.ensureGhostIsRunning()
     }
 
-    // @ts-ignore
     async installGhost() {
         const namespace = this.serviceNamespace
-        await this.cluster
+        await this.controller.cluster
             .begin('Install Ghost deployment')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/latest/1-deployment.yaml', {namespace})
             .end()
 
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Install NodePort')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/latest/2-service.yaml', {namespace})
             .end()
     }
 
-    // @ts-ignore
     async ensureGhostIsRunning() {
-        await this.cluster.begin('Ensure Ghost services are running')
+        await this.controller.cluster.begin('Ensure Ghost services are running')
             .beginWatch(this.ghostPods)
             .whenWatch(({condition}) => condition.Ready === 'True', (processor) => {
                 processor.endWatch()

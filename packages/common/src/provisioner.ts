@@ -15,11 +15,6 @@ export class ProvisionerBasePrivate { }
 const provisionerBaseMixin: baseProvisionerMixinType = mix(ProvisionerBasePrivate).with(optionsMixin)
 export class ProvisionerBase extends provisionerBaseMixin {
     controller: Controller
-    get cluster() { return this.controller.cluster }
-    get status() { return this.controller.status }
-    get hubClient() { return this.controller.hubClient }
-    get resolver() { return this.controller.resolver }
-    get document() { return this.controller.document }
 
     serviceName: string
     moduleLocation: string
@@ -32,13 +27,13 @@ export class ProvisionerBase extends provisionerBaseMixin {
     routes?: any
     logger?: any
 
-    get edition(): string { return this.document?.metadata?.labels['system.codezero.io/edition'] }
+    get edition(): string { return this.controller.document?.metadata?.labels['system.codezero.io/edition'] }
 
     _documentHelper
     get documentHelper(): AppHelper {
         if (this._documentHelper) return this._documentHelper
-        if (!this.document) return
-        return this._documentHelper = new AppHelper(this.document)
+        if (!this.controller.document) return
+        return this._documentHelper = new AppHelper(this.controller.document)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -98,7 +93,7 @@ export class ProvisionerBase extends provisionerBaseMixin {
                 }
             }
         }
-        const result = await this.cluster.read(service)
+        const result = await this.controller.cluster.read(service)
 
         if (result.error) {
             this.logger?.error(result.error)

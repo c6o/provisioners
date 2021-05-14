@@ -22,7 +22,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureEtcdIsInstalled() {
 
         const namespace = this.serviceNamespace
-        await this.cluster
+        await this.controller.cluster
             .begin('Install etcd services')
             .list(this.etcPods)
             .do((result, processor) => {
@@ -50,7 +50,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureEtcdIsRunning() {
-        await this.cluster.
+        await this.controller.cluster.
             begin('Ensure etcd services are running')
             .beginWatch(this.etcPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {

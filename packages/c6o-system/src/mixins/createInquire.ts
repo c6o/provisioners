@@ -30,8 +30,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     accountIdChoices = _ => this.accounts.map(account => ({ name: account.name, value: account._id }))
 
     async inquire(args) {
-        this.clusters = await this.hubClient.getClusters()
-        this.accounts = await this.hubClient.getAccounts()
+        this.clusters = await this.controller.hubClient.getClusters()
+        this.accounts = await this.controller.hubClient.getAccounts()
 
         const answers = {
             protocol: args['proto'],
@@ -46,7 +46,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             tag: args['tag']
         }
 
-        if (!this.hubClient)
+        if (!this.controller.hubClient)
             return answers
 
         const responses = await inquirer.prompt([{
@@ -108,7 +108,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(args) {
         // Accounts are always needed
-        this.accounts = await this.hubClient.getAccounts()
+        this.accounts = await this.controller.hubClient.getAccounts()
 
         const answers = await this.inquire(args)
 
@@ -118,7 +118,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             // otherwise hub will automatically assign it to the current user
             const account = this.findAccount(answers.accountId)
 
-            cluster = await this.hubClient.createCluster({
+            cluster = await this.controller.hubClient.createCluster({
                 namespace: answers.clusterNamespace,
                 name: answers.clusterName,
                 noAccountName: answers.noAccountName,
@@ -128,14 +128,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 }
             })
             this.newClusterId = cluster._id
-            await this.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'installing' } })
+            await this.controller.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'installing' } })
         }
         else
             cluster = this.findCluster(answers.clusterId)
 
         if (!answers.clusterKey) {
             // We have to fetch a clusterKey
-            const credentials = await this.hubClient.getClusterCredentials(cluster._id, true)
+            const credentials = await this.controller.hubClient.getClusterCredentials(cluster._id, true)
             answers.clusterKey = credentials?.key
         }
 

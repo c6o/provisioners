@@ -34,29 +34,29 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             users = await this.generateMosquittoUserPayload(username, password)
         }
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Install mosquitto deployment')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/latest/1-deployment.yaml', { namespace, users })
             .end()
 
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Install NodePort')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/latest/2-nodeport.yaml', { namespace })
             .end()
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Install Virtual Service')
-            .addOwner(this.document)
+            .addOwner(this.controller.document)
             .upsertFile('../../k8s/latest/3-virtualservice.yaml', { namespace })
             .end()
 
     }
 
     async ensureMosquittoIsRunning() {
-        await this.cluster.
+        await this.controller.cluster.
             begin('Ensure mosquitto services are running')
             .beginWatch(this.mosquittoPods)
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {

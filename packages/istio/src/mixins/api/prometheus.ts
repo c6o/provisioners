@@ -18,10 +18,10 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
 
     async linkPrometheus(prometheusNamespace, istioNamespace) {
         await this.unlinkPrometheus(istioNamespace, false)
-        await this.cluster.begin('Adding access for Prometheus')
+        await this.controller.cluster.begin('Adding access for Prometheus')
             .upsertFile('../../../k8s/prometheus/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
         .end()
-        const prometheusProvisioner = await this.resolver.getProvisioner<PrometheusProvisioner>(prometheusNamespace, 'prometheus')
+        const prometheusProvisioner = await this.controller.resolver.getProvisioner<PrometheusProvisioner>(prometheusNamespace, 'prometheus')
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
@@ -47,19 +47,19 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
             }
         }
 
-        this.status?.push('Removing access for Prometheus')
-        await this.cluster.delete(clusterRole)
-        await this.cluster.delete(clusterRoleBinding)
-        this.status?.pop()
+        this.controller.status?.push('Removing access for Prometheus')
+        await this.controller.cluster.delete(clusterRole)
+        await this.controller.cluster.delete(clusterRoleBinding)
+        this.controller.status?.pop()
 
-        const prometheusApps = await AppHelper.from(null, 'prometheus').list(this.cluster, 'Failed to find Prometheus')
+        const prometheusApps = await AppHelper.from(null, 'prometheus').list(this.controller.cluster, 'Failed to find Prometheus')
         for (const prometheusApp of prometheusApps) {
-            const prometheusProvisioner = await this.resolver.getProvisioner<PrometheusProvisioner>(prometheusApp)
+            const prometheusProvisioner = await this.controller.resolver.getProvisioner<PrometheusProvisioner>(prometheusApp)
             const prometheusNamespace = prometheusApp.metadata.namespace
             await prometheusProvisioner.clearAll(prometheusNamespace, istioNamespace, 'istio')
         }
         if (clearLinkField)
-            delete this.document.spec.provisioner['prometheus-link']
+            delete this.controller.document.spec.provisioner['prometheus-link']
     }
 
     // TODO: move to base?

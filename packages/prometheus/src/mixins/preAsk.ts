@@ -36,7 +36,7 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
     }
 
     async setPrometheusNamespace() {
-        const apps = await AppHelper.from(null, 'prometheus').list(this.cluster, 'Failed to find Prometheus')
+        const apps = await AppHelper.from(null, 'prometheus').list(this.controller.cluster, 'Failed to find Prometheus')
         const choices = apps.map(app => app.metadata.namespace)
         if (choices.length == 1) {
             this.prometheusNamespace = choices[0]

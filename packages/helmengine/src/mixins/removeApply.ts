@@ -29,22 +29,22 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async applyUninstallJob() {
         try {
-            this.status?.push('Creating Helm Installation Job')
+            this.controller.status?.push('Creating Helm Installation Job')
 
-            await this.cluster
+            await this.controller.cluster
                 .begin()
-                .addOwner(this.document)
+                .addOwner(this.controller.document)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(this.job)
                 .end()
         }
         finally {
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
     async ensureUninstallJobFinished() {
-        await this.cluster.
+        await this.controller.cluster.
             begin(`Ensure ${this.documentHelper.name} uninstall finishes`)
             .beginWatch({
                 apiVersion: this.job.apiVersion,

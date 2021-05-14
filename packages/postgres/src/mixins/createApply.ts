@@ -50,7 +50,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Looks for postgres pods and if none are found, applies the appropriate yaml */
     async ensurepostgresIsInstalled() {
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Install postgres services')
             .list(this.postgresPods)
             .do((result, processor) => {
@@ -77,7 +77,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensurepostgresIsRunning() {
-        await this.cluster.
+        await this.controller.cluster.
             begin('Ensure postgres services are running')
             .beginWatch(this.postgresPods)
             .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
@@ -90,12 +90,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Port forwards and connects to the postgres and initiates a provision */
     async ensurepostgresIsProvisioned() {
         if (!this.hasDatabasesToConfigure) {
-            this.status?.push('Setting up postgres databases')
-            this.status?.pop(true)
+            this.controller.status?.push('Setting up postgres databases')
+            this.controller.status?.pop(true)
             return
         }
 
-        await this.cluster
+        await this.controller.cluster
             .begin('Setting up postgres databases')
             .beginForward(5432, this.runningPod)
             .attempt(10, 5000, async (processor, attempt) => await this.connectpostgresClient(processor, attempt))
@@ -110,7 +110,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         if (this.plainRootPasswordForInitialization) return
 
-        const result = await this.cluster.read(this.rootSecret)
+        const result = await this.controller.cluster.read(this.rootSecret)
         result.throwIfError('Failed to load rootSecret')
         const secret = result.as<Secret>()
 
@@ -127,7 +127,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         this.ensureRootPassword()
 
-        this.status?.info(`Attempt ${attempt + 1} to connect to postgres on local port ${processor.lastResult.other.localPort}`)
+        this.controller.status?.info(`Attempt ${attempt + 1} to connect to postgres on local port ${processor.lastResult.other.localPort}`)
 
         //https://node-postgres.com/features/connecting
         const connectionArgs =
@@ -146,7 +146,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /** Closes the postgresClient connection */
     async disconnectpostgresClient() {
-        this.status?.info('Closing connection to postgres')
+        this.controller.status?.info('Closing connection to postgres')
         await this.connection.end()
     }
 
@@ -195,25 +195,25 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const createDB = (config?.createDatabase === true)
 
         try {
-            this.status?.push(`Creating database ${dbName}`)
+            this.controller.status?.push(`Creating database ${dbName}`)
             if(createDB)
                 await this.connection.query(`CREATE DATABASE ${dbName};`)
         } finally {
-            this.status?.pop(!createDB)
+            this.controller.status?.pop(!createDB)
         }
 
         try {
-            this.status?.push(`Setting up database user ${username}`)
+            this.controller.status?.push(`Setting up database user ${username}`)
             await this.connection.query(`CREATE ROLE ${username} LOGIN SUPERUSER PASSWORD '${password}';`)
         } finally {
-            this.status?.pop()
+            this.controller.status?.pop()
         }
 
         if (process.env.NODE_ENV === 'development')
-            this.status?.info(`Connection string ${connectionString}`)
+            this.controller.status?.info(`Connection string ${connectionString}`)
 
         try {
-            this.status?.push('Writing database connection information to Secrets')
+            this.controller.status?.push('Writing database connection information to Secrets')
             if (config.connectionStringSecretKey) this.configMap[config.connectionStringSecretKey] = Buffer.from(connectionString).toString('base64')
             if (config.usernameSecretKey) this.configMap[config.usernameSecretKey] = Buffer.from(username).toString('base64')
             if (config.passwordSecretKey) this.configMap[config.passwordSecretKey] = Buffer.from(password).toString('base64')
@@ -224,7 +224,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('pgsql').toString('base64')
         } finally {
-            this.status?.pop()
+            this.controller.status?.pop()
         }
     }
 }

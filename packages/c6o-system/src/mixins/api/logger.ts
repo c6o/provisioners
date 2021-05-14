@@ -26,7 +26,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
     }
 
     async linkLogger(serviceNamespace, appNamespace, appId) {
-        const app = await AppHelper.from(appNamespace, appId).read(this.cluster, `Failed to find ${appId} in ${appNamespace}`)
+        const app = await AppHelper.from(appNamespace, appId).read(this.controller.cluster, `Failed to find ${appId} in ${appNamespace}`)
 
         if (!app.spec.services?.logstash) {
             debug(`Unable to find logstash services for App ${appNamespace}.${appId}`)
@@ -35,7 +35,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
         const logstash = app.spec.services.logstash
 
-        const result = await this.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await this.controller.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
@@ -48,13 +48,13 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
             LOG_LEVEL: 'info',
             ...systemServerConfigMap.data
         }
-        await this.cluster.upsert(systemServerConfigMap)
+        await this.controller.cluster.upsert(systemServerConfigMap)
 
         await this.restartSystemServer(serviceNamespace)
     }
 
     async unlinkLogger(serviceNamespace) {
-        const result = await this.cluster.read(this.systemServerConfigMap(serviceNamespace))
+        const result = await this.controller.cluster.read(this.systemServerConfigMap(serviceNamespace))
         if (result.error) {
             debug(result.error)
             this.logger?.error(result.error)
@@ -62,7 +62,7 @@ export const loggerApiMixin = (base: baseProvisionerType) => class extends base 
         }
         const systemServerConfigMap = result.as<ConfigMap>()
         systemServerConfigMap.data.LOG_ELASTIC_CONNECTION = null
-        await this.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
+        await this.controller.cluster.patch(systemServerConfigMap, { data: systemServerConfigMap.data })
 
         await this.restartSystemServer(serviceNamespace)
     }

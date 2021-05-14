@@ -34,7 +34,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureKafkaIsInstalled() {
         const namespace = this.serviceNamespace
-        await this.cluster
+        await this.controller.cluster
                 .begin('Install kafka services')
                     .list(this.kafkaBrokerPods)
                     .do( (result, processor) => {
@@ -51,7 +51,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     
     async ensureKafkaIsRunning() {
     
-        const zookeeper = this.cluster.
+        const zookeeper = this.controller.cluster.
                 begin('Ensure a kafka zookeeper is running')
                     .beginWatch(this.kafkaZookeeperPods)
                     .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
@@ -59,7 +59,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     })
                 .end()
     
-        const broker = this.cluster.
+        const broker = this.controller.cluster.
                 begin('Ensure a kafka broker is running')
                     .beginWatch(this.kafkaBrokerPods)
                     .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
