@@ -28,7 +28,7 @@ export const npmApiMixin = (base: baseProvisionerType) => class extends base {
         const npmLink = this.spec['npm-link']
 
         // only keep name and password in the app
-        this.controller.document.spec.provisioner['npm-link'] = npmLink.name ? { name: npmLink.name } : { url: npmLink.url }
+        this.controller.resource.spec.provisioner['npm-link'] = npmLink.name ? { name: npmLink.name } : { url: npmLink.url }
 
         // Get the current setting
         let registryUrl

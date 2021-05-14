@@ -35,7 +35,7 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async updateApply() {
 
-        const serviceNamespace = this.controller.document.metadata.namespace
+        const serviceNamespace = this.controller.resource.metadata.namespace
 
         await this.updatePrometheus(serviceNamespace)
         await this.updateGrafana(serviceNamespace)

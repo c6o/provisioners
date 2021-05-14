@@ -20,8 +20,8 @@ export const updateSystemMixin = (base: baseProvisionerType) => class extends ba
         if (this.spec.updateToTag) {
             await this.performUpdate(this.spec.updateToTag)
             // Write back the new updated tag and clear updateToTag
-            this.controller.document.spec.provisioner.tag = this.spec.updateToTag
-            this.controller.document.spec.provisioner.updateToTag = unlinkToken
+            this.controller.resource.spec.provisioner.tag = this.spec.updateToTag
+            this.controller.resource.spec.provisioner.updateToTag = unlinkToken
         }
     }
 

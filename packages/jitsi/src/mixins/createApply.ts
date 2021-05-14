@@ -31,26 +31,26 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install jitsi deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/1-secret.yaml', { namespace, secret, authPassword, jvbPassword })
             .end()
 
 
         await this.controller.cluster
             .begin('Install NodePort')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/2-deployment.yaml', { namespace, clusterIP, tag })
             .end()
 
         await this.controller.cluster
             .begin('Install Virtual Service')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/3-webservice.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install Virtual Service')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/4-service.yaml', { namespace })
             .end()
 

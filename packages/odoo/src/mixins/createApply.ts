@@ -35,20 +35,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         if (this.edition == 'latest') {
             await this.controller.cluster
             .begin('Installing Odoo Volume Claims')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile(`../../k8s/${this.edition}/3-pvc.yaml`, args)
             .end()
         }
 
         await this.controller.cluster
             .begin('Installing Odoo Deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile(`../../k8s/${this.edition}/1-deployment.yaml`, args)
             .end()
 
         await this.controller.cluster
             .begin('Installing Odoo Networking Services')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile(`../../k8s/${this.edition}/2-service.yaml`, args)
             .end()
 

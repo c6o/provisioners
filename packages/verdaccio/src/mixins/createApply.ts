@@ -34,7 +34,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         storageClass } = this.spec
 
                     processor
-                        .addOwner(this.controller.document)
+                        .addOwner(this.controller.resource)
                         .upsertFile('../../k8s/helm.yaml', { namespace, storageClass })
                         .clearOwners()
                         .upsertFile('../../k8s/pvc.yaml', { namespace })

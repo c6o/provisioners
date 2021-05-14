@@ -37,7 +37,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 if (!result?.object?.items?.length) {
                     
                     processor
-                        .addOwner(this.controller.document)
+                        .addOwner(this.controller.resource)
                         .upsertFile('../../k8s/secret.yaml', { namespace, credentials })
                         .upsertFile('../../k8s/basic.yaml', { namespace, image: `precog/${edition}` })
                         .clearOwners()

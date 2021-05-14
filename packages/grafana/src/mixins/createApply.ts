@@ -38,7 +38,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // Install Grafana
                     processor
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storage, storageClass })
-                        .addOwner(this.controller.document)
+                        .addOwner(this.controller.resource)
                         .upsertFile('../../k8s/deployment.yaml', { namespace, adminUsername, adminPassword })
                         .upsertFile('../../k8s/service.yaml', { namespace })
                 }

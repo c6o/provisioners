@@ -2,7 +2,7 @@ import { baseProvisionerType } from './index'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
     async removeApply() {
-        const namespace = this.controller.document.metadata.namespace
+        const namespace = this.controller.resource.metadata.namespace
 
         const replicas = this.spec.replicas || 3
         const storageClass = this.spec.storageClass || 'do-block-storage'

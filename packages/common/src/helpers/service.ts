@@ -20,7 +20,7 @@ export class ServiceHelper<T extends Service = Service> extends ServiceHelperCon
 
         await cluster.
             begin(waitingMessage)
-            .beginWatch(this.document)
+            .beginWatch(this.resource)
             .whenWatch(
                 ({ obj }) => obj.status?.loadBalancer?.ingress?.length && (obj.status?.loadBalancer?.ingress[0].ip || obj.status?.loadBalancer?.ingress[0].hostname),
                 (processor, service) => {

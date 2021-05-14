@@ -21,15 +21,15 @@ export class AppHelper<T extends AppResource = AppResource> extends AppHelperCon
         new AppHelper(AppHelper.template(namespace, name))
 
     async read(cluster: Cluster, errorMessage?: string): Promise<AppResource> {
-        const result = await cluster.read(this.document)
+        const result = await cluster.read(this.resource)
         result.throwIfError(errorMessage)
         return result.as<AppResource>()
     }
 
     async list(cluster, errorMessage?: string) {
         const result = !this.name ?
-            await cluster.list(this.document) :
-            await cluster.list(this.document, {fieldSelector: `metadata.name=${this.name}` })
+            await cluster.list(this.resource) :
+            await cluster.list(this.resource, {fieldSelector: `metadata.name=${this.name}` })
         result.throwIfError(errorMessage)
         return Array.from(this.each('App'))
     }

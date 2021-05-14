@@ -78,7 +78,7 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async updateApply() {
-        const serviceNamespace = this.controller.document.metadata.namespace
+        const serviceNamespace = this.controller.resource.metadata.namespace
 
         let restartRequired = await this.updateNpm(serviceNamespace)
         restartRequired = await this.updateLogger(serviceNamespace) || restartRequired

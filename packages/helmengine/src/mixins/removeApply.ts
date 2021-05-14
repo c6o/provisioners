@@ -33,7 +33,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(this.job)
                 .end()

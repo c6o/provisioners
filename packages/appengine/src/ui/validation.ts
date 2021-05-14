@@ -89,9 +89,9 @@ export class PromptValidation {
         if (typeof prompt == 'undefined') return //if we have no prompts, it is valid
         if (Array.isArray(prompt))
             for (const p of prompt)
-                this.validatePromptInternal(manifestHelper.document, manifestHelper.answers, p, invalidPrompts)
+                this.validatePromptInternal(manifestHelper.resource, manifestHelper.answers, p, invalidPrompts)
         else
-            this.validatePromptInternal(manifestHelper.document, manifestHelper.answers, prompt, invalidPrompts)
+            this.validatePromptInternal(manifestHelper.resource, manifestHelper.answers, prompt, invalidPrompts)
     }
     private validateSectionPrompts(manifestHelper: AppEngineAppHelper, sections: Section[], invalidPrompts: Array<Prompt>) {
         if (typeof sections == 'undefined') return //if we have no sections, it is valid

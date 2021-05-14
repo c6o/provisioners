@@ -36,20 +36,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install mosquitto deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/1-deployment.yaml', { namespace, users })
             .end()
 
 
         await this.controller.cluster
             .begin('Install NodePort')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/2-nodeport.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install Virtual Service')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/3-virtualservice.yaml', { namespace })
             .end()
 

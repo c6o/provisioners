@@ -32,26 +32,26 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install MySql secrets')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/1-secret.yaml', { namespace, username : user, password : pass })
             .end()
 
         await this.controller.cluster
             .begin('Install MySql deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/2-mysql-deployment.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install Wordpress deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/3-wordpress-deployment.yaml', { namespace })
             .end()
 
 
         await this.controller.cluster
             .begin('Install NodePort')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/4-service.yaml', { namespace })
             .end()
 

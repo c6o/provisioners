@@ -38,37 +38,37 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install SuiteCRM Secrets')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/1-secrets.yaml', { namespace, mariadbrootpassword, mariadbpassword, suitecrmusername: username, suitecrmpassword: password  })
             .end()
 
         await this.controller.cluster
             .begin('Install SuiteCRM Config Maps')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/2-configmap.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install SuiteCRM Persistent Volume Claims')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/3-pvc.yaml', { namespace, databasesize })
             .end()
 
         await this.controller.cluster
             .begin('Install SuiteCRM Networking Services')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/4-service.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install SuiteCRM Stateful Sets')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/5-statefulset.yaml', { namespace, databasesize })
             .end()
 
         await this.controller.cluster
             .begin('Install SuiteCRM Deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/6-deployment.yaml', { namespace })
             .end()
 

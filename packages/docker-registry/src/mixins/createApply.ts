@@ -23,27 +23,27 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install docker-registry secrets')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/1-secret.yaml', { namespace })
             .end()
 
 
         await this.controller.cluster
             .begin('Install docker-registry configuration')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/2-configmap.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install docker-registry networking services')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/3-service.yaml', { namespace })
             .end()
 
 
         await this.controller.cluster
             .begin('Install docker-registry deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/4-deployment.yaml', { namespace })
             .end()
 

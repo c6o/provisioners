@@ -27,13 +27,13 @@ export class ProvisionerBase extends provisionerBaseMixin {
     routes?: any
     logger?: any
 
-    get edition(): string { return this.controller.document?.metadata?.labels['system.codezero.io/edition'] }
+    get edition(): string { return this.controller.resource?.metadata?.labels['system.codezero.io/edition'] }
 
     _documentHelper
     get documentHelper(): AppHelper {
         if (this._documentHelper) return this._documentHelper
-        if (!this.controller.document) return
-        return this._documentHelper = new AppHelper(this.controller.document)
+        if (!this.controller.resource) return
+        return this._documentHelper = new AppHelper(this.controller.resource)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -103,7 +103,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createConfigMap)
                 .end()
@@ -142,7 +142,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createSecrets)
                 .end()
@@ -221,7 +221,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
                 await this.controller.cluster
                     .begin()
-                    .addOwner(this.controller.document)
+                    .addOwner(this.controller.resource)
                     .mergeWith(this.documentHelper.appComponentMergeDocument)
                     .upsert(createVolume)
                     .end()
@@ -258,7 +258,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createService)
                 .end()
@@ -273,7 +273,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createDeployment() {
         await this.controller.cluster
             .begin('Creating the deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsert(this.createDeploymentDocument)
             .end()
     }

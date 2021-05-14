@@ -11,7 +11,7 @@ export interface Controller {
     readonly status?: Status
     readonly cluster: Cluster
     readonly resolver: Resolver
-    readonly document?: AppResource
+    readonly resource?: AppResource
 
     /* @deprecated */
     readonly hubClient?

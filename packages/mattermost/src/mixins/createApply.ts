@@ -58,7 +58,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Installing mattermost preview edition')
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .upsertFile('../../k8s/preview/preview.yaml', { namespace })
             .end()
     }
@@ -79,7 +79,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install mysql operator')
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .upsert(this.mySqlConfig)
                 .upsertFile('../../k8s/full/1-mysql-crds.yaml')
                 .upsertFile('../../k8s/full/1-mysql-operator.yaml', { namespace, topologyUser, topologyPassword })
@@ -88,21 +88,21 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         await this.controller.cluster
             .begin('Install minio operator')
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .upsertFile('../../k8s/full/2-minio-crds.yaml')
                 .upsertFile('../../k8s/full/2-minio-operator.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install mattermost operator')
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .upsertFile('../../k8s/full/3-mattermost-crds.yaml')
                 .upsertFile('../../k8s/full/3-mattermost-operator.yaml', { namespace })
             .end()
 
         await this.controller.cluster
             .begin('Install mattermost cluster')
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .upsertFile('../../k8s/full/4-mattermost-cluster.yaml', { namespace, users, mattermostLicenseSecret, databaseStorageSize, minioStorageSize })
             .end()
     }

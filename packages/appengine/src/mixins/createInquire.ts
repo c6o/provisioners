@@ -15,7 +15,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         // Steps will come from the applicationSpec but for now, we use test data
         if (this.documentHelper.flow) {
             // Let the flowProcessor run inquire
-            const flowProcessor = new FlowProcessor(inquirer, this.controller.document)
+            const flowProcessor = new FlowProcessor(inquirer, this.controller.resource)
             const result = await flowProcessor.process(this.documentHelper.flow)
             this.documentHelper.processResult(result)
         }

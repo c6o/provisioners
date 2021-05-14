@@ -5,7 +5,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
 
     async removeApply() {
-        const namespace = this.controller.document.metadata.namespace
+        const namespace = this.controller.resource.metadata.namespace
 
         // It is then safe to remove the following
         // You may not have to remove the following because owners takes care of most of it

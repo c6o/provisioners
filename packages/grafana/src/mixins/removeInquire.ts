@@ -17,7 +17,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
     }
 
     async removeInquire(answers) {
-        const namespace = this.controller.document.metadata.namespace
+        const namespace = this.controller.resource.metadata.namespace
 
         const result = await this.controller.cluster.list(this.dashboardConfigMap(namespace))
         let hasDashboards = false

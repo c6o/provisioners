@@ -108,27 +108,27 @@ export class AppHelper<T extends AppResource = AppResource> extends CodeZeroHelp
 
         // ensure we always have a provisioner section, otherwise provisioners will not save changes
         // when remote provisioning
-        this.document.spec.provisioner = this.document.spec.provisioner || {}
+        this.resource.spec.provisioner = this.resource.spec.provisioner || {}
 
         // do not copy - provisioners -- modify the document service spec directly
-        const appProvisioner: string = this.document.metadata.name
-        const services = this.document.spec.provisioner?.services || []
+        const appProvisioner: string = this.resource.metadata.name
+        const services = this.resource.spec.provisioner?.services || []
 
         return this._services = [
             ...services,
-            { [appProvisioner]: this.document.spec.provisioner }
+            { [appProvisioner]: this.resource.spec.provisioner }
         ]
     }
 
     /** @todo This does not give you the app._id but the app.metadata.name and is expected to change */
-    get appId() { return this.document.metadata.name }
+    get appId() { return this.resource.metadata.name }
 
     /** This can be used to fetch the resource from system server */
     get instanceId() { return `${this.namespace}-${this.name}` }
 
-    get tag() { return this.document.spec.provisioner?.tag  }
-    get description() { return this.document.metadata.annotations?.['system.codezero.io/description'] || this.appId }
-    get edition() { return this.document.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
+    get tag() { return this.resource.spec.provisioner?.tag  }
+    get description() { return this.resource.metadata.annotations?.['system.codezero.io/description'] || this.appId }
+    get edition() { return this.resource.metadata.labels?.['system.codezero.io/edition'] || 'latest' }
 
     get provisioner() { return this.spec.provisioner }
 
@@ -136,16 +136,16 @@ export class AppHelper<T extends AppResource = AppResource> extends CodeZeroHelp
     get hasRoutes() { return this.routes?.length }
     get httpRoute() { return this.routes?.find(item => item.type === 'http') }
 
-    get spec() { return this.document.spec }
+    get spec() { return this.resource.spec }
 
     /** @deprecated */
     get appEdition() { return this.edition }
     /** @deprecated */
-    get appName() { return this.document.metadata.name }
+    get appName() { return this.resource.metadata.name }
     /** @deprecated */
-    get appNamespace() { return this.document.metadata.namespace }
+    get appNamespace() { return this.resource.metadata.namespace }
 
-    get isNew() { return !!this.document.metadata.uid }
+    get isNew() { return !!this.resource.metadata.uid }
 
     get serviceNames() { return this.services.map(serviceObject => this.getServiceName(serviceObject)) }
 
@@ -199,13 +199,13 @@ export class AppHelper<T extends AppResource = AppResource> extends CodeZeroHelp
 
     //add or update the label
     upsertLabel(labelName: string, labelValue: string) {
-        this.document.metadata.labels[labelName] = labelValue
+        this.resource.metadata.labels[labelName] = labelValue
     }
 
     //only add if it doesn't already exist
     insertOnlyLabel(labelName: string, labelValue: string) {
-        if (!this.document.metadata.labels[labelName])
-            this.document.metadata.labels[labelName] = labelValue
+        if (!this.resource.metadata.labels[labelName])
+            this.resource.metadata.labels[labelName] = labelValue
     }
 
 }

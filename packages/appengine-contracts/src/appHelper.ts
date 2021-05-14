@@ -5,37 +5,37 @@ export class AppEngineAppHelper<T extends AppEngineAppResource = AppEngineAppRes
 
     version = '1.0'
 
-    get flow() { return this.document.spec.provisioner?.flow  }
+    get flow() { return this.resource.spec.provisioner?.flow  }
 
-    get configs() { return this.document.spec.provisioner?.configs }
-    get hasConfigs() { return this.document.spec.provisioner?.configs && Object.keys(this.document.spec.provisioner.configs).length }
+    get configs() { return this.resource.spec.provisioner?.configs }
+    get hasConfigs() { return this.resource.spec.provisioner?.configs && Object.keys(this.resource.spec.provisioner.configs).length }
 
-    get configMapRefs() { return this.document.spec.provisioner?.configMapRefs  }
-    get hasConfigMapRefs() { return this.document.spec.provisioner?.configMapRefs?.length }
+    get configMapRefs() { return this.resource.spec.provisioner?.configMapRefs  }
+    get hasConfigMapRefs() { return this.resource.spec.provisioner?.configMapRefs?.length }
 
-    get secrets() { return this.document.spec.provisioner?.secrets  }
-    get hasSecrets() { return this.document.spec.provisioner?.secrets && Object.keys(this.document.spec.provisioner.secrets).length }
+    get secrets() { return this.resource.spec.provisioner?.secrets  }
+    get hasSecrets() { return this.resource.spec.provisioner?.secrets && Object.keys(this.resource.spec.provisioner.secrets).length }
 
-    get secretRefs() { return this.document.spec.provisioner?.secretRefs  }
-    get hasSecretRefs() { return this.document.spec.provisioner?.secretRefs?.length }
+    get secretRefs() { return this.resource.spec.provisioner?.secretRefs  }
+    get hasSecretRefs() { return this.resource.spec.provisioner?.secretRefs?.length }
 
-    get volumes()  { return this.document.spec.provisioner?.volumes  }
-    get hasVolumes() { return this.document.spec.provisioner?.volumes?.length }
+    get volumes()  { return this.resource.spec.provisioner?.volumes  }
+    get hasVolumes() { return this.resource.spec.provisioner?.volumes?.length }
 
-    get ports() { return this.document.spec.provisioner?.ports  }
+    get ports() { return this.resource.spec.provisioner?.ports  }
     get hasPorts() { return !!this.ports }
 
-    get imagePullPolicy() { return this.document.spec.provisioner?.imagePullPolicy  }
-    get command() { return this.document.spec.provisioner?.command  }
+    get imagePullPolicy() { return this.resource.spec.provisioner?.imagePullPolicy  }
+    get command() { return this.resource.spec.provisioner?.command  }
 
-    get image() { return this.document.spec.provisioner?.image  }
+    get image() { return this.resource.spec.provisioner?.image  }
 
     postInquire() {
-        this.document.spec.provisioner['flow'] = '$unset'
+        this.resource.spec.provisioner['flow'] = '$unset'
     }
 
     processResult(result: FlowResult) {
-        const provisioner = this.document.spec.provisioner
+        const provisioner = this.resource.spec.provisioner
         // Merge the results
         provisioner.configs = Object.assign(provisioner.configs || {}, result.configs)
         provisioner.secrets = Object.assign(provisioner.secrets || {}, result.secrets)

@@ -85,7 +85,7 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
             console.log('APPX, VALIDATION - no validation issues, proceeding...', invalidPrompts)
 
         //if valid, update appspec
-        this.mediator.applicationSpec = this.manifestHelper.document
+        this.mediator.applicationSpec = this.manifestHelper.resource
         return true
     }
 

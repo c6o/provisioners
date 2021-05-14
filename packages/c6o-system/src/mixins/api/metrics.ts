@@ -65,7 +65,7 @@ export const metricsMixin = (base: baseProvisionerType) => class extends base {
             await grafanaProvisioner.clearConfig(grafanaApp.metadata.namespace, serviceNamespace, 'istio')
         }
         if (clearLinkField)
-            delete this.controller.document.spec.provisioner['grafana-link']
+            delete this.controller.resource.spec.provisioner['grafana-link']
     }
 
     async addDashboard(name, params) {

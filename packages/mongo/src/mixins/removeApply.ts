@@ -8,7 +8,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
         // This should not be needed for deleteFile!
         const rootPassword = processPassword(this.spec.rootPassword)
-        const namespace = this.controller.document.metadata.namespace
+        const namespace = this.controller.resource.metadata.namespace
 
         await this.controller.cluster.begin('Removing mongodb resources')
             .deleteFile('../../k8s/pvc.yaml', { namespace })

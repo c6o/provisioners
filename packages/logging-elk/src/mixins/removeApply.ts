@@ -4,7 +4,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async removeApply() {
 
-        const namespace = this.controller.document.metadata.namespace
+        const namespace = this.controller.resource.metadata.namespace
         const storage = this.spec.storage || '1Gi'
         const storageClass = this.spec.storageClass
         const k8sLogIndexPrefix = this.spec.k8sLogIndexPrefix || 'cloud'

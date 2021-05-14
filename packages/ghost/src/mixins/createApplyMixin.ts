@@ -24,14 +24,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const namespace = this.serviceNamespace
         await this.controller.cluster
             .begin('Install Ghost deployment')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/1-deployment.yaml', {namespace})
             .end()
 
 
         await this.controller.cluster
             .begin('Install NodePort')
-            .addOwner(this.controller.document)
+            .addOwner(this.controller.resource)
             .upsertFile('../../k8s/latest/2-service.yaml', {namespace})
             .end()
     }

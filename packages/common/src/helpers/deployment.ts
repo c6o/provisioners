@@ -9,7 +9,7 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
 
     /** Restarts the deployment - does not wait until it's restarted */
     async restart(cluster: Cluster): Promise<Deployment> {
-        const result = await cluster.read(this.document)
+        const result = await cluster.read(this.resource)
         result.throwIfError(`Failed to restart deployment ${this.name} in ${this.namespace}`)
 
         const deployment = result.as<Deployment>()

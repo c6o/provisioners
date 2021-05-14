@@ -27,7 +27,7 @@ export class AppEngineSection extends LitElement {
                             return html`
                                 <appengine-prompt
                                     .answers=${this.manifestHelper.answers}
-                                    .document=${this.manifestHelper.document}
+                                    .document=${this.manifestHelper.resource}
                                     .prompt=${prompt}
                                     @update-requested=${this.updateRequested}
                                 ></appengine-prompt>
@@ -36,7 +36,7 @@ export class AppEngineSection extends LitElement {
                     : html`
                         <appengine-prompt
                             .answers=${this.manifestHelper.answers}
-                            .document=${this.manifestHelper.document}
+                            .document=${this.manifestHelper.resource}
                             .prompt=${this.renderPrompts}
                             @update-requested=${this.updateRequested}
                         ></appengine-prompt>

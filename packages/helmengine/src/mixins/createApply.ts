@@ -72,7 +72,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             // Create values config file
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createValuesConfig)
                 .end()
@@ -128,7 +128,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             // Create values config file
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createSecretValues)
                 .end()
@@ -170,7 +170,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(this.job)
                 .end()
@@ -237,13 +237,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 name,
                 namespace,
                 componentLabels,
-                this.controller.document
+                this.controller.resource
             )
 
             // Create values config file
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createKustomizationConfigs)
                 .end()
@@ -304,7 +304,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const accountFile = clusterAdmin ? 'clusterServiceAccount.yaml' : 'serviceAccount.yaml'
             await this.controller.cluster
                 .begin()
-                .addOwner(this.controller.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsertFile(`../../k8s/${accountFile}`, { namespace, name, serviceAccountName })
                 .end()
