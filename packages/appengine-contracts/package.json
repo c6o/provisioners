@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient-contracts": "^0.0.10",
+    "@c6o/kubeclient-contracts": "^0.0.11",
     "@provisioner/contracts": "^0.0.28",
     "generate-password": "^1.6.0"
   }

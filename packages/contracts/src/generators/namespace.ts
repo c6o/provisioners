@@ -1,5 +1,6 @@
 import { Namespace } from '@c6o/kubeclient-resources/core/v1'
-import { setManagedBy } from '../markers'
+import { setLabel } from '@c6o/kubeclient-contracts'
+import { Labels } from '../labels'
 
 export const toNamespace = (namespace: string | Namespace): Namespace => {
     if (!namespace) return
@@ -17,5 +18,5 @@ export const toNamespace = (namespace: string | Namespace): Namespace => {
 export const toManagedNamespace = (namespace: string | Namespace, managedBy?: string) => {
     const resource = toNamespace(namespace)
     if (resource)
-        return setManagedBy(toNamespace(namespace), managedBy)
+        return setLabel(toNamespace(namespace), Labels.K8SAppManagedBy, managedBy)
 }

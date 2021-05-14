@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient-resources": "^0.0.10",
+    "@c6o/kubeclient-resources": "^0.0.11",
     "@provisioner/common": "^0.0.28",
     "@provisioner/grafana": "^0.0.28",
     "@provisioner/istio": "^0.0.28",
