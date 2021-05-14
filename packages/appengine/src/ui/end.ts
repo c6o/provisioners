@@ -1,4 +1,4 @@
-import { StoreFlowStep } from '@provisioner/common'
+import { StoreFlowStep } from '@provisioner/contracts'
 import { LitElement, customElement, html } from 'lit-element'
 import { AppEngineAppHelper, FlowResult, each } from '@provisioner/appengine-contracts'
 import createDebug from 'debug'

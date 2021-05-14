@@ -1,6 +1,6 @@
 import { LitElement, html, customElement } from 'lit-element'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('mattermost-install-main')
 export class MattermostSettings extends LitElement implements StoreFlowStep {

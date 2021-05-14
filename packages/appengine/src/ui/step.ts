@@ -1,5 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { StoreFlowScreen, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowScreen, StoreFlowMediator } from '@provisioner/contracts'
 import { Step, AppEngineAppHelper, PromptType, Prompt, c6oExtensions } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
 // @ts-ignore

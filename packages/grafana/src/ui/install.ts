@@ -1,5 +1,5 @@
 import { LitElement, html, customElement, property } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('grafana-install-main')
 export class GrafanaCredentials extends LitElement implements StoreFlowStep {

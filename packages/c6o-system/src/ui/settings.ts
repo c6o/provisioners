@@ -309,7 +309,7 @@ export class TraxittSystemSettings extends LitElement {
         await this.renderSettings(this.api.manifest)
     }
 
-    // TODO: can't import @provisioner/common
+    // TODO: can't import @provisioner/contracts
     isBusy = (manifest) => manifest.status !== AppStatuses.update.Completed && manifest.status !== AppStatuses.update.Error
 
     renderSettings = async (manifest) => {

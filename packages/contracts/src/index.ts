@@ -7,5 +7,6 @@ export * from './generators'
 export * from './helpers'
 export * from './user'
 
+export * from './store'
 export * from './resolver'
 export * from './provisioner'

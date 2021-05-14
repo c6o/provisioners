@@ -1,4 +1,4 @@
-import { StoreFlowStep } from '@provisioner/common'
+import { StoreFlowStep } from '@provisioner/contracts'
 import { css, CSSResult } from 'lit-element'
 // @ts-ignore
 import { getTimeZones } from '../../templates/latest/timeZones'

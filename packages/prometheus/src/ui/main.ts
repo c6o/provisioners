@@ -1,5 +1,5 @@
 import { LitElement, html, customElement, property } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('prometheus-install-main')
 export class PrometheusMainInstall extends LitElement implements StoreFlowStep {
