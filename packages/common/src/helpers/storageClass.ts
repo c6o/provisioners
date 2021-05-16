@@ -14,7 +14,7 @@ export class StorageClassHelper<T extends PartialStorageClass = PartialStorageCl
         apiVersion: 'storage.k8s.io/v1',
         kind: 'StorageClass',
         metadata: {
-            name
+            ...(name ? { name } : undefined)
         }
     })
 

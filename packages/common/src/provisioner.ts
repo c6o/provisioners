@@ -27,7 +27,7 @@ export class ProvisionerBase extends provisionerBaseMixin {
     routes?: any
     logger?: any
 
-    get edition(): string { return this.controller.resource?.metadata?.labels['system.codezero.io/edition'] }
+    get edition(): string { return this.controller?.resource?.metadata?.labels['system.codezero.io/edition'] }
 
     _documentHelper
     get documentHelper(): AppHelper {

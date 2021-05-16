@@ -6,6 +6,13 @@ import createDebug from 'debug'
 
 const debug = createDebug('@appengine:createInquire')
 
+declare module '../' {
+    export interface Provisioner {
+        isNumeric(n): boolean
+        createInquire(args): Promise<void>
+    }
+}
+
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async createInquire(args) {
@@ -85,6 +92,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             else
                 break
 
+        // eslint-disable-next-line no-constant-condition
         } while (true)
 
         this.documentHelper.processResult({

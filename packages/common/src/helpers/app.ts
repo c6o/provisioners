@@ -12,13 +12,15 @@ export class AppHelper<T extends AppResource = AppResource> extends AppHelperCon
             apiVersion: 'system.codezero.io/v1',
             kind: 'App',
             metadata: {
-                name,
-                namespace
+                ...(name ? { name } : undefined),
+                ...(namespace ? { namespace } : undefined)
             }
         })
 
-    static from = (namespace?: string, name?: string) =>
-        new AppHelper(AppHelper.template(namespace, name))
+    static from = (namespace?: string, name?: string) => {
+        const template = AppHelper.template(namespace, name)
+        return new AppHelper(template)
+    }
 
     async read(cluster: Cluster, errorMessage?: string): Promise<AppResource> {
         const result = await cluster.read(this.resource)
@@ -26,12 +28,12 @@ export class AppHelper<T extends AppResource = AppResource> extends AppHelperCon
         return result.as<AppResource>()
     }
 
-    async list(cluster, errorMessage?: string) {
+    async list(cluster: Cluster, errorMessage?: string): Promise<AppResource[]> {
         const result = !this.name ?
             await cluster.list(this.resource) :
             await cluster.list(this.resource, {fieldSelector: `metadata.name=${this.name}` })
         result.throwIfError(errorMessage)
-        return Array.from(this.each('App'))
+        return Array.from(result.each('App')) as AppResource[]
     }
 
     static async byInterface(cluster: Cluster, interfaceName: string, errorMessage?: string): Promise<Array<AppResource>> {

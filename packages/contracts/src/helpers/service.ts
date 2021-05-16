@@ -1,4 +1,4 @@
-import { Cluster, ResourceHelper } from '@c6o/kubeclient-contracts'
+import { ResourceHelper } from '@c6o/kubeclient-contracts'
 import { Service } from '@c6o/kubeclient-resources/core/v1'
 
 export class ServiceHelper<T extends Service = Service> extends ResourceHelper<T> { //extends ServiceHelperContract<T> {
@@ -7,8 +7,8 @@ export class ServiceHelper<T extends Service = Service> extends ResourceHelper<T
             apiVersion: 'v1',
             kind: 'Service',
             metadata: {
-                name,
-                namespace
+                ...(name ? { name } : undefined),
+                ...(namespace ? { namespace } : undefined)
             }
         })
 

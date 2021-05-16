@@ -6,7 +6,7 @@ export class NamespaceHelper<R extends Namespace = Namespace> extends ResourceHe
         apiVersion: 'v1',
         kind: 'Namespace',
         metadata: {
-            name
+            ...(name ? { name } : undefined),
         }
     })
 

@@ -8,8 +8,8 @@ export class DeploymentHelper<T extends Deployment = Deployment>
         apiVersion: 'apps/v1',
         kind: 'Deployment',
         metadata: {
-            name,
-            namespace
+            ...(name ? { name } : undefined),
+            ...(namespace ? { namespace } : undefined)
         }
     })
 
