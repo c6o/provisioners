@@ -150,7 +150,7 @@ export class TraxittSystemSettings extends LitElement {
                     required
                     value=${this.npmOptionsList[0]}
                 ></c6o-combo-box>
-                <c6o-text-field autoselect id='npm-url' label="Registry URL" </c6o-text-field>
+                <c6o-text-field autoselect id='npm-url' label="Registry URL"></c6o-text-field>
                 <c6o-text-field autoselect id='npm-username' label="Registry username" required></c6o-text-field>
                 <vaadin-password-field autoselect id='npm-password' label="Registry password" required></vaadin-password-field>
                 <c6o-button
