@@ -4,6 +4,8 @@ import { baseProvisionerType } from '../'
 const inquireNewClusterId = '** new cluster **'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
+    /*
+    newClusterId
     clusters
     accounts
 
@@ -18,7 +20,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
         return true
     }
-
+x
     clusterIdChoices = async () => {
         const choices = this.clusters.map(cluster => ({ name: cluster.name || cluster.namespace, value: cluster._id }))
         const newCluster = { name: 'New cluster', value: inquireNewClusterId }
@@ -155,4 +157,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         else
             this.spec.hubServerURL = 'https://codezero.io'
     }
+
+        async patchCluster() {
+        if (!this.newClusterId)
+            return
+        await this.controller.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'completed' } })
+    }
+
+    */
 }

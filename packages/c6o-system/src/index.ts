@@ -42,8 +42,6 @@ export class Provisioner extends mix(ProvisionerBase).with(
     metricsMixin)
 {
 
-    newClusterId
-
     getIstioProvisioner = async () =>
         await this.controller.resolver.getProvisioner<IstioProvisioner>('istio-system', 'istio')
 }

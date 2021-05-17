@@ -13,6 +13,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createApply() {
         this.spec.tag = this.spec.tag || 'canary'
 
+        await this.provisionCRDs()
         await this.provisionSystem()
         await this.provisionApps()
         await this.provisionOAuth()
@@ -21,7 +22,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         await this.provisionRoutes()
         await this.provisionCertificate()
         await this.provisionUpdate()
-        await this.patchCluster()
     }
 
     gatewayServers = [{
@@ -73,6 +73,25 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     get systemServerCookieDomain() {
         return `.${this.host}`
+    }
+
+    async provisionCRDs() {
+        if ((await this.controller.cluster.version()).gte('1.16.0'))
+            await this.controller.cluster
+                .begin('Provision c6o CRDs for apiextensions.k8s.io/v1')
+                    .upsertFile('../../k8s/crds/dock.v1.yaml')
+                    .upsertFile('../../k8s/crds/oauth.v1.yaml')
+                    .upsertFile('../../k8s/crds/tasks.v1.yaml')
+                    .upsertFile('../../k8s/crds/users.v1.yaml')
+                .end()
+        else
+            await this.controller.cluster
+                .begin('Provision c6o CRDs for apiextensions.k8s.io/v1beta1')
+                    .upsertFile('../../k8s/crds/dock.v1beta1.yaml')
+                    .upsertFile('../../k8s/crds/oauth.v1beta1.yaml')
+                    .upsertFile('../../k8s/crds/tasks.v1beta1.yaml')
+                    .upsertFile('../../k8s/crds/users.v1beta1.yaml')
+                .end()
     }
 
     async provisionSystem() {
@@ -220,11 +239,5 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             .begin('Provision update cron job')
                 .upsertFile('../../k8s/update-recurring-job.yaml', options)
             .end()
-    }
-
-    async patchCluster() {
-        if (!this.newClusterId)
-            return
-        await this.controller.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'completed' } })
     }
 }
