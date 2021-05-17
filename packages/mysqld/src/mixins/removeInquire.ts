@@ -1,3 +1,4 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '../'
 
 export const removeInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -8,7 +9,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
             // the secret key reference where to put the connection strings once configured
             // TODO: label the secret so we can find it and remove it automatically, or always
             // use the same name?
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'input',
                 name: 'secretKeyRef',
                 default: 'mysql-connections',

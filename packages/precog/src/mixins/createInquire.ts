@@ -1,5 +1,7 @@
-import { baseProvisionerType } from '..'
+import inquirer from 'inquirer'
 import { Buffer } from 'buffer'
+import { StorageClassHelper } from '@provisioner/common'
+import { baseProvisionerType } from '..'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
@@ -16,7 +18,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async inquire(args) {
 
         const answers = {
-            storageClass: args['storageClass'] || await this.getDefaultStorageClass(),
+            storageClass: args['storageClass'] || await StorageClassHelper.getDefault(this.controller.cluster),
             storage: args['storage'] || this.spec.storage,
             edition: args['edition'] || this.spec.edition,
             username: args['username'] || this.spec.username,
@@ -24,8 +26,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             email: 'ignore@ignored.com' || this.spec.email, // docker no longer needs this but it needs to be in creds
         }
 
-        const responses = await this.manager.inquirer.prompt([
-            this.inquireStorageClass({
+        const responses = await inquirer.prompt([
+            StorageClassHelper.inquire(this.controller.cluster, {
                 name: 'storageClass'
             }),
             {

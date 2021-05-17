@@ -1,8 +1,7 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '../'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
-
-    simpleServiceProvided(answers) { return !!(this.spec.simpleService || answers.simple) }
 
     alertManagerEnabledProvided(answers) { return !!(this.spec.alertManagerEnabled || answers.alertManager) }
 
@@ -15,7 +14,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     async createInquire(answers) {
 
         if (!this.simpleServiceProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'simpleService',
                 default: false,
@@ -28,7 +27,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             return
 
         if (!this.alertManagerEnabledProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'alertManagerEnabled',
                 default: false,
@@ -39,7 +38,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
 
         if (!this.kubeMetricsEnabledProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'kubeMetricsEnabled',
                 default: false,
@@ -50,7 +49,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
 
         if (!this.nodeExporterEnabledProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'nodeExporterEnabled',
                 default: false,
@@ -61,7 +60,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
 
         if (!this.pushGatewayEnabledProvided(answers)) {
-            const response = await this.manager.inquirer?.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'pushGatewayEnabled',
                 default: false,

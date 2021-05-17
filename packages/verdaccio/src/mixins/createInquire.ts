@@ -1,14 +1,16 @@
+import inquirer from 'inquirer'
+import { StorageClassHelper } from '@provisioner/common'
 import { baseProvisionerType } from '..'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     async inquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || await this.getDefaultStorageClass()
+            storageClass: args['storage-class'] || await StorageClassHelper.getDefault(this.controller.cluster)
         }
 
-        const responses = await this.manager.inquirer?.prompt([
-            this.inquireStorageClass({
+        const responses = await inquirer.prompt([
+            StorageClassHelper.inquire(this.controller.cluster, {
                 name: 'storageClass'
             })], answers)
 

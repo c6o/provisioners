@@ -1,7 +1,9 @@
 import { Secret } from '@c6o/kubeclient-resources/core/v1'
+import { processPassword } from '@provisioner/common'
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
 import { MongoClient } from 'mongodb'
+
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     // protected members
@@ -36,7 +38,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         `mongodb://${options.user}:${options.password}@${options.host}:${options.port}${options.db ? '/' + options.db : ''}`
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureMongoDbIsInstalled()
         await this.ensureMongoDbIsRunning()
         await this.ensureMongoDbIsProvisioned()
@@ -44,7 +45,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureRootPassword() {
         if (this.rootPassword) return
-        const result = await this.manager.cluster.read(this.rootSecret)
+        const result = await this.controller.cluster.read(this.rootSecret)
         result.throwIfError('Failed to load rootSecret')
         const secret = result.as<Secret>()
 
@@ -58,7 +59,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Looks for mongo pods and if none are found, applies the appropriate yaml */
     async ensureMongoDbIsInstalled() {
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Install mongo services')
             .list(this.mongoPods)
             .do((result, processor) => {
@@ -67,14 +68,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     // There are no mongo-db pods
 
                     // Generate and stash the rootPassword
-                    this.rootPassword = super.processPassword(this.spec.rootPassword)
+                    this.rootPassword = processPassword(this.spec.rootPassword)
                     const namespace = this.serviceNamespace
                     const storageClass = this.spec.storageClass
                     const rootPasswordKey = this.spec.rootPasswordKey || 'password'
 
                     // Install mongodb
                     processor
-                        .mergeWith(super.documentHelper.appComponentMergeDocument)
+                        .mergeWith(this.documentHelper.appComponentMergeDocument)
                         .upsertFile('../../k8s/pvc.yaml', { namespace, storageClass })
                         .upsertFile('../../k8s/statefulset.yaml', { namespace, rootPassword: this.rootPassword, appLabels: this.documentHelper.componentLabels })
                         .upsertFile('../../k8s/service.yaml', { namespace })
@@ -83,10 +84,10 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
             .end()
     }
-    
+
     /** Watches pods and ensures that a pod is running and sets runningPod */
     async ensureMongoDbIsRunning() {
-        await this.manager.cluster.
+        await this.controller.cluster.
             begin('Ensure mongo services are running')
                 .beginWatch(this.mongoPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
@@ -99,12 +100,12 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Port forwards and connects to the mongoDb and initiates a provision */
     async ensureMongoDbIsProvisioned() {
         if (!this.hasDatabasesToConfigure) {
-            this.manager.status?.push('Setting up mongo databases')
-            this.manager.status?.pop(true)
+            this.controller.status?.push('Setting up mongo databases')
+            this.controller.status?.pop(true)
             return
         }
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Setting up mongo databases')
                 .beginForward(27017, this.runningPod)
                 .attempt(10, 1000, async (processor, attempt) => await this.connectMongoDbClient(processor, attempt))
@@ -118,13 +119,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async connectMongoDbClient(processor, attempt) {
         this.ensureRootPassword()
         const connectionString = `mongodb://root:${this.rootPassword}@localhost:${processor.lastResult.other.localPort}`
-        this.manager.status?.info(`Attempt ${attempt + 1} to connect to mongo on local port ${processor.lastResult.other.localPort}`)
+        this.controller.status?.info(`Attempt ${attempt + 1} to connect to mongo on local port ${processor.lastResult.other.localPort}`)
         return this.mongoDbClient = await MongoClient.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
     }
 
     /** Closes the mongoDbClient connection */
     async disconnectMongoDbClient() {
-        this.manager.status?.info('Closing connection to mongodb')
+        this.controller.status?.info('Closing connection to mongodb')
         await this.mongoDbClient.close()
     }
 
@@ -164,11 +165,11 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             const dbName = Object.keys(dbConfig)[0]
             const config = dbConfig[dbName]
     
-            this.manager.status?.push(`Configuring database ${dbName}`)
+            this.controller.status?.push(`Configuring database ${dbName}`)
 
             const db = this.mongoDbClient.db(dbName)
             const user = config.user || 'devUser'
-            const password = super.processPassword(config.password)
+            const password = processPassword(config.password)
     
             const roles = config.roles || ['readWrite']
     
@@ -179,7 +180,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             const connectionString = this.toConnectionString({ user, password, host, port, db: dbName })
             if (process.env.TRAXITT_ENV == 'development')
-                this.manager.status?.info(`Connection string ${connectionString}`)
+                this.controller.status?.info(`Connection string ${connectionString}`)
 
             this.configMap[config.secretKey] = Buffer.from(connectionString).toString('base64')
         }
@@ -190,7 +191,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
         }
         finally {
-            this.manager.status?.pop()
+            this.controller.status?.pop()
         }
     }
 }

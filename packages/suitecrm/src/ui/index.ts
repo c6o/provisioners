@@ -1,6 +1,6 @@
 import { LitElement, html, customElement } from 'lit-element'
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('suitecrm-install-main')
 export class SuiteCRMSettings extends LitElement implements StoreFlowStep {

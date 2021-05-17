@@ -1,5 +1,10 @@
 import { mix } from 'mixwith'
 import { ProvisionerBase } from '@provisioner/common'
+import { IstioProvisioner } from '@provisioner/istio'
+import { SystemProvisioner } from './contracts'
+
+export * from './contracts'
+
 import {
     createInquireMixin,
     createApplyMixin,
@@ -15,9 +20,13 @@ import {
     metricsMixin
 } from './mixins'
 // TODO: import { helpMixin} from "./help"
+export * from './constants'
 
 export type baseProvisionerType = new (...a) => Provisioner & ProvisionerBase
 
+export interface Provisioner extends SystemProvisioner {
+
+}
 export class Provisioner extends mix(ProvisionerBase).with(
     postAppMixin,
     removeApplyMixin,
@@ -30,9 +39,10 @@ export class Provisioner extends mix(ProvisionerBase).with(
     hostApiMixin,
     loggerApiMixin,
     npmApiMixin,
-    metricsMixin) {
+    metricsMixin)
+{
 
-    newClusterId
+    getIstioProvisioner = async () =>
+        await this.controller.resolver.getProvisioner<IstioProvisioner>('istio-system', 'istio')
 }
 
-export * from './constants'

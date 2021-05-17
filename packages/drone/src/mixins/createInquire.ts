@@ -1,3 +1,4 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '../index'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -32,7 +33,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
         console.log('Installation help for each SCM provider can be found here: https://docs.drone.io/server/overview/\n')
 
-        const responses = await this.manager.inquirer?.prompt([
+        const responses = await inquirer.prompt([
             {
                 type: 'list',
                 name: 'storageSize',

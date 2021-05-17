@@ -1,4 +1,11 @@
+import { Resource } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../../'
+
+declare module '../../' {
+    export interface Provisioner {
+        gateway: Resource
+    }
+}
 
 export const httpsRedirectApiMixin = (base: baseProvisionerType) => class extends base {
     'https-redirect' = {
@@ -26,10 +33,10 @@ export const httpsRedirectApiMixin = (base: baseProvisionerType) => class extend
     }
 
     async findGateway() {
-        return await this.manager.cluster.read(this.gateway)
+        return await this.controller.cluster.read(this.gateway)
     }
 
     async setHttpsRedirect(enable) {
-        return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': '/spec/servers/0/tls/httpsRedirect', 'value': enable}])
+        return await this.controller.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': '/spec/servers/0/tls/httpsRedirect', 'value': enable}])
     }
 }

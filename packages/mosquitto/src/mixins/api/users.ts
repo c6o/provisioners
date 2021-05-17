@@ -1,6 +1,8 @@
-import { baseProvisionerType } from '../../'
 import mosquittoPasswd from 'mosquitto-passwd'
 import parse from 'parse-passwd'
+import { DeploymentHelper } from '@provisioner/common'
+
+import { baseProvisionerType } from '../../'
 
 declare module '../../' {
     export interface Provisioner {
@@ -8,6 +10,7 @@ declare module '../../' {
         removeUser(username: string, namespace: string, restart: boolean)
         updateUser(originalUsername: string, newUsername: string, password: string, namespace: string)
         listUsers(namespace: string)
+        generateMosquittoUserPayload(username: string, password: string): Promise<string>
     }
 }
 
@@ -67,7 +70,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
             settings.configmap.data['users.conf'] = settings.userConf
 
             //update our cluster/config map to reflect the change
-            const updatedResult = await this.manager.cluster.put(settings.manifest, settings.configmap)
+            const updatedResult = await this.controller.cluster.put(settings.manifest, settings.configmap)
 
             if (updatedResult.error) {
                 throw new Error('Failed to save Mosquitto password configMap')
@@ -75,7 +78,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await super.restartDeployment(namespace, this.deploymentName)
+                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.controller.cluster)
             }
         }
 
@@ -93,7 +96,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
             settings.configmap.data['users.conf'] = users.map(item => `${item.username}:${item.password}`).join('\n').trim()
 
             //update our cluster/config map to reflect the change
-            const updatedResult = await this.manager.cluster.put(settings.manifest, settings.configmap)
+            const updatedResult = await this.controller.cluster.put(settings.manifest, settings.configmap)
 
             if (updatedResult.error) {
                 throw new Error('Failed to save Mosquitto password configMap')
@@ -101,7 +104,7 @@ export const userMgmtMixin = (base: baseProvisionerType) => class extends base {
 
             if (restart) {
                 //kick the deployment for the new settings to take effect
-                await super.restartDeployment(namespace, this.deploymentName)
+                await DeploymentHelper.from(namespace, this.deploymentName).restart(this.controller.cluster)
             }
 
         }

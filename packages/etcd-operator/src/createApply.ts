@@ -23,7 +23,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async provision() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureEtcdOperatorIsInstalled()
         await this.ensurePodIsRunning(this.etcdOperatorPods, 'ensure etcd operator is running')
         await this.ensureEtcdIsInstalled()
@@ -34,7 +33,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         const namespace = this.serviceNamespace
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin(`Install etcd operator services`)
             .list(this.etcdOperatorPods)
             .do((result, processor) => {
@@ -62,7 +61,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureEtcdIsInstalled() {
         const namespace = this.serviceNamespace
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin(`Install etcd services`)
             .list(this.etcdPods)
             .do((result, processor) => {
@@ -85,7 +84,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /** Watches pods and ensures that a pod is running */
     async ensurePodIsRunning(podSpec, message) {
         // obj.metadata.name == 'etcd-0'
-        await this.manager.cluster.
+        await this.controller.cluster.
             begin(message)
                 .beginWatch(podSpec)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {

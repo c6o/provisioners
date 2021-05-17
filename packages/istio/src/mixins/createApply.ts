@@ -50,7 +50,6 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.installCrds()
         await this.ensureCrdsApplied()
         await this.installIstioServices()
@@ -58,14 +57,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async installCrds() {
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Install resource definitions')
                 .upsertFile('../../k8s/crds.yaml')
             .end()
     }
 
     async installIstioServices() {
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Install Istiod')
                 .upsertFile('../../k8s/traffic.yaml')
             .end()
@@ -73,7 +72,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         // ensure istiod is running before install ingress gateway to reduce installation delays
         await this.ensureIstiodIsRunning()
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Install Ingress Gateway')
                 .upsertFile('../../k8s/gateway.yaml')
             .end()
@@ -82,7 +81,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureCrdsApplied() {
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Ensure resource definitions applied')
                 .attempt(20, 2000, this.countCRDs.bind(this))
             .end()
@@ -90,7 +89,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async countCRDs(_, attempt) {
         let count = 0
-        const cluster = this.manager.cluster
+        const cluster = this.controller.cluster
         await cluster
             .begin()
                 .list(this.crdDocument)
@@ -104,20 +103,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureIngressIsRunning() {
-        await this.manager.cluster
+        await this.controller.cluster
             .begin(`Ensure ingress gateway is running`)
                 .beginWatch(this.ingressPod)
-                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()
                 })
             .end()
     }
 
     async ensureIstiodIsRunning() {
-        await this.manager.cluster
+        await this.controller.cluster
             .begin(`Ensure istiod is running`)
                 .beginWatch(this.istiodPod)
-                .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {
+                .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()
                 })
             .end()

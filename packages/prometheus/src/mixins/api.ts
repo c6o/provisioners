@@ -1,12 +1,21 @@
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
+import { Deployment } from '@c6o/kubeclient-resources/apps/v1'
 import * as yaml from 'js-yaml'
 import { baseProvisionerType } from '../index'
 import { Buffer } from 'buffer'
 
+declare module '../' {
+    export interface Provisioner {
+        clearAll(namespace: string, clientNamespace: string, clientApp: string): Promise<void>
+        removeJob(jobName: string): Promise<void>
+        addTlsCerts(name, certs): Promise<void>
+        removeTlsCerts(name): Promise<void>
+    }
+}
 export const apiMixin = (base: baseProvisionerType) => class extends base {
 
-    runningDeployent
+    runningDeployment: Deployment
 
-    prometheusNamespace: string
     clientApp: string
     clientNamespace: string
 
@@ -31,7 +40,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
             }
         }
 
-        return await this.manager.cluster.read(deployment)
+        return await this.controller.cluster.read(deployment)
     }
 
     async clearAll(namespace: string, clientNamespace: string, clientApp: string) {
@@ -53,14 +62,13 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
             throw Error('There is already a running configuration transaction')
 
         let result = await this.getPrometheusDeployment(namespace)
-
-        if (result.error) throw result.error
-        this.runningDeployment = result.object
+        result.throwIfError()
+        this.runningDeployment = result.as<Deployment>()
 
         this.clientNamespace = clientNamespace
         this.clientApp = clientApp
 
-        result = await this.manager.cluster.read({
+        result = await this.controller.cluster.read({
             kind: 'ConfigMap',
             metadata: {
                 namespace,
@@ -148,7 +156,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
      *      /etc/certs/{clientNamespace}-{clientApp}-{name}/key.pem
      */
     async addTlsCerts(name, certs) {
-        const namespace = this.runningDeployent.metadata.namespace
+        const namespace = this.runningDeployment.metadata.namespace
         const certName = `${this.clientNamespace}-${this.clientApp}-${name}`
 
         // create a new secret
@@ -193,7 +201,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
      *
      */
     async removeTlsCerts(name) {
-        const namespace = this.runningDeployent.metadata.namespace
+        const namespace = this.runningDeployment.metadata.namespace
 
         const certName = `${this.clientNamespace}-${this.clientApp}-${name}`
         const removeSecret = this.certSecret(name, namespace)
@@ -235,7 +243,7 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
 
         // not sure we really need to restart if config changes - seems to have a container to do this
         if (this.hasConfigChanged) {
-            const result = await this.manager.cluster.patch(this.configMap, {
+            const result = await this.controller.cluster.patch<ConfigMap>(this.configMap, {
                 data: {
                     'prometheus.yml': yaml.dump(this.prometheusConfig)
                 }
@@ -245,22 +253,22 @@ export const apiMixin = (base: baseProvisionerType) => class extends base {
         }
 
         for (const secret of this.addedSecrets) {
-            const result = await this.manager.cluster.upsert(secret)
+            const result = await this.controller.cluster.upsert(secret)
             result.throwIfError()
             restart = true
         }
 
         for (const secret of this.removedSecrets) {
-            const result = await this.manager.cluster.delete(secret)
+            const result = await this.controller.cluster.delete(secret)
             result.throwIfError()
             restart = true
         }
 
         if (restart) {
-            await this.manager.cluster.upsert(this.runningDeployment)
+            await this.controller.cluster.upsert(this.runningDeployment)
             const previousCount = this.runningDeployment.spec?.replicas || 0
-            await this.manager.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
-            await this.manager.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
+            await this.controller.cluster.patch(this.runningDeployment, { spec: { replicas: 0 } })
+            await this.controller.cluster.patch(this.runningDeployment, { spec: { replicas: previousCount } })
         }
         this.runningDeployment = null
     }

@@ -1,5 +1,6 @@
 import { baseProvisionerType } from '../../'
 import { Result } from '@c6o/kubeclient-contracts'
+import { ServiceHelper } from '@provisioner/common'
 
 export const gatewayApiMixin = (base: baseProvisionerType) => class extends base {
 
@@ -19,7 +20,7 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
     })
 
     async findGateway(namespace, name) {
-        return await this.manager.cluster.read({
+        return await this.controller.cluster.read({
             apiVersion: 'networking.istio.io/v1alpha3',
             kind: 'Gateway',
             metadata: {
@@ -38,30 +39,25 @@ export const gatewayApiMixin = (base: baseProvisionerType) => class extends base
         if (servers)
             template.spec.servers = servers
 
-        result = await this.manager.cluster.upsert(template)
+        result = await this.controller.cluster.upsert(template)
         if (result.object) {
             // The following hack causes istio to refresh all gateways
             const refresher = this.gatewayTemplate('istio-system', 'bogus-gateway')
-            await this.manager.cluster.create(refresher)
-            await this.manager.cluster.delete(refresher)
+            await this.controller.cluster.create(refresher)
+            await this.controller.cluster.delete(refresher)
         }
         return result
     }
 
     async removeGateway(namespace: string, name: string) {
         const template = this.gatewayTemplate(namespace, name)
-        return await this.manager.cluster.delete(template)
+        return await this.controller.cluster.delete(template)
     }
 
     async getExternalAddress() {
-        return await super.getServiceAddress({
-            kind: 'Service',
-            metadata: {
-                namespace: 'istio-system',
-                labels: {
-                    istio: 'ingressgateway'
-                }
-            }
-        })
+        return await ServiceHelper
+            .from('istio-system')
+            .setLabel('istio', 'ingressgateway') // This is the label - not the service name
+            .awaitAddress(this.controller.cluster, 'Fetching external address')
     }
 }

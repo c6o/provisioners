@@ -1,5 +1,5 @@
 import { LitElement, html, customElement } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('vscode-uninstall-main')
 export class UninstallVSCode extends LitElement implements StoreFlowStep {

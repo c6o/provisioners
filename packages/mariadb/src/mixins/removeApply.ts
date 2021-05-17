@@ -1,14 +1,15 @@
-import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
+import { processPassword } from '@provisioner/common'
+import { baseProvisionerType } from '../'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
 
     async removeApply() {
 
-        const rootPassword = super.processPassword(this.spec.rootPassword)
-        const namespace = this.manager.document.metadata.namespace
+        const rootPassword = processPassword(this.spec.rootPassword)
+        const namespace = this.controller.resource.metadata.namespace
 
-        await this.manager.cluster.begin('Removing mariadb resources')
+        await this.controller.cluster.begin('Removing mariadb resources')
             .deleteFile('../../k8s/pvc.yaml', { namespace })
             .deleteFile('../../k8s/statefulset.yaml', { namespace, rootPassword })
             .deleteFile('../../k8s/service.yaml', { namespace })
@@ -25,7 +26,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                 }
             }
 
-            await this.manager.cluster.begin('Removing mariadb connection secret')
+            await this.controller.cluster.begin('Removing mariadb connection secret')
                 .delete(configMapSecret)
                 .end()
         }

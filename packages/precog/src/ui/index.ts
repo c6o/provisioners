@@ -1,5 +1,5 @@
 import { LitElement, html, customElement } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('precog-install-main')
 export class PreCogSettings extends LitElement implements StoreFlowStep {

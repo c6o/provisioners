@@ -1,5 +1,5 @@
-import { Result, KubeDocument } from '@c6o/kubeclient-contracts'
-import { AppDocument, RoutesType } from '@provisioner/contracts'
+import { Result, Resource } from '@c6o/kubeclient-contracts'
+import { AppResource, RoutesType } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
@@ -8,9 +8,9 @@ const debug = createDebug('istio:api:virtualService:')
 
 export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
 
-    app: AppDocument
+    app: AppResource
 
-    async upsertVirtualService(app: AppDocument, gateway: string): Promise<Result> {
+    async upsertVirtualService(app: AppResource, gateway: string): Promise<Result> {
         this.app = app
 
         if (!app.spec.routes)
@@ -37,7 +37,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         if (vs.spec.tcp.length === 0)
             return
 
-        const result = await this.manager.cluster
+        const result = await this.controller.cluster
             .begin(`Installing Virtual Service for ${app.metadata.namespace}/${app.metadata.name}`)
                 .addOwner(app)
                 .upsert(vs)
@@ -45,7 +45,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return result
     }
 
-    async removeVirtualService(app: AppDocument) {
+    async removeVirtualService(app: AppResource) {
         this.app = app
 
         if (!app.spec.routes)
@@ -61,7 +61,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
             }
         }
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin(`Removing Virtual Service for ${app.metadata.namespace}/${app.metadata.name}`)
                 .delete({
                     apiVersion: 'networking.istio.io/v1alpha3',
@@ -125,7 +125,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         return http
     }
 
-    virtualService = (app: AppDocument, gateway: string) => ({
+    virtualService = (app: AppResource, gateway: string) => ({
         apiVersion: 'networking.istio.io/v1alpha3',
         kind: 'VirtualService',
         metadata: {
@@ -162,14 +162,14 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         }
     })
 
-    async getGateway(): Promise<KubeDocument> {
-        const result = await this.manager.cluster.read(this.gateway)
+    async getGateway(): Promise<Resource> {
+        const result = await this.controller.cluster.read(this.gateway)
         result.throwIfError()
         return result.object
     }
 
-    async getLoadBalancer(): Promise<KubeDocument> {
-        const result = await this.manager.cluster.read(this.loadBalancer)
+    async getLoadBalancer(): Promise<Resource> {
+        const result = await this.controller.cluster.read(this.loadBalancer)
         result.throwIfError()
         return result.object
     }
@@ -205,10 +205,10 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const item = this.gatewayTcpPortTemplate(route)
         const alreadyExists = gatewayServers.find(item => item.port?.name === this.getTcpPortName(route))
         if (!alreadyExists)
-            return await this.manager.cluster.patch(this.gateway, [{ 'op': 'add', 'path': '/spec/servers/-', 'value': item } ])
+            return await this.controller.cluster.patch(this.gateway, [{ 'op': 'add', 'path': '/spec/servers/-', 'value': item } ])
 
         const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route))
-        return await this.manager.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': `/spec/servers/${index}`, 'value': item } ])
+        return await this.controller.cluster.patch(this.gateway, [{ 'op': 'replace', 'path': `/spec/servers/${index}`, 'value': item } ])
     }
 
     async removeTcpPortGateway(route: RoutesType) {
@@ -217,7 +217,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
         const index = gatewayServers.map(function(item) { return item.port?.name }).indexOf(this.getTcpPortName(route))
         if (index !== -1) {
-            return await this.manager.cluster.patch(this.gateway, [{ 'op': 'remove', 'path': `/spec/servers/${index}` } ])
+            return await this.controller.cluster.patch(this.gateway, [{ 'op': 'remove', 'path': `/spec/servers/${index}` } ])
         }
     }
 
@@ -244,10 +244,10 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
         const item = this.loadBalancerTcpPortTemplate(route)
         const alreadyExists = loadBalancerPorts.find(item => item.name === this.getTcpPortName(route))
         if (!alreadyExists)
-            return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'add', 'path': '/spec/ports/-', 'value': item } ])
+            return await this.controller.cluster.patch(this.loadBalancer, [{ 'op': 'add', 'path': '/spec/ports/-', 'value': item } ])
 
         const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route))
-        return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'replace', 'path': `/spec/ports/${index}`, 'value': item } ])
+        return await this.controller.cluster.patch(this.loadBalancer, [{ 'op': 'replace', 'path': `/spec/ports/${index}`, 'value': item } ])
     }
 
     async removeTcpPortLoadBalancer(route: RoutesType) {
@@ -255,7 +255,7 @@ export const virtualServiceApiMixin = (base: baseProvisionerType) => class exten
 
         const index = loadBalancerPorts.map(function(item) { return item.name }).indexOf(this.getTcpPortName(route))
         if (index !== -1) {
-            return await this.manager.cluster.patch(this.loadBalancer, [{ 'op': 'remove', 'path': `/spec/ports/${index}` } ])
+            return await this.controller.cluster.patch(this.loadBalancer, [{ 'op': 'remove', 'path': `/spec/ports/${index}` } ])
         }
     }
 }

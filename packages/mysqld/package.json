@@ -31,10 +31,15 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient-resources": "^0.0.10",
+    "@c6o/kubeclient-resources": "^0.0.11",
     "@provisioner/common": "^0.0.28",
+    "@provisioner/contracts": "^0.0.28",
+    "inquirer": "^8.0.0",
     "js-yaml": "^4.0.0",
     "mixwith": "^0.1.1",
     "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^7.3.1"
   }
 }

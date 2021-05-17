@@ -5,7 +5,9 @@
         "outDir": "./lib"
     },
     "references": [
-        { "path":  "../common" }
+        { "path":  "../common" },
+        { "path":  "../grafana" },
+        { "path":  "../istio" }
     ],
     "include": [
         "src"

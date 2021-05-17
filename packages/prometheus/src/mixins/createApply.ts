@@ -3,7 +3,6 @@ import { baseProvisionerType } from '..'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
     
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.installPrometheusComponents()
         await this.ensurePrometheusIsRunning()
     }
@@ -32,7 +31,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         } = this.spec
 
         if (simpleService) {
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin('Install simple prometheus services')
                     .list(this.prometheusPods)
                     .do((result, processor) => {
@@ -46,35 +45,35 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             return
         }
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Install prometheus server')
                 .upsertFile('../../k8s/prometheus-server.yaml', { namespace })
                 .upsertFile('../../k8s/prometheus-configmap.yaml', { namespace })
             .end()
 
         if (alertManagerEnabled) {
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin('Install alert manager')
                     .upsertFile('../../k8s/prometheus-alertmanager.yaml', { namespace })
                 .end()
         }
 
         if (kubeMetricsEnabled) {
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin('Install kube state metrics components')
                     .upsertFile('../../k8s/prometheus-kubemetrics.yaml', { namespace })
                 .end()
         }
 
         if (nodeExporterEnabled) {
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin('Install node exporter')
                     .upsertFile('../../k8s/prometheus-nodeexporter.yaml', { namespace })
                 .end()
         }
 
         if (pushGatewayEnabled) {
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin('Install push gateway components')
                     .upsertFile('../../k8s/prometheus-pushgateway.yaml', { namespace })
                 .end()
@@ -82,7 +81,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
     
     async ensurePrometheusIsRunning() {
-        await this.manager.cluster.
+        await this.controller.cluster.
             begin('Ensure Prometheus server is running')
                 .beginWatch(this.prometheusPods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {

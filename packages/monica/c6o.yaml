@@ -81,12 +81,13 @@ editions:
                 label: Database Name
                 required: true
 
-            - type: input
+            - type: password
               name: DB_PASSWORD
               message: Password for the admin user
               c6o:
                 label: Database Password
                 required: true
+                target: secret
 
 
         secrets:

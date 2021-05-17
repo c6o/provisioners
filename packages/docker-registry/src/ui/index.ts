@@ -1,5 +1,5 @@
 import { LitElement, html, customElement } from 'lit-element'
-import { StoreFlowStep, StoreFlowMediator } from '@provisioner/common'
+import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('docker-registry-main')
 export class DockerRegistrySettings extends LitElement implements StoreFlowStep {

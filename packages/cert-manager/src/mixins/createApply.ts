@@ -3,7 +3,6 @@ import { baseProvisionerType } from '..'
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
     async createApply() {
-        await this.ensureServiceNamespacesExist()
         await this.ensureInstalled()
         await this.ensureReady()
     }
@@ -33,7 +32,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async ensureInstalled() {
         const namespace = this.serviceNamespace
 
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Install cert-manager services')
                 .list(this.pods)
                 .do((result, processor) => {
@@ -46,7 +45,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     }
 
     async ensureReady() {
-        await this.manager.cluster.
+        await this.controller.cluster.
             begin('Ensure a replica is running')
                 .beginWatch(this.pods)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor, pod) => {

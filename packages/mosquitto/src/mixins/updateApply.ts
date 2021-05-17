@@ -5,10 +5,10 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
     async updateAddUser(appNamespace) {
         const newUser = this.spec['add-user']
         if (newUser) {
-            this.manager.status?.push('Adding user to Mosquitto')
+            this.controller.status?.push('Adding user to Mosquitto')
             await this.addUser(newUser.user, newUser.password, appNamespace, true)
-            this.manager.document.spec.provisioner['add-user'] = '$unset'
-            this.manager.status?.pop()
+            this.controller.resource.spec.provisioner['add-user'] = '$unset'
+            this.controller.status?.pop()
         }
     }
 
@@ -16,10 +16,10 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const removeUser = this.spec['remove-user']
 
         if (removeUser) {
-            this.manager.status?.push('Removing user from Mosquitto')
+            this.controller.status?.push('Removing user from Mosquitto')
             await this.removeUser(removeUser.user, appNamespace, true)
-            this.manager.document.spec.provisioner['remove-user'] = '$unset'
-            this.manager.status?.pop()
+            this.controller.resource.spec.provisioner['remove-user'] = '$unset'
+            this.controller.status?.pop()
         }
     }
 
@@ -27,16 +27,16 @@ export const updateApplyMixin = (base: baseProvisionerType) => class extends bas
         const updateUser = this.spec['update-user']
 
         if (updateUser) {
-            this.manager.status?.push('Updating user in Mosquitto')
+            this.controller.status?.push('Updating user in Mosquitto')
             await this.updateUser(updateUser.originalUsername, updateUser.newUsername, updateUser.password, appNamespace)
-            this.manager.document.spec.provisioner['update-user'] = '$unset'
-            this.manager.status?.pop()
+            this.controller.resource.spec.provisioner['update-user'] = '$unset'
+            this.controller.status?.pop()
         }
     }
 
     async updateApply() {
 
-        const appNamespace = this.manager.document.metadata.namespace
+        const appNamespace = this.controller.resource.metadata.namespace
 
         await this.updateAddUser(appNamespace)
         await this.updateRemoveUser(appNamespace)

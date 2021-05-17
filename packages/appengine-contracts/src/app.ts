@@ -1,6 +1,6 @@
-import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
-import { AppDocumentLabels, AppDocumentSpec } from '@provisioner/contracts'
-import { Options as generatorOptions } from 'generate-password'
+import { keyValue } from '@c6o/kubeclient-contracts'
+import { AppDocumentLabels, AppDocumentSpec, AppResource } from '@provisioner/contracts'
+import { GenerateOptions } from 'generate-password'
 import { Flow } from './flow'
 
 export interface ServicePort {
@@ -35,7 +35,7 @@ export interface LabelsMetadata {
     edition?: string
 }
 
-type generateObject = { generate: generatorOptions }
+type generateObject = { generate: GenerateOptions }
 type generatorValue =  string | generateObject
 export type keyValueOrGenerator = keyValue | {[key:string] : generatorValue }
 
@@ -68,8 +68,7 @@ export interface AppEngineAppSpec extends AppDocumentSpec {
     provisioner?: AppEngineAppSpecProvisioner
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppEngineAppDocument extends KubeDocument {
+export interface AppEngineAppResource extends AppResource {
     labels?: AppDocumentLabels
     spec?: AppEngineAppSpec
 }

@@ -1,8 +1,11 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from '../'
 
 const inquireNewClusterId = '** new cluster **'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
+    /*
+    newClusterId
     clusters
     accounts
 
@@ -17,11 +20,11 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         }
         return true
     }
-
+x
     clusterIdChoices = async () => {
         const choices = this.clusters.map(cluster => ({ name: cluster.name || cluster.namespace, value: cluster._id }))
         const newCluster = { name: 'New cluster', value: inquireNewClusterId }
-        choices.unshift(newCluster, new this.manager.inquirer.Separator())
+        choices.unshift(newCluster, new inquirer.Separator())
         return choices
     }
 
@@ -29,8 +32,8 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
     accountIdChoices = _ => this.accounts.map(account => ({ name: account.name, value: account._id }))
 
     async inquire(args) {
-        this.clusters = await this.manager.hubClient.getClusters()
-        this.accounts = await this.manager.hubClient.getAccounts()
+        this.clusters = await this.controller.hubClient.getClusters()
+        this.accounts = await this.controller.hubClient.getAccounts()
 
         const answers = {
             protocol: args['proto'],
@@ -45,10 +48,10 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             tag: args['tag']
         }
 
-        if (!this.manager.hubClient || !this.manager.inquirer)
+        if (!this.controller.hubClient)
             return answers
 
-        const responses = await this.manager.inquirer?.prompt([{
+        const responses = await inquirer.prompt([{
             type: 'list',
             name: 'clusterId',
             message: 'Which cluster would you like to install to?',
@@ -107,7 +110,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
 
     async createInquire(args) {
         // Accounts are always needed
-        this.accounts = await this.manager.hubClient.getAccounts()
+        this.accounts = await this.controller.hubClient.getAccounts()
 
         const answers = await this.inquire(args)
 
@@ -117,7 +120,7 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             // otherwise hub will automatically assign it to the current user
             const account = this.findAccount(answers.accountId)
 
-            cluster = await this.manager.hubClient.createCluster({
+            cluster = await this.controller.hubClient.createCluster({
                 namespace: answers.clusterNamespace,
                 name: answers.clusterName,
                 noAccountName: answers.noAccountName,
@@ -127,14 +130,14 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
                 }
             })
             this.newClusterId = cluster._id
-            await this.manager.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'installing' } })
+            await this.controller.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'installing' } })
         }
         else
             cluster = this.findCluster(answers.clusterId)
 
         if (!answers.clusterKey) {
             // We have to fetch a clusterKey
-            const credentials = await this.manager.hubClient.getClusterCredentials(cluster._id, true)
+            const credentials = await this.controller.hubClient.getClusterCredentials(cluster._id, true)
             answers.clusterKey = credentials?.key
         }
 
@@ -154,4 +157,12 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
         else
             this.spec.hubServerURL = 'https://codezero.io'
     }
+
+        async patchCluster() {
+        if (!this.newClusterId)
+            return
+        await this.controller.hubClient.patchCluster(this.newClusterId, { $set: { 'system.status': 'completed' } })
+    }
+
+    */
 }

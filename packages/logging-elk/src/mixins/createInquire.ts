@@ -1,18 +1,20 @@
+import inquirer from 'inquirer'
+import { StorageClassHelper } from '@provisioner/common'
 import { baseProvisionerType } from '..'
 
 export const createInquireMixin = (base: baseProvisionerType) => class extends base {
 
     storageChoices = ['1Gi','2Gi','5Gi','10Gi','20Gi','50Gi','100Gi']
 
-    async inquire(args) {
+    async createInquire(args) {
         const answers = {
-            storageClass: args['storage-class'] || await this.getDefaultStorageClass(),
+            storageClass: args['storage-class'] || await StorageClassHelper.getDefault(this.controller.cluster),
             storage: args['storage-size']|| this.spec.storage,
             k8sLogIndexPrefix: args['log-index-prefix']|| this.spec.k8sLogIndexPrefix
         }
 
-        const responses = await this.manager.inquirer?.prompt([
-            this.inquireStorageClass({
+        const responses = await inquirer.prompt([
+            StorageClassHelper.inquire(this.controller.cluster, {
                 name: 'storageClass'
             })
         ,{
@@ -28,14 +30,9 @@ export const createInquireMixin = (base: baseProvisionerType) => class extends b
             default: 'cloud'
         }], answers)
 
-        return responses
-    }
 
-    async createInquire(args) {
-        const results = await this.inquire(args)
-
-        this.spec.storageClass = results.storageClass
-        this.spec.storage = results.storage
-        this.spec.k8sLogIndexPrefix = results.k8sLogIndexPrefix
+        this.spec.storageClass = responses.storageClass
+        this.spec.storage = responses.storage
+        this.spec.k8sLogIndexPrefix = responses.k8sLogIndexPrefix
     }
 }

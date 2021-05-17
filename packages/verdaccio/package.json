@@ -32,7 +32,11 @@
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.28",
+    "inquirer": "^8.0.0",
     "mixwith": "^0.1.1"
   },
-  "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884"
+  "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884",
+  "devDependencies": {
+    "@types/inquirer": "^7.3.1"
+  }
 }

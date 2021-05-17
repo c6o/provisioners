@@ -1,6 +1,6 @@
-import { Options as generatorOptions } from 'generate-password'
+import { GenerateOptions } from 'generate-password'
 import { keyValue } from '@c6o/kubeclient-contracts'
-export { Options as generatorOptions } from 'generate-password'
+export { GenerateOptions as generatorOptions } from 'generate-password'
 
 export type functionExpression = string | Function // this is an inline function that's turned into an expression
 export const isFunctionString = (func: functionExpression): func is string => func && typeof func === 'string'
@@ -20,7 +20,7 @@ export interface c6oExtensions {
     target?: 'configs' | 'secrets' | 'transient'
     label?: string
     required?: boolean
-    generate?: generatorOptions
+    generate?: GenerateOptions
     generateMessage?: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any

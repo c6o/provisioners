@@ -36,9 +36,13 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.28",
+    "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
     "parcel-bundler": "^1.12.4",
     "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^7.3.1"
   }
 }

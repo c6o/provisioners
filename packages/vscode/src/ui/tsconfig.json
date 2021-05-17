@@ -19,6 +19,6 @@
         "lib": ["es2018", "dom"],
     },
     "references": [
-        { "path":  "../common" }
+        { "path":  "../contracts" }
     ]
 }

@@ -9,6 +9,7 @@
     "build": "lerna run build --stream",
     "develop": "lerna run develop --parallel --stream",
     "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
+    "unit-tests": "NODE_ENV=test jest --config=\"./jest.config.unit.js\" --maxWorkers=3",
     "publish-patch": "yarn reset && lerna publish patch",
     "publish-main": "git checkout main && git merge --no-ff",
     "publish-manifests": "ls -d $PWD/packages/* | xargs -I fld czctl app publish fld --account codezero -f"
@@ -16,6 +17,7 @@
   "devDependencies": {
     "@types/node": "^10.12.18",
     "del-cli": "^3.0.1",
+    "jest": "^26.6.3",
     "lerna": "^3.20.2",
     "source-map-support": "^0.5.16",
     "typescript": "^3.9.5"

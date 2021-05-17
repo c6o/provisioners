@@ -1,44 +1,44 @@
-import { ulid } from 'ulid'
 import { mix } from 'mixwith'
 import * as path from 'path'
 import { promises as fs } from 'fs'
-import { KubeDocument } from '@c6o/kubeclient-contracts'
-import { AppObject } from '@provisioner/contracts'
+import { optionFunctionType, AppHelper, ProvisionerBase as ProvisionerBaseContract, Controller} from '@provisioner/contracts'
 
 import {
-    namespaceMixin,
-    storageClassMixin,
-    passwordMixin,
-    optionsMixin,
-    updateMixin
+    optionsMixin
 } from './mixins'
-import { ProvisionerManager, optionFunctionType } from './manager'
 
-export interface ProvisionerBase { }
-export type baseProvisionerMixinType = new (...a) => ProvisionerBase
+//export interface ProvisionerBase { }
+export type baseProvisionerMixinType = new (...a) => ProvisionerBaseContract
 
-export class provisionerBasePrivate {
-}
+export class ProvisionerBasePrivate { }
 
-export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceMixin, storageClassMixin, passwordMixin, optionsMixin, updateMixin) {
-    manager: ProvisionerManager
+const provisionerBaseMixin: baseProvisionerMixinType = mix(ProvisionerBasePrivate).with(optionsMixin)
+export class ProvisionerBase extends provisionerBaseMixin {
+    controller: Controller
+
     serviceName: string
     moduleLocation: string
-    taskSpec: any
+
     spec: any
+    serviceNamespace: string
 
     // Has other API functions
-    [key: string]: any
+    //[key: string]: any
+    routes?: any
+    logger?: any
 
-    help (command: string, options: optionFunctionType, messages: string[]) { }
-
-    get edition(): string { return this.manager?.document?.metadata?.labels['system.codezero.io/edition'] }
+    get edition(): string { return this.controller?.resource?.metadata?.labels['system.codezero.io/edition'] }
 
     _documentHelper
-    get documentHelper(): AppObject {
-        if (this._documentHelper || !this.manager?.document)
-            return this._documentHelper
-        return this._documentHelper = new AppObject(this.manager.document)
+    get documentHelper(): AppHelper {
+        if (this._documentHelper) return this._documentHelper
+        if (!this.controller.resource) return
+        return this._documentHelper = new AppHelper(this.controller.resource)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    help(command: string, options: optionFunctionType, messages: string[]) {
+        // No Op
     }
 
     serve(req, res, serverRoot = 'lib/ui') {
@@ -81,26 +81,6 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
     }
 
     /** @deprecated */
-    toTask = (namespace, ask: string, spec: any) => ({
-        apiVersion: 'system.codezero.io/v1',
-        kind: 'Task',
-        metadata: {
-            namespace,
-            name: `${this.serviceName}-${ulid().toLowerCase()}`,
-            labels: {
-                app: `${this.serviceName}`,
-                ask
-            }
-        },
-        spec
-    })
-
-    /** @deprecated */
-    async createTask(namespace, ask: string, spec: any) {
-        const taskDocument = this.toTask(namespace, ask, spec)
-        return await this.manager.cluster.create(taskDocument)
-    }
-
     async getIngressGatewayServiceClusterIp() {
         const service = {
             apiVersion: 'v1',
@@ -113,57 +93,12 @@ export class ProvisionerBase extends mix(provisionerBasePrivate).with(namespaceM
                 }
             }
         }
-        const result = await this.manager.cluster.read(service)
+        const result = await this.controller.cluster.read(service)
 
         if (result.error) {
             this.logger?.error(result.error)
             throw result.error
         }
         return result.object?.spec?.clusterIP
-    }
-
-    async restartDeployment(namespace: string, name: string) {
-
-        const service = {
-            apiVersion: 'apps/v1',
-            kind: 'Deployment',
-            metadata: {
-                namespace,
-                name,
-            }
-        }
-
-        const result = await this.manager.cluster.read(service)
-
-        if (result.error) {
-            this.logger?.error(result.error)
-            throw result.error
-        }
-
-        const deployment = result.object
-
-        const previousCount = deployment.spec?.replicas
-        await this.manager.cluster.patch(deployment, { spec: { replicas: 0 } })
-        await this.manager.cluster.patch(deployment, { spec: { replicas: previousCount } })
-    }
-
-    async getServiceAddress(service: KubeDocument) {
-        let ip = null
-        let hostname = null
-
-        await this.manager.cluster.
-            begin(`Fetch external address`)
-            .beginWatch(service)
-            .whenWatch(
-                ({ obj }) => obj.status?.loadBalancer?.ingress?.length && (obj.status?.loadBalancer?.ingress[0].ip || obj.status?.loadBalancer?.ingress[0].hostname),
-                (processor, service) => {
-                    ip = service.status.loadBalancer.ingress[0].ip
-                    hostname = service.status.loadBalancer.ingress[0].hostname
-                    processor.endWatch()
-                }
-            )
-            .end()
-
-        return { ip, hostname }
     }
 }

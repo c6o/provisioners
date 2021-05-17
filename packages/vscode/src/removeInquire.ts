@@ -1,3 +1,4 @@
+import inquirer from 'inquirer'
 import { baseProvisionerType } from './index'
 
 export const removeInquireMixin = (base: baseProvisionerType) => class extends base {
@@ -5,7 +6,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
     async removeInquire(answers) {
 
         if (!this.providedDeprovisionOption('keep-ip', answers)) {
-            const response = await this.manager.inquirer.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'keepIp',
                 default: false,
@@ -17,7 +18,7 @@ export const removeInquireMixin = (base: baseProvisionerType) => class extends b
             this.setDeprovisionOption('keep-ip', this.getDeprovisionOption('keep-ip', false, answers))
 
         if (!this.providedDeprovisionOption('keep-vol', answers)) {
-            const response = await this.manager.inquirer.prompt({
+            const response = await inquirer.prompt({
                 type: 'confirm',
                 name: 'keepVolume',
                 default: true,

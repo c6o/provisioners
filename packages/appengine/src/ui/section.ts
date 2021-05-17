@@ -1,5 +1,5 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { AppEngineAppObject, PromptType, Section } from '@provisioner/appengine-contracts'
+import { AppEngineAppHelper, PromptType, Section } from '@provisioner/appengine-contracts'
 
 @customElement('appengine-section')
 export class AppEngineSection extends LitElement {
@@ -11,7 +11,7 @@ export class AppEngineSection extends LitElement {
     prompts: PromptType
 
     @property({ type: Object })
-    manifestHelper: AppEngineAppObject
+    manifestHelper: AppEngineAppHelper
 
     get renderPrompts() {
         return this.section?.prompts || this.prompts
@@ -27,7 +27,7 @@ export class AppEngineSection extends LitElement {
                             return html`
                                 <appengine-prompt
                                     .answers=${this.manifestHelper.answers}
-                                    .document=${this.manifestHelper.document}
+                                    .document=${this.manifestHelper.resource}
                                     .prompt=${prompt}
                                     @update-requested=${this.updateRequested}
                                 ></appengine-prompt>
@@ -36,7 +36,7 @@ export class AppEngineSection extends LitElement {
                     : html`
                         <appengine-prompt
                             .answers=${this.manifestHelper.answers}
-                            .document=${this.manifestHelper.document}
+                            .document=${this.manifestHelper.resource}
                             .prompt=${this.renderPrompts}
                             @update-requested=${this.updateRequested}
                         ></appengine-prompt>

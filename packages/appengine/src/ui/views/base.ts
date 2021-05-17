@@ -1,4 +1,4 @@
-import { StoreFlowStep } from '@provisioner/common'
+import { StoreFlowStep } from '@provisioner/contracts'
 import { css, CSSResult } from 'lit-element'
 // @ts-ignore
 import { getTimeZones } from '../../templates/latest/timeZones'
@@ -42,9 +42,6 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
     }
 
     handleLayout(items, type) {
-
-        this.state.startTimer('ui-configs-handleLayout')
-
         const headingLayout = document.createElement('div')
         headingLayout.setAttribute('class', 'heading-text')
         headingLayout.innerHTML = this.headingText
@@ -61,8 +58,6 @@ export class BaseViewSettings extends AppEngineBaseView implements StoreFlowStep
             }
             this.requestUpdate()
         }
-
-        this.state.endTimer('ui-configs-handleLayout')
     }
 
     validateItems(items) {

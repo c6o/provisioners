@@ -18,4 +18,10 @@ export class Provisioner extends mix(ProvisionerBase).with(
   createApplyMixin,
   execMixin,
   helpMixin) {
+
+    keepIp: boolean
+
+    // These are here for exec - to be removed
+    execArgs = []
+    options: any = {}
 }

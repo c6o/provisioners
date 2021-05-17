@@ -1,5 +1,5 @@
 import createDebug from 'debug'
-import { generate, Options } from 'generate-password'
+import { generate, GenerateOptions } from 'generate-password'
 import { ProvisionerBase } from '@provisioner/common'
 import { baseProvisionerType } from '../'
 import { keyValueOrGenerator, isGenerateOptions } from '@provisioner/appengine-contracts'
@@ -21,16 +21,16 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
     async ensureSystemProvisioner() {
         if (this.systemProvisioner)
             return
-        this.systemProvisioner = await this.manager.getAppProvisioner('c6o-system', 'c6o-system')
+        this.systemProvisioner = await this.controller.resolver.getProvisioner('c6o-system', 'c6o-system')
     }
 
     async processTemplate(map: keyValueOrGenerator, stageName: string) {
 
         try {
-            this.manager.status?.push(stageName)
+            this.controller.status?.push(stageName)
 
             for (const key in map) {
-                this.manager.status?.info(`Evaluating key ${key}`)
+                this.controller.status?.info(`Evaluating key ${key}`)
 
                 const value = map[key]
 
@@ -48,19 +48,19 @@ export const templateHelperMixin = (base: baseProvisionerType) => class extends 
             }
         }
         finally {
-            this.manager.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
     async _interpolateValue(map: keyValueOrGenerator, key, template, value) {
         const currentValue = map[key] as string
 
-        this.manager.status?.info(`Interpolating value ${currentValue}`)
+        this.controller.status?.info(`Interpolating value ${currentValue}`)
 
         map[key] = currentValue.replace(template, value)
     }
 
-    _setPassword(map: keyValueOrGenerator, key, options: Options) {
+    _setPassword(map: keyValueOrGenerator, key, options: GenerateOptions) {
         map[key] = generate(options)
     }
 }

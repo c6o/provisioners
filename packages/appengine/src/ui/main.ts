@@ -1,6 +1,6 @@
-import { StoreFlowStep } from '@provisioner/common'
+import { StoreFlowStep } from '@provisioner/contracts'
 import { LitElement, customElement, html } from 'lit-element'
-import { AppEngineAppObject, Step, each } from '@provisioner/appengine-contracts'
+import { AppEngineAppHelper, Step, each } from '@provisioner/appengine-contracts'
 import { AppEngineStep } from './step'
 import { AppEngineEndSettings } from './end'
 import createDebug from 'debug'
@@ -15,10 +15,10 @@ export interface AppEngineSettings extends StoreFlowStep {
 export class AppEngineSettings extends LitElement implements StoreFlowStep {
 
     _manifestHelper
-    get manifestHelper(): AppEngineAppObject {
+    get manifestHelper(): AppEngineAppHelper {
         if (this._manifestHelper)
             return this._manifestHelper
-        return this._manifestHelper = new AppEngineAppObject(this.mediator.applicationSpec)
+        return this._manifestHelper = new AppEngineAppHelper(this.mediator.applicationSpec)
     }
 
     // NARAYAN: This is a temporary fix - do not document or use elsewhere

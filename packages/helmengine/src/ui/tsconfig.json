@@ -22,7 +22,7 @@
         ],
     },
     "references": [
-        { "path": "../../../common" },
+        { "path": "../../../contracts" },
         { "path": "../../../appengine" }
     ]
 }

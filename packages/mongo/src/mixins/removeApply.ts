@@ -1,14 +1,16 @@
 import { baseProvisionerType } from '../'
 import { Buffer } from 'buffer'
+import { processPassword } from '@provisioner/common'
 
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
 
     async removeApply() {
 
-        const rootPassword = super.processPassword(this.spec.rootPassword)
-        const namespace = this.manager.document.metadata.namespace
+        // This should not be needed for deleteFile!
+        const rootPassword = processPassword(this.spec.rootPassword)
+        const namespace = this.controller.resource.metadata.namespace
 
-        await this.manager.cluster.begin('Removing mongodb resources')
+        await this.controller.cluster.begin('Removing mongodb resources')
             .deleteFile('../../k8s/pvc.yaml', { namespace })
             .deleteFile('../../k8s/statefulset.yaml', { namespace, rootPassword })
             .deleteFile('../../k8s/service.yaml', { namespace })
@@ -25,7 +27,7 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                 }
             }
 
-            await this.manager.cluster.begin('Removing mongodb connection secret')
+            await this.controller.cluster.begin('Removing mongodb connection secret')
                 .delete(configMapSecret)
                 .end()
         }

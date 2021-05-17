@@ -1,5 +1,4 @@
-import { KubeDocument, keyValue } from '@c6o/kubeclient-contracts'
-import { Volume } from '@provisioner/appengine-contracts'
+import { Resource, keyValue } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
 import createDebug from 'debug'
 import * as templates from '../templates/'
@@ -8,12 +7,12 @@ const debug = createDebug('@appengine:createApply')
 
 declare module '../' {
     export interface Provisioner {
-        createDeploymentDocument: KubeDocument
+        createDeploymentDocument: Resource
     }
 }
 export const createApplyMixin = (base: baseProvisionerType) => class extends base {
 
-    createDeploymentDocument: KubeDocument
+    createDeploymentDocument: Resource
 
     get createDeploymentVolumes() {
         return this.createDeploymentDocument.spec.template.spec.volumes = this.createDeploymentDocument.spec.template.spec.volumes || []
@@ -30,7 +29,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async createApply() {
         try {
-            this.manager.status?.push(`Applying App Engine to ${this.documentHelper.name}`)
+            this.controller.status?.push(`Applying App Engine to ${this.documentHelper.name}`)
 
             await this.ensureCreateDeployment()
 
@@ -49,20 +48,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.ensureAppIsRunning()
         }
         finally {
-            this.manager.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
 
     async processTemplates() {
         try {
-            this.manager.status?.push('Processing templates')
+            this.controller.status?.push('Processing templates')
 
             await this.processTemplate(this.documentHelper.configs, 'Processing configs templates')
             await this.processTemplate(this.documentHelper.secrets, 'Processing secrets templates')
         }
         finally {
-            this.manager.status?.pop()
+            this.controller.status?.pop()
         }
     }
 
@@ -83,7 +82,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async createConfigs() {
         let skipped = false
         try {
-            this.manager.status?.push('Installing configuration settings')
+            this.controller.status?.push('Installing configuration settings')
 
             if (!this.documentHelper.hasConfigs) {
                 skipped = true
@@ -102,9 +101,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 configs
             )
 
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createConfigMap)
                 .end()
@@ -117,14 +116,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            this.manager.status?.pop(skipped)
+            this.controller.status?.pop(skipped)
         }
     }
 
     async createSecrets() {
         let skipped = false
         try {
-            this.manager.status?.push('Installing secret settings')
+            this.controller.status?.push('Installing secret settings')
 
             if (!this.documentHelper.hasSecrets) {
                 skipped = true
@@ -141,9 +140,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 base64Secrets
             )
 
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createSecrets)
                 .end()
@@ -156,14 +155,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            this.manager.status?.pop(skipped)
+            this.controller.status?.pop(skipped)
         }
     }
 
     async createConfigMapRefs() {
         let skipped = false
         try {
-            this.manager.status?.push('Installing configMap refs')
+            this.controller.status?.push('Installing configMap refs')
 
             if (!this.documentHelper.hasConfigMapRefs) {
                 skipped = true
@@ -175,14 +174,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
         }
         finally {
-            this.manager.status?.pop(skipped)
+            this.controller.status?.pop(skipped)
         }
     }
 
     async createSecretRefs() {
         let skipped = false
         try {
-            this.manager.status?.push('Installing secret refs')
+            this.controller.status?.push('Installing secret refs')
 
             if (!this.documentHelper.hasSecretRefs) {
                 skipped = true
@@ -193,7 +192,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.createDeploymentContainerEnvFrom.push(...secretRefs)
         }
         finally {
-            this.manager.status?.pop(skipped)
+            this.controller.status?.pop(skipped)
         }
     }
 
@@ -202,7 +201,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         let skipped = false
 
         try {
-            this.manager.status?.push('Installing volumes')
+            this.controller.status?.push('Installing volumes')
 
             if (!this.documentHelper.hasVolumes) {
                 skipped = true
@@ -220,9 +219,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                     this.documentHelper.namespace
                 )
 
-                await this.manager.cluster
+                await this.controller.cluster
                     .begin()
-                    .addOwner(this.manager.document)
+                    .addOwner(this.controller.resource)
                     .mergeWith(this.documentHelper.appComponentMergeDocument)
                     .upsert(createVolume)
                     .end()
@@ -237,14 +236,14 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             }
         }
         finally {
-            this.manager.status?.pop(skipped)
+            this.controller.status?.pop(skipped)
         }
     }
 
     async createServices() {
         let skipped = false
         try {
-            this.manager.status?.push('Installing networking services')
+            this.controller.status?.push('Installing networking services')
 
             if (!this.documentHelper.hasPorts) {
                 skipped = true
@@ -257,9 +256,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 this.documentHelper.getServicePorts()
             )
 
-            await this.manager.cluster
+            await this.controller.cluster
                 .begin()
-                .addOwner(this.manager.document)
+                .addOwner(this.controller.resource)
                 .mergeWith(this.documentHelper.appComponentMergeDocument)
                 .upsert(createService)
                 .end()
@@ -267,20 +266,20 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.createDeploymentContainer.ports = this.documentHelper.getDeploymentPorts()
         }
         finally {
-            this.manager.status?.pop(skipped)
+            this.controller.status?.pop(skipped)
         }
     }
 
     async createDeployment() {
-        await this.manager.cluster
+        await this.controller.cluster
             .begin('Creating the deployment')
-            .addOwner(this.manager.document)
+            .addOwner(this.controller.resource)
             .upsert(this.createDeploymentDocument)
             .end()
     }
 
     async ensureAppIsRunning() {
-        await this.manager.cluster.
+        await this.controller.cluster.
             begin(`Ensure ${this.documentHelper.name} services are running`)
             .beginWatch(templates.getPodTemplate(this.documentHelper.name, this.documentHelper.namespace))
             .whenWatch(({ condition }) => condition.Ready === 'True', (processor) => {
