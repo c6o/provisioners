@@ -3,11 +3,6 @@
   "version": "0.0.28",
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
-  "scripts": {
-    "build": "tsc -b",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "develop": "tsc -b -w --preserveWatchOutput"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nsainaney/traxitt.git"

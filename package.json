@@ -5,10 +5,13 @@
     "packages/*"
   ],
   "scripts": {
-    "clean": "del packages/**/lib && del packages/**/node_modules && del packages/**/tsconfig.tsbuildinfo && lerna clean -y && lerna run clean && del ./node_modules",
-    "build": "lerna run build --stream",
-    "develop": "lerna run develop --parallel --stream",
-    "reset": "yarn run clean && yarn run clean && rm -rf node_modules && yarn install && yarn run build",
+    "clean-all": "yarn run clean && del packages/**/node_modules && del ./node_modules",
+    "clean-resources": "lerna run clean-resources --stream",
+    "clean": "tsc -b --clean ./tsconfig.json",
+    "bundle": "lerna run bundle --stream",
+    "build": "tsc -b ./tsconfig.json",
+    "postbuild": "yarn run bundle",
+    "develop": "tsc -b -w  --preserveWatchOutput ./tsconfig.json",
     "unit-tests": "NODE_ENV=test jest --config=\"./jest.config.unit.js\" --maxWorkers=3",
     "publish-patch": "yarn reset && lerna publish patch",
     "publish-main": "git checkout main && git merge --no-ff",
