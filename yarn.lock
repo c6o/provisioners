@@ -1081,11 +1081,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@c6o/bundle@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.1.tgz#bd1b3577f54fe46b3d80b7d78bec303998e54a31"
-  integrity sha512-W7+TOPjprCX0yjcUapm95wFJf3PJT+Mym9hgZpKI7wlE7ILIZx6WejIlwuSap5R+iPu+a2lTkYwMU5bOupe3zQ==
+"@c6o/bundle@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.2.tgz#9de41942de6ecf1b76f6a47e845d08fcc083f1f0"
+  integrity sha512-dguFdz3DQWcTce0/qyhc+N0cbmch2InJGnUNYjbM50Z+9x3nUk9C14qyllmqx918M1pTZZscGZGZs3DDS19Nqg==
   dependencies:
+    arg "^5.0.0"
     esbuild "^0.12.1"
     esbuild-plugin-svg "^0.1.0"
     esbuild-sass-plugin "^1.4.0"
@@ -3478,6 +3479,11 @@ are-we-there-yet@~1.1.2:
   dependencies:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
+
+arg@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.0.tgz#a20e2bb5710e82950a516b3f933fee5ed478be90"
+  integrity sha512-4P8Zm2H+BRS+c/xX1LrHw0qKpEhdlZjLCgWy+d78T9vqa2Z2SiD2wMrYuWIAFy5IZUD7nnNXroRttz+0RzlrzQ==
 
 argparse@^1.0.7:
   version "1.0.10"
