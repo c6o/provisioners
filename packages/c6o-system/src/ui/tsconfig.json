@@ -1,24 +1,14 @@
-// Extends is not supported at this time by parcel-cli
 {
+    "extends": "../../../../tsconfig.base.json",
     "compilerOptions": {
-        "composite": true,
         "module": "esnext",
-        "moduleResolution": "node",
-        "declaration": true,
-        "noImplicitAny": false,
-        "removeComments": true,
-        "noLib": false,
-        "outDir": "./lib",
-        "rootDir": "./",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "target": "es2018",
-        "sourceMap": true,
-        "lib": ["es2018", "dom"],
+        "outDir": "../..lib/ui"
     },
     "references": [
         { "path":  "../../../contracts" }
+    ],
+    "include": [
+        "src",
+        "../contract"
     ]
 }

@@ -1,9 +1,9 @@
 {
     "files.exclude": {
-        "**/node_modules/**": true,
-        "**/lib/**": true,
-        "**/.nyc_output/**": true,
-        "**/package-lock.json/**": true,
-        "**/yarn.lock/**": true
+        "**/node_modules/**": false,
+        "**/lib/**": false,
+        "**/.nyc_output/**": false,
+        "**/package-lock.json/**": false,
+        "**/yarn.lock/**": false
     }
 }

@@ -4,7 +4,7 @@
   "description": "CodeZero provisioner for ghost",
   "main": "lib/index.js",
   "scripts": {
-    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui"
+    "bundle": "czbundle"
   },
   "browserslist": [
     "last 1 chrome version"
@@ -39,5 +39,8 @@
     "parcel-bundler": "^1.12.4",
     "tslib": "^1.11.1"
   },
-  "gitHead": "db2f853696fe6d336812a46d1cac44855aec9dfa"
+  "gitHead": "db2f853696fe6d336812a46d1cac44855aec9dfa",
+  "devDependencies": {
+    "@c6o/bundle": "^0.0.2"
+  }
 }

@@ -1,0 +1,8 @@
+{
+    "bundle": {
+        "entryPoints": ["./src/ui/index.ts"],
+        "outdir": "./lib/ui",
+        "platform": "browser",
+        "sourcemap": true
+    }
+}

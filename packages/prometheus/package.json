@@ -4,7 +4,7 @@
   "description": "CodeZero provisioner for Prometheus",
   "main": "lib/index.js",
   "scripts": {
-    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui"
+    "bundle": "czbundle"
   },
   "browserslist": [
     "last 1 chrome version"
@@ -43,6 +43,7 @@
   },
   "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884",
   "devDependencies": {
+    "@c6o/bundle": "^0.0.2",
     "@types/inquirer": "^7.3.1"
   }
 }

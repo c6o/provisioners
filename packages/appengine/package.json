@@ -4,8 +4,7 @@
   "description": "CodeZero provisioner for appengine",
   "main": "lib/index.js",
   "scripts": {
-    "bundle-develop": "parcel serve ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
-    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui"
+    "bundle": "czbundle"
   },
   "browserslist": [
     "last 1 chrome version"
@@ -33,7 +32,6 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient": "^0.0.11",
     "@c6o/kubeclient-contracts": "^0.0.11",
     "@provisioner/appengine-contracts": "^0.0.28",
     "@provisioner/common": "^0.0.28",
@@ -44,8 +42,10 @@
     "generate-password": "^1.6.0",
     "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
-    "mixwith": "^0.1.1",
-    "parcel-bundler": "^1.12.4"
+    "mixwith": "^0.1.1"
   },
-  "gitHead": "d24a33960e0efd45fd795d1c34112fe8174fa19c"
+  "gitHead": "d24a33960e0efd45fd795d1c34112fe8174fa19c",
+  "devDependencies": {
+    "@c6o/bundle": "^0.0.2"
+  }
 }

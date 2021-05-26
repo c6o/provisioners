@@ -9,5 +9,11 @@
     ],
     "include": [
         "src"
+    ],
+    "exclude": [
+        "src/ui",
+        "test",
+        "**/*.unit.ts",
+        "node_modules"
     ]
 }

@@ -4,7 +4,7 @@
   "description": "CodeZero provisioner for c6o-system",
   "main": "lib/index.js",
   "scripts": {
-    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui"
+    "bundle": "czbundle"
   },
   "browserslist": [
     "last 1 chrome version"
@@ -34,18 +34,18 @@
   "dependencies": {
     "@c6o/kubeclient-resources": "^0.0.11",
     "@provisioner/common": "^0.0.28",
+    "@provisioner/contracts": "^0.0.28",
     "@provisioner/grafana": "^0.0.28",
     "@provisioner/istio": "^0.0.28",
-    "@vaadin/vaadin": "^14.4.5",
     "debug": "^4.1.1",
+    "handlebars": "^4.7.7",
     "inquirer": "^8.0.0",
-    "jsonpointer": "^4.1.0",
     "lit-element": "^2.3.1",
-    "parcel-bundler": "^1.12.4",
-    "tslib": "^1.10.0"
+    "mixwith": "^0.1.1"
   },
   "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884",
   "devDependencies": {
+    "@c6o/bundle": "^0.0.2",
     "@types/inquirer": "^7.3.1"
   }
 }

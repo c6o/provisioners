@@ -1,4 +1,4 @@
-import { AppEngineSettings } from '@provisioner/appengine/lib/ui'
+import { AppEngineSettings } from '@provisioner/appengine/src/ui'
 import { LitElement, customElement } from 'lit-element'
 
 export interface HelmInstall extends LitElement {

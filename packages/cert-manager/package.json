@@ -4,7 +4,7 @@
   "description": "CodeZero provisioner for cert-manager",
   "main": "lib/index.js",
   "scripts": {
-    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui"
+    "bundle": "czbundle"
   },
   "browserslist": [
     "last 1 chrome version"
@@ -33,10 +33,12 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.28",
+    "@provisioner/contracts": "^0.0.28",
     "lit-element": "^2.3.1",
-    "mixwith": "^0.1.1",
-    "parcel-bundler": "^1.12.4",
-    "tslib": "^1.10.0"
+    "mixwith": "^0.1.1"
   },
-  "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884"
+  "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884",
+  "devDependencies": {
+    "@c6o/bundle": "^0.0.2"
+  }
 }
