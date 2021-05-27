@@ -102,7 +102,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             hubServerURL: this.spec.hubServerURL,
             systemServerURL: this.systemServerUrl,
             host: this.host,
-            jwtKey: this.spec.clusterKey
+            jwtKey: this.spec.clusterKey,
+            clusterNamespace: this.spec.clusterNamespace,
+            clusterDomain: this.spec.clusterDomain,
+            systemServerCookieDomain: this.systemServerCookieDomain,
+            featureAuthKey: this.spec.featureAuthKey,
+            stripePublishableKey: this.spec.stripePublishableKey,
+
         }
 
         await this.controller.cluster
@@ -134,13 +140,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     async provisionApps() {
         const options = {
             tag: this.spec.tag,
-            clusterNamespace: this.spec.clusterNamespace,
-            clusterDomain: this.spec.clusterDomain,
-            hubServerURL: this.spec.hubServerURL,
-            systemServerURL: this.systemServerUrl,
-            systemServerCookieDomain: this.systemServerCookieDomain,
-            featureAuthKey: this.spec.featureAuthKey,
-            stripePublishableKey: this.spec.stripePublishableKey,
+            hubServerURL: this.spec.hubServerURL
         }
 
         await this.controller.cluster

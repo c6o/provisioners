@@ -10,6 +10,13 @@ data:
   CLUSTER_ID: '{{clusterId}}'
   HUB_SERVER_URL: '{{hubServerURL}}'
   SYSTEM_OAUTH_REDIRECT: '{{systemServerURL}}'
+  C6O_BUILDERIO_KEY: e889f09fd60f4c0ea34d2538e0096f38
+  C6O_CMS_SOURCE: builder
+  C6O_STRAPI_URL: https://strapi-content.chucky.codezero.codezero.cloud
+  FEATURE_AUTHORIZATION_KEY: '{{featureAuthKey}}'
+  STRIPE_PUBLISHABLE_KEY: '{{stripePublishableKey}}'
+  SYSTEM_SERVER_URL: '{{systemServerURL}}'
+  SYSTEM_SERVER_COOKIE_DOMAIN: '{{systemServerCookieDomain}}'
 ---
 apiVersion: v1
 kind: Secret
