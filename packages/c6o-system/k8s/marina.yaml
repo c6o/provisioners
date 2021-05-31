@@ -1,21 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: system-marina-js-configmap
-  namespace: c6o-system
-data:
-    system-marina-js-config-file: |
-      window.c6oEnv = {
-        'C6O_BUILDERIO_KEY': 'e889f09fd60f4c0ea34d2538e0096f38',
-        'C6O_CMS_SOURCE': 'builder',
-        'C6O_STRAPI_URL': 'https://strapi-content.chucky.codezero.codezero.cloud',
-        'FEATURE_AUTHORIZATION_KEY': '{{featureAuthKey}}',
-        'HUB_SERVER_URL': '{{hubServerURL}}',
-        'STRIPE_PUBLISHABLE_KEY': '{{stripePublishableKey}}',
-        'SYSTEM_SERVER_URL': '{{systemServerURL}}',
-        'SYSTEM_SERVER_COOKIE_DOMAIN': '{{systemServerCookieDomain}}',
-      }
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -43,14 +25,6 @@ spec:
         imagePullPolicy: Always
         ports:
           - containerPort: 80
-        volumeMounts:
-          - name: "jsconfig"
-            mountPath: "/usr/share/nginx/html/config.js"
-            subPath: "system-marina-js-config-file"
-      volumes:
-      - name: "jsconfig"
-        configMap:
-          name: "system-marina-js-configmap"
 ---
 apiVersion: v1
 kind: Service

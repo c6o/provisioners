@@ -9,4 +9,5 @@ export * from './user'
 
 export * from './store'
 export * from './resolver'
+export * from './signal'
 export * from './provisioner'

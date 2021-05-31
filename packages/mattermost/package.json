@@ -4,10 +4,7 @@
   "description": "CodeZero provisioner for MatterMost",
   "main": "lib/index.js",
   "scripts": {
-    "bundle": "parcel build ./src/ui/index.ts --no-cache --out-dir ./lib/ui",
-    "build": "tsc -b && yarn run bundle",
-    "develop": "tsc -b -w --preserveWatchOutput",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "bundle": "czbundle"
   },
   "browserslist": [
     "last 1 chrome version"
@@ -36,6 +33,7 @@
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
     "@provisioner/common": "^0.0.28",
+    "@vaadin/vaadin": "^14.4.5",
     "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",
@@ -44,6 +42,7 @@
   },
   "gitHead": "674808a0942eb636d03a50e7fbe5674ba76d7884",
   "devDependencies": {
+    "@c6o/bundle": "^0.0.3",
     "@types/inquirer": "^7.3.1"
   }
 }

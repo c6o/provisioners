@@ -2,7 +2,7 @@ import { LitElement, html, customElement, property, css, CSSResult } from 'lit-e
 import { ComboBoxElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
 import { AppStatuses } from '@provisioner/contracts'
-import { unlinkToken } from '@provisioner/c6o-system/src/constants'
+import { unlinkToken } from '../constants'
 
 @customElement('c6o-system-settings-main')
 export class TraxittSystemSettings extends LitElement {

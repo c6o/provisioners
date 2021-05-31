@@ -3,11 +3,6 @@
   "version": "0.0.28",
   "description": "Contracts stuff for provisioners",
   "main": "lib/index.js",
-  "scripts": {
-    "build": "tsc -b",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "develop": "tsc -b -w --preserveWatchOutput"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nsainaney/traxitt.git"
@@ -30,8 +25,6 @@
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
     "@c6o/kubeclient-contracts": "^0.0.11",
-    "@c6o/kubeclient-resources": "^0.0.11",
-    "debug": "^4.1.1",
-    "ulid": "^2.3.0"
+    "@c6o/kubeclient-resources": "^0.0.11"
   }
 }
