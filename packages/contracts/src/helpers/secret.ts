@@ -11,7 +11,6 @@ export class SecretHelper<T extends Secret = Secret>
             ...(name ? { name } : undefined),
             ...(namespace ? { namespace } : undefined)
         },
-        type: 'Opaque',
         ...(data ? { data } : undefined),
     })
 
