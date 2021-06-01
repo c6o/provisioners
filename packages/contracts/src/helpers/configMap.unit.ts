@@ -6,7 +6,7 @@ describe('ConfigMapHelper', () => {
     const some_data = { data: 'data' }
 
     test('ConfigMapHelper.template(some_name, some_namespace, some_data)', () => {
-        expect(ConfigMapHelper.template(some_name, some_namespace, some_data))
+        expect(ConfigMapHelper.template( some_namespace, some_name, some_data))
             .toEqual({
                 apiVersion: 'v1',
                 kind: 'ConfigMap',
@@ -19,7 +19,7 @@ describe('ConfigMapHelper', () => {
     })
 
     test('ConfigMapHelper.template(undefined, some_namespace, some_data)', () => {
-        expect(ConfigMapHelper.template(undefined, some_namespace, some_data))
+        expect(ConfigMapHelper.template(some_namespace,undefined, some_data))
             .toEqual({
                 apiVersion: 'v1',
                 kind: 'ConfigMap',
@@ -31,7 +31,7 @@ describe('ConfigMapHelper', () => {
     })
 
     test('ConfigMapHelper.template(some_name, some_namespace, undefined)', () => {
-        expect(ConfigMapHelper.template(some_name, some_namespace, undefined))
+        expect(ConfigMapHelper.template(some_namespace, some_name, undefined))
             .toEqual({
                 apiVersion: 'v1',
                 kind: 'ConfigMap',
@@ -43,7 +43,7 @@ describe('ConfigMapHelper', () => {
     })
 
     test('ConfigMapHelper.template(undefined, some_namespace, undefined)', () => {
-        expect(ConfigMapHelper.template(undefined, some_namespace, undefined))
+        expect(ConfigMapHelper.template(some_namespace,undefined, undefined))
             .toEqual({
                 apiVersion: 'v1',
                 kind: 'ConfigMap',
