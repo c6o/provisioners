@@ -1,3 +1,4 @@
+export * from './configMap'
 export * from './deployment'
 export * from './namespace'
 export * from './persistentVolume'
