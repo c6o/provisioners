@@ -43,27 +43,27 @@ export class TraxittSystemSettings extends LitElement {
     static get styles(): CSSResult[] | CSSResult {
         return css`
             .inline {
-                margin-left: var(--md-spacing);
+                margin-left: 15px;
                 width: auto !important;
             }
 
             h3 {
-                color: var(--color-navy);
+                color: #2a343e;
                 margin-block-start: 0;
             }
 
             .btn-footer {
-                border-top: 1px solid var(--color-wind);
+                border-top: 1px solid hsla(214, 57%, 24%, 0.1);
                 display: flex;
                 justify-content: space-between;
-                margin-top: var(--md-spacing);
-                padding-top: var(--md-spacing);
+                margin-top: 15px;
+                padding-top: 15px;
             }
 
             hr {
-                margin-bottom: var(--xl-spacing);
+                margin-bottom: 30px;
                 border: 0;
-                border-top: 1px solid var(--color-wind);
+                border-top: 1px solid hsla(214, 57%, 24%, 0.1);
             }
         `
     }
