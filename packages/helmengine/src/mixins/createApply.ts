@@ -1,10 +1,7 @@
-import { keyValue, Resource } from '@c6o/kubeclient-contracts'
+import { Resource } from '@c6o/kubeclient-contracts'
 import { baseProvisionerType } from '../index'
-import createDebug from 'debug'
 import * as templates from '../templates/'
 import { set as setByPath } from 'lodash'
-
-const debug = createDebug('@helmengine:createApply')
 
 declare module '../' {
     export interface Provisioner {
@@ -44,9 +41,9 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         const { chart, repo } = this.documentHelper.spec.provisioner
 
         this.job.spec.template.spec.containers[0].command = [
-            "helm", "install", name, chart,
-            "--namespace", namespace,
-            "--repo", repo,
+            'helm', 'install', name, chart,
+            '--namespace', namespace,
+            '--repo', repo,
         ]
     }
 
@@ -80,7 +77,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             // Add volume mount based on config values
             const volumeName = `${name}-values`
-            const volumePath = "/opt/config"
+            const volumePath = '/opt/config'
             const template = this.job.spec.template.spec
             template.volumes.push({
                 name: volumeName,
@@ -98,7 +95,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
 
             // Add values to command.
-            container.command.push("-f")
+            container.command.push('-f')
             container.command.push(`${volumePath}/values.yaml`)
         }
         finally {
@@ -135,7 +132,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             // Add volume mount based on config values
             const volumeName = `${name}-secret-values`
-            const volumePath = "/opt/configs/secrets"
+            const volumePath = '/opt/configs/secrets'
             const template = this.job.spec.template.spec
             template.volumes.push({
                 name: volumeName,
@@ -153,7 +150,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
 
             // Add values to command.
-            container.command.push("-f")
+            container.command.push('-f')
             container.command.push(`${volumePath}/values.yaml`)
         }
         finally {
@@ -208,18 +205,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                         processor.endWatch()
                         return
                     case 'Failed':
-                        this.supervisor.status.error(new Error("Install Job Failed"))
+                        this.controller.status.error(new Error('Install Job Failed'))
                         processor.endWatch()
                         return
                     default:
-                        this.supervisor.status.info(phase)
+                        this.controller.status.info(phase)
                         return
                 }
             })
             .end()
 
         if (jobStatus === 'Failed') {
-            throw new Error("Installation Job Failed")
+            throw new Error('Installation Job Failed')
         }
     }
 
@@ -251,7 +248,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             // Add volume mount based on config values
             const volumeName = `${name}-kustomize`
-            const volumePath = "/opt/kustomize"
+            const volumePath = '/opt/kustomize'
             const template = this.job.spec.template.spec
             template.volumes.push({
                 name: volumeName,
@@ -279,7 +276,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             })
 
             // Add --post-renderer to helm command line args.
-            container.command.push("--post-renderer")
+            container.command.push('--post-renderer')
             container.command.push(`${volumePath}/postrender.sh`)
         }
         finally {
