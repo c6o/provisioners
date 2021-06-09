@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/nsainaney/traxitt/compare/v0.0.28...v0.0.29) (2021-06-09)
+
+
+### ✨ Features
+
+* Added toKeyValues to Secretes and ConfigMap ([#254](https://github.com/nsainaney/traxitt/issues/254)) ([e91e835](https://github.com/nsainaney/traxitt/commit/e91e8353da98e1cf7d96211f8031d2df91d5c4fb))
+
+
+### ♻️ Chores
+
+* Bumped kubeclient ([e9410b3](https://github.com/nsainaney/traxitt/commit/e9410b3dd57cc4bc0df5ef211cc4de534e3814aa))
+* Re-factored build system ([#252](https://github.com/nsainaney/traxitt/issues/252)) ([7a7dcbe](https://github.com/nsainaney/traxitt/commit/7a7dcbe5a76ed785d0e8331614d569b696585177))
+* Refactored ProvisionerManager. Migrated provisioners ([#246](https://github.com/nsainaney/traxitt/issues/246)) ([dfa682f](https://github.com/nsainaney/traxitt/commit/dfa682f90b096dd3009b782f57a740fe13896bda))
+* Using kubeclient-resources ([#243](https://github.com/nsainaney/traxitt/issues/243)) ([7a2ffea](https://github.com/nsainaney/traxitt/commit/7a2ffea1ddb106a2f693e3b940e0a29c61a3c6e5))
+
+
+
+
+
 ## [0.0.28](https://github.com/nsainaney/traxitt/compare/v0.0.27...v0.0.28) (2021-03-31)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/wordpress",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "CodeZero provisioner for wordpress",
   "main": "lib/index.js",
   "scripts": {
@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.28",
+    "@provisioner/common": "^0.0.29",
     "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",

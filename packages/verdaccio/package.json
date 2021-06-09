@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/verdaccio",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "CodeZero provisioner for verdaccio",
   "main": "lib/index.js",
   "repository": {
@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.28",
+    "@provisioner/common": "^0.0.29",
     "inquirer": "^8.0.0",
     "mixwith": "^0.1.1"
   },

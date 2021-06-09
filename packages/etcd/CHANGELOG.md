@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.29](https://github.com/nsainaney/traxitt/compare/v0.0.28...v0.0.29) (2021-06-09)
+
+
+### ♻️ Chores
+
+* Re-factored build system ([#252](https://github.com/nsainaney/traxitt/issues/252)) ([7a7dcbe](https://github.com/nsainaney/traxitt/commit/7a7dcbe5a76ed785d0e8331614d569b696585177))
+* Refactored ProvisionerManager. Migrated provisioners ([#246](https://github.com/nsainaney/traxitt/issues/246)) ([dfa682f](https://github.com/nsainaney/traxitt/commit/dfa682f90b096dd3009b782f57a740fe13896bda))
+
+
+
+
+
 ## [0.0.28](https://github.com/nsainaney/traxitt/compare/v0.0.27...v0.0.28) (2021-03-31)
 
 **Note:** Version bump only for package @provisioner/etcd

@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/contracts",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "description": "Contracts stuff for provisioners",
   "main": "lib/index.js",
   "repository": {
