@@ -1,8 +1,10 @@
-import { Cluster } from '@c6o/kubeclient-contracts'
-import { Deployment } from '@c6o/kubeclient-resources/apps/v1'
+import { Cluster, keyValue } from '@c6o/kubeclient-contracts'
+import { Deployment, DeploymentList } from '@c6o/kubeclient-resources/apps/v1'
 import { DeploymentHelper as DeploymentHelperContract } from '@provisioner/contracts'
 
 export class DeploymentHelper<T extends Deployment = Deployment> extends DeploymentHelperContract<T> {
+
+    resourceList: DeploymentList
 
     static from = (namespace?: string, name?: string) =>
         new DeploymentHelper(DeploymentHelperContract.template(namespace, name))
@@ -19,5 +21,57 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
         await cluster.patch(deployment, { spec: { replicas: 0 } })
         await cluster.patch(deployment, { spec: { replicas: previousCount } })
         return deployment
+    }
+
+    static keyMapReferences(deployments: Deployment[])/* : ConfigMapRef[] | SecretRef[] */ {
+        const containers = DeploymentHelper.containers(deployments, 'envFrom')
+        return containers ? containers.reduce((acc1, container) => {
+            return container ? container.reduce((acc2, env) => {
+                acc2.push(env)
+                return acc2
+            }, acc1) : []
+        }, []) : []
+    }
+
+    static containers(deployments: Deployment[], section?) {
+        return deployments.reduce((acc, deployment) => {
+            return [...acc, ...deployment.spec.template.spec.containers.reduce((acc2, container) => {
+                if (section && container[section]) acc2.push(container[section])
+                else if (!section) acc2.push(container)
+                return acc2
+            }, [])]
+        }, [])
+    }
+
+    static toKeyValues(deployments: Deployment[], merge: keyValue = {}): keyValue {
+        // TODO: do this with json path.
+        // only env sections, not envFile.
+        const containers = DeploymentHelper.containers(deployments, 'env')
+        // const containers = deployments.reduce((acc, deployment) => {
+        //     return [...acc, ...deployment.spec.template.spec.containers.reduce((acc2, container) => {
+        //         if (container.env) acc2.push(container.env)
+        //         return acc2
+        //     }, [])]
+        // }, [])
+
+        const envs = containers.reduce((acc1, container) => {
+            return container.reduce((acc2, env) => {
+                if (env.value) acc2[env.name] = env.value
+                return acc2
+            }, acc1)
+        }, merge)
+        return envs
+    }
+
+    async toKeyValues(cluster: Cluster, merge: keyValue | Promise<keyValue> = {}) {
+        const result = await cluster.read(this.resource)
+        result.throwIfError()
+        this.resourceList = result.as<DeploymentList>()
+        return DeploymentHelper.toKeyValues(result.object.items as T[], await merge)
+
+        // return result.object.items.reduce((acc, deployment:Deployment) => {
+        //     // if (!deployment.data) return acc
+        //     return { ...acc, ...deployment }
+        // }, await merge)
     }
 }
