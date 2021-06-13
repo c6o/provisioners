@@ -23,16 +23,7 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
         return deployment
     }
 
-    static keyMapReferences(deployments: Deployment[])/* : ConfigMapRef[] | SecretRef[] */ {
-        const containers = DeploymentHelper.containers(deployments, 'envFrom')
-        return containers ? containers.reduce((acc1, container) => {
-            return container ? container.reduce((acc2, env) => {
-                acc2.push(env)
-                return acc2
-            }, acc1) : []
-        }, []) : []
-    }
-
+    /** Get the containers from the template spec for pods. */
     static containers(deployments: Deployment[], section?) {
         return deployments.reduce((acc, deployment) => {
             return [...acc, ...deployment.spec.template.spec.containers.reduce((acc2, container) => {
@@ -43,17 +34,22 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
         }, [])
     }
 
+    /** Returns container references to environment variables, the envFrom list. */
+    static keyMapReferences(deployments: Deployment[]) {
+        const containers = DeploymentHelper.containers(deployments, 'envFrom')
+        return containers ? containers.reduce((acc1, container) => {
+            return container ? container.reduce((acc2, env) => {
+                acc2.push(env)
+                return acc2
+            }, acc1) : []
+        }, []) : []
+    }
+
+    /** Get environment variables that are written directly into the deployment's templates for pods. */
     static toKeyValues(deployments: Deployment[], merge: keyValue = {}): keyValue {
         // TODO: do this with json path.
         // only env sections, not envFile.
         const containers = DeploymentHelper.containers(deployments, 'env')
-        // const containers = deployments.reduce((acc, deployment) => {
-        //     return [...acc, ...deployment.spec.template.spec.containers.reduce((acc2, container) => {
-        //         if (container.env) acc2.push(container.env)
-        //         return acc2
-        //     }, [])]
-        // }, [])
-
         const envs = containers.reduce((acc1, container) => {
             return container.reduce((acc2, env) => {
                 if (env.value) acc2[env.name] = env.value
@@ -63,15 +59,11 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
         return envs
     }
 
+    /** Get the resource and convert the environment variables to a key map and return it */
     async toKeyValues(cluster: Cluster, merge: keyValue | Promise<keyValue> = {}) {
         const result = await cluster.read(this.resource)
         result.throwIfError()
         this.resourceList = result.as<DeploymentList>()
         return DeploymentHelper.toKeyValues(result.object.items as T[], await merge)
-
-        // return result.object.items.reduce((acc, deployment:Deployment) => {
-        //     // if (!deployment.data) return acc
-        //     return { ...acc, ...deployment }
-        // }, await merge)
     }
 }
