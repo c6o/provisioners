@@ -24,13 +24,6 @@ export class SecretHelper<T extends Secret = Secret> extends SecretHelperContrac
         const result = await cluster.read(this.resource)
         result.throwIfError()
         this.resourceList = result.as<SecretList>()
-        return result.object.items.reduce((acc, secret: Secret) => {
-            if (!secret.data) return acc
-            const data = {}
-            Object.keys(secret.data).forEach(key =>
-                data[key] = Buffer.from(secret.data[key], 'base64')
-            )
-            return { ...acc, ...data }
-        }, await merge)
+        return SecretHelper.toKeyValues(result.object.items as Secret[], await merge)
     }
 }
