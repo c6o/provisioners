@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.30](https://github.com/c6o/provisioners/compare/v0.0.29...v0.0.30) (2021-06-16)
+
+
+### ♻️ Chores
+
+* Bumped [@c6o](https://github.com/c6o)/bundle ([1e73420](https://github.com/c6o/provisioners/commit/1e7342005d9c8ca3046d8d1a9c8518f6df2483a8))
+
+
+
+
+
 ## [0.0.29](https://github.com/c6o/provisioners/compare/v0.0.28...v0.0.29) (2021-06-09)
 
 

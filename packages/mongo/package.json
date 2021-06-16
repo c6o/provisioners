@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/mongo",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "CodeZero provisioner for mongodb",
   "main": "lib/index.js",
   "repository": {
@@ -26,9 +26,9 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@c6o/kubeclient-resources": "^0.0.12",
-    "@provisioner/common": "^0.0.29",
-    "@provisioner/contracts": "^0.0.29",
+    "@c6o/kubeclient-resources": "^0.0.13",
+    "@provisioner/common": "^0.0.30",
+    "@provisioner/contracts": "^0.0.30",
     "inquirer": "^8.0.0",
     "js-yaml": "^4.0.0",
     "mixwith": "^0.1.1",

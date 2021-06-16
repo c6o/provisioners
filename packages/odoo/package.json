@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/odoo",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "CodeZero provisioner for Odoo",
   "main": "lib/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.29",
+    "@provisioner/common": "^0.0.30",
     "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",

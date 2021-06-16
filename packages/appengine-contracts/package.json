@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/appengine-contracts",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "CodeZero provisioner for appengine",
   "main": "lib/index.js",
   "repository": {
@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient-contracts": "^0.0.12",
-    "@provisioner/contracts": "^0.0.29",
+    "@c6o/kubeclient-contracts": "^0.0.13",
+    "@provisioner/contracts": "^0.0.30",
     "generate-password": "^1.6.0"
   }
 }

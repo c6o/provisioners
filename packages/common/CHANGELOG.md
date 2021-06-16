@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.30](https://github.com/nsainaney/traxitt/compare/v0.0.29...v0.0.30) (2021-06-16)
+
+
+### ♻️ Chores
+
+* Support grabbing of environment variables ([#257](https://github.com/nsainaney/traxitt/issues/257)) ([55853fb](https://github.com/nsainaney/traxitt/commit/55853fbf16fc4834f61fd2a1955a8dbbe39589ab))
+
+
+
+
+
 ## [0.0.29](https://github.com/nsainaney/traxitt/compare/v0.0.28...v0.0.29) (2021-06-09)
 
 

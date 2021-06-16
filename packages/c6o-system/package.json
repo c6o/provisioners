@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/c6o-system",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "description": "CodeZero provisioner for c6o-system",
   "main": "lib/index.js",
   "scripts": {
@@ -32,11 +32,11 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/kubeclient-resources": "^0.0.12",
-    "@provisioner/common": "^0.0.29",
-    "@provisioner/contracts": "^0.0.29",
-    "@provisioner/grafana": "^0.0.29",
-    "@provisioner/istio": "^0.0.29",
+    "@c6o/kubeclient-resources": "^0.0.13",
+    "@provisioner/common": "^0.0.30",
+    "@provisioner/contracts": "^0.0.30",
+    "@provisioner/grafana": "^0.0.30",
+    "@provisioner/istio": "^0.0.30",
     "debug": "^4.1.1",
     "handlebars": "^4.7.7",
     "inquirer": "^8.0.0",
