@@ -1081,14 +1081,15 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@c6o/bundle@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.4.tgz#f1e69f664467a91eed63d762251f3b34d4aea365"
-  integrity sha512-LvWIytB4h7tKfJIqikehzduhCePOdqoshOVfaU4gOyHNs6bsujrv5cXoQlLZqkuX6GPgkUoBhcmUISyMb7z81A==
+"@c6o/bundle@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.5.tgz#011161f60f40c39fdef710582de8d5b6fa264c12"
+  integrity sha512-P7h9pf0WBtWD40GLZVWqtxaMpRkvBksti/W7rrFti3bnEP/mRUZXn7YV+/mhtvj67mnqEvDAmVrX2QZSWzxLMg==
   dependencies:
     arg "^5.0.0"
     autoprefixer "^10.2.6"
     esbuild "^0.12.7"
+    esbuild-node-externals "^1.2.0"
     esbuild-plugin-svg "^0.1.0"
     esbuild-sass-plugin "^1.4.0"
     fs-extra "^10.0.0"
@@ -1097,28 +1098,28 @@
     postcss-preset-env "^6.7.0"
     typescript "^4.2.4"
 
-"@c6o/kubeclient-contracts@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-contracts/-/kubeclient-contracts-0.0.12.tgz#45046bd622a6dff77f0fef204aae4111c141138e"
-  integrity sha512-xEs70Ah55cdSyWVfTa1M9w0qsuqXWZebgSlAXBpAItMoR9g06VUD6f7PNDw1PQt3ZZLuZpoFnpnpCOfV+DZfWA==
+"@c6o/kubeclient-contracts@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-contracts/-/kubeclient-contracts-0.0.13.tgz#d442ade1eba889063e4c737a1b7cd392d2b570f4"
+  integrity sha512-pHBjV5DWyqnxg0Ypl8GhUL+K9u+9FKpRbVigSgpc1rp0Rm6PIGFSb45VLZSlfbepfl0KPgGj6m/Trf9R0kmhJQ==
   dependencies:
     ts-try "^0.2.0"
     ulid "^2.3.0"
 
-"@c6o/kubeclient-resources@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-resources/-/kubeclient-resources-0.0.12.tgz#65eb4f55ccfa12a9b99c192829b4ebefce26650c"
-  integrity sha512-PbB+69kuBT/eyD+iZFZo7/GmtI3F/T038jjECoXgViqzD0tZ78JMI2FuwYp7c8d1QNaStzInJxmKnP/kiaGTXg==
+"@c6o/kubeclient-resources@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-resources/-/kubeclient-resources-0.0.13.tgz#b91dec8adf805f33f63591179bea9c6416b009a7"
+  integrity sha512-1Mg9koeyKDPlzRtSXiCizetd7glbCN7WPRKxpwcp1e5JN61pseYy7uI/4Q9nV7PP+YltMbZ6jM77EQ99G6M2Tg==
   dependencies:
-    "@c6o/kubeclient-contracts" "^0.0.12"
+    "@c6o/kubeclient-contracts" "^0.0.13"
 
-"@c6o/kubeclient@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient/-/kubeclient-0.0.12.tgz#c232f9995b02a7b0d0bb92c1c53ee8858f104779"
-  integrity sha512-50HHiVEIW4BnevPuiQDCfsT0UwLCKvRX3hS438wjJYO44tHIMgmgt50jBFRX8WHClDYGwCz8TtzixTAujRFbtg==
+"@c6o/kubeclient@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient/-/kubeclient-0.0.13.tgz#13bbe0fc62244ddcee3232bbc37cc30e2502b0f6"
+  integrity sha512-InN/wERLCici3HY66ea37pn1sBpKyVK6CVBQ0/+3t67D2j2DDccZJjJtXdil6PNemBft1tz2ABZpo3wRynPc7A==
   dependencies:
-    "@c6o/kubeclient-contracts" "^0.0.12"
-    "@c6o/kubeclient-resources" "^0.0.12"
+    "@c6o/kubeclient-contracts" "^0.0.13"
+    "@c6o/kubeclient-resources" "^0.0.13"
     "@kubernetes/client-node" "^0.11.0"
     byline "^5.0.0"
     callsite "^1.0.0"
@@ -5702,6 +5703,14 @@ es6-promisify@^5.0.0:
   dependencies:
     es6-promise "^4.0.3"
 
+esbuild-node-externals@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/esbuild-node-externals/-/esbuild-node-externals-1.2.0.tgz#7bdbc370b0e983737c3807dea377d7b08ac55f14"
+  integrity sha512-miyxgCJrAGp86WZX080EF+3eHsey8vJTfQEOZ3+oCmAm0FrlQSg4SPr2XHSi6kVFQJD/iqaF81ub3hz4WQca2A==
+  dependencies:
+    find-up "5.0.0"
+    tslib "2.1.0"
+
 esbuild-plugin-svg@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/esbuild-plugin-svg/-/esbuild-plugin-svg-0.1.0.tgz#6c6e52abe08ae1714d236125b3e9c1572408d324"
@@ -6094,6 +6103,14 @@ find-free-port@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/find-free-port/-/find-free-port-2.0.0.tgz#4b22e5f6579eb1a38c41ac6bcb3efed1b6da9b1b"
   integrity sha1-SyLl9leesaOMQaxryz7+0bbamxs=
+
+find-up@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/find-up/-/find-up-5.0.0.tgz#4c92819ecb7083561e4f4a240a86be5198f536fc"
+  integrity sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==
+  dependencies:
+    locate-path "^6.0.0"
+    path-exists "^4.0.0"
 
 find-up@^1.0.0:
   version "1.1.2"
@@ -8258,6 +8275,13 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+locate-path@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-6.0.0.tgz#55321eb309febbc59c4801d931a72452a681d286"
+  integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
+  dependencies:
+    p-locate "^5.0.0"
+
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -9500,6 +9524,13 @@ p-limit@^2.0.0, p-limit@^2.2.0:
   dependencies:
     p-try "^2.0.0"
 
+p-limit@^3.0.2:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"
+  integrity sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==
+  dependencies:
+    yocto-queue "^0.1.0"
+
 p-locate@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
@@ -9520,6 +9551,13 @@ p-locate@^4.1.0:
   integrity sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==
   dependencies:
     p-limit "^2.2.0"
+
+p-locate@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-5.0.0.tgz#83c8315c6785005e3bd021839411c9e110e6d834"
+  integrity sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==
+  dependencies:
+    p-limit "^3.0.2"
 
 p-map-series@^1.0.0:
   version "1.0.0"
@@ -12488,6 +12526,11 @@ ts-try@^0.2.0:
   resolved "https://registry.yarnpkg.com/ts-try/-/ts-try-0.2.0.tgz#ebf3cf243c85221cb8144321f5a86d5a73170def"
   integrity sha512-fdm7aSzV/UGoEYKPupBvcNey4huqwDhv06XahfbchNbSVxxyZfz1vfkVw4YUWWzSbatQ9V8meha80uQ+p3zWJA==
 
+tslib@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
+  integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
+
 tslib@^1.10.0, tslib@^1.11.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
@@ -13179,3 +13222,8 @@ yargs@^15.4.1:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
+
+yocto-queue@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
+  integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
