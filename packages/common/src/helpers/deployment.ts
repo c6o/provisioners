@@ -1,7 +1,7 @@
-import { JSONPath } from 'jsonpath-plus'
 import { Cluster, keyValue } from '@c6o/kubeclient-contracts'
 import { Deployment, DeploymentList } from '@c6o/kubeclient-resources/apps/v1'
 import { DeploymentHelper as DeploymentHelperContract } from '@provisioner/contracts'
+import { WorkloadHelper } from './workload'
 
 export class DeploymentHelper<T extends Deployment = Deployment> extends DeploymentHelperContract<T> {
 
@@ -48,11 +48,7 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
 
     /** Get environment variables that are written directly into the deployment's templates for pods. */
     static toKeyValues(deployments: Deployment[], merge: keyValue = {}): keyValue {
-        const envs = JSONPath({ path: '$[*].spec.template.spec.containers[*].env[*]', json: deployments })
-        return envs.reduce((acc, env) => {
-                acc[env.name] = env.value
-                return acc
-            }, merge)
+        return WorkloadHelper.envToKeyValue('Deployment', deployments, merge)
     }
 
     /** Get the resource and convert the environment variables to a key map and return it */
