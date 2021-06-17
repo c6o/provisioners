@@ -19,7 +19,7 @@ export class WorkloadHelper {
             }, merge)
     }
 
-    static configMapRefs(kind: WorkloadKinds, workloads: WorkloadOrArray) { //: string[] {
+    static configMapRefs(kind: WorkloadKinds, workloads: WorkloadOrArray) : string[] {
         const refsPath = pathToConfigMapRefs(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${refsPath}`
         return JSONPath({ path, json: workloads })
