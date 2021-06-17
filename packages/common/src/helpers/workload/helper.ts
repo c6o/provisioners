@@ -1,9 +1,9 @@
 import { JSONPath } from 'jsonpath-plus'
 import { keyValue } from '@c6o/kubeclient-contracts'
 import { pathToConfigMapRefs, pathToEnv, pathToSecretRefs } from './paths'
-import {  WorkloadKinds, WorkloadTypes } from './types'
+import {  WorkloadKinds, WorkloadResource } from './types'
 
-export type WorkloadOrArray = WorkloadTypes | WorkloadTypes[]
+export type WorkloadOrArray = WorkloadResource | WorkloadResource[]
 
 export class WorkloadHelper {
 
