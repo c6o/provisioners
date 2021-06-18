@@ -1081,10 +1081,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@c6o/bundle@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.5.tgz#011161f60f40c39fdef710582de8d5b6fa264c12"
-  integrity sha512-P7h9pf0WBtWD40GLZVWqtxaMpRkvBksti/W7rrFti3bnEP/mRUZXn7YV+/mhtvj67mnqEvDAmVrX2QZSWzxLMg==
+"@c6o/bundle@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.6.tgz#92823d39e1afa8c7b9e6c51818a36bebc83c3659"
+  integrity sha512-UzHpuiTOiRf+Bx+fMi9yL/8VML3+QZSbK5QfvbhdMjjKqCV6AmOyQvm8TivpKFMPqY0lJTUT5lc7rwk8eYco6Q==
   dependencies:
     arg "^5.0.0"
     autoprefixer "^10.2.6"

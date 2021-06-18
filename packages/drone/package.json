@@ -43,7 +43,7 @@
     "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@c6o/bundle": "^0.0.5",
+    "@c6o/bundle": "^0.0.6",
     "@types/inquirer": "^7.3.1"
   }
 }
