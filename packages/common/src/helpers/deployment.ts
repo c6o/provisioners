@@ -1,4 +1,4 @@
-import { Cluster, keyValue } from '@c6o/kubeclient-contracts'
+import { Cluster, keyValue, Processor, Result } from '@c6o/kubeclient-contracts'
 import { Deployment, DeploymentList } from '@c6o/kubeclient-resources/apps/v1'
 import { DeploymentHelper as DeploymentHelperContract } from '@provisioner/contracts'
 import { WorkloadHelper } from './workload'
@@ -57,5 +57,25 @@ export class DeploymentHelper<T extends Deployment = Deployment> extends Deploym
         result.throwIfError()
         this.resourceList = result.as<DeploymentList>()
         return DeploymentHelper.toKeyValues(result.object.items as T[], await merge)
+    }
+
+    static async ensurePodRunning(result: Result, processor: Processor, message?: string) {
+        result.throwIfError()
+        const deploy = result.as<Deployment>()
+        const podSpec = {
+            kind: 'Pod',
+            metadata: {
+                namespace: deploy.metadata.namespace,
+                labels: deploy.spec.selector.matchLabels
+            }
+        }
+
+        await processor.cluster.
+        begin(message || `Ensure ${deploy.metadata.name} pod is running`)
+            .beginWatch(podSpec)
+            .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
+                processor.endWatch()
+            })
+        .end()
     }
 }
