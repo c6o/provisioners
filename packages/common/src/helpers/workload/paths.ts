@@ -10,7 +10,7 @@ export const pathToContainers = (kind: WorkloadKinds) => {
         case 'Job':
             return '.spec.template.spec.containers[*]'
         case 'CronJob':
-            return 'spec.jobTemplate.spec.template.spec.containers[*]'
+            return '.spec.jobTemplate.spec.template.spec.containers[*]'
     }
 }
 
