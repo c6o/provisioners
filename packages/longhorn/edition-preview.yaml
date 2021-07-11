@@ -1,0 +1,37 @@
+name: preview
+status: public
+spec:
+  routes:
+    - type: http
+      targetService: longhorn-frontend
+  provisioner:
+    package: '@provisioner/helmengine'
+    tag-prefix: helmengine
+    image: dummyvalue # Required by current version of HelmEngine
+
+    namespace: longhorn-system
+    clusterAdmin: true
+
+    chart: longhorn
+    repo: https://charts.longhorn.io
+
+    configs:
+      defaultSettings:
+        # Allow replicas on same node
+        replicaSoftAntiAffinity: false
+
+        # Only have 1 replica by default
+        defaultReplicaCount: 1
+
+        # Allow way over provisioning
+        storageOverProvisioningPercentage: 5000
+
+      service:
+        ui:
+          type: NodePort
+
+  marina:
+    launch:
+      type: inline
+      popUp: true
+      private: true
