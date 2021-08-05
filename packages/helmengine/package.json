@@ -52,6 +52,6 @@
   },
   "gitHead": "d24a33960e0efd45fd795d1c34112fe8174fa19c",
   "devDependencies": {
-    "@c6o/bundle": "^0.0.7"
+    "@c6o/bundle": "^0.0.8"
   }
 }
