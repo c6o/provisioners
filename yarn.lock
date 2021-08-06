@@ -1089,20 +1089,20 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@c6o/bundle@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.8.tgz#7374916140d3ae08a64d12c90fa88c92d6b55751"
-  integrity sha512-wNlIhBVtujPKflCfvpE3VIN4pVQ2zgO74UN6ZMy4QuyXL6MZq/cL9bKqE31AqM+DMRS4WSs+2oTERIIvaNndwg==
+"@c6o/bundle@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@c6o/bundle/-/bundle-0.0.9.tgz#897c68e46e732f03bac33cacd212cac83d2d0f63"
+  integrity sha512-plWyprTBSqk2rtjbBw5L+A9YAfui9PzfAfVOGvhDQzxhP7MmL6SsKha/sB1ujSHdMvEV4isyo7pqt9uotVlG1Q==
   dependencies:
     arg "^5.0.0"
     autoprefixer "^10.3.1"
     cssnano "^5.0.7"
-    esbuild "^0.12.7"
+    esbuild "^0.12.18"
     esbuild-minify-templates "^0.5.0"
     esbuild-node-externals "^1.2.0"
     esbuild-plugin-postcss2 "^0.0.9"
     esbuild-plugin-svg "^0.1.0"
-    esbuild-sass-plugin "^1.4.0"
+    esbuild-sass-plugin "^1.4.11"
     fs-extra "^10.0.0"
     light-server "^2.9.1"
     postcss "^8.3.6"
@@ -5889,24 +5889,20 @@ esbuild-plugin-svg@^0.1.0:
   dependencies:
     svgo "^2.2.2"
 
-esbuild-sass-plugin@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/esbuild-sass-plugin/-/esbuild-sass-plugin-1.4.0.tgz#a1fb1f19cdf0be3e950c7e04200566fe130e8272"
-  integrity sha512-REXKdRWMMgMkHVYFbs/xGDmg5LBOemtO/Ongq4mKcI0+YBiy8voBXBsLVjXqqhQ1A+CbPNpM3vsXQRAV0gYyNQ==
+esbuild-sass-plugin@^1.4.11:
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/esbuild-sass-plugin/-/esbuild-sass-plugin-1.4.11.tgz#bb496b804517c5af13911e7240c33c312ef646a1"
+  integrity sha512-nepZS4mu8SI0QOoudQBo57Vi4jNlKOSJdnzJZZXsTaq5AJ7nh8De0gwtFtbmOTdz7Zn7QvMX1FJq2zlavAVJHA==
   dependencies:
-    esbuild "^0.12.0"
-    picomatch "^2.2.2"
-    sass "^1.32.8"
+    esbuild "^0.12.18"
+    picomatch "^2.3.0"
+    resolve "^1.20.0"
+    sass "^1.37.5"
 
-esbuild@^0.12.0:
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.3.tgz#9d978e8aa700034c3e3316e47df1c142ef290a72"
-  integrity sha512-0kuxNbGLGli8DYMHebJ4pk+RQ9ORYL1PmCSrSQpna1ioHvm+fzCAs99jwRYXGSfCNed1mj0vFSM9LbBm6YVbIQ==
-
-esbuild@^0.12.7:
-  version "0.12.8"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.8.tgz#ac90da77cb3bfbf49ab815200bcef7ffe1a3348f"
-  integrity sha512-sx/LwlP/SWTGsd9G4RlOPrXnIihAJ2xwBUmzoqe2nWwbXORMQWtAGNJNYLBJJqa3e9PWvVzxdrtyFZJcr7D87g==
+esbuild@^0.12.18:
+  version "0.12.18"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.12.18.tgz#e5db16372188c2b4d395f7f55fdade27f6a119fa"
+  integrity sha512-arWhBQSy+oiBAp8VRRCFvAU+3jyf0gGacABLO3haMHboXCDjzq4WUqyQklst2XRuFS8MXgap+9uvODqj9Iygpg==
 
 escalade@^3.0.1:
   version "3.0.1"
@@ -10286,7 +10282,7 @@ picomatch@^2.0.5, picomatch@^2.2.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
-picomatch@^2.2.2:
+picomatch@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
   integrity sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==
@@ -11629,7 +11625,7 @@ resolve@^1.1.5, resolve@^1.1.6, resolve@^1.10.0, resolve@^1.3.2, resolve@^1.4.0:
   dependencies:
     path-parse "^1.0.6"
 
-resolve@^1.18.1, resolve@^1.2.0:
+resolve@^1.18.1, resolve@^1.2.0, resolve@^1.20.0:
   version "1.20.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
   integrity sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==
@@ -11792,14 +11788,14 @@ saslprep@^1.0.0:
   dependencies:
     sparse-bitfield "^3.0.3"
 
-sass@^1.32.8, sass@^1.34.0:
+sass@^1.34.0:
   version "1.34.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.34.0.tgz#e46d5932d8b0ecc4feb846d861f26a578f7f7172"
   integrity sha512-rHEN0BscqjUYuomUEaqq3BMgsXqQfkcMVR7UhscsAVub0/spUrZGBMxQXFS2kfiDsPLZw5yuU9iJEFNC2x38Qw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
 
-sass@^1.x:
+sass@^1.37.5, sass@^1.x:
   version "1.37.5"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.37.5.tgz#f6838351f7cc814c4fcfe1d9a20e0cabbd1e7b3c"
   integrity sha512-Cx3ewxz9QB/ErnVIiWg2cH0kiYZ0FPvheDTVC6BsiEGBTZKKZJ1Gq5Kq6jy3PKtL6+EJ8NIoaBW/RSd2R6cZOA==
