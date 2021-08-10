@@ -1,5 +1,5 @@
 import { StoreFlowStep } from '@provisioner/contracts'
-import { LitElement, customElement, html } from 'lit-element'
+import { LitElement, customElement } from 'lit-element'
 import { AppEngineAppHelper, Step, each } from '@provisioner/appengine-contracts'
 import { AppEngineStep } from './step'
 import { AppEngineEndSettings } from './end'

@@ -11,31 +11,31 @@ export class TraxittSystemSettings extends LitElement {
     disposer
 
     @property({ type: String })
-    loggingLink
+    loggingLink: string
 
     @property({ type: Object })
-    loggerOptions
+    loggerOptions: any
 
     @property({ type: Object })
-    npmLink
+    npmLink: any
 
     @property({ type: Object })
-    npmOptions
+    npmOptions: any
 
     @property({ type: Object })
-    prometheusLink
+    prometheusLink: any
 
     @property({ type: Object })
-    prometheusOptions
+    prometheusOptions: any
 
     @property({ type: Object })
-    grafanaLink
+    grafanaLink: any
 
     @property({ type: Object })
-    grafanaOptions
+    grafanaOptions: any
 
     @property({ type: Boolean })
-    busy
+    busy: boolean
 
     @property({ type: Boolean })
     loaded = false
