@@ -1,6 +1,6 @@
 import { StoreFlowStep } from '@provisioner/contracts'
-import { LitElement, customElement, html } from 'lit-element'
-import { AppEngineAppHelper, FlowResult, each } from '@provisioner/appengine-contracts'
+import { LitElement, customElement } from 'lit-element'
+import { AppEngineAppHelper, FlowResult } from '@provisioner/appengine-contracts'
 import createDebug from 'debug'
 
 const debug = createDebug('@appengine:AppEngineSettings')

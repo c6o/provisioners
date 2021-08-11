@@ -1,4 +1,4 @@
-import { LitElement, html, customElement, CSSResult } from 'lit-element'
+import { LitElement, html, customElement } from 'lit-element'
 import { TextFieldElement } from '@vaadin/vaadin-text-field/src/vaadin-text-field'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
