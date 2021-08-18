@@ -63,7 +63,6 @@ export interface AppEngineAppSpecProvisioner extends AppDocumentSpec {
     command?: string[]
 }
 
-
 export interface AppEngineAppSpec extends AppDocumentSpec {
     provisioner?: AppEngineAppSpecProvisioner
 }

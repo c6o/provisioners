@@ -23,7 +23,7 @@ export class GhostSettings extends LitElement implements StoreFlowStep {
     }
 
     async end() {
-        let valid = true
+        const valid = true
         await window.customElements.whenDefined('c6o-combo-box')
         this.requestUpdate()
         return valid

@@ -94,5 +94,4 @@ export class AppEngineAppHelper<T extends AppEngineAppResource = AppEngineAppRes
                         yield prompt
         }
     }
-
 }
