@@ -40,22 +40,22 @@ export class AppEnginePrompt extends LitElement {
     }
 
     render() {
-        //https://www.npmjs.com/package/inquirer
-        //Possible values: input, number, confirm, list, rawlist, expand, checkbox, password, editor
+        // https://www.npmjs.com/package/inquirer
+        // Possible values: input, number, confirm, list, rawlist, expand, checkbox, password, editor
         switch (this.prompt.type) {
-            //text input
+            // text input
             case 'input':
                 return this.prompt.c6o.generate ? this.renderGenerate() : this.renderInput()
 
-            //number input
+            // number input
             case 'number':
                 return this.renderNumber()
 
-            //boolean to confirm, checkbox
+            // boolean to confirm, checkbox
             case 'confirm':
                 return this.renderCheckbox()
 
-            //combo box, select single
+            // combo box, select single
             case 'list':
             case 'rawlist':
                 return this.renderList()
@@ -63,15 +63,15 @@ export class AppEnginePrompt extends LitElement {
             case 'expand':
                 return this.renderExpand()
 
-            //drop down list, select multiple
+            // drop down list, select multiple
             case 'checkbox':
                 return this.renderMultipleList()
 
-            //password input
+            // password input
             case 'password':
                 return this.renderPassword()
 
-            //text area input
+            // text area input
             case 'editor':
                 return this.renderEditor()
         }
@@ -82,7 +82,7 @@ export class AppEnginePrompt extends LitElement {
 
         if (this.prompt.type === 'number') this.prompt.c6o.value = Number(this.prompt.c6o.value)
 
-        //force a re-render so the WHEN can take effect
+        // force a re-render so the WHEN can take effect
         this.dispatchEvent(new CustomEvent('update-requested', {
             detail: { message: 'update-requested', prompt: this.prompt, source: e },
             bubbles: true,
@@ -91,26 +91,26 @@ export class AppEnginePrompt extends LitElement {
     }
 
     comboboxRenderer = (root, owner, model) => {
-        //pull out all model items
+        // pull out all model items
         let { name, label, value, disabled } = model.item
-        //default to not disabled
+        // default to not disabled
         if (typeof disabled === 'undefined') disabled = false
 
-        //model is a plain string
+        // model is a plain string
         if (typeof model.item === 'string') {
             label = value = name = model.item
             //disable only if the value is our seperator
             disabled = (label === this.inquireSeperator)
         }
 
-        //in the case of expand, make sure label is set correctly
+        // in the case of expand, make sure label is set correctly
         if (name && !label) {
             label = name
             //set the label so it renders, should only be in the "expand" situation where name/value is provided and not label/value
             model.item.label = label
         }
 
-        //if we have a seperator, set the label to be the seperator value
+        // if we have a seperator, set the label to be the seperator value
         if (label === this.inquireSeperator) label = this.seperator
 
         // toggle disabled state

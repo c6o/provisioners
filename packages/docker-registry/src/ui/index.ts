@@ -21,5 +21,4 @@ export class DockerRegistrySettings extends LitElement implements StoreFlowStep 
         const edition = this.mediator.applicationSpec.metadata.labels['system.codezero.io/edition']
         this.serviceSpec.edition = edition
     }
-
 }

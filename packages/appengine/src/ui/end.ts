@@ -5,7 +5,6 @@ import createDebug from 'debug'
 
 const debug = createDebug('@appengine:AppEngineSettings')
 
-
 export interface AppEngineEndSettings extends StoreFlowStep {
 
 }

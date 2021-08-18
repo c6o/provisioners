@@ -5,27 +5,28 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 export class UninstallVSCode extends LitElement implements StoreFlowStep {
 
     mediator: StoreFlowMediator
+
     get serviceSpec() {
         return this.mediator.getServiceSpec('vscode')
     }
 
     render() {
         return html`
-        <c6o-form-layout>
-        <c6o-checkbox
-            ?checked=${!!this.serviceSpec.deprovision['keep-ip']}
-            @checked-changed=${this.checkHandler('keep-ip')}
-        >
-            Keep IP address
-        </c6o-checkbox>
-        <br />
-        <c6o-checkbox
-            ?checked=${!!this.serviceSpec.deprovision['keep-vol']}
-            @checked-changed=${this.checkHandler('keep-vol')}
-        >
-            Keep data volume
-        </c6o-checkbox>
-        </c6o-form-layout>
+            <c6o-form-layout>
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.deprovision['keep-ip']}
+                    @checked-changed=${this.checkHandler('keep-ip')}
+                >
+                    Keep IP address
+                </c6o-checkbox>
+                <br />
+                <c6o-checkbox
+                    ?checked=${!!this.serviceSpec.deprovision['keep-vol']}
+                    @checked-changed=${this.checkHandler('keep-vol')}
+                >
+                    Keep data volume
+                </c6o-checkbox>
+            </c6o-form-layout>
         `
     }
 

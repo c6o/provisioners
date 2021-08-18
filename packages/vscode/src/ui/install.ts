@@ -3,11 +3,10 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('vscode-install-main')
 export class VSCodeCapacity extends LitElement implements StoreFlowStep {
+    mediator: StoreFlowMediator
+    publicKey
     values = ['1Gi','2Gi','4Gi','8Gi']
 
-    publicKey
-
-    mediator: StoreFlowMediator
     get serviceSpec() {
         return this.mediator.getServiceSpec('vscode')
     }
@@ -54,4 +53,3 @@ export class VSCodeCapacity extends LitElement implements StoreFlowStep {
         e.detail.file.status = 'Uploaded'
     }
 }
-

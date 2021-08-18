@@ -6,17 +6,14 @@ import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 export class MattermostSettings extends LitElement implements StoreFlowStep {
     mediator: StoreFlowMediator
 
-    //these choices are based on the mattermost enterprise operator/deployment
+    // these choices are based on the mattermost enterprise operator/deployment
     storageSizeChoices = ['2Gi', '5Gi', '10Gi', '50Gi', '100Gi', '200Gi', '400Gi', '1000Gi']
     userCountChoices = [100, 1000, 5000, 10000, 25000]
 
-    get serviceSpec() {
-        return this.mediator.getServiceSpec('mattermost')
-    }
-
-    get userCountList() { return this.shadowRoot.getElementById('userCountList') as ComboBoxElement }
     get databaseSizeList() { return this.shadowRoot.getElementById('databaseSizeList') as ComboBoxElement }
     get minioSizeList() { return this.shadowRoot.getElementById('minioSizeList') as ComboBoxElement }
+    get serviceSpec() { return this.mediator.getServiceSpec('mattermost') }
+    get userCountList() { return this.shadowRoot.getElementById('userCountList') as ComboBoxElement }
 
     render() {
         return html`
@@ -53,7 +50,7 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
                     value="2Gi"
                     @selected-item-changed=${this.minioSizeSelected}
                 ></c6o-combo-box>
-        </c6o-form-layout>
+            </c6o-form-layout>
         `
     }
 

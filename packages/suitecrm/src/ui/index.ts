@@ -10,6 +10,7 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
     get serviceSpec() {
         return this.mediator.getServiceSpec('suitecrm')
     }
+
     render() {
         return html`
             <c6o-form-layout>
@@ -59,5 +60,4 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
     passwordChanged = (e) => {
         this.serviceSpec.suitecrmpassword = e.target.value
     }
-
 }

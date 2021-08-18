@@ -20,8 +20,8 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
     hasError = false
 
     render() {
-        //const error = ''
-        //if(this.hasError) html`<c6o-label @visible='${this.hasError}' theme='error'>'There was an error, please correct the issues before proceeding.'</c6o-label>`
+        // const error = ''
+        // if(this.hasError) html`<c6o-label @visible='${this.hasError}' theme='error'>'There was an error, please correct the issues before proceeding.'</c6o-label>`
         if (this.step.sections)
             return html`${this.step.sections.map(section =>
                 html`<appengine-section .section=${section} .manifestHelper=${this.manifestHelper}></appengine-section>
@@ -36,12 +36,12 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
     }
 
     setDefaultValueAndRequired(prompt: Prompt) {
-        //at this point, we are just going to copy all default values over to the value itself
-        //and when the UI loads, we will use the value to pre-populate the UI
-        //after testing some of the UI controls did not handle setting default values consistently
-        //so we do things explicitly
+        // at this point, we are just going to copy all default values over to the value itself
+        // and when the UI loads, we will use the value to pre-populate the UI
+        // after testing some of the UI controls did not handle setting default values consistently
+        // so we do things explicitly
 
-        //set default values to the actual values, only when the value has never been set, regardless of truesy or falsy state
+        // set default values to the actual values, only when the value has never been set, regardless of truesy or falsy state
         if (typeof prompt.c6o?.value === 'undefined') {
             prompt.c6o = prompt.c6o || {} as c6oExtensions
             if (prompt.default) {
@@ -59,7 +59,7 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
             }
         }
 
-        //if we have a validation expression and it is NOT required, set the fact that it is now required
+        // if we have a validation expression and it is NOT required, set the fact that it is now required
         if (prompt.validate && !prompt.c6o?.required) {
             prompt.c6o = prompt.c6o || { value: '' }
             prompt.c6o.required = true
@@ -69,22 +69,21 @@ export class AppEngineStep extends LitElement implements StoreFlowScreen {
             if (!prompt.choices) prompt.choices = []
             prompt.choices = prompt.choices.concat(Array.from(getTimeZonesFlatten()))
         }
-
-
     }
+
     async end() {
 
-        //validate
+        // validate
         const validation = new PromptValidation()
         const invalidPrompts = validation.validateSectionAndPrompts(this.manifestHelper, this.step.sections, this.step.prompts)
 
-        //if invalid, indicate so in the UI
-        if (invalidPrompts.length > 0)
+        // if invalid, indicate so in the UI
+        if (invalidPrompts.length)
             return this.renderInvalid(invalidPrompts)
         else
             console.log('APPX, VALIDATION - no validation issues, proceeding...', invalidPrompts)
 
-        //if valid, update appspec
+        // if valid, update appspec
         this.mediator.applicationSpec = this.manifestHelper.resource
         return true
     }
