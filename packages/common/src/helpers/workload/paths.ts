@@ -1,19 +1,26 @@
 import { WorkloadKinds } from './types'
 
-
-export const pathToContainers = (kind: WorkloadKinds) => {
+export const pathToSpec = (kind: WorkloadKinds) => {
     switch (kind) {
         case 'Pod':
-            return '.spec.containers[*]'
+            return '.spec'
         case 'Deployment':
         case 'StatefulSet':
         case 'Job':
-            return '.spec.template.spec.containers[*]'
+            return '.spec.template.spec'
         case 'CronJob':
-            return '.spec.jobTemplate.spec.template.spec.containers[*]'
+            return '.spec.jobTemplate.spec.template.spec'
     }
 }
 
+export const pathToContainers = (kind: WorkloadKinds) =>
+    `${pathToSpec(kind)}.containers[*]`
+
+export const pathToVolumes = (kind: WorkloadKinds) =>
+    `${pathToSpec(kind)}.volumes[*]`
+
+export const pathToVolumeMounts = (kind: WorkloadKinds) =>
+    `${pathToContainers(kind)}.volumeMounts[*]`
 
 export const pathToEnv = (kind: WorkloadKinds) => `${pathToContainers(kind)}.env[*]`
 export const pathToConfigMapRefs = (kind: WorkloadKinds) => `${pathToContainers(kind)}.envFrom[*].configMapRef[*]`

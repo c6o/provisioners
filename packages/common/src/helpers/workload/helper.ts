@@ -1,7 +1,8 @@
 import { JSONPath } from 'jsonpath-plus'
 import { keyValue } from '@c6o/kubeclient-contracts'
-import { pathToConfigMapRefs, pathToEnv, pathToSecretRefs } from './paths'
+import {pathToConfigMapRefs, pathToEnv, pathToSecretRefs, pathToVolumeMounts, pathToVolumes} from './paths'
 import {  WorkloadKinds, WorkloadResource } from './types'
+import {Volume, VolumeMount} from "@c6o/kubeclient-resources/lib/core/v1";
 
 export type WorkloadOrArray = WorkloadResource | WorkloadResource[]
 
@@ -28,6 +29,18 @@ export class WorkloadHelper {
     static secretRefs(kind: WorkloadKinds, workloads: WorkloadOrArray): string[] {
         const refsPath = pathToSecretRefs(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${refsPath}`
+        return JSONPath({ path, json: workloads })
+    }
+
+    static volumes(kind: WorkloadKinds, workloads: WorkloadOrArray): Volume[] {
+        const volumesPath = pathToVolumes(kind)
+        const path = `${WorkloadHelper.prefix(workloads)}${volumesPath}`
+        return JSONPath({ path, json: workloads })
+    }
+
+    static volumeMounts(kind: WorkloadKinds, workloads: WorkloadOrArray): VolumeMount[] {
+        const volumesPath = pathToVolumeMounts(kind)
+        const path = `${WorkloadHelper.prefix(workloads)}${volumesPath}`
         return JSONPath({ path, json: workloads })
     }
 }
