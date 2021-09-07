@@ -54,9 +54,7 @@ export class WorkloadHelper {
     static labels(kind: WorkloadKinds, workloads: WorkloadOrArray): {[name: string]: string} {
         const labelsPath = pathToLabels(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${labelsPath}`
-        console.log("path: ", path)
         const result = JSONPath({ path, json: workloads })
-        console.log("result: ", result)
         return JSONPath({ path, json: workloads })["0"]
     }
 }
