@@ -8,10 +8,11 @@ export class ServiceHelper<T extends Service = Service> extends ServiceHelperCon
     static from = (namespace?: string, name?: string) =>
         new ServiceHelper(ServiceHelperContract.template(namespace, name))
 
-    static template = (name?: string): Service => ({
+    static template = (namespace: string, name?: string): Service => ({
         apiVersion: 'v1',
         kind: 'Service',
         metadata: {
+            ...(namespace ? { namespace } : undefined),
             ...(name ? { name } : undefined),
         }
     })
