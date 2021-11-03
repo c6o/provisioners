@@ -1,5 +1,5 @@
 import { Cluster } from '@c6o/kubeclient-contracts'
-import { Service } from '@c6o/kubeclient-resources/core/v1'
+import { Namespace, Service } from '@c6o/kubeclient-resources/core/v1'
 import { IngressParameters } from '@provisioner/contracts'
 import { ServiceHelper as ServiceHelperContract } from '@provisioner/contracts'
 
@@ -8,6 +8,13 @@ export class ServiceHelper<T extends Service = Service> extends ServiceHelperCon
     static from = (namespace?: string, name?: string) =>
         new ServiceHelper(ServiceHelperContract.template(namespace, name))
 
+    static template = (name?: string): Service => ({
+        apiVersion: 'v1',
+        kind: 'Service',
+        metadata: {
+            ...(name ? { name } : undefined),
+        }
+    })
     /**
      * Awaits until the LoadBalancer service has an ip address or hostname
      * @param cluster
