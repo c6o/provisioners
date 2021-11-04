@@ -1,5 +1,5 @@
 import { Cluster } from '@c6o/kubeclient-contracts'
-import { Namespace, Service } from '@c6o/kubeclient-resources/core/v1'
+import { Service } from '@c6o/kubeclient-resources/core/v1'
 import { IngressParameters } from '@provisioner/contracts'
 import { ServiceHelper as ServiceHelperContract } from '@provisioner/contracts'
 
