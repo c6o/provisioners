@@ -8,6 +8,14 @@ export class ServiceHelper<T extends Service = Service> extends ServiceHelperCon
     static from = (namespace?: string, name?: string) =>
         new ServiceHelper(ServiceHelperContract.template(namespace, name))
 
+    static template = (namespace?: string, name?: string): Service => ({
+        apiVersion: 'v1',
+        kind: 'Service',
+        metadata: {
+            ...(namespace ? { namespace } : undefined),
+            ...(name ? { name } : undefined),
+        }
+    })
     /**
      * Awaits until the LoadBalancer service has an ip address or hostname
      * @param cluster
