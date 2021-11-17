@@ -20,12 +20,12 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
         await this.unlinkPrometheus(istioNamespace, false)
         await this.controller.cluster.begin('Adding access for Prometheus')
             .upsertFile('../../../k8s/prometheus/prometheus-rbac.yaml', { istioNamespace, prometheusNamespace })
-        .end()
+            .end()
         const prometheusProvisioner = await this.controller.resolver.getProvisioner<PrometheusProvisioner>(prometheusNamespace, 'prometheus')
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
-        await prometheusProvisioner.addJobs(jobs)
+        await prometheusProvisioner.addJobs([jobs])
         await prometheusProvisioner.endConfig()
     }
 
