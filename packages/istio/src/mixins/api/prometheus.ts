@@ -25,7 +25,7 @@ export const prometheusApiMixin = (base: baseProvisionerType) => class extends b
 
         await prometheusProvisioner.beginConfig(prometheusNamespace, istioNamespace, 'istio')
         const jobs = await this.loadYaml(path.resolve(__dirname, '../../../k8s/prometheus/jobs.yaml'), { istioNamespace })
-        await prometheusProvisioner.addJobs(jobs as any[])
+        await prometheusProvisioner.addJobs([jobs])
         await prometheusProvisioner.endConfig()
     }
 
