@@ -1,4 +1,4 @@
-import { CodeZeroHelper } from "../codezero"
+import { CodeZeroHelper } from '../codezero'
 import { Job } from '@c6o/kubeclient-resources/batch/v1'
 
 export class JobHelper<T extends Job = Job>

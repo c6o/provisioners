@@ -1,4 +1,4 @@
-import { CodeZeroHelper } from "../codezero"
+import { CodeZeroHelper } from '../codezero'
 import { Pod } from '@c6o/kubeclient-resources/core/v1'
 
 export class PodHelper<T extends Pod = Pod>

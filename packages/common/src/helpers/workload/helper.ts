@@ -8,8 +8,8 @@ import {
     pathToVolumeMounts,
     pathToVolumes
 } from './paths'
-import { WorkloadKinds, WorkloadResource } from './types'
-import { Volume, VolumeMount } from "@c6o/kubeclient-resources/lib/core/v1"
+import { WorkloadKind, WorkloadResource } from './types'
+import { Volume, VolumeMount } from '@c6o/kubeclient-resources/lib/core/v1'
 
 export type WorkloadOrArray = WorkloadResource | WorkloadResource[]
 
@@ -17,7 +17,7 @@ export class WorkloadHelper {
 
     static prefix = (workloads: WorkloadOrArray) => Array.isArray(workloads) ? '$[*]' : '$'
 
-    static envToKeyValue(kind: WorkloadKinds, workloads: WorkloadOrArray, merge: keyValue = {}): keyValue {
+    static envToKeyValue(kind: WorkloadKind, workloads: WorkloadOrArray, merge: keyValue = {}): keyValue {
         const envPath = pathToEnv(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${envPath}`
         const envs = JSONPath({ path, json: workloads })
@@ -27,34 +27,34 @@ export class WorkloadHelper {
             }, merge)
     }
 
-    static configMapRefs(kind: WorkloadKinds, workloads: WorkloadOrArray) : string[] {
+    static configMapRefs(kind: WorkloadKind, workloads: WorkloadOrArray) : string[] {
         const refsPath = pathToConfigMapRefs(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${refsPath}`
         return JSONPath({ path, json: workloads })
     }
 
-    static secretRefs(kind: WorkloadKinds, workloads: WorkloadOrArray): string[] {
+    static secretRefs(kind: WorkloadKind, workloads: WorkloadOrArray): string[] {
         const refsPath = pathToSecretRefs(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${refsPath}`
         return JSONPath({ path, json: workloads })
     }
 
-    static volumes(kind: WorkloadKinds, workloads: WorkloadOrArray): Volume[] {
+    static volumes(kind: WorkloadKind, workloads: WorkloadOrArray): Volume[] {
         const volumesPath = pathToVolumes(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${volumesPath}`
         return JSONPath({ path, json: workloads })
     }
 
-    static volumeMounts(kind: WorkloadKinds, workloads: WorkloadOrArray): VolumeMount[] {
+    static volumeMounts(kind: WorkloadKind, workloads: WorkloadOrArray): VolumeMount[] {
         const volumesPath = pathToVolumeMounts(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${volumesPath}`
         return JSONPath({ path, json: workloads })
     }
 
-    static labels(kind: WorkloadKinds, workloads: WorkloadOrArray): {[name: string]: string} {
+    static labels(kind: WorkloadKind, workloads: WorkloadOrArray): {[name: string]: string} {
         const labelsPath = pathToLabels(kind)
         const path = `${WorkloadHelper.prefix(workloads)}${labelsPath}`
         const result = JSONPath({ path, json: workloads })
-        return JSONPath({ path, json: workloads })["0"]
+        return JSONPath({ path, json: workloads })['0']
     }
 }

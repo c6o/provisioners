@@ -1,4 +1,4 @@
-import { CodeZeroHelper } from "../codezero"
+import { CodeZeroHelper } from '../codezero'
 import { PersistentVolumeClaim } from '@c6o/kubeclient-resources/core/v1'
 export class PersistentVolumeClaimObject<T extends PersistentVolumeClaim = PersistentVolumeClaim>
     extends CodeZeroHelper<T> {

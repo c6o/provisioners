@@ -1,4 +1,4 @@
-import { CodeZeroHelper } from "../codezero"
+import { CodeZeroHelper } from '../codezero'
 import { CronJob } from '@c6o/kubeclient-resources/batch/v1beta1'
 
 export class CronJobHelper<T extends CronJob = CronJob>

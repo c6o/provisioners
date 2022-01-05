@@ -1,4 +1,4 @@
-import { CodeZeroHelper } from "../codezero"
+import { CodeZeroHelper } from '../codezero'
 import { StatefulSet } from '@c6o/kubeclient-resources/apps/v1'
 
 export class StatefulSetHelper<T extends StatefulSet = StatefulSet>
