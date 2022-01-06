@@ -1,6 +1,6 @@
-import { WorkloadKinds } from './types'
+import { WorkloadKind } from './types'
 
-export const pathToSpec = (kind: WorkloadKinds) => {
+export const pathToSpec = (kind: WorkloadKind) => {
     switch (kind) {
         case 'Pod':
             return '.spec'
@@ -12,14 +12,14 @@ export const pathToSpec = (kind: WorkloadKinds) => {
             return '.spec.jobTemplate.spec.template.spec'
     }
 }
-export const pathToContainers = (kind: WorkloadKinds) => `${pathToSpec(kind)}.containers[*]`
-export const pathToVolumes = (kind: WorkloadKinds) => `${pathToSpec(kind)}.volumes[*]`
-export const pathToVolumeMounts = (kind: WorkloadKinds) => `${pathToContainers(kind)}.volumeMounts[*]`
-export const pathToEnv = (kind: WorkloadKinds) => `${pathToContainers(kind)}.env[*]`
-export const pathToConfigMapRefs = (kind: WorkloadKinds) => `${pathToContainers(kind)}.envFrom[*].configMapRef[*]`
-export const pathToSecretRefs = (kind: WorkloadKinds) => `${pathToContainers(kind)}.envFrom[*].secretRef[*]`
+export const pathToContainers = (kind: WorkloadKind) => `${pathToSpec(kind)}.containers[*]`
+export const pathToVolumes = (kind: WorkloadKind) => `${pathToSpec(kind)}.volumes[*]`
+export const pathToVolumeMounts = (kind: WorkloadKind) => `${pathToContainers(kind)}.volumeMounts[*]`
+export const pathToEnv = (kind: WorkloadKind) => `${pathToContainers(kind)}.env[*]`
+export const pathToConfigMapRefs = (kind: WorkloadKind) => `${pathToContainers(kind)}.envFrom[*].configMapRef[*]`
+export const pathToSecretRefs = (kind: WorkloadKind) => `${pathToContainers(kind)}.envFrom[*].secretRef[*]`
 
-export const pathToMetadata = (kind: WorkloadKinds) => {
+export const pathToMetadata = (kind: WorkloadKind) => {
     switch (kind) {
         case 'Pod':
             return '.metadata'
@@ -31,4 +31,4 @@ export const pathToMetadata = (kind: WorkloadKinds) => {
             return '.spec.jobTemplate.spec.template.metadata'
     }
 }
-export const pathToLabels = (kind: WorkloadKinds) => `${pathToMetadata(kind)}.labels`
+export const pathToLabels = (kind: WorkloadKind) => `${pathToMetadata(kind)}.labels`

@@ -1,4 +1,4 @@
-import { CodeZeroHelper } from "../codezero"
+import { CodeZeroHelper } from '../codezero'
 import { Deployment } from '@c6o/kubeclient-resources/apps/v1'
 
 export class DeploymentHelper<T extends Deployment = Deployment>
