@@ -19,20 +19,20 @@ module.exports = {
     globals: {
         'ts-jest': {
             tsconfig: {
-                "composite": true,
-                "module": "commonjs",
-                "moduleResolution": "node",
-                "declaration": true,
-                "noImplicitAny": false,
-                "removeComments": true,
-                "noLib": false,
-                "emitDecoratorMetadata": true,
-                "experimentalDecorators": true,
-                "esModuleInterop": true,
-                "skipLibCheck": true,
-                "target": "es2018",
-                "sourceMap": true,
-                "lib": ["es2018", "dom"]
+                'composite': true,
+                'module': 'commonjs',
+                'moduleResolution': 'node',
+                'declaration': true,
+                'noImplicitAny': false,
+                'removeComments': true,
+                'noLib': false,
+                'emitDecoratorMetadata': true,
+                'experimentalDecorators': true,
+                'esModuleInterop': true,
+                'skipLibCheck': true,
+                'target': 'es2018',
+                'sourceMap': true,
+                'lib': ['es2018', 'dom']
             }
         },
     },
