@@ -201,7 +201,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
         try {
             this.controller.status?.push(`Creating database ${dbName}`)
             await this.connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
-        } finally {
+        }
+        finally {
             this.controller.status?.pop()
         }
 
@@ -211,7 +212,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.connection.query(`ALTER USER IF EXISTS ${username}@'%' IDENTIFIED WITH mysql_native_password BY ${mysql.escape(password)};`)
             await this.connection.query(`GRANT ALL PRIVILEGES ON  ${dbName}.* TO ${username}@'%';`)
             await this.connection.query('FLUSH PRIVILEGES;')
-        } finally {
+        }
+        finally {
             this.controller.status?.pop()
         }
 
@@ -226,7 +228,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('mysql').toString('base64')
-        } finally {
+        }
+        finally {
             this.controller.status?.pop()
         }
 

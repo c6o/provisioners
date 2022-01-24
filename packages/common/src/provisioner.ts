@@ -36,7 +36,6 @@ export class ProvisionerBase extends provisionerBaseMixin {
         return this._documentHelper = new AppHelper(this.controller.resource)
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     help(command: string, options: optionFunctionType, messages: string[]) {
         // No Op
     }

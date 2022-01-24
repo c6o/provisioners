@@ -5,7 +5,6 @@ import * as Handlebars from 'handlebars'
 import { unlinkToken } from '../../constants'
 import createDebug from 'debug'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('c6o-system:metricsMixin:')
 
 declare module '../..' {

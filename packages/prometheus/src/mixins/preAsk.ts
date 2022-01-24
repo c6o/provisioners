@@ -30,7 +30,7 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
 
         if (options['addCert'])
             await this.preAddCert(options)
-            
+
         if (options['removeCert'])
             await this.preRemoveCert(options)
     }
@@ -79,7 +79,8 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
             certFile = file.toString()
             file = await fs.readFile(resolvePath(`${certPath}/key.pem`), 'utf8')
             keyFile = file.toString()
-        } catch (e) {
+        }
+        catch (e) {
             // debug('error reading client cert or key file')
         }
 
