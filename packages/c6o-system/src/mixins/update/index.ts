@@ -3,7 +3,6 @@ import { updateImageTag } from '@provisioner/common'
 import { unlinkToken } from '../../constants'
 import { baseProvisionerType } from '../../'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('provisioner:c6o-system:updateSystem:')
 
 declare module '../..' {

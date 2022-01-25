@@ -64,7 +64,8 @@ export class PromptValidation {
                     invalidPrompts.push(prompt)
                     return
                 }
-            } catch(e) {
+            }
+            catch(e) {
                 // intentionally left in for 3rd party developers working on their own provisioners
                 invalidPrompts.push(prompt)
                 throw e

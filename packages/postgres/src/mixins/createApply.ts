@@ -198,14 +198,16 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.controller.status?.push(`Creating database ${dbName}`)
             if(createDB)
                 await this.connection.query(`CREATE DATABASE ${dbName};`)
-        } finally {
+        }
+        finally {
             this.controller.status?.pop(!createDB)
         }
 
         try {
             this.controller.status?.push(`Setting up database user ${username}`)
             await this.connection.query(`CREATE ROLE ${username} LOGIN SUPERUSER PASSWORD '${password}';`)
-        } finally {
+        }
+        finally {
             this.controller.status?.pop()
         }
 
@@ -223,7 +225,8 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             if (config.portSecretKey) this.configMap[config.portSecretKey] = Buffer.from(port.toString()).toString('base64')
             if (config.databaseSecretKey) this.configMap[config.databaseSecretKey] = Buffer.from(dbName).toString('base64')
             if (config.databaseTypeSecretKey) this.configMap[config.databaseTypeSecretKey] = Buffer.from('pgsql').toString('base64')
-        } finally {
+        }
+        finally {
             this.controller.status?.pop()
         }
     }

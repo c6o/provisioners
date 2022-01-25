@@ -3,7 +3,6 @@ import { AppResource, RoutesType } from '@provisioner/contracts'
 import { baseProvisionerType } from '../../'
 import createDebug from 'debug'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const debug = createDebug('istio:api:virtualService:')
 
 export const virtualServiceApiMixin = (base: baseProvisionerType) => class extends base {
