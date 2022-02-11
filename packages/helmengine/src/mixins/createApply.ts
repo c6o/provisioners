@@ -15,7 +15,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             this.controller.status?.push(`Applying Helm Engine to ${this.documentHelper.name}`)
 
             this.job = templates.getJobTemplate(this.documentHelper.name, this.documentHelper.namespace)
-            
+
             // From parent AppEngine
             await this.processTemplates()
 
@@ -25,7 +25,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             await this.applySecretValuesConfig()
             await this.applyPostRenderConfig()
             await this.applyJob()
-            
+
             await this.ensureJobFinished()
         }
         finally {
@@ -179,7 +179,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /**
      * Monitor Job progress, wait till completed.
-     * 
+     *
      * NOTE: this does not mean the service is Ready.
      * TODO: we should add startupProbs to handle this properly.
      */
@@ -255,13 +255,13 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 configMap: {
                     name: createKustomizationConfigs.metadata.name,
                     items: [
-                        { 
+                        {
                             key: 'postrender.sh',
                             path: 'postrender.sh',
                             mode: 365, // This chmod makes the file executable
                         },
-                        { 
-                            key: 'kustomization.yaml', 
+                        {
+                            key: 'kustomization.yaml',
                             path: 'kustomization.yaml',
                         },
                     ],
@@ -308,7 +308,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
             // Setup service account for job
             this.job.spec.template.spec.serviceAccountName = serviceAccountName
-        } 
+        }
         finally {
             this.controller.status?.pop()
         }
@@ -330,18 +330,18 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     /**
      * Expand configuration key names to be object paths.
-     * 
+     *
      * For example:
      *  foo:bar: dummyval
      *  becomes
      *    foo:
      *      bar: dummyval
-     * 
+     *
      * @param configs
-     * @returns 
+     * @returns
      */
     expandConfigs(configs) {
-        const regex = /[:\.\[]/
+        const regex = /[:.[]/
         for(const key of Object.keys(configs)) {
             if (key.match(regex)) {
                 const value = configs[key]
@@ -350,7 +350,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
                 setByPath(configs, key.replace(':','.'), value)
             }
         }
-        
+
         return configs
     }
 }

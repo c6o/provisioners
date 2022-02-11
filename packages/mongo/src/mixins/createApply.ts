@@ -158,7 +158,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
     /**
      * Creates a the database based on the dbConfig and adds the connection string to configMap
      * @param cluster
-     * @param dbConfig 
+     * @param dbConfig
      */
     async setupDb(dbConfig) {
         try {

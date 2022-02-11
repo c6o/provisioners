@@ -25,14 +25,15 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
                 .list(mysqlClusterDoc)
                 .do(async (result, processor) => {
                     // There should be just one MySqlCluster
-                    if (result?.object?.items?.length)
-                        for(const instance of result?.each(mysqlClusterDoc.kind)) {
+                    if (result?.object?.items?.length) {
+                        for (const instance of result.each(mysqlClusterDoc.kind)) {
                             //instance.apiVersion = mysqlClusterDoc.apiVersion
                             //instance.kind = mysqlClusterDoc.kind
                             // Remove the finalizer so it doesn't block uninstall
                             await this.controller.cluster.patch(instance, [{ 'op': 'remove', 'path': '/metadata/finalizers'}])
                             processor.delete(instance)
                         }
+                    }
                 })
             .end()
 

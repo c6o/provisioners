@@ -44,7 +44,7 @@ export const preAskMixin = (base: baseProvisionerType) => class extends base {
             const selection = await inquirer.prompt({
                 type: 'list',
                 name: 'namespace',
-                message: `Which prometheus would you like to ask?`,
+                message: 'Which prometheus would you like to ask?',
                 choices
             })
             this.prometheusNamespace = selection.namespace

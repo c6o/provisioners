@@ -104,7 +104,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureIngressIsRunning() {
         await this.controller.cluster
-            .begin(`Ensure ingress gateway is running`)
+            .begin('Ensure ingress gateway is running')
                 .beginWatch(this.ingressPod)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()
@@ -114,7 +114,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
 
     async ensureIstiodIsRunning() {
         await this.controller.cluster
-            .begin(`Ensure istiod is running`)
+            .begin('Ensure istiod is running')
                 .beginWatch(this.istiodPod)
                 .whenWatch(({ condition }) => condition.Ready == 'True', (processor) => {
                     processor.endWatch()

@@ -3,13 +3,13 @@ import * as templates from '../templates/'
 
 /**
  * Perform Helm uninstall command.
- * 
+ *
  * @param base
- * @returns 
+ * @returns
  */
 export const removeApplyMixin = (base: baseProvisionerType) => class extends base {
     async removeApply() {
-        this.job = templates.getJobTemplate(this.documentHelper.name, this.documentHelper.namespace, "uninstall")
+        this.job = templates.getJobTemplate(this.documentHelper.name, this.documentHelper.namespace, 'uninstall')
         await this.setupUninstallJobCommand()
 
         await this.applyUninstallJob()
@@ -22,8 +22,8 @@ export const removeApplyMixin = (base: baseProvisionerType) => class extends bas
         const { name, namespace } = this.documentHelper
 
         this.job.spec.template.spec.containers[0].command = [
-            "helm", "uninstall", name,
-            "--namespace", namespace,
+            'helm', 'uninstall', name,
+            '--namespace', namespace,
         ]
     }
 

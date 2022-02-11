@@ -2,6 +2,7 @@ import { GenerateOptions } from 'generate-password'
 import { keyValue } from '@c6o/kubeclient-contracts'
 export { GenerateOptions as generatorOptions } from 'generate-password'
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type functionExpression = string | Function // this is an inline function that's turned into an expression
 export const isFunctionString = (func: functionExpression): func is string => func && typeof func === 'string'
 
