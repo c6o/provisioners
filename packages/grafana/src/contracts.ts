@@ -1,4 +1,4 @@
-import { ConfigMap } from '@c6o/kubeclient-resources/core/v1';
+import { ConfigMap } from '@c6o/kubeclient-resources/core/v1'
 import { ProvisionerBase } from '@provisioner/contracts'
 
 export interface GrafanaProvisioner extends ProvisionerBase {

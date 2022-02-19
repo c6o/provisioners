@@ -1,7 +1,7 @@
 import yaml from 'js-yaml'
 
 export async function getValuesTemplate(name: string, namespace: string, data: any) {
-    let values = yaml.dump(data)
+    const values = yaml.dump(data)
 
     return {
         apiVersion: 'v1',

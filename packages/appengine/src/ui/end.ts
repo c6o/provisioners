@@ -20,7 +20,7 @@ export class AppEngineEndSettings extends LitElement implements StoreFlowStep {
     }
 
     // NARAYAN: This is a temporary fix - do not document or use elsewhere
-    skipMediatorRender = true;
+    skipMediatorRender = true
 
     async end() {
         const result: FlowResult = {

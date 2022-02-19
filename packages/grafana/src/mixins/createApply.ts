@@ -26,7 +26,7 @@ export const createApplyMixin = (base: baseProvisionerType) => class extends bas
             storageClass,
             storage,
             adminUsername,
-            adminPassword } = this.spec      
+            adminPassword } = this.spec
 
         await this.controller.cluster
             .begin('Install Grafana services')
