@@ -8,7 +8,7 @@
   "command": {
     "version": {
       "allowBranch": "develop",
-      "changelogPreset": "metahub",
+      "changelogPreset": "@c6o/conventional-changelog",
       "message": "chore(release): %s",
       "conventionalCommits": true,
       "createRelease": "github"

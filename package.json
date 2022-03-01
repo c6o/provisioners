@@ -19,8 +19,8 @@
     "publish-manifests": "ls -d $PWD/packages/* | xargs -I fld czctl app publish fld --account codezero -f"
   },
   "devDependencies": {
+    "@c6o/conventional-changelog": "^0.0.1",
     "@types/node": "^10.12.18",
-    "conventional-changelog-metahub": "^4.0.1",
     "del-cli": "^3.0.1",
     "jest": "^27.0.0",
     "lerna": "^3.20.2",
