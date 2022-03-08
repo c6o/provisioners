@@ -1,5 +1,6 @@
 import { JSONPath } from 'jsonpath-plus'
-import { WorkloadKind, WorkloadResource, keyValue } from '@c6o/kubeclient-contracts'
+import { WorkloadKind, WorkloadResource } from '@c6o/kubeclient'
+import { keyValue } from '@c6o/kubeclient-contracts'
 import {
     pathToConfigMapRefs,
     pathToEnv,
