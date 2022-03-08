@@ -1,4 +1,4 @@
-import { WorkloadKind } from '@c6o/kubeclient'
+import { WorkloadKind } from '@c6o/kubeclient-helpers'
 
 export const pathToSpec = (kind: WorkloadKind) => {
     switch (kind) {
