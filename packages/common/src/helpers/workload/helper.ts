@@ -1,5 +1,5 @@
 import { JSONPath } from 'jsonpath-plus'
-import { keyValue } from '@c6o/kubeclient-contracts'
+import { WorkloadKind, WorkloadResource, keyValue } from '@c6o/kubeclient-contracts'
 import {
     pathToConfigMapRefs,
     pathToEnv,
@@ -8,7 +8,6 @@ import {
     pathToVolumeMounts,
     pathToVolumes
 } from './paths'
-import { WorkloadKind, WorkloadResource } from './types'
 import { Volume, VolumeMount } from '@c6o/kubeclient-resources/lib/core/v1'
 
 export type WorkloadOrArray = WorkloadResource | WorkloadResource[]
