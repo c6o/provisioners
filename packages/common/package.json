@@ -24,15 +24,14 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@c6o/kubeclient": "^0.0.13",
     "@c6o/kubeclient-contracts": "^0.0.13",
+    "@c6o/kubeclient-helpers": "^0.0.13",
     "@provisioner/contracts": "^0.0.30",
     "debug": "^4.1.1",
     "generate-password": "^1.6.0",
     "jsonpath-plus": "^5.0.7",
     "jsonpointer": "^4.1.0",
-    "mixwith": "^0.1.1",
-    "ulid": "^2.3.0"
+    "mixwith": "^0.1.1"
   },
   "gitHead": "76270c0e55c21dd5e02cd24c03c84567f77af028"
 }

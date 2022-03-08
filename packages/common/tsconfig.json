@@ -5,7 +5,9 @@
         "outDir": "./lib"
     },
     "references": [
-        { "path":  "../contracts" }
+        { "path": "../contracts" },
+        { "path": "../../../kubeclient/packages/helpers" },
+        { "path": "../../../kubeclient/packages/contracts" }
     ],
     "include": [
         "src"
