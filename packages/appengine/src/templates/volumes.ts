@@ -20,5 +20,25 @@ export function getPVCTemplate(volume: Volume, namespace: string) {
             }
         }
     }
+}
 
+export function getPVC(name, namespace) {
+    return {
+        kind: 'PersistentVolumeClaim',
+        apiVersion: 'v1',
+        metadata: {
+            name,
+            namespace
+        }
+    }
+}
+
+export function getPV(name) {
+    return {
+        kind: 'PersistentVolume',
+        apiVersion: 'v1',
+        metadata: {
+            name
+        }
+    }
 }
