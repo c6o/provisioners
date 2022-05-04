@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.31](https://github.com/c6o/node-monorepo/compare/v0.0.30...v0.0.31) (2022-05-04)
+
+
+### ✨ Features
+
+* Added workload helper ([#258](https://github.com/c6o/node-monorepo/issues/258)) ([72411aa](https://github.com/c6o/node-monorepo/commit/72411aa3401d0e440d30651c11036dfe31e28905))
+* template for services. ([#274](https://github.com/c6o/node-monorepo/issues/274)) ([a4ffef1](https://github.com/c6o/node-monorepo/commit/a4ffef1c2a36486a4f8bffc8c5a855d3c28129e6))
+
+
+### 🐛 Bug Fixes
+
+* Changes required for strict build issues ([#276](https://github.com/c6o/node-monorepo/issues/276)) ([d9b9479](https://github.com/c6o/node-monorepo/commit/d9b947939851b57d67e752140866da6c3acb5ce5))
+* **teleport:** Added namespaces to the teleport workload list. ([#260](https://github.com/c6o/node-monorepo/issues/260)) ([0466599](https://github.com/c6o/node-monorepo/commit/0466599d37e03cd582d6d7ed19b797da62025a9e))
+
+
+
+
+
 ## [0.0.30](https://github.com/c6o/node-monorepo/compare/v0.0.29...v0.0.30) (2021-06-16)
 
 

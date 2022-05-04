@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/common",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "Common stuff for provisioners",
   "main": "lib/index.js",
   "repository": {
@@ -26,7 +26,7 @@
   "dependencies": {
     "@c6o/kubeclient-contracts": "^0.0.14",
     "@c6o/kubeclient-helpers": "^0.0.14",
-    "@provisioner/contracts": "^0.0.30",
+    "@provisioner/contracts": "^0.0.31",
     "debug": "^4.1.1",
     "generate-password": "^1.6.0",
     "jsonpath-plus": "^5.0.7",

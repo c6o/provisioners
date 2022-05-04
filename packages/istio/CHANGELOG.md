@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.31](https://github.com/c6o/provisioners/compare/v0.0.30...v0.0.31) (2022-05-04)
+
+
+### 🐛 Bug Fixes
+
+* Changes required for strict build issues ([#276](https://github.com/c6o/provisioners/issues/276)) ([d9b9479](https://github.com/c6o/provisioners/commit/d9b947939851b57d67e752140866da6c3acb5ce5))
+
+
+
+
+
 ## [0.0.30](https://github.com/c6o/provisioners/compare/v0.0.29...v0.0.30) (2021-06-16)
 
 

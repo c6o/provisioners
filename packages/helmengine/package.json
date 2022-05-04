@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/helmengine",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "CodeZero provisioner for HelmEngine",
   "main": "lib/index.js",
   "scripts": {
@@ -36,10 +36,10 @@
   "dependencies": {
     "@c6o/kubeclient": "^0.0.14",
     "@c6o/kubeclient-contracts": "^0.0.14",
-    "@provisioner/appengine": "^0.0.30",
-    "@provisioner/appengine-contracts": "^0.0.30",
-    "@provisioner/common": "^0.0.30",
-    "@provisioner/contracts": "^0.0.30",
+    "@provisioner/appengine": "^0.0.31",
+    "@provisioner/appengine-contracts": "^0.0.31",
+    "@provisioner/common": "^0.0.31",
+    "@provisioner/contracts": "^0.0.31",
     "chalk": "^4.1.0",
     "debug": "^4.2.0",
     "generate-password": "^1.6.0",

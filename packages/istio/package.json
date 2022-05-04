@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/istio",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "CodeZero provisioner for Istio",
   "main": "lib/index.js",
   "scripts": {
@@ -36,10 +36,10 @@
   "dependencies": {
     "@c6o/kubeclient": "^0.0.14",
     "@c6o/kubeclient-contracts": "^0.0.14",
-    "@provisioner/common": "^0.0.30",
-    "@provisioner/contracts": "^0.0.30",
-    "@provisioner/grafana": "^0.0.30",
-    "@provisioner/prometheus": "^0.0.30",
+    "@provisioner/common": "^0.0.31",
+    "@provisioner/contracts": "^0.0.31",
+    "@provisioner/grafana": "^0.0.31",
+    "@provisioner/prometheus": "^0.0.31",
     "@vaadin/vaadin-combo-box": "5.4.7",
     "@vaadin/vaadin-text-field": "2.8.5",
     "inquirer": "^8.0.0",

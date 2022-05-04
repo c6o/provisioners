@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/precog",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "CodeZero provisioner for precog",
   "main": "lib/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.30",
+    "@provisioner/common": "^0.0.31",
     "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
     "mixwith": "^0.1.1",

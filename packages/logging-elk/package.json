@@ -1,6 +1,6 @@
 {
   "name": "@provisioner/logging-elk",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "CodeZero provisioner for logging (ELK stack)",
   "main": "lib/index.js",
   "scripts": {
@@ -32,8 +32,8 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@provisioner/common": "^0.0.30",
-    "@provisioner/contracts": "^0.0.30",
+    "@provisioner/common": "^0.0.31",
+    "@provisioner/contracts": "^0.0.31",
     "debug": "^4.1.1",
     "inquirer": "^8.0.0",
     "lit-element": "^2.3.1",
