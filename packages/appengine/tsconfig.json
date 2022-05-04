@@ -8,7 +8,6 @@
         { "path":  "../common" },
         { "path":  "../contracts" },
         { "path":  "../appengine-contracts" },
-        { "path":  "../../../client" },
         { "path":  "../../../kubeclient/packages/contracts" },
     ],
     "include": [

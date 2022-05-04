@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/nsainaney/traxitt#readme",
   "dependencies": {
-    "@c6o/kubeclient-contracts": "^0.0.13",
-    "@c6o/kubeclient-helpers": "^0.0.13",
+    "@c6o/kubeclient-contracts": "^0.0.14",
+    "@c6o/kubeclient-helpers": "^0.0.14",
     "@provisioner/contracts": "^0.0.30",
     "debug": "^4.1.1",
     "generate-password": "^1.6.0",

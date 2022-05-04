@@ -1,5 +1,4 @@
 import { LitElement, customElement, html, property } from 'lit-element'
-import { customEvent } from '@c6o/client'
 import { keyValue } from '@c6o/kubeclient-contracts'
 import { Prompt, isFunctionString, AppEngineAppResource } from '@provisioner/appengine-contracts'
 import { PromptValidation } from './validation'
@@ -84,7 +83,11 @@ export class AppEnginePrompt extends LitElement {
         if (this.prompt.type === 'number') this.prompt.c6o.value = Number(this.prompt.c6o.value)
 
         // force a re-render so the WHEN can take effect
-        customEvent(this, 'update-requested', { message: 'update-requested', prompt: this.prompt, source: e })
+        this.dispatchEvent(new CustomEvent('update-requested', {
+            detail: { message: 'update-requested', prompt: this.prompt, source: e },
+            bubbles: true,
+            composed: true
+        }))
     }
 
     comboboxRenderer = (root, owner, model) => {

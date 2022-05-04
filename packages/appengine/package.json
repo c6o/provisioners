@@ -32,8 +32,7 @@
   },
   "homepage": "https://github.com/c6o/provisioners#readme",
   "dependencies": {
-    "@c6o/client": "^1.4.0-alpha.1",
-    "@c6o/kubeclient-contracts": "^0.0.13",
+    "@c6o/kubeclient-contracts": "^0.0.14",
     "@provisioner/appengine-contracts": "^0.0.30",
     "@provisioner/common": "^0.0.30",
     "@provisioner/contracts": "^0.0.30",
@@ -47,6 +46,6 @@
   },
   "gitHead": "d24a33960e0efd45fd795d1c34112fe8174fa19c",
   "devDependencies": {
-    "@c6o/bundle": "^0.0.9"
+    "@c6o/bundle": "^0.0.14"
   }
 }
