@@ -5,6 +5,7 @@ import { ServiceHelper as ServiceHelperContract } from '@provisioner/contracts'
 
 export class ServiceHelper<T extends Service = Service> extends ServiceHelperContract<T> {
 
+    // NOTE: 'from' and 'template' methods below must change in provisioner/contracts too.
     static from = (namespace?: string, name?: string) =>
         new ServiceHelper(ServiceHelperContract.template(namespace, name))
 
