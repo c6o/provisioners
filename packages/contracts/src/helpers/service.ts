@@ -1,9 +1,9 @@
-import { ResourceHelper, ResourceId } from '@c6o/kubeclient-contracts'
+import { ResourceHelper } from '@c6o/kubeclient-contracts'
 import { Service } from '@c6o/kubeclient-resources/core/v1'
 
 export class ServiceHelper<T extends Service = Service> extends ResourceHelper<T> { //extends ServiceHelperContract<T> {
 
-    static template = (namespace?: string, name?: string, labels?: {[name: string]: string}): Service | ResourceId<Service> => ({
+    static template = (namespace?: string, name?: string, labels?: {[name: string]: string}): Partial<Service> => ({
             apiVersion: 'v1',
             kind: 'Service',
             metadata: {
