@@ -16,6 +16,7 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
                 <c6o-combo-box
                     allow-custom-value
                     colspan="2"
+                    id="storage-combo"
                     .items=${this.values}
                     label='Log Storage'
                     required

@@ -132,6 +132,7 @@ export class AppEnginePrompt extends LitElement {
     renderExpand = () => html`
         <c6o-combo-box
             error-message=${this.prompt.c6o.errorMessage}
+            id="expand-combo"
             .items=${this.prompt.choices}
             label=${this.prompt.c6o.label}
             .renderer=${this.comboboxRenderer}
@@ -145,6 +146,7 @@ export class AppEnginePrompt extends LitElement {
     renderList = () => html`
         <c6o-combo-box
             error-message=${this.prompt.c6o.errorMessage}
+            id="list-combo"
             .items=${this.prompt.choices}
             item-label-path='name'
             item-value-path='value'
@@ -203,6 +205,7 @@ export class AppEnginePrompt extends LitElement {
     renderGenerate = () => html`
         <c6o-checkbox
             ?checked=${this.prompt.c6o.value}
+            id="generate-cb"
             theme="compact"
             title=${this.prompt.c6o.generateMessage || `Generate a value for ${this.prompt.name}`}
             @checked-changed=${(e) => this.showGenerateInput = !this.showGenerateInput}
@@ -236,6 +239,7 @@ export class AppEnginePrompt extends LitElement {
     renderMultipleList = () => html`
         <c6o-combo-box
             error-message=${this.prompt.c6o.errorMessage}
+            id="multi-combo"
             .items=${this.prompt.choices}
             label=${this.prompt.c6o.label}
             .renderer=${this.comboboxRenderer}
@@ -252,6 +256,7 @@ export class AppEnginePrompt extends LitElement {
             ?checked=${this.prompt.c6o.value}
             .disabled=${this.isDisabled}
             error-message=${this.prompt.c6o.errorMessage}
+            id="prompt-cb"
             label=${this.prompt.c6o.label}
             ?required=${this.prompt.c6o.required}
             theme="compact"

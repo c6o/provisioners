@@ -19,6 +19,7 @@ export class DroneSettingsMain extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-combo-box
                     allow-custom-value
+                    id="storage-combo"
                     .items=${this.storageChoices}
                     label="Server Storage"
                     required
@@ -28,6 +29,7 @@ export class DroneSettingsMain extends LitElement implements StoreFlowStep {
             </c6o-form-layout>
             <c6o-form-layout>
                 <c6o-combo-box
+                    id="source-combo"
                     .items=${this.scmChoices}
                     label="Source Control System"
                     required

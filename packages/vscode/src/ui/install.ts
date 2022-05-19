@@ -16,6 +16,7 @@ export class VSCodeCapacity extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-combo-box
                     allow-custom-value
+                    id="size-combo"
                     .items=${this.values}
                     label='Data Volume Size'
                     required

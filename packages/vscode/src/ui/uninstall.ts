@@ -15,6 +15,7 @@ export class UninstallVSCode extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-checkbox
                     ?checked=${!!this.serviceSpec.deprovision['keep-ip']}
+                    id="ip-cb"
                     @checked-changed=${this.checkHandler('keep-ip')}
                 >
                     Keep IP address
@@ -22,6 +23,7 @@ export class UninstallVSCode extends LitElement implements StoreFlowStep {
                 <br />
                 <c6o-checkbox
                     ?checked=${!!this.serviceSpec.deprovision['keep-vol']}
+                    id="volume-cb"
                     @checked-changed=${this.checkHandler('keep-vol')}
                 >
                     Keep data volume

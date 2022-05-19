@@ -33,6 +33,7 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-combo-box
                     allow-custom-value
+                    id="size-combo"
                     .items=${this.storageSizeChoices}
                     label="Database Storage"
                     required

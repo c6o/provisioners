@@ -14,6 +14,7 @@ export class UninstallVSCode extends LitElement implements StoreFlowStep {
         <c6o-form-layout>
             <c6o-checkbox
                 ?checked=${!!this.serviceSpec.deprovision['force']}
+                id="force-cb"
                 @checked-changed=${this.checkHandler('force')}
             >
                 Force deprovision with added dashboards
