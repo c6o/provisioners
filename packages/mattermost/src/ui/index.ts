@@ -29,6 +29,7 @@ export class MattermostSettings extends LitElement implements StoreFlowStep {
                 ></c6o-combo-box>
                 <c6o-text-field
                     colspan="2"
+                    id="secret-txt"
                     label="Mattermost license secret (optional)"
                     @change=${this.handleSearch}
                 ></c6o-text-field>

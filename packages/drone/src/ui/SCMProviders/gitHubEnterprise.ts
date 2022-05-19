@@ -25,13 +25,16 @@ export class DroneGitHubEnterpriseSettings extends LitElement implements StoreFl
                 <c6o-text-field
                     autoselect
                     colspan="2"
-                    label="GitHub ClientId" value=${this.serviceSpec.githubClientId}
+                    id="client-id-txt"
+                    label="GitHub Client ID"
                     required
+                    value=${this.serviceSpec.githubClientId}
                     @input=${inputChanged(this.serviceSpec, 'githubClientId')}
                 ></c6o-text-field>
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="client-secret-txt"
                     label="GitHub Client Secret" value=${this.serviceSpec.githubClientSecret}
                     required
                     @input=${inputChanged(this.serviceSpec, 'githubClientSecret')}
@@ -39,6 +42,7 @@ export class DroneGitHubEnterpriseSettings extends LitElement implements StoreFl
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="server-txt"
                     label="GitHub Server URL" value=${this.serviceSpec.githubServer}
                     required
                     @input=${inputChanged(this.serviceSpec, 'githubServer')}

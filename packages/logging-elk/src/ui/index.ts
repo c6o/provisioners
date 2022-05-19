@@ -26,6 +26,7 @@ export class LoggingSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="log-txt"
                     label="Kubernetes log index prefix?"
                     path="k8sLogIndexPrefix"
                     required

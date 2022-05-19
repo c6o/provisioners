@@ -15,6 +15,7 @@ export class TraxittSystemSetup extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="company-name-txt"
                     label="Company Name"
                     path="companyName"
                     required
@@ -23,6 +24,7 @@ export class TraxittSystemSetup extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="cluster-name-txt"
                     label="Cluster Name"
                     path="clusterName"
                     required

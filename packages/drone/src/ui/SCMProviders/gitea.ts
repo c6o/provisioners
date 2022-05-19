@@ -18,6 +18,7 @@ export class DroneGiteaSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="client-id-txt"
                     label="Gitea Client ID"
                     required
                     value=${this.serviceSpec.giteaClientId}
@@ -26,6 +27,7 @@ export class DroneGiteaSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="client-secret-txt"
                     label="Gitea Client Secret"
                     required
                     value=${this.serviceSpec.giteaClientSecret}
@@ -34,6 +36,7 @@ export class DroneGiteaSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="server-txt"
                     label="Gitea Server URL"
                     required
                     value=${this.serviceSpec.giteaUrl}

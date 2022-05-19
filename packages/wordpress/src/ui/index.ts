@@ -14,6 +14,7 @@ export class WordpressSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-text-field
                     autoselect
+                    id="name-txt"
                     label="MySql Username"
                     required
                     value=${this.serviceSpec.username || ''}
@@ -21,6 +22,7 @@ export class WordpressSettings extends LitElement implements StoreFlowStep {
                 ></c6o-text-field>
                 <c6o-password-field
                     autoselect
+                    id="password-txt"
                     label="MySql Password"
                     required
                     value=${this.serviceSpec.password || ''}

@@ -17,18 +17,21 @@ export class FoldingAtHomeSettings extends LitElement implements StoreFlowStep {
                 </p>
                 <c6o-text-field
                     autoselect
+                    id="username-txt"
                     label="Username"
                     value=${this.serviceSpec.username || ''}
                     @input=${this.usernameChanged}
                 ></c6o-text-field>
                 <c6o-password-field
                     autoselect
+                    id="pass-txt"
                     label="Pass Key"
                     value=${this.serviceSpec.passkey || ''}
                     @input=${this.passwordChanged}
                 ></c6o-password-field>
                 <c6o-text-field
                     autoselect
+                    id="team-txt"
                     label="Team Number"
                     value=${this.serviceSpec.teamNumber || ''}
                     @input=${this.teamChanged}

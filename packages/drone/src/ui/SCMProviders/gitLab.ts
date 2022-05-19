@@ -18,6 +18,7 @@ export class DroneGitLabSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="client-id-txt"
                     label="GitLab Client ID"
                     required
                     value=${this.serviceSpec.gitlabClientId}
@@ -26,6 +27,7 @@ export class DroneGitLabSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="client-secret-txt"
                     label="GitLab Client Secret"
                     required
                     value=${this.serviceSpec.gitlabClientSecret}
@@ -34,6 +36,7 @@ export class DroneGitLabSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="server-txt"
                     label="GitLab Server URL"
                     required
                     value=${this.serviceSpec.gitlabUrl}

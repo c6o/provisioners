@@ -29,6 +29,7 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-text-field
                     autoselect
+                    id="username-txt"
                     label="Administrator username"
                     required
                     value=${this.serviceSpec.adminUsername}
@@ -37,6 +38,7 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
                 <br />
                 <c6o-text-field
                     autoselect
+                    id="password-txt"
                     label="Administrator password"
                     required
                     value=${this.serviceSpec.adminPassword}

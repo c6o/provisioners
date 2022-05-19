@@ -38,6 +38,7 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-text-field
                     autoselect
+                    id="name-txt"
                     label="Docker username"
                     required
                     value=${this.serviceSpec.dockerUsername || ''}
@@ -45,6 +46,7 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
                 ></c6o-text-field>
                 <c6o-password-field
                     autoselect
+                    id="password-txt"
                     label="Docker password"
                     required
                     value=${this.serviceSpec.dockerPassword || ''}
