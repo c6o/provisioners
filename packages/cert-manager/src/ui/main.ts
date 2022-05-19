@@ -25,6 +25,7 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     label="Notify email address"
+                    id="email-txt"
                     required
                     value=${this.serviceSpec.notifyEmail || ''}
                     @input=${this.emailChanged}

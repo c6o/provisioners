@@ -164,6 +164,7 @@ export class AppEnginePrompt extends LitElement {
         <c6o-text-field
             ?disabled=${this.isDisabled}
             error-message=${this.prompt.c6o.errorMessage}
+            id="input-txt"
             label=${this.prompt.c6o.label}
             ?required=${this.prompt.c6o.required}
             title=${this.prompt.message}
@@ -178,6 +179,7 @@ export class AppEnginePrompt extends LitElement {
             .disabled=${this.isDisabled}
             error-message=${this.prompt.c6o.errorMessage}
             ?has-controls=${this.prompt.c6o.hasControls || true}
+            id="number-txt"
             label=${this.prompt.c6o.label}
             max=${this.prompt.c6o.max || 32767}
             min=${this.prompt.c6o.min || 1}
@@ -193,6 +195,7 @@ export class AppEnginePrompt extends LitElement {
         <c6o-password-field
             .disabled=${this.isDisabled}
             error-message=${this.prompt.c6o.errorMessage}
+            id="password-txt"
             label=${this.prompt.c6o.label}
             ?required=${this.prompt.c6o.required}
             theme="compact"
@@ -214,6 +217,7 @@ export class AppEnginePrompt extends LitElement {
         </c6o-checkbox>
         <c6o-text-field
             ?hidden=${!this.showGenerateInput}
+            id="generate-txt"
             label=${this.prompt.c6o.label}
             required
             theme="compact"
@@ -226,6 +230,7 @@ export class AppEnginePrompt extends LitElement {
         <c6o-text-area
             .disabled=${this.isDisabled}
             error-message=${this.prompt.c6o.errorMessage}
+            id="editor-txt"
             label=${this.prompt.c6o.label}
             maxlength=${this.prompt.c6o.maxlength}
             ?required=${this.prompt.c6o.required}

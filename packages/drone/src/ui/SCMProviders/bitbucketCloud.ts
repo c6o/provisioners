@@ -17,6 +17,7 @@ export class DroneBitbucketCloudSettings extends LitElement implements StoreFlow
                 <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-text-field
                     autoselect
+                    id="bitbucket-id-txt"
                     label="BitBucket Client Id"
                     required
                     value=${this.serviceSpec.bitbucketClientId}
@@ -25,6 +26,7 @@ export class DroneBitbucketCloudSettings extends LitElement implements StoreFlow
                 <br />
                 <c6o-text-field
                     autoselect
+                    id="bitbucket-secret-txt"
                     label="BitBucket Client Secret"
                     required
                     value=${this.serviceSpec.bitbucketClientSecret}

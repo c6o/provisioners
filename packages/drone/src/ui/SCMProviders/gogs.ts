@@ -18,6 +18,7 @@ export class DroneGogsSettings extends LitElement implements StoreFlowStep {
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="gogs-txt"
                     label="Gogs Server URL"
                     required
                     value=${this.serviceSpec.gogsServer}

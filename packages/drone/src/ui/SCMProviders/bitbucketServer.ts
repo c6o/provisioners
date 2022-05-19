@@ -18,6 +18,7 @@ export class DroneBitbucketServerSettings extends LitElement implements StoreFlo
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="git-username-txt"
                     label="Git Username"
                     required
                     value=${this.serviceSpec.gitUsername}
@@ -26,6 +27,7 @@ export class DroneBitbucketServerSettings extends LitElement implements StoreFlo
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="git-password-txt"
                     label="Git Password"
                     required
                     value=${this.serviceSpec.gitPassword}
@@ -34,6 +36,7 @@ export class DroneBitbucketServerSettings extends LitElement implements StoreFlo
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="consumer-key-txt"
                     label="Stash Consumer Key"
                     required
                     value=${this.serviceSpec.stashConsumerKey}
@@ -42,6 +45,7 @@ export class DroneBitbucketServerSettings extends LitElement implements StoreFlo
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="private-key-txt"
                     label="Stash Private Key"
                     required
                     value=${this.serviceSpec.stashPrivateKey}
@@ -50,6 +54,7 @@ export class DroneBitbucketServerSettings extends LitElement implements StoreFlo
                 <c6o-text-field
                     autoselect
                     colspan="2"
+                    id="server-txt"
                     label="Stash Server"
                     required
                     value=${this.serviceSpec.stashServer}

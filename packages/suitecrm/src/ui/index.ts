@@ -16,6 +16,7 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-text-field
                     autoselect
+                    id="name-txt"
                     label="Administrator username"
                     required
                     value=${this.serviceSpec.suitecrmusername}
@@ -24,6 +25,7 @@ export class SuiteCRMSettings extends LitElement implements StoreFlowStep {
                 <br />
                 <c6o-password-field
                     autoselect
+                    id="password-txt"
                     label="Administrator password"
                     required
                     value=${this.serviceSpec.suitecrmpassword}
