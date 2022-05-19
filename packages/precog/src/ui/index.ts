@@ -19,6 +19,7 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-combo-box
                     allow-custom-value
+                    id="storage-combo"
                     .items=${this.values}
                     label='Storage'
                     required
@@ -26,6 +27,7 @@ export class PreCogSettings extends LitElement implements StoreFlowStep {
                     @selected-item-changed=${this.storageSelected}
                 ></c6o-combo-box>
                 <c6o-combo-box
+                    id="editions-combo"
                     .items=${this.editions}
                     label='Edition'
                     required

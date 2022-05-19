@@ -33,6 +33,7 @@ export class PrometheusMainInstall extends LitElement implements StoreFlowStep {
                 <c6o-checkbox
                     ?checked=${!!this.serviceSpec.kubeMetricsEnabled}
                     ?disabled=${this.isSimple}
+                    id="kube-cb"
                     theme="condensed"
                     @checked-changed=${this.checkHandler('kubeMetricsEnabled')}
                 >
@@ -41,6 +42,7 @@ export class PrometheusMainInstall extends LitElement implements StoreFlowStep {
                 <c6o-checkbox
                     ?checked=${!!this.serviceSpec.nodeExporterEnabled}
                     ?disabled=${this.isSimple}
+                    id="node-cb"
                     theme="condensed"
                     @checked-changed=${this.checkHandler('nodeExporterEnabled')}
                 >
@@ -49,6 +51,7 @@ export class PrometheusMainInstall extends LitElement implements StoreFlowStep {
                 <c6o-checkbox
                     ?checked=${!!this.serviceSpec.pushGatewayEnabled}
                     ?disabled=${this.isSimple}
+                    id="gateway-cb"
                     theme="condensed"
                     @checked-changed=${this.checkHandler('pushGatewayEnabled')}
                 >

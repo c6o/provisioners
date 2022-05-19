@@ -95,8 +95,8 @@ export class TraxittSystemSettings extends LitElement {
                 ${this.renderGrafanaLink()}
             </div>
             <div class="btn-footer">
-                <c6o-button theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</c6o-button>
-                <c6o-button theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</c6o-button>
+                <c6o-button id="reset-btn" theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</c6o-button>
+                <c6o-button id="apply-btn" theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</c6o-button>
             </div>
         `
     }
@@ -132,6 +132,7 @@ export class TraxittSystemSettings extends LitElement {
                     <h3>NPM Registry Linked</h3>
                     <c6o-button
                         class="inline"
+                        id="unlink-btn"
                         theme="tertiary"
                         @click=${this.unlinkNpm}
                         ?disabled=${this.busy}>
@@ -156,6 +157,7 @@ export class TraxittSystemSettings extends LitElement {
                 <c6o-button
                     class="inline"
                     ?disabled=${this.busy}
+                    id="link-npm-btn"
                     theme="tertiary"
                     @click=${this.linkNpm}
                 >
@@ -173,6 +175,7 @@ export class TraxittSystemSettings extends LitElement {
                     <c6o-button
                         class="inline"
                         ?disabled=${this.busy}
+                        id="unlink-logger-btn"
                         theme="tertiary"
                         @click=${this.unlinkLogger}
                     >
@@ -194,6 +197,7 @@ export class TraxittSystemSettings extends LitElement {
                 <c6o-button
                     class="inline"
                     ?disabled=${this.busy}
+                    id="link-logger-btn"
                     theme="tertiary"
                     @click=${this.linkLogger}
                 >
@@ -211,6 +215,7 @@ export class TraxittSystemSettings extends LitElement {
                     <c6o-button
                         class="inline"
                         ?disabled=${this.busy}
+                        id="unlink-prometheus-btn"
                         theme="tertiary"
                         @click=${this.unlinkPrometheus}
                     >
@@ -232,6 +237,7 @@ export class TraxittSystemSettings extends LitElement {
                 <c6o-button
                     class="inline"
                     ?disabled=${this.busy}
+                    id="link-prometheus-btn"
                     theme="tertiary"
                     @click=${this.linkPrometheus}
                 >
@@ -249,6 +255,7 @@ export class TraxittSystemSettings extends LitElement {
                     <c6o-button
                         class="inline"
                         ?disabled=${this.busy}
+                        id="unlink-grafana-btn"
                         theme="tertiary"
                         @click=${this.unlinkGrafana}
                     >
@@ -270,6 +277,7 @@ export class TraxittSystemSettings extends LitElement {
                 <c6o-button
                     class="inline"
                     ?disabled=${this.busy}
+                    id="link-grafana-btn"
                     theme="tertiary"
                     @click=${this.linkGrafana}
                 >

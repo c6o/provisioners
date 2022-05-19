@@ -16,6 +16,7 @@ export class OdooSettings extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-combo-box
                     allow-custom-value
+                    id="storage-combo"
                     .items=${this.storageSizeChoices}
                     label="Database Storage Size"
                     required
@@ -24,6 +25,7 @@ export class OdooSettings extends LitElement implements StoreFlowStep {
                 ></c6o-combo-box>
                 <c6o-combo-box
                     allow-custom-value
+                    id="size-combo"
                     .items=${this.storageSizeChoices}
                     label="User Addons Storage Size"
                     required

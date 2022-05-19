@@ -17,6 +17,7 @@ export class DroneGitHubEnterpriseSettings extends LitElement implements StoreFl
                 <h3>${this.serviceSpec.scmChoice} SCM Setup</h3>
                 <c6o-checkbox
                     ?checked=${this.serviceSpec.alwaysAuth}
+                    id="auth-cb"
                     @checked-changed=${inputChanged(this.serviceSpec, 'alwaysAuth')}
                 >
                     Always authenticate (If private mode enabled)

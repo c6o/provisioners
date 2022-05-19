@@ -73,14 +73,15 @@ export class IstioSettings extends LitElement {
             </div>
             <c6o-checkbox
                 ?checked=${this.httpsRedirect}
+                id="redirect-cb"
                 ?disabled=${this.busy}
                 @checked-changed=${this.httpsRedirectChanged}
             >
                 Enable https redirect
             </c6o-checkbox>
             <div class="btn-footer">
-                <c6o-button theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</c6o-button>
-                <c6o-button theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</c6o-button>
+                <c6o-button id="reset-btn" theme="default" @click=${this.resetSettings} ?disabled=${this.busy}>Reset Changes</c6o-button>
+                <c6o-button id="apply-btn" theme="primary" @click=${this.applyChanges} ?disabled=${this.busy}>Apply Changes</c6o-button>
             </div>
         `
     }
@@ -92,6 +93,7 @@ export class IstioSettings extends LitElement {
                     <h3>Grafana Linked</h3>
                     <c6o-button
                         class="inline"
+                        id="unlink-grafana-btn"
                         theme="tertiary"
                         @click=${this.unlinkGrafana}
                         ?disabled=${this.busy}>
@@ -113,6 +115,7 @@ export class IstioSettings extends LitElement {
                 <c6o-button
                     class="inline"
                     ?disabled=${this.busy || this.prometheusNamespace === unlinkToken}
+                    id="link-grafana-btn"
                     theme="tertiary"
                     @click=${this.linkGrafana}
                 >
@@ -130,6 +133,7 @@ export class IstioSettings extends LitElement {
                     <c6o-button
                         class="inline"
                         ?disabled=${this.busy}
+                        id="unlink-prometheus-btn"
                         theme="tertiary"
                         @click=${this.unlinkPrometheus}
                     >
@@ -151,6 +155,7 @@ export class IstioSettings extends LitElement {
                 <c6o-button
                     class="inline"
                     ?disabled=${this.busy}
+                    id="link-prometheus-btn"
                     theme="tertiary"
                     @click=${this.linkPrometheus}
                 >

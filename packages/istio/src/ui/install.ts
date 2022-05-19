@@ -42,6 +42,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     <h3>Optional Components:</h3>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.httpsRedirect}
+                        id="redirect-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('httpsRedirect')}
                     >
@@ -49,6 +50,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     </c6o-checkbox>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.autoInjectEnabled}
+                        id="auto-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('autoInjectEnabled')}
                     >
@@ -56,6 +58,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     </c6o-checkbox>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.citadelEnabled}
+                        id="citadel-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('citadelEnabled')}
                     >
@@ -63,6 +66,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     </c6o-checkbox>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.coreDnsEnabled}
+                        id="dns-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('coreDnsEnabled')}
                     >
@@ -70,6 +74,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     </c6o-checkbox>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.galleyEnabled}
+                        id="gallery-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('galleyEnabled')}
                     >
@@ -77,6 +82,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     </c6o-checkbox>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.policyEnabled}
+                        id="policy-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('policyEnabled')}
                     >
@@ -84,6 +90,7 @@ export class IstioSetup extends LitElement implements StoreFlowStep {
                     </c6o-checkbox>
                     <c6o-checkbox
                         ?checked=${this.serviceSpec.telemetryEnabled}
+                        id="telemetry-cb"
                         theme="condensed"
                         @checked-changed=${this.updateHandler('telemetryEnabled')}
                     >

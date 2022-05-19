@@ -14,6 +14,7 @@ export class CertManagerSettings extends LitElement implements StoreFlowStep {
         return html`
             <c6o-form-layout>
                 <c6o-combo-box
+                    id="env-combo"
                     .items=${this.enviroValues}
                     label='Environment'
                     required

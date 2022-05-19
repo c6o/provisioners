@@ -1,4 +1,4 @@
-import { LitElement, html, customElement, property } from 'lit-element'
+import { LitElement, html, customElement } from 'lit-element'
 import { StoreFlowStep, StoreFlowMediator } from '@provisioner/contracts'
 
 @customElement('grafana-install-main')
@@ -18,6 +18,7 @@ export class GrafanaCredentials extends LitElement implements StoreFlowStep {
             <c6o-form-layout>
                 <c6o-combo-box
                     allow-custom-value
+                    id="storage-combo"
                     .items=${this.values}
                     label="Grafana Storage"
                     required
