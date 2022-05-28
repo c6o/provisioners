@@ -1319,36 +1319,36 @@
     conventional-changelog-angular "^5.0.0"
     lodash "^4.17.4"
 
-"@c6o/kubeclient-contracts@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-contracts/-/kubeclient-contracts-0.0.14.tgz#160e81473beb4c9a8c90d1db03853339ef8b65cb"
-  integrity sha512-j5Y/P29Qgb8qwnjJX2SPMQAVYGpurRpoYGQgsKb06OM1XLnxIeTF9clQj+TUo0a402Hd72Ouy0YihxkFN+rOyg==
+"@c6o/kubeclient-contracts@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-contracts/-/kubeclient-contracts-0.0.15.tgz#2840b54a38a6508b22e365a19f2e25f0a01bfe73"
+  integrity sha512-vEA8gj0F9PZFulGwrlUBseBZZ7xLcFPUVNOzz2yl2fm78vSd1HSvzqaQaFPq3SRNpeikBtNifW7nAELDklmNzQ==
   dependencies:
     "@kubernetes/client-node" "^0.11.0"
     ts-try "^0.2.0"
     ulid "^2.3.0"
 
-"@c6o/kubeclient-helpers@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-helpers/-/kubeclient-helpers-0.0.14.tgz#ecbb26ab7c1c9804ea3262a300448ce6a87b921d"
-  integrity sha512-4nxyEOtocyqObSvtuRGcEsCTijOECNFphtF8v0JsP87BIpGJ3WriMHEGgC4V78ui3kJlAJKQTzU6s4QIaVfZ2g==
+"@c6o/kubeclient-helpers@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-helpers/-/kubeclient-helpers-0.0.15.tgz#3612b30094c5f45f02e06ac502c7709b9937f53b"
+  integrity sha512-UfRdd4X8TME6U+HxqRPvMnRPWK58RJG3J7Y3Nny0sLUEM0xAeyiNjdtrgllf49nOJ6ROd15+vEizzOR41Al6Kg==
   dependencies:
-    "@c6o/kubeclient-resources" "^0.0.14"
+    "@c6o/kubeclient-resources" "^0.0.15"
 
-"@c6o/kubeclient-resources@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-resources/-/kubeclient-resources-0.0.14.tgz#0dfa5c10e1cdc3bd547fdd4434288240d199b902"
-  integrity sha512-OMIiAi+ncNPDfG6RU2e4JEejhHyKvcYv7prCZ9AEozE4v5Q9G1wG0l3gGJDc2X9k7mA0qtZ9nGgTl0oTVPy7cw==
+"@c6o/kubeclient-resources@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient-resources/-/kubeclient-resources-0.0.15.tgz#b6468f55d0cd2a92263b856bea3195a5f4e80f13"
+  integrity sha512-fSpmyRbDFAN0FaWk3+QAaqRFU11Ig4stw2PFhfzBdP226quhdpCZ3m1kXSGiudaDtC1YTat1m8NrPgMKFdFkAg==
   dependencies:
-    "@c6o/kubeclient-contracts" "^0.0.14"
+    "@c6o/kubeclient-contracts" "^0.0.15"
 
-"@c6o/kubeclient@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@c6o/kubeclient/-/kubeclient-0.0.14.tgz#25955144a18ba20210d12fb24a773848603ed1fd"
-  integrity sha512-TVtJVpWCvvLR1Q5ujqThf9eCdCgNUBv5Pea53vzDzvDdfmD71kiIM1MJ1IG6+scHMJn2/nQsl547xiotgnYW8A==
+"@c6o/kubeclient@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@c6o/kubeclient/-/kubeclient-0.0.15.tgz#c14378cf759e9205683b2e48b981f261bc70fbf8"
+  integrity sha512-ckjehpKf1MdTpg8sSlMOVQdKcvBTgKAKRGgwgKzYNRWZjYiSH37lE8l7Z26Blmf7MzXp/jZZleXMGiA/NNFEHg==
   dependencies:
-    "@c6o/kubeclient-contracts" "^0.0.14"
-    "@c6o/kubeclient-resources" "^0.0.14"
+    "@c6o/kubeclient-contracts" "^0.0.15"
+    "@c6o/kubeclient-resources" "^0.0.15"
     "@kubernetes/client-node" "^0.11.0"
     byline "^5.0.0"
     callsite "^1.0.0"
