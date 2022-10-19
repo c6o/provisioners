@@ -57,14 +57,6 @@ export interface AppDocumentSpec {
     services?: ServicesType
     routes?: Array<RoutesType>
 }
-
-export interface ServicePort {
-    name?: string
-    protocol: string
-    port: number
-    [key: string]: any
-}
-
 export interface Volume {
     name: string
     size: string
