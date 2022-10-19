@@ -1,5 +1,5 @@
 
-import { ServicePort } from '@provisioner/appengine-contracts'
+import { ServicePort } from '@c6o/kubeclient-resources/core/v1'
 
 export function getServiceTemplate(name: string, namespace: string, ports: ServicePort[]) {
     return {
